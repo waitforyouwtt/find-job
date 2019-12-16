@@ -1,0 +1,35 @@
+
+ #指定spring data jpa 的表配置[update],及显示sql
+spring:
+  jpa:
+      hibernate:
+        ddl-auto: update
+        #配合database-platform 创建表默认的存储引擎为MyISam ,修改为 innodb
+        naming:
+          physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      show-sql: true
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+
+#指定redis 的相关配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 500
+
+
+
+#spring boot mybatis 打印sql及参数：level 下面是dao 层的包路径哦
+logging:
+  level:
+   com:
+    yidiandian:
+      dao: debug
+
+server:
+  port: 8081

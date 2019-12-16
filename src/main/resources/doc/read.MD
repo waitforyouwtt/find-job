@@ -1,0 +1,1 @@
+项目采用spring boot +mybatis+spring data jpa +swagger +  文档自动生成技术+druid 监控
