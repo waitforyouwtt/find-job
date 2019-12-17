@@ -9,6 +9,8 @@ public class UserInfo {
 
     private String userHead;
 
+    private String idCard;
+
     private String password;
 
     private String wechat;
@@ -169,5 +171,13 @@ public class UserInfo {
 
     public void setEmergencyContactMobile(String emergencyContactMobile) {
         this.emergencyContactMobile = emergencyContactMobile == null ? null : emergencyContactMobile.trim();
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
     }
 }

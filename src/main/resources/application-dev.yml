@@ -28,8 +28,11 @@ spring:
 logging:
   level:
    com:
-    yidiandian:
-      dao: debug
+    fenghuang:
+      job:
+        dao:
+         master: debug
+         cluster: debug
 
 server:
   port: 8081

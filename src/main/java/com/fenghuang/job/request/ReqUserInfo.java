@@ -1,4 +1,4 @@
-package com.fenghuang.job.view;
+package com.fenghuang.job.request;
 
 import lombok.Data;
 
@@ -6,11 +6,11 @@ import java.io.Serializable;
 
 /**
  * @Author: 凤凰[小哥哥]
- * @Date: 2019/12/17 11:04
+ * @Date: 2019/12/17 13:58
  * @Email: 15290810931@163.com
  */
 @Data
-public class UserInfoView implements Serializable{
+public class ReqUserInfo implements Serializable{
 
     private Integer id;
 

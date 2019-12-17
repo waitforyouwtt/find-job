@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.view.UserInfoView;
 
 /**
@@ -15,6 +16,10 @@ public interface UserInfoService {
      * @return
      */
     UserInfoView findUserInfo(String userName);
-
-    UserInfoView findUserInfo2(String userName);
+    /**
+     * 注册新用户
+     * @param reqUserInfo
+     * @return
+     */
+    int insertUser(ReqUserInfo reqUserInfo);
 }
