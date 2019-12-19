@@ -60,5 +60,10 @@ public class UserInfoController {
         return Result.success(userInfoService.changePassword(reqUserInfo));
     }
 
+    @PostMapping("/messageRegister")
+    public Result messageRegister(){
+      return Result.success();
+    }
+
 
 }

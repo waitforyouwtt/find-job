@@ -1,5 +1,7 @@
 package com.fenghuang.job.constant;
 
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * @Author: 凤凰[小哥哥]
  * @Date: 2019/12/17 14:59
