@@ -4,6 +4,8 @@ import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.request.ReqUserInfo;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface UserInfoMasterMapper {
     int deleteByPrimaryKey(Integer id);
@@ -18,7 +20,13 @@ public interface UserInfoMasterMapper {
 
     int updateByPrimaryKey(UserInfo record);
 
-    UserInfo findUserInfoByUserName(String userName);
+    List<UserInfo> findUserInfoByUserName(String userName);
 
     UserInfo findUserInfo(ReqUserInfo reqUserInfo);
+
+    List<UserInfo> findUserInfoPage(ReqUserInfo reqUserInfo);
+
+    UserInfo findUserByUserNameAndPassword(ReqUserInfo reqUserInfo);
+
+    int changePassword(ReqUserInfo reqUserInfo);
 }

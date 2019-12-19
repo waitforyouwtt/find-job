@@ -9,7 +9,8 @@ public enum BusinessEnum {
 
     RECORD_REPETITION(1001,"记录重复"),
     MISSING_PARAMETERS(1002,"参数缺失"),
-    RECORD_ALREADY_EXISTS(1003,"记录已存在")
+    RECORD_ALREADY_EXISTS(1003,"记录已存在"),
+    RECORD_NOT_EXIST(1004,"记录不存在"),
 
     ;
 

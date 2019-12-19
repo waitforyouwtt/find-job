@@ -260,6 +260,9 @@
       <if test="userName != null">
         and user_name = #{userName}
       </if>
+      <if test="userNickName != null">
+        and user_nickName = #{userNickName}
+      </if>
       <if test="idCard != null">
         and id_card = #{idCard}
       </if>
@@ -269,4 +272,46 @@
     </where>
     and user_status = 1
   </select>
+
+  <select id="findUserInfoPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
+    select
+    <include refid="Base_Column_List" />
+    from tb_userinfo
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="userName != null">
+        and user_name = #{userName}
+      </if>
+      <if test="userNickname != null">
+        and user_nickName = #{userNickname}
+      </if>
+      <if test="idCard != null">
+        and id_card = #{idCard}
+      </if>
+      <if test="mobile != null">
+        and mobile = #{mobile}
+      </if>
+      <if test="userStatus != null">
+        and user_status = #{userStatus}
+      </if>
+    </where>
+  </select>
+
+  <select id="findUserByUserNameAndPassword" resultMap="BaseResultMap"
+          parameterType="com.fenghuang.job.request.ReqUserInfo">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_userinfo
+    where 1 =1 and user_status =2
+    and user_name = #{userName}
+    and password = #{password}
+  </select>
+
+  <update id="changePassword" parameterType="com.fenghuang.job.request.ReqUserInfo">
+     update tb_userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
+  </update>
+
+
 </mapper>

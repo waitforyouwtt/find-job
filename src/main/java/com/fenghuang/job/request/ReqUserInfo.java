@@ -1,5 +1,6 @@
 package com.fenghuang.job.request;
 
+import com.fenghuang.job.utils.PageHelps;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.io.Serializable;
  * @Email: 15290810931@163.com
  */
 @Data
-public class ReqUserInfo implements Serializable{
+public class ReqUserInfo extends PageHelps implements Serializable{
 
     private Integer id;
 
@@ -23,6 +24,8 @@ public class ReqUserInfo implements Serializable{
     private String idCard;
 
     private String password;
+
+    private String newPassword;
 
     private String wechat;
 

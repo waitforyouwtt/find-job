@@ -2,6 +2,9 @@ package com.fenghuang.job.service;
 
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.view.UserInfoView;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -15,11 +18,38 @@ public interface UserInfoService {
      * @param userName
      * @return
      */
-    UserInfoView findUserInfo(String userName);
+    List<UserInfoView> findUserInfoByUserName(String userName);
     /**
      * 注册新用户
      * @param reqUserInfo
      * @return
      */
     int insertUser(ReqUserInfo reqUserInfo);
+
+    /**
+     * 更新用户信息
+     * @param reqUserInfo
+     * @return
+     */
+    int modifyUserInfo(ReqUserInfo reqUserInfo);
+
+    /**
+     *
+     * @param reqUserInfo
+     * @return
+     */
+    UserInfoView findUserInfo(ReqUserInfo reqUserInfo);
+    /**
+     * 根据条件进行查询且进行分页
+     * @param reqUserInfo
+     * @return
+     */
+    PageInfo <UserInfoView> findUserInfoPage(ReqUserInfo reqUserInfo);
+
+    /**
+     * 用户进行修改密码
+     * @param reqUserInfo
+     * @return
+     */
+    int changePassword(ReqUserInfo reqUserInfo);
 }
