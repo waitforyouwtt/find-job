@@ -36,20 +36,20 @@ public class UserInfoController {
         return Result.success(userInfoService.modifyUserInfo(reqUserInfo));
     }
 
-    @ApiOperation(value = "根据用户名获取一条或多条记录")
+    @ApiOperation(value = "根据用户名获取一条或多条用户信息记录")
     @GetMapping("/findUserInfoByUserName")
     public Result findUserInfoByUserName(@RequestParam("userName") String userName){
       return Result.success(userInfoService.findUserInfoByUserName(userName)) ;
     }
 
-    @ApiOperation(value = "根据用户id|用户昵称|用户手机号|身份证 获取唯一一条记录")
+    @ApiOperation(value = "根据用户id|用户昵称|用户手机号|身份证 获取唯一一条用户信息记录")
     @PostMapping("/findUserInfo")
     public Result findUserInfo(@RequestBody ReqUserInfo reqUserInfo){
       return Result.success(userInfoService.findUserInfo(reqUserInfo));
     }
 
     @PostMapping("/findUserInfoPage")
-    @ApiOperation(value = "根据条件查询并进行分页")
+    @ApiOperation(value = "根据条件查询用户信息并进行分页")
     public Result findUserInfoPage(@RequestBody ReqUserInfo reqUserInfo){
        return Result.success(userInfoService.findUserInfoPage(reqUserInfo));
     }

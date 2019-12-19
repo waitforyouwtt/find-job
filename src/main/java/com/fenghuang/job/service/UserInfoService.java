@@ -14,7 +14,7 @@ import java.util.List;
 public interface UserInfoService {
 
     /**
-     * 根据用户名字获取一条记录
+     * 根据用户名获取一条或多条用户信息记录
      * @param userName
      * @return
      */
@@ -34,13 +34,13 @@ public interface UserInfoService {
     int modifyUserInfo(ReqUserInfo reqUserInfo);
 
     /**
-     *
+     *根据用户id|用户昵称|用户手机号|身份证 获取唯一一条用户信息记录
      * @param reqUserInfo
      * @return
      */
     UserInfoView findUserInfo(ReqUserInfo reqUserInfo);
     /**
-     * 根据条件进行查询且进行分页
+     * 根据条件进行查询用户信息且进行分页
      * @param reqUserInfo
      * @return
      */

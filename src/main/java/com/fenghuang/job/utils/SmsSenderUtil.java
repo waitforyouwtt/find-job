@@ -34,7 +34,7 @@ public class SmsSenderUtil {
     public String sendMsm(String phoneNumber, String signId, String templateId) {
         try {
             int random = getRandom();
-            String result = httpClientUtil.sendSms(signId, templateId, phoneNumber, random + "");
+            String result = httpClientUtil.sendSms(signId, templateId, phoneNumber, random + "","5");
             JSONObject jsonObject = JSON.parseObject(result);
             Integer code = jsonObject.getInteger("code");
             if (code.equals(200)) {

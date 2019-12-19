@@ -111,7 +111,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
-     * 根据用户id|用户昵称|用户手机号|身份证 获取唯一一条记录
+     * 根据用户id|用户昵称|用户手机号|身份证 获取唯一一条用户信息记录
      * @param reqUserInfo
      * @return
      */
@@ -129,17 +129,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
-     * 根据条件进行查询且进行分页
+     * 根据条件进行查询用户信息且进行分页
      *
      * @param reqUserInfo
      * @return
      */
     @Override
     public PageInfo<UserInfoView> findUserInfoPage(ReqUserInfo reqUserInfo) {
+        log.info("根据条件进行查询且进行分页请求参数：{}",JSON.toJSON(reqUserInfo));
         PageInfo<UserInfoView> pageInfo = null;
         try {
             Page<?> page = PageHelper.startPage(reqUserInfo.getPageNum(),reqUserInfo.getPageSize());
-            log.info("根据条件进行查询且进行分页请求参数：{}",JSON.toJSON(reqUserInfo));
             List<UserInfo> userInfoList = userInfoMasterMapper.findUserInfoPage(reqUserInfo);
             if (CollectionUtils.isEmpty(userInfoList)){
                 pageInfo = new PageInfo<>(new ArrayList<>());
@@ -150,7 +150,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
             log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
         } catch (Exception e) {
-            log.error("查询失败"+e.getMessage());
+            log.error("根据条件进行查询用户信息且进行分页 查询异常"+e.getMessage());
         }
         return pageInfo;
     }
