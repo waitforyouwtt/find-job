@@ -3,6 +3,7 @@ package com.fenghuang.job.view;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -38,7 +39,7 @@ public class UserInfoView implements Serializable{
 
     private Integer userStatus;
 
-    private Long amount;
+    private BigDecimal amount;
 
     private Integer userType;
 

@@ -3,6 +3,7 @@ package com.fenghuang.job.request;
 import com.fenghuang.job.utils.PageHelps;
 import lombok.Data;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ public class ReqCashWithdrawal extends PageHelps implements Serializable{
 
     private Integer userId;
 
-    private Long cashWithdrawalAmount;
+    private BigDecimal cashWithdrawalAmount;
 
     private String cashWithdrawalAccount;
 

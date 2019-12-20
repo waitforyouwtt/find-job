@@ -3,6 +3,7 @@ package com.fenghuang.job.entity;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @ApiModel(value = "用户信息表")
@@ -33,7 +34,7 @@ public class UserInfo implements Serializable{
 
     private Integer userStatus;
 
-    private Long amount;
+    private BigDecimal amount;
 
     private Integer userType;
 
