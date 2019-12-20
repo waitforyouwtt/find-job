@@ -33,7 +33,7 @@ public class Swagger {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("世界就像一个巨大的抓娃娃机，隔着玻璃，我只想得到你")
-                .description("想要有你陪，想要把自己灌醉......mifanzhu")
+                .description("想要有你陪，想要把自己灌醉......凤凰小哥哥")
                 .termsOfServiceUrl("https://blog.csdn.net/qq_35781178")
                 .version("1.0")
                 .build();
