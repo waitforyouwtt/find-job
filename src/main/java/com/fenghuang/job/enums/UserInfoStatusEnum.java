@@ -7,8 +7,8 @@ package com.fenghuang.job.enums;
  */
 public enum UserInfoStatusEnum {
 
-    NORMAL(1,"正常"),
-    FROZEN(2,"冻结"),
+    FROZEN(1,"冻结"),
+    NORMAL(2,"正常"),
     ;
 
     UserInfoStatusEnum(Integer code, String msg) {

@@ -1,6 +1,9 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
+import com.fenghuang.job.view.MessageView;
+import com.fenghuang.job.view.RegisterCodeView;
 import com.fenghuang.job.view.UserInfoView;
 import com.github.pagehelper.PageInfo;
 
@@ -52,4 +55,18 @@ public interface UserInfoService {
      * @return
      */
     int changePassword(ReqUserInfo reqUserInfo);
+
+    /**
+     * 用户短信注册，发送验证码
+     * @param reqMessage
+     * @return
+     */
+    MessageView messageRegister(ReqMessage reqMessage);
+
+    /**
+     *用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败
+     * @param registerCodeView
+     * @return
+     */
+    MessageView checkRegisterCode(RegisterCodeView registerCodeView);
 }

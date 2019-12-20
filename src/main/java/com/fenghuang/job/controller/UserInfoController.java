@@ -1,8 +1,10 @@
 package com.fenghuang.job.controller;
 
 import com.fenghuang.job.exception.Result;
+import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.service.UserInfoService;
+import com.fenghuang.job.view.RegisterCodeView;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -61,8 +63,15 @@ public class UserInfoController {
     }
 
     @PostMapping("/messageRegister")
-    public Result messageRegister(){
-      return Result.success();
+    @ApiOperation(value = "用户短信注册，发送验证码")
+    public Result messageRegister(ReqMessage reqMessage){
+      return Result.success(userInfoService.messageRegister(reqMessage));
+    }
+
+    @PostMapping("/checkRegisterCode")
+    @ApiOperation(value = "用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败")
+    public Result checkRegisterCode(RegisterCodeView registerCodeView) {
+        return Result.success(userInfoService.checkRegisterCode(registerCodeView));
     }
 
 

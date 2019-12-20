@@ -1,16 +1,24 @@
 package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.cluster.UserInfoClusterMapper;
 import com.fenghuang.job.dao.master.UserInfoMasterMapper;
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.enums.BusinessEnum;
+import com.fenghuang.job.enums.SystemCodeEnum;
 import com.fenghuang.job.enums.UserInfoStatusEnum;
 import com.fenghuang.job.exception.BusinessException;
+import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.AesUtil;
+import com.fenghuang.job.utils.SmsSenderUtil;
+import com.fenghuang.job.utils.StringCustomizedUtils;
+import com.fenghuang.job.view.JSONMessage;
+import com.fenghuang.job.view.MessageView;
+import com.fenghuang.job.view.RegisterCodeView;
 import com.fenghuang.job.view.UserInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -20,7 +28,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
+import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +52,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     UserInfoClusterMapper userInfoClusterMapper;
+
+    @Autowired
+    SmsSenderUtil smsSenderUtil;
 
     /**
      * 根据用户名字获取一条记录
@@ -170,6 +185,87 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         reqUserInfo.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfo.getNewPassword()));
         return userInfoMasterMapper.changePassword(reqUserInfo);
+    }
+
+    /**
+     * 用户短信注册，发送验证码
+     *
+     * @param reqMessage
+     * @return
+     */
+    @Override
+    public MessageView messageRegister(ReqMessage reqMessage) {
+        log.info("用户短信注册，发送验证码 请求参数：{}",JSON.toJSONString(reqMessage));
+        ReqUserInfo reqUserInfo = new ReqUserInfo();
+        reqUserInfo.setMobile(reqMessage.getMobile());
+        UserInfo userInfo = userInfoMasterMapper.findUserInfo(reqUserInfo);
+        if (userInfo != null){
+            throw new BusinessException(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg());
+        }
+        String sendMsm = smsSenderUtil.sendMsm(reqMessage.getMobile(), reqMessage.getSignId(), reqMessage.getMessageId());
+        if (StringUtils.isEmpty(sendMsm)){
+            throw new BusinessException(BusinessEnum.CALL_SEND_MSM_NULL.getCode(),BusinessEnum.CALL_SEND_MSM_NULL.getMsg());
+        }
+        JSONObject json = JSON.parseObject(sendMsm);
+        JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
+        MessageView messageView = new MessageView();
+        if (jsonMessage.getCode().equals(SystemCodeEnum.SUCCESS.getCode())){
+            messageView.setCode(SystemCodeEnum.SUCCESS.getCode());
+            messageView.setDesc("短信发送成功");
+        }else if (jsonMessage.getCode().equals(SystemCodeEnum.EXCEPTION.getCode()) ){
+            messageView.setCode(SystemCodeEnum.ERROR.getCode());
+            messageView.setDesc("短信发送异常");
+        }else{
+            messageView.setCode(SystemCodeEnum.ERROR.getCode());
+            messageView.setDesc("网络问题，请稍后重试");
+        }
+        return messageView;
+    }
+
+    /**
+     * 用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败
+     *
+     * @param registerCodeView
+     * @return
+     */
+    @Override
+    public MessageView checkRegisterCode(RegisterCodeView registerCodeView) {
+        if (StringUtils.isEmpty(registerCodeView.getMobile())
+                || StringUtils.isEmpty(registerCodeView.getPassword())
+                || StringUtils.isEmpty(registerCodeView.getRepeatPassword())
+                || StringUtils.isEmpty(registerCodeView.getRegisterCode())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
+        if (!StringCustomizedUtils.stringTrim(registerCodeView.getPassword()).equals(StringCustomizedUtils.stringTrim(registerCodeView.getRepeatPassword()))){
+            throw new BusinessException(BusinessEnum.PASSWORDS_INCONSISTENT.getCode(),BusinessEnum.PASSWORDS_INCONSISTENT.getMsg());
+        }
+
+        RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
+
+        String mobile = (String) request.getSession(true).getAttribute("mobile");
+        String VerificationCode = (String) request.getSession(true).getAttribute("messageVerificationCode");
+
+        if (!registerCodeView.getMobile().equals(mobile)){
+            throw new BusinessException(BusinessEnum.REGISTER_VERIFICATION_MOBILE_DIFFERENT.getCode(),BusinessEnum.REGISTER_VERIFICATION_MOBILE_DIFFERENT.getMsg());
+        }else if (!registerCodeView.getRegisterCode().equals(VerificationCode)){
+            throw new BusinessException(BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getCode(),BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getMsg());
+        }
+        UserInfo userInfo = new UserInfo();
+        userInfo.setMobile(registerCodeView.getMobile());
+        userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,registerCodeView.getPassword()));
+        userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
+        int registerNum = userInfoMasterMapper.insertSelective(userInfo);
+
+        MessageView messageView = new MessageView();
+        if (registerNum > 0){
+            messageView.setCode(SystemCodeEnum.SUCCESS.getCode());
+            messageView.setDesc("恭喜您注册成功");
+        }else{
+            messageView.setCode(SystemCodeEnum.ERROR.getCode());
+            messageView.setDesc("对不起，注册失败，请重新注册");
+        }
+        return messageView;
     }
 
     public static String dateToString(){
