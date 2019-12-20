@@ -1,5 +1,6 @@
 package com.fenghuang.job.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2019/12/16 15:34
  * @Email: 15290810931@163.com
  */
+@Api(value = "首页相关接口",tags = "首页相关接口")
 @RestController
 public class IndexController {
 

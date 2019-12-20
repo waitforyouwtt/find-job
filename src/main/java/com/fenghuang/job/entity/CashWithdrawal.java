@@ -1,0 +1,29 @@
+package com.fenghuang.job.entity;
+
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
+@ApiModel(value = "提现订单信息表")
+@Data
+public class CashWithdrawal implements Serializable{
+    private Integer id;
+
+    private String cashWithdrawalOrderId;
+
+    private Integer userId;
+
+    private Long cashWithdrawalAmount;
+
+    private String cashWithdrawalAccount;
+
+    private Integer cashWithdrawalAccountType;
+
+    private Integer cashWithdrawalStatus;
+
+    private Date cashWithdrawalDate;
+
+    private Date examineDate;
+
+}

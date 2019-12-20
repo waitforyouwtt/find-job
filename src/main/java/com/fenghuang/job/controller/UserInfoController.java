@@ -5,6 +5,7 @@ import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.view.RegisterCodeView;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @Date: 2019/12/17 11:20
  * @Email: 15290810931@163.com
  */
+@Api(value = "用户信息表相关接口",tags = "用户信息表相关接口")
 @RestController
 public class UserInfoController {
 
