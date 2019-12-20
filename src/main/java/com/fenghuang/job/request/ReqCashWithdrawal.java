@@ -1,14 +1,19 @@
-package com.fenghuang.job.entity;
+package com.fenghuang.job.request;
 
-import io.swagger.annotations.ApiModel;
+import com.fenghuang.job.utils.PageHelps;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @Author: 凤凰[小哥哥]
+ * @Date: 2019/12/20 10:56
+ * @Email: 15290810931@163.com
+ */
 @Data
-@ApiModel(value = "提现订单信息表")
-public class CashWithdrawal implements Serializable{
+public class ReqCashWithdrawal extends PageHelps implements Serializable{
+
     private Integer id;
 
     private String cashWithdrawalOrderId;
@@ -27,4 +32,9 @@ public class CashWithdrawal implements Serializable{
 
     private Date examineDate;
 
+    private String cashWithdrawalDateBegin;
+    private String cashWithdrawalDateEnd;
+
+    private String examineDateBegin;
+    private String examineDateEnd;
 }

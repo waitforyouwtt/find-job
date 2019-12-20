@@ -1,6 +1,6 @@
 package com.fenghuang.job.controller;
 
-import com.fenghuang.job.exception.Result;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqLoginLog;
 import com.fenghuang.job.service.LoginLogService;
 import io.swagger.annotations.Api;

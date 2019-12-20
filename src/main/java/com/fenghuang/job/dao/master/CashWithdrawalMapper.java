@@ -1,6 +1,10 @@
 package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.CashWithdrawal;
+import com.fenghuang.job.request.ReqCashWithdrawal;
+import com.fenghuang.job.view.CashWithdrawalView;
+
+import java.util.List;
 
 public interface CashWithdrawalMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +18,6 @@ public interface CashWithdrawalMapper {
     int updateByPrimaryKeySelective(CashWithdrawal record);
 
     int updateByPrimaryKey(CashWithdrawal record);
+
+    List<CashWithdrawal> findCashWithdrawal(ReqCashWithdrawal reqCashWithdrawal);
 }

@@ -1,5 +1,6 @@
 package com.fenghuang.job.exception;
 
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.SystemCodeEnum;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

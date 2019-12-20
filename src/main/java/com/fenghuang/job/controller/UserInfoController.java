@@ -1,6 +1,6 @@
 package com.fenghuang.job.controller;
 
-import com.fenghuang.job.exception.Result;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.service.UserInfoService;

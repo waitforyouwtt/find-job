@@ -1,4 +1,4 @@
-package com.fenghuang.job.exception;
+package com.fenghuang.job.entity;
 
 import com.fenghuang.job.enums.SystemCodeEnum;
 
