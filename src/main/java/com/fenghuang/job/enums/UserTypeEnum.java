@@ -7,14 +7,14 @@ import io.swagger.annotations.ApiModel;
  * @Date: 2019/12/17 14:30
  * @Email: 15290810931@163.com
  */
-@ApiModel(value = "用户状态")
-public enum UserInfoStatusEnum {
+@ApiModel(value = "用户类型")
+public enum UserTypeEnum {
 
-    FROZEN(1,"冻结"),
-    NORMAL(2,"正常"),
+    PERSONAL(1,"个人"),
+    COMPANY(2,"公司"),
     ;
 
-    UserInfoStatusEnum(Integer code, String msg) {
+    UserTypeEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }

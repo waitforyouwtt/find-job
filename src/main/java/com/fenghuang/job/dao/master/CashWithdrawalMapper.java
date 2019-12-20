@@ -2,8 +2,6 @@ package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.CashWithdrawal;
 import com.fenghuang.job.request.ReqCashWithdrawal;
-import com.fenghuang.job.view.CashWithdrawalView;
-
 import java.util.List;
 
 public interface CashWithdrawalMapper {

@@ -2,7 +2,6 @@ package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.request.ReqUserInfo;
-import com.fenghuang.job.view.UserInfoView;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

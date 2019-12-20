@@ -2,7 +2,6 @@ package com.fenghuang.job.request;
 
 import com.fenghuang.job.utils.PageHelps;
 import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
 

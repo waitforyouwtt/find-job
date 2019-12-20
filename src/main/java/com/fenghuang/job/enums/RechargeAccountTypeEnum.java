@@ -7,14 +7,17 @@ import io.swagger.annotations.ApiModel;
  * @Date: 2019/12/17 14:30
  * @Email: 15290810931@163.com
  */
-@ApiModel(value = "用户状态")
-public enum UserInfoStatusEnum {
+@ApiModel(value = "充值账号类型")
+public enum RechargeAccountTypeEnum {
 
-    FROZEN(1,"冻结"),
-    NORMAL(2,"正常"),
-    ;
+    ALIPAY(1,"支付宝"),
+    WECHAT(2,"微信"),
+    QQ(3,"QQ"),
+    BANK(4,"银行转账"),
+    RED_ENVELOPES(5,"红包"),
+    WECHAT_TRANSFER_ACCOUNTS(6,"微信转账");
 
-    UserInfoStatusEnum(Integer code, String msg) {
+    RechargeAccountTypeEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }

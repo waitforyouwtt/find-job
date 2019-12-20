@@ -1,20 +1,17 @@
 package com.fenghuang.job.enums;
 
-import io.swagger.annotations.ApiModel;
-
 /**
  * @Author: 凤凰[小哥哥]
- * @Date: 2019/12/17 14:30
+ * @Date: 2019/12/20 15:44
  * @Email: 15290810931@163.com
  */
-@ApiModel(value = "用户状态")
-public enum UserInfoStatusEnum {
+public enum ExamineStatusEnum {
 
-    FROZEN(1,"冻结"),
-    NORMAL(2,"正常"),
-    ;
+    AUDITED(1,"待审核"),
+    PASSED(2,"已通过"),
+    REJECTED(3,"已驳回");
 
-    UserInfoStatusEnum(Integer code, String msg) {
+    ExamineStatusEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
