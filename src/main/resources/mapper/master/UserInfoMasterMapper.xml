@@ -270,7 +270,7 @@
         and mobile = #{mobile}
       </if>
     </where>
-    and user_status = 1
+    and user_status = 2
   </select>
 
   <select id="findUserInfoPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
@@ -299,7 +299,7 @@
     </where>
   </select>
 
-  <select id="findUserByUserNameAndPassword" resultMap="BaseResultMap"
+  <select id="findUserInfoByUserNameAndPassword" resultMap="BaseResultMap"
           parameterType="com.fenghuang.job.request.ReqUserInfo">
     select
     <include refid="Base_Column_List"/>
@@ -312,6 +312,62 @@
   <update id="changePassword" parameterType="com.fenghuang.job.request.ReqUserInfo">
      update tb_userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
   </update>
+
+  <select id="loginQueryUserInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_userinfo
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="userName != null">
+        and user_name = #{userName}
+      </if>
+      <if test="userNickname != null">
+        and user_nickName = #{userNickname}
+      </if>
+      <if test="idCard != null">
+        and id_card = #{idCard}
+      </if>
+      <if test="mobile != null">
+        and mobile = #{mobile}
+      </if>
+    </where>
+  </select>
+
+  <select id="findUserByUserNameAndPassword" resultType="com.fenghuang.job.entity.UserInfo">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_userinfo
+    where 1 =1 and user_status =2
+    and user_name = #{userName}
+    and password = #{password}
+  </select>
+  <select id="findUserByUserNicknameAndPassword" resultType="com.fenghuang.job.entity.UserInfo">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_userinfo
+    where 1 =1 and user_status =2
+    and user_nickName = #{userNickname}
+    and password = #{password}
+  </select>
+  <select id="findMobileAndPassword" resultType="com.fenghuang.job.entity.UserInfo">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_userinfo
+    where 1 =1 and user_status =2
+    and mobile = #{mobile}
+    and password = #{password}
+  </select>
+  <select id="findIdCardAndPassword" resultType="com.fenghuang.job.entity.UserInfo">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_userinfo
+    where 1 =1 and user_status =2
+    and id_card = #{userName}
+    and password = #{idCard}
+  </select>
 
 
 </mapper>

@@ -5,11 +5,14 @@ import com.fenghuang.job.request.ReqLoginUserInfo;
 import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.service.UserInfoService;
+import com.fenghuang.job.utils.BusinessUtils;
 import com.fenghuang.job.view.RegisterCodeView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -79,8 +82,10 @@ public class UserInfoController {
 
     @PostMapping("/login")
     @ApiOperation(value = "根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
-    public Result login(ReqLoginUserInfo reqLoginUserInfo){
-      return Result.error(userInfoService.login(reqLoginUserInfo));
+    public Result login(ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
+        String ip = BusinessUtils.getClientIpAddress(request);
+        reqLoginUserInfo.setLoginIp(ip);
+        return Result.success(userInfoService.login(reqLoginUserInfo));
     }
 
 

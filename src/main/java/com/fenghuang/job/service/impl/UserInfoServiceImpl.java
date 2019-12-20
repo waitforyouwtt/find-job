@@ -7,12 +7,15 @@ import com.fenghuang.job.dao.cluster.UserInfoClusterMapper;
 import com.fenghuang.job.dao.master.UserInfoMasterMapper;
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.enums.BusinessEnum;
+import com.fenghuang.job.enums.LoginStatus;
 import com.fenghuang.job.enums.SystemCodeEnum;
 import com.fenghuang.job.enums.UserInfoStatusEnum;
 import com.fenghuang.job.exception.BusinessException;
+import com.fenghuang.job.request.ReqLoginLog;
 import com.fenghuang.job.request.ReqLoginUserInfo;
 import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
+import com.fenghuang.job.service.LoginLogService;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.AesUtil;
 import com.fenghuang.job.utils.SmsSenderUtil;
@@ -53,6 +56,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     UserInfoClusterMapper userInfoClusterMapper;
+
+    @Autowired
+    LoginLogService loginLogService;
 
     @Autowired
     SmsSenderUtil smsSenderUtil;
@@ -180,7 +186,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public int changePassword(ReqUserInfo reqUserInfo) {
         log.info("用户进行修改密码 请求参数：{}",JSON.toJSON(reqUserInfo));
-        UserInfo queryUserInfo = userInfoMasterMapper.findUserByUserNameAndPassword(reqUserInfo);
+        UserInfo queryUserInfo = userInfoMasterMapper.findUserInfoByUserNameAndPassword(reqUserInfo);
         if (queryUserInfo == null){
             throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
         }
@@ -277,7 +283,80 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public UserInfoView login(ReqLoginUserInfo reqLoginUserInfo) {
-        return null;
+        if (StringUtils.isEmpty(reqLoginUserInfo.getLoginType())){
+            throw new BusinessException(BusinessEnum.LOGIN_TYPE_NULL.getCode(),BusinessEnum.LOGIN_TYPE_NULL.getMsg());
+        }
+        Integer loginType = reqLoginUserInfo.getLoginType();
+        //首先去判断数据库有没有该用户 & 登录者的账号是否是正常账号
+        ReqUserInfo reqUserInfo = new ReqUserInfo();
+        BeanCopier copier = BeanCopier.create(ReqLoginUserInfo.class, ReqUserInfo.class, false);
+        copier.copy(reqLoginUserInfo,reqUserInfo,null);
+        UserInfo queryUserInfo = userInfoMasterMapper.loginQueryUserInfo(reqUserInfo);
+
+        if (queryUserInfo == null){
+            ReqLoginLog loginLog = new ReqLoginLog();
+            loginLog.setLoginDate(new Date());
+            loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
+            loginLog.setUserId(0);
+            loginLog.setLoginStatus(LoginStatus.FAIL.getCode());
+            loginLog.setFailRemark(BusinessEnum.USERINFO_EXIST.getMsg());
+            log.info("记录登录日志请求参数：{}");
+            loginLogService.insertLoginLog(loginLog);
+            throw new BusinessException(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg());
+        }else if(queryUserInfo != null & queryUserInfo.getUserStatus().equals(UserInfoStatusEnum.FROZEN.getCode())){
+            ReqLoginLog loginLog = new ReqLoginLog();
+            loginLog.setLoginDate(new Date());
+            loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
+            loginLog.setUserId(queryUserInfo.getId());
+            loginLog.setLoginStatus(LoginStatus.FAIL.getCode());
+            loginLog.setFailRemark(BusinessEnum.USERINFO_FROZEN.getMsg());
+            log.info("记录登录日志请求参数：{}");
+            loginLogService.insertLoginLog(loginLog);
+            throw new BusinessException(BusinessEnum.USERINFO_FROZEN.getCode(),BusinessEnum.USERINFO_FROZEN.getMsg());
+        }
+
+        UserInfo userInfo = null;
+        UserInfoView userInfoView = new UserInfoView();
+        switch (loginType){
+            case 1:
+                userInfo = userInfoMasterMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                break;
+            case 2:
+                userInfo = userInfoMasterMapper.findUserByUserNicknameAndPassword(reqLoginUserInfo.getUserNickname(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                break;
+            case 3:
+                userInfo = userInfoMasterMapper.findMobileAndPassword(reqLoginUserInfo.getMobile(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                break;
+            case 4:
+                userInfo = userInfoMasterMapper.findIdCardAndPassword(reqLoginUserInfo.getIdCard(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                break;
+            default:
+                userInfo = userInfoMasterMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                break;
+        }
+        if (userInfo == null){
+            ReqLoginLog loginLog = new ReqLoginLog();
+            loginLog.setLoginDate(new Date());
+            loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
+            loginLog.setUserId(queryUserInfo.getId());
+            loginLog.setLoginStatus(LoginStatus.FAIL.getCode());
+            loginLog.setFailRemark(BusinessEnum.LOGIN_ERROR.getMsg());
+            log.info("记录登录日志请求参数：{}");
+            loginLogService.insertLoginLog(loginLog);
+            throw new BusinessException(BusinessEnum.LOGIN_ERROR.getCode(),BusinessEnum.LOGIN_ERROR.getMsg());
+        }else{
+            ReqLoginLog loginLog = new ReqLoginLog();
+            loginLog.setLoginDate(new Date());
+            loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
+            loginLog.setUserId(queryUserInfo.getId());
+            loginLog.setLoginStatus(LoginStatus.SUCCESS.getCode());
+            loginLog.setFailRemark("登录成功");
+            log.info("记录登录日志请求参数：{}",JSON.toJSONString(loginLog));
+            loginLogService.insertLoginLog(loginLog);
+        }
+        BeanCopier beanCopier = BeanCopier.create(UserInfo.class, UserInfoView.class, false);
+        beanCopier.copy(userInfo,userInfoView,null);
+        return userInfoView;
     }
 
     public static String dateToString(){

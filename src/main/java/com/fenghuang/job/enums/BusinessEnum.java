@@ -17,6 +17,10 @@ public enum BusinessEnum {
     PASSWORDS_INCONSISTENT(1008,"两次密码不一致，请重新输入"),
     REGISTER_VERIFICATION_MOBILE_DIFFERENT(1009,"输入验证码手机号和注册手机号请保持一致"),
     VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN(1010,"验证码错误，请重新输入"),
+    LOGIN_TYPE_NULL(1011,"登录方式为空，请选择一种登录方式"),
+    USERINFO_EXIST(1012,"当前登录账号不存在"),
+    USERINFO_FROZEN(1013,"对不起，您的账号已被冻结"),
+    LOGIN_ERROR(1014,"对不起，您的账号和密码不匹配，请重新登录"),
 
 
     ;
