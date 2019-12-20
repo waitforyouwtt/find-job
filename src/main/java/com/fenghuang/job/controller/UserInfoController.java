@@ -1,6 +1,7 @@
 package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
+import com.fenghuang.job.request.ReqLoginUserInfo;
 import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.service.UserInfoService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @Date: 2019/12/17 11:20
  * @Email: 15290810931@163.com
  */
-@Api(value = "用户信息表相关接口",tags = "用户信息表相关接口")
+@Api(value = "用户信息表相关接口",description = "用户信息表相关接口")
 @RestController
 public class UserInfoController {
 
@@ -74,6 +75,12 @@ public class UserInfoController {
     @ApiOperation(value = "用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败")
     public Result checkRegisterCode(RegisterCodeView registerCodeView) {
         return Result.success(userInfoService.checkRegisterCode(registerCodeView));
+    }
+
+    @PostMapping("/login")
+    @ApiOperation(value = "根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
+    public Result login(ReqLoginUserInfo reqLoginUserInfo){
+      return Result.error(userInfoService.login(reqLoginUserInfo));
     }
 
 

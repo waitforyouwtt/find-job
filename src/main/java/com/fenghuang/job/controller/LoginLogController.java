@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2019/12/19 16:00
  * @Email: 15290810931@163.com
  */
-@Api(value = "登录日志相关接口",tags = "登录日志相关接口")
+@Api(value = "登录日志相关接口",description = "登录日志相关接口")
 @RestController
 public class LoginLogController {
 

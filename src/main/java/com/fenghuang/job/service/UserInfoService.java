@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.request.ReqLoginUserInfo;
 import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.view.MessageView;
@@ -69,4 +70,11 @@ public interface UserInfoService {
      * @return
      */
     MessageView checkRegisterCode(RegisterCodeView registerCodeView);
+
+    /**
+     * 根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录
+     * @param reqLoginUserInfo
+     * @return
+     */
+    UserInfoView login(ReqLoginUserInfo reqLoginUserInfo);
 }

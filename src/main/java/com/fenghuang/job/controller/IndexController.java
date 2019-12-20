@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2019/12/16 15:34
  * @Email: 15290810931@163.com
  */
-@Api(value = "首页相关接口",tags = "首页相关接口")
+@Api(value = "首页相关接口",description = "首页相关接口")
 @RestController
 public class IndexController {
 

@@ -10,6 +10,7 @@ import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.SystemCodeEnum;
 import com.fenghuang.job.enums.UserInfoStatusEnum;
 import com.fenghuang.job.exception.BusinessException;
+import com.fenghuang.job.request.ReqLoginUserInfo;
 import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.service.UserInfoService;
@@ -266,6 +267,17 @@ public class UserInfoServiceImpl implements UserInfoService {
             messageView.setDesc("对不起，注册失败，请重新注册");
         }
         return messageView;
+    }
+
+    /**
+     * 根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录
+     *
+     * @param reqLoginUserInfo
+     * @return
+     */
+    @Override
+    public UserInfoView login(ReqLoginUserInfo reqLoginUserInfo) {
+        return null;
     }
 
     public static String dateToString(){
