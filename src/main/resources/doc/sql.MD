@@ -40,3 +40,13 @@ CREATE TABLE `order_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `banner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `activity_id` int(11) DEFAULT NULL COMMENT '活动id',
+  `activity_img` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '活动图片url',
+  `rank_field` int(11) DEFAULT NULL COMMENT '排次',
+  `banner_img_status` int(11) DEFAULT NULL COMMENT '图片状态：1 正常 2失效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
