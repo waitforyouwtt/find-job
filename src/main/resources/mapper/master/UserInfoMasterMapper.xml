@@ -269,8 +269,10 @@
       <if test="mobile != null">
         and mobile = #{mobile}
       </if>
+      <if test="userStatus != null">
+        and user_status = #{userStatus}
+      </if>
     </where>
-    and user_status = 2
   </select>
 
   <select id="findUserInfoPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">

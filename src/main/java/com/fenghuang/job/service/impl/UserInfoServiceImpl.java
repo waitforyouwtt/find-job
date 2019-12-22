@@ -101,6 +101,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public int insertUser(ReqUserInfo reqUserInfo) {
         log.info("注册新用户，请求参数：{}", JSON.toJSONString(reqUserInfo));
+        reqUserInfo.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
         UserInfo queryUserInfo = userInfoMasterMapper.findUserInfo(reqUserInfo);
         if (queryUserInfo != null){
             throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
