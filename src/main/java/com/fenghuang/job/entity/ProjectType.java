@@ -1,10 +1,12 @@
 package com.fenghuang.job.entity;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@ApiModel(value = "项目类型信息表")
 public class ProjectType implements Serializable {
 
     private Integer id;
