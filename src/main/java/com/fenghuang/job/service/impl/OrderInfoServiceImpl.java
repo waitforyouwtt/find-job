@@ -34,13 +34,13 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     @Autowired
     OrderInfoMapper orderInfoMapper;
     /**
-     * 生成订单
+     * 生成订单且返回订单号
      *
      * @param reqOrderInfo
      * @return
      */
     @Override
-    public int createOrder(ReqOrderInfo reqOrderInfo) {
+    public String createOrder(ReqOrderInfo reqOrderInfo) {
         log.info( "生成订单 请求参数:{}", JSON.toJSONString( reqOrderInfo ) );
         OrderInfo orderInfo = new OrderInfo();
         BeanCopier beanCopier = BeanCopier.create( ReqOrderInfo.class, OrderInfo.class, false );
@@ -48,7 +48,10 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         orderInfo.setOrderStatus( OrderStatusEnum.WAIT_BEGIN.getCode() );
         orderInfo.setOrderId( OrderIdUtils.generateOrderSn( reqOrderInfo.getUserId().toString() ) );
         orderInfo.setOrderDate( new Date(  ) );
-        return orderInfoMapper.insertSelective( orderInfo );
+        orderInfoMapper.insertSelective( orderInfo );
+        String orderId = orderInfo.getOrderId();
+        log.info( "生成订单返回的订单号为：{}",orderId );
+        return orderId;
     }
 
     /**

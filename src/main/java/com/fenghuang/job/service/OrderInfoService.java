@@ -12,11 +12,11 @@ import com.github.pagehelper.PageInfo;
  */
 public interface OrderInfoService {
     /**
-     * 生成订单
+     * 生成订单且返回订单号
      * @param reqOrderInfo
      * @return
      */
-    int createOrder(ReqOrderInfo reqOrderInfo);
+    String createOrder(ReqOrderInfo reqOrderInfo);
 
     /**
      * 根据条件进行查询订单信息表且分页

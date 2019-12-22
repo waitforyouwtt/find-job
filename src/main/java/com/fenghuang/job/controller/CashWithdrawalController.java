@@ -6,7 +6,9 @@ import com.fenghuang.job.service.CashWithdrawalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -37,6 +39,12 @@ public class CashWithdrawalController {
     @PostMapping("/modifyCashWithdrawalStatus")
     public Result modifyCashWithdrawalStatus(ReqCashWithdrawal reqCashWithdrawal){
         return Result.success(cashWithdrawalService.modifyCashWithdrawalStatus(reqCashWithdrawal));
+    }
+
+    @ApiOperation( value = "根据Id 查询提现订单相关信息 ")
+    @GetMapping("/findCashWithdrawalById")
+    public Result findCashWithdrawalById(@RequestParam("id") Integer id){
+        return Result.success( cashWithdrawalService.findCashWithdrawalById(id) );
     }
 
 }

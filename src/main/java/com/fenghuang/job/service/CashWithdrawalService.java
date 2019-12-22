@@ -31,4 +31,11 @@ public interface CashWithdrawalService {
      * @return
      */
     int modifyCashWithdrawalStatus(ReqCashWithdrawal reqCashWithdrawal);
+
+    /**
+     * 根据Id 查询提现订单相关信息
+     * @param id
+     * @return
+     */
+    CashWithdrawalView findCashWithdrawalById(Integer id);
 }

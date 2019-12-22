@@ -24,7 +24,7 @@ public class OrderInfoController {
     @Autowired
     OrderInfoService orderInfoService;
 
-    @ApiOperation( value = "生成订单")
+    @ApiOperation( value = "生成订单且返回订单号")
     @PostMapping("/createOrder")
     public Result createOrder(ReqOrderInfo reqOrderInfo){
      return Result.success(orderInfoService.createOrder(reqOrderInfo));

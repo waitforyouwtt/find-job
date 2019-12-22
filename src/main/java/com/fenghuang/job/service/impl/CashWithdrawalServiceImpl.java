@@ -90,4 +90,25 @@ public class CashWithdrawalServiceImpl implements CashWithdrawalService {
         beanCopier.copy(reqCashWithdrawal,cashWithdrawal,null);
         return cashWithdrawalMapper.updateByPrimaryKeySelective(cashWithdrawal);
     }
+
+    /**
+     * 根据Id 查询提现订单相关信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public CashWithdrawalView findCashWithdrawalById(Integer id) {
+        log.info( "根据Id 查询提现订单相关信息 请求参数：{}",id );
+        CashWithdrawal cashWithdrawal = cashWithdrawalMapper.selectByPrimaryKey( id );
+        if (cashWithdrawal == null) {
+            return null;
+        }else{
+            CashWithdrawalView view = new CashWithdrawalView();
+            BeanCopier beanCopier = BeanCopier.create( CashWithdrawal.class, CashWithdrawalView.class, false );
+            beanCopier.copy( cashWithdrawal,view,null );
+            log.info( "根据Id 查询提现订单相关信息 返回结果：{}",JSON.toJSONString( view ) );
+            return view;
+        }
+    }
 }
