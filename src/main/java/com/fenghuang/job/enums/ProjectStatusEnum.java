@@ -7,8 +7,9 @@ package com.fenghuang.job.enums;
  */
 public enum ProjectStatusEnum {
 
-    CONDUCTING(1,"进行中"),
-    END(2,"已结束");
+    INIT(1,"初始化"),
+    CONDUCTING(2,"进行中"),
+    END(3,"已结束");
 
     ProjectStatusEnum(Integer code, String msg) {
         this.code = code;

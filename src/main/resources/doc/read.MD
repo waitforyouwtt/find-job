@@ -22,5 +22,6 @@ mybatis generator 如何在idea 中使用：
 4.在xml 文件夹中找到，location 即你的连接数据库jar 的本地地址 <classPathEntry  location="E:\JeeRTD\libs\mysql-connector-java-5.1.30.jar"/>
 5.修改数据库连接
 6.修改要自动生成的表
-7.选择idea 工具栏的Run ---Edit configurations---选择 + ----选择maven---在Name 栏输入generator ---apply---ok 即可
+7.选择idea 工具栏的Run ---Edit configurations---选择 + ----选择maven---在Name 栏输入generator---Command line 输入:mybatis-generator:generate -e 
+---apply---ok 即可
 

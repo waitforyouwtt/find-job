@@ -2,6 +2,7 @@ package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqProject;
+import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.service.ProjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,8 +37,8 @@ public class ProjectController {
 
     @ApiOperation( value = "根据id更新项目状态")
     @PostMapping("/modifyProjectStatus")
-    public Result modifyProjectStatus(ReqProject reqProject){
-        return Result.success( projectService.modifyProjectStatus(reqProject) );
+    public Result modifyProjectStatus(ReqProjectStatus reqProjectStatus){
+        return Result.success( projectService.modifyProjectStatus(reqProjectStatus) );
     }
 
     @ApiOperation( value = "根据条件查询项目信息")

@@ -8,8 +8,8 @@ package com.fenghuang.job.enums;
 public enum ExamineStatusEnum {
 
     AUDITED(1,"待审核"),
-    PASSED(2,"已通过"),
-    REJECTED(3,"已驳回");
+    PASSED(2,"通过"),
+    REJECTED(3,"驳回");
 
     ExamineStatusEnum(Integer code, String msg) {
         this.code = code;

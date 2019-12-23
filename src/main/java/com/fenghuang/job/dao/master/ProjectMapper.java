@@ -4,7 +4,9 @@ import com.fenghuang.job.entity.Project;
 import com.fenghuang.job.request.ReqProject;
 import org.apache.ibatis.annotations.Mapper;
 
+
 import java.util.List;
+
 @Mapper
 public interface ProjectMapper {
     int deleteByPrimaryKey(Integer id);
@@ -18,6 +20,10 @@ public interface ProjectMapper {
     int updateByPrimaryKeySelective(Project record);
 
     int updateByPrimaryKey(Project record);
+
+    List<Project> findProjectPage(ReqProject reqProject);
+
+    Project findProjectParams(ReqProject reqProject);
 
     List<Project> findProject(ReqProject reqProject);
 }

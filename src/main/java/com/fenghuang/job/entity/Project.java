@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "项目信息表")
-public class Project implements Serializable {
+public class Project implements Serializable{
     private Integer id;
 
     private Integer projectTypeId;
@@ -45,7 +45,4 @@ public class Project implements Serializable {
 
     private Date projectEndDate;
 
-    private String sortField;
-
-    private String sort;
 }

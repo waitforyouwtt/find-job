@@ -1,6 +1,7 @@
 package com.fenghuang.job.service;
 
 import com.fenghuang.job.request.ReqProject;
+import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.view.ProjectView;
 import com.github.pagehelper.PageInfo;
 
@@ -29,10 +30,10 @@ public interface ProjectService {
 
     /**
      *根据id更新项目状态
-     * @param reqProject
+     * @param reqProjectStatus
      * @return
      */
-    int modifyProjectStatus(ReqProject reqProject);
+    int modifyProjectStatus(ReqProjectStatus reqProjectStatus);
 
     /**
      *根据条件查询项目信息
