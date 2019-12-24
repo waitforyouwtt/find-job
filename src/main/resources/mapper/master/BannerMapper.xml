@@ -17,7 +17,23 @@
     from banner
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="findBanner" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from banner
+      <where>
+        <if test="id != null">
+          and id = #{id}
+        </if>
+        <if test="activityId != null">
+          and activity_id = #{activityId}
+        </if>
+        <if test="bannerImgStatus != null">
+          and banner_img_status = #{bannerImgStatus}
+        </if>
+      </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from banner
     where id = #{id,jdbcType=INTEGER}
   </delete>

@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Data
 @ApiModel(value = "轮播图")
 public class Banner implements Serializable {
+
     private Integer id;
 
     private Integer activityId;

@@ -53,6 +53,7 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public List<BannerView> findBanner(ReqBanner reqBanner) {
         log.info("根据条件查找banner 请求参数：{}",JSON.toJSONString(reqBanner));
+        reqBanner.setBannerImgStatus( BannerImgStatusEnum.NORMAL.getCode() );
         List<Banner> queryBanner = bannerMapper.findBanner(reqBanner);
         if (CollectionUtils.isEmpty(queryBanner)){
             return new ArrayList<>(16);
