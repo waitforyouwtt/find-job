@@ -1,3 +1,29 @@
+CREATE TABLE `userinfo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '用户名',
+  `user_nickName` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '用户昵称',
+  `id_card` varchar(19) COLLATE utf8_bin DEFAULT NULL COMMENT '用户身份证号码',
+  `user_head` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '用户头像',
+  `password` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '用户密码',
+  `wechat` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '微信',
+  `gender` int(2) DEFAULT NULL COMMENT '性别：1 男 2 女',
+  `mobile` varchar(12) COLLATE utf8_bin DEFAULT NULL COMMENT '用户手机号',
+  `address` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '用户地址',
+  `id_card_x` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '身份证正面',
+  `id_card_y` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '身份证反面',
+  `user_status` int(1) DEFAULT NULL COMMENT '用户状态：1冻结，2正常',
+  `amount` decimal(10,0) DEFAULT NULL COMMENT '余额',
+  `user_type` int(11) DEFAULT NULL COMMENT '用户类型：1个人 2 公司',
+  `user_level` int(11) DEFAULT NULL COMMENT '用户等级',
+  `emergency_contact_name` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '紧急联系人',
+  `emergency_contact_mobile` varchar(12) COLLATE utf8_bin DEFAULT NULL COMMENT '紧急联系人手机号',
+  `founder` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
+  `modifier` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户表';
+
 CREATE TABLE `project` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_type_id` int(11) DEFAULT NULL COMMENT '项目类型ID',
