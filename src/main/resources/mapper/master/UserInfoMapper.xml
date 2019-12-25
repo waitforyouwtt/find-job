@@ -295,13 +295,13 @@
   <select id="findUserInfoByUserName" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from tb_userinfo where user_name = #{userName}
+    from userinfo where user_name = #{userName}
   </select>
 
   <select id="findUserInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfoQuery">
     select
     <include refid="Base_Column_List" />
-    from tb_userinfo
+    from userinfo
     <where>
       <if test="id != null">
         and id = #{id}
@@ -327,7 +327,7 @@
   <select id="findUserInfoPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfoQuery">
     select
     <include refid="Base_Column_List" />
-    from tb_userinfo
+    from userinfo
     <where>
       <if test="id != null">
         and id = #{id}
@@ -354,20 +354,20 @@
           parameterType="com.fenghuang.job.request.ReqUserInfo">
     select
     <include refid="Base_Column_List"/>
-    from tb_userinfo
+    from userinfo
     where 1 =1 and user_status =2
     and user_name = #{userName}
     and password = #{password}
   </select>
 
   <update id="changePassword" parameterType="com.fenghuang.job.request.ReqUserInfo">
-    update tb_userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
+    update userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
   </update>
 
   <select id="loginQueryUserInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
     select
     <include refid="Base_Column_List"/>
-    from tb_userinfo
+    from userinfo
     <where>
       <if test="id != null">
         and id = #{id}
@@ -390,7 +390,7 @@
   <select id="findUserByUserNameAndPassword" resultType="com.fenghuang.job.entity.UserInfo">
     select
     <include refid="Base_Column_List"/>
-    from tb_userinfo
+    from userinfo
     where 1 =1 and user_status =2
     and user_name = #{userName}
     and password = #{password}
@@ -398,7 +398,7 @@
   <select id="findUserByUserNicknameAndPassword" resultType="com.fenghuang.job.entity.UserInfo">
     select
     <include refid="Base_Column_List"/>
-    from tb_userinfo
+    from userinfo
     where 1 =1 and user_status =2
     and user_nickName = #{userNickname}
     and password = #{password}
@@ -406,7 +406,7 @@
   <select id="findMobileAndPassword" resultType="com.fenghuang.job.entity.UserInfo">
     select
     <include refid="Base_Column_List"/>
-    from tb_userinfo
+    from userinfo
     where 1 =1 and user_status =2
     and mobile = #{mobile}
     and password = #{password}
@@ -414,7 +414,7 @@
   <select id="findIdCardAndPassword" resultType="com.fenghuang.job.entity.UserInfo">
     select
     <include refid="Base_Column_List"/>
-    from tb_userinfo
+    from userinfo
     where 1 =1 and user_status =2
     and id_card = #{userName}
     and password = #{idCard}

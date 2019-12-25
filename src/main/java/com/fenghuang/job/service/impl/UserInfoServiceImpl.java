@@ -103,6 +103,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         log.info("注册新用户，请求参数：{}", JSON.toJSONString(reqUserInfo));
         ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
         reqUserInfoQuery.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
+        reqUserInfoQuery.setUserNickname(reqUserInfo.getUserNickname());
+        reqUserInfoQuery.setMobile(reqUserInfo.getMobile());
+        reqUserInfo.setIdCard(reqUserInfo.getIdCard());
         UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (queryUserInfo != null){
             throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
@@ -129,8 +132,11 @@ public class UserInfoServiceImpl implements UserInfoService {
             throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
         }
         UserInfo userInfo = new UserInfo();
-        BeanCopier beanCopier = BeanCopier.create(ReqUserInfo.class, UserInfo.class, false);
+        BeanCopier beanCopier = BeanCopier.create(ReqUserInfoUpdate.class, UserInfo.class, false);
         beanCopier.copy(reqUserInfoUpdate,userInfo,null);
+        if (!StringUtils.isEmpty(reqUserInfoUpdate.getPassword())){
+            userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getPassword()));
+        }
         return userInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 
