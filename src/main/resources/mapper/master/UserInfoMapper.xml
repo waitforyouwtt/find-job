@@ -360,7 +360,7 @@
     and password = #{password}
   </select>
 
-  <update id="changePassword" parameterType="com.fenghuang.job.request.ReqUserInfo">
+  <update id="changePassword" parameterType="com.fenghuang.job.request.ReqUserInfoUpdate">
     update userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
   </update>
 

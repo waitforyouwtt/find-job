@@ -188,18 +188,18 @@ public class UserInfoServiceImpl implements UserInfoService {
     /**
      * 用户进行修改密码
      *
-     * @param reqUserInfo
+     * @param reqUserInfoUpdate
      * @return
      */
     @Override
-    public int changePassword(ReqUserInfo reqUserInfo) {
-        log.info("用户进行修改密码 请求参数：{}",JSON.toJSON(reqUserInfo));
-        UserInfo queryUserInfo = userInfoMapper.findUserInfoByUserNameAndPassword(reqUserInfo);
+    public int changePassword(ReqUserInfoUpdate reqUserInfoUpdate) {
+        log.info("用户进行修改密码 请求参数：{}",JSON.toJSON(reqUserInfoUpdate));
+        UserInfo queryUserInfo = userInfoMapper.findUserInfoByUserNameAndPassword(reqUserInfoUpdate.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getPassword()));
         if (queryUserInfo == null){
             throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
         }
-        reqUserInfo.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfo.getNewPassword()));
-        return userInfoMapper.changePassword(reqUserInfo);
+        reqUserInfoUpdate.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getNewPassword()));
+        return userInfoMapper.changePassword(reqUserInfoUpdate);
     }
 
     /**

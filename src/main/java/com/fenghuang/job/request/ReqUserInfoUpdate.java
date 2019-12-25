@@ -16,6 +16,8 @@ public class ReqUserInfoUpdate implements Serializable {
 
     private Integer id;
 
+    private String userName;
+
     private String userNickname;
 
     private String userHead;

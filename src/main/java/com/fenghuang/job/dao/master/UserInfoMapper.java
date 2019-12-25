@@ -3,6 +3,7 @@ package com.fenghuang.job.dao.master;
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.request.ReqUserInfoQuery;
+import com.fenghuang.job.request.ReqUserInfoUpdate;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,9 +29,9 @@ public interface UserInfoMapper {
 
     List<UserInfo> findUserInfoPage(ReqUserInfoQuery reqUserInfoQuery);
 
-    UserInfo findUserInfoByUserNameAndPassword(ReqUserInfo reqUserInfo);
+    UserInfo findUserInfoByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
 
-    int changePassword(ReqUserInfo reqUserInfo);
+    int changePassword(ReqUserInfoUpdate reqUserInfoUpdate);
 
     UserInfo loginQueryUserInfo(ReqUserInfo reqUserInfo);
 

@@ -50,10 +50,10 @@ public interface UserInfoService {
 
     /**
      * 用户进行修改密码
-     * @param reqUserInfo
+     * @param reqUserInfoUpdate
      * @return
      */
-    int changePassword(ReqUserInfo reqUserInfo);
+    int changePassword(ReqUserInfoUpdate reqUserInfoUpdate);
 
     /**
      * 用户短信注册，发送验证码

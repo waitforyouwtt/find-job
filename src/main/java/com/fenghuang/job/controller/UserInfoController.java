@@ -61,8 +61,8 @@ public class UserInfoController {
 
     @PostMapping("/changePassword")
     @ApiOperation(value = "用户进行修改密码")
-    public Result changePassword(ReqUserInfo reqUserInfo){
-        return Result.success(userInfoService.changePassword(reqUserInfo));
+    public Result changePassword(ReqUserInfoUpdate reqUserInfoUpdate){
+        return Result.success(userInfoService.changePassword(reqUserInfoUpdate));
     }
 
     @PostMapping("/messageRegister")
