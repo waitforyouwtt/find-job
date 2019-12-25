@@ -211,6 +211,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public MessageView messageRegister(ReqMessage reqMessage) {
         log.info("用户短信注册，发送验证码 请求参数：{}",JSON.toJSONString(reqMessage));
+        if (StringUtils.isEmpty(reqMessage.getMobile())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
         reqUserInfoQuery.setMobile(reqMessage.getMobile());
         UserInfo userInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
@@ -376,6 +379,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfoView findUserById(Integer id) {
         log.info("根据Id 获取用户记录详情 请求参数：{}",id);
+        if (StringUtils.isEmpty(id.toString())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(id);
         if (userInfo == null){
             return null;
