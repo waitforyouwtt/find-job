@@ -2,13 +2,14 @@ package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.request.ReqUserInfo;
+import com.fenghuang.job.request.ReqUserInfoQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
-public interface UserInfoMasterMapper {
+public interface UserInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(UserInfo record);
@@ -23,9 +24,9 @@ public interface UserInfoMasterMapper {
 
     List<UserInfo> findUserInfoByUserName(String userName);
 
-    UserInfo findUserInfo(ReqUserInfo reqUserInfo);
+    UserInfo findUserInfo(ReqUserInfoQuery reqUserInfoQuery);
 
-    List<UserInfo> findUserInfoPage(ReqUserInfo reqUserInfo);
+    List<UserInfo> findUserInfoPage(ReqUserInfoQuery reqUserInfoQuery);
 
     UserInfo findUserInfoByUserNameAndPassword(ReqUserInfo reqUserInfo);
 
@@ -39,5 +40,5 @@ public interface UserInfoMasterMapper {
 
     UserInfo findMobileAndPassword(@Param("mobile") String mobile,@Param("password") String password);
 
-    UserInfo findIdCardAndPassword(@Param("idCard") String idCard,@Param("password") String password);
+    UserInfo findIdCardAndPassword(@Param("idCard") String idCard, @Param("password") String password);
 }

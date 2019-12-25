@@ -1,9 +1,7 @@
 package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
-import com.fenghuang.job.request.ReqLoginUserInfo;
-import com.fenghuang.job.request.ReqMessage;
-import com.fenghuang.job.request.ReqUserInfo;
+import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.BusinessUtils;
 import com.fenghuang.job.view.RegisterCodeView;
@@ -33,17 +31,17 @@ public class UserInfoController {
 
     @ApiOperation(value = "更新用户状态信息")
     @PostMapping("/modifyUserStatus")
-    public Result modifyUserStatus(@RequestBody ReqUserInfo reqUserInfo){
-        return Result.success(userInfoService.modifyUserInfo(reqUserInfo));
+    public Result modifyUserStatus(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
+        return Result.success(userInfoService.modifyUserInfo(reqUserInfoUpdate));
     }
 
     @ApiOperation(value = "更新用户信息")
     @PostMapping("/modifyUserInfo")
-    public Result modifyUserInfo(@RequestBody ReqUserInfo reqUserInfo){
-        return Result.success(userInfoService.modifyUserInfo(reqUserInfo));
+    public Result modifyUserInfo(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
+        return Result.success(userInfoService.modifyUserInfo(reqUserInfoUpdate));
     }
 
-    @ApiOperation(value = "根据用户名获取一条或多条用户信息记录")
+    @ApiOperation(value = "根据用户名获取用户信息记录[可能有重名的人]")
     @GetMapping("/findUserInfoByUserName")
     public Result findUserInfoByUserName(@RequestParam("userName") String userName){
       return Result.success(userInfoService.findUserInfoByUserName(userName)) ;
@@ -51,14 +49,14 @@ public class UserInfoController {
 
     @ApiOperation(value = "根据用户id|用户昵称|用户手机号|身份证 获取唯一一条用户信息记录")
     @PostMapping("/findUserInfo")
-    public Result findUserInfo(@RequestBody ReqUserInfo reqUserInfo){
-      return Result.success(userInfoService.findUserInfo(reqUserInfo));
+    public Result findUserInfo(@RequestBody ReqUserInfoQuery reqUserInfoQuery){
+      return Result.success(userInfoService.findUserInfo(reqUserInfoQuery));
     }
 
     @PostMapping("/findUserInfoPage")
     @ApiOperation(value = "根据条件查询用户信息并进行分页")
-    public Result findUserInfoPage(@RequestBody ReqUserInfo reqUserInfo){
-       return Result.success(userInfoService.findUserInfoPage(reqUserInfo));
+    public Result findUserInfoPage(@RequestBody ReqUserInfoQuery reqUserInfoQuery){
+       return Result.success(userInfoService.findUserInfoPage(reqUserInfoQuery));
     }
 
     @PostMapping("/changePassword")
@@ -85,6 +83,12 @@ public class UserInfoController {
         String ip = BusinessUtils.getClientIpAddress(request);
         reqLoginUserInfo.setLoginIp(ip);
         return Result.success(userInfoService.login(reqLoginUserInfo));
+    }
+
+    @ApiOperation(value = "根据Id 获取用户记录详情")
+    @GetMapping("/findUserById")
+    public Result findUserById(@RequestParam("id") Integer id){
+        return Result.success(userInfoService.findUserById(id));
     }
 
 

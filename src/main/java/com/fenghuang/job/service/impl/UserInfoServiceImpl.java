@@ -4,17 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.cluster.UserInfoClusterMapper;
-import com.fenghuang.job.dao.master.UserInfoMasterMapper;
+import com.fenghuang.job.dao.master.UserInfoMapper;
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.LoginStatus;
 import com.fenghuang.job.enums.SystemCodeEnum;
 import com.fenghuang.job.enums.UserInfoStatusEnum;
 import com.fenghuang.job.exception.BusinessException;
-import com.fenghuang.job.request.ReqLoginLog;
-import com.fenghuang.job.request.ReqLoginUserInfo;
-import com.fenghuang.job.request.ReqMessage;
-import com.fenghuang.job.request.ReqUserInfo;
+import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.LoginLogService;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.AesUtil;
@@ -52,7 +49,7 @@ import java.util.List;
 public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
-    UserInfoMasterMapper userInfoMasterMapper;
+    UserInfoMapper userInfoMapper;
 
     @Autowired
     UserInfoClusterMapper userInfoClusterMapper;
@@ -64,7 +61,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     SmsSenderUtil smsSenderUtil;
 
     /**
-     * 根据用户名字获取一条记录
+     * 根据用户名字获取记录[可能有重名的人]
      *
      * @param userName
      * @return
@@ -72,7 +69,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public List<UserInfoView> findUserInfoByUserName(String userName) {
         log.info("根据用户名字获取一条记录");
-        List<UserInfo> userInfos = userInfoMasterMapper.findUserInfoByUserName(userName);
+        if (StringUtils.isEmpty(userName)){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
+        List<UserInfo> userInfos = userInfoMapper.findUserInfoByUserName(userName);
         if (CollectionUtils.isEmpty(userInfos)) {
             return new ArrayList<>();
         }
@@ -101,8 +101,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public int insertUser(ReqUserInfo reqUserInfo) {
         log.info("注册新用户，请求参数：{}", JSON.toJSONString(reqUserInfo));
-        reqUserInfo.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
-        UserInfo queryUserInfo = userInfoMasterMapper.findUserInfo(reqUserInfo);
+        ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
+        reqUserInfoQuery.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
+        UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (queryUserInfo != null){
             throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
         }
@@ -111,37 +112,37 @@ public class UserInfoServiceImpl implements UserInfoService {
         beanCopier.copy(reqUserInfo,userInfo,null);
         userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfo.getPassword()));
         userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
-        return userInfoMasterMapper.insertSelective(userInfo);
+        return userInfoMapper.insertSelective(userInfo);
     }
 
     /**
      * 更新用户信息
      *
-     * @param reqUserInfo
+     * @param reqUserInfoUpdate
      * @return
      */
     @Override
-    public int modifyUserInfo(ReqUserInfo reqUserInfo) {
-        log.info("更新用户信息请求参数：{}", JSON.toJSONString(reqUserInfo));
-        UserInfo queryUserInfo = userInfoMasterMapper.findUserInfo(reqUserInfo);
+    public int modifyUserInfo(ReqUserInfoUpdate reqUserInfoUpdate) {
+        log.info("更新用户信息请求参数：{}", JSON.toJSONString(reqUserInfoUpdate));
+        UserInfo queryUserInfo = userInfoMapper.selectByPrimaryKey(reqUserInfoUpdate.getId());
         if (queryUserInfo == null){
             throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
         }
         UserInfo userInfo = new UserInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqUserInfo.class, UserInfo.class, false);
-        beanCopier.copy(reqUserInfo,userInfo,null);
-        return userInfoMasterMapper.updateByPrimaryKeySelective(userInfo);
+        beanCopier.copy(reqUserInfoUpdate,userInfo,null);
+        return userInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 
     /**
      * 根据用户id|用户昵称|用户手机号|身份证 获取唯一一条用户信息记录
-     * @param reqUserInfo
+     * @param reqUserInfoQuery
      * @return
      */
     @Override
-    public UserInfoView findUserInfo(ReqUserInfo reqUserInfo) {
-        log.info("根据用户id|用户昵称|用户手机号|身份证 获取唯一一条记录 请求参数：{}",JSON.toJSON(reqUserInfo));
-        UserInfo queryUserInfo = userInfoMasterMapper.findUserInfo(reqUserInfo);
+    public UserInfoView findUserInfo(ReqUserInfoQuery reqUserInfoQuery) {
+        log.info("根据用户id|用户昵称|用户手机号|身份证 获取唯一一条记录 请求参数：{}",JSON.toJSON(reqUserInfoQuery));
+        UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (queryUserInfo == null){
             return null;
         }
@@ -154,16 +155,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     /**
      * 根据条件进行查询用户信息且进行分页
      *
-     * @param reqUserInfo
+     * @param reqUserInfoQuery
      * @return
      */
     @Override
-    public PageInfo<UserInfoView> findUserInfoPage(ReqUserInfo reqUserInfo) {
-        log.info("根据条件进行查询且进行分页请求参数：{}",JSON.toJSON(reqUserInfo));
+    public PageInfo<UserInfoView> findUserInfoPage(ReqUserInfoQuery reqUserInfoQuery) {
+        log.info("根据条件进行查询且进行分页请求参数：{}",JSON.toJSON(reqUserInfoQuery));
         PageInfo<UserInfoView> pageInfo = null;
         try {
-            Page<?> page = PageHelper.startPage(reqUserInfo.getPageNum(),reqUserInfo.getPageSize());
-            List<UserInfo> userInfoList = userInfoMasterMapper.findUserInfoPage(reqUserInfo);
+            Page<?> page = PageHelper.startPage(reqUserInfoQuery.getPageNum(),reqUserInfoQuery.getPageSize());
+            List<UserInfo> userInfoList = userInfoMapper.findUserInfoPage(reqUserInfoQuery);
             if (CollectionUtils.isEmpty(userInfoList)){
                 pageInfo = new PageInfo<>(new ArrayList<>());
             }else{
@@ -187,12 +188,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public int changePassword(ReqUserInfo reqUserInfo) {
         log.info("用户进行修改密码 请求参数：{}",JSON.toJSON(reqUserInfo));
-        UserInfo queryUserInfo = userInfoMasterMapper.findUserInfoByUserNameAndPassword(reqUserInfo);
+        UserInfo queryUserInfo = userInfoMapper.findUserInfoByUserNameAndPassword(reqUserInfo);
         if (queryUserInfo == null){
             throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
         }
         reqUserInfo.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfo.getNewPassword()));
-        return userInfoMasterMapper.changePassword(reqUserInfo);
+        return userInfoMapper.changePassword(reqUserInfo);
     }
 
     /**
@@ -204,9 +205,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public MessageView messageRegister(ReqMessage reqMessage) {
         log.info("用户短信注册，发送验证码 请求参数：{}",JSON.toJSONString(reqMessage));
-        ReqUserInfo reqUserInfo = new ReqUserInfo();
-        reqUserInfo.setMobile(reqMessage.getMobile());
-        UserInfo userInfo = userInfoMasterMapper.findUserInfo(reqUserInfo);
+        ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
+        reqUserInfoQuery.setMobile(reqMessage.getMobile());
+        UserInfo userInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (userInfo != null){
             throw new BusinessException(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg());
         }
@@ -263,7 +264,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setMobile(registerCodeView.getMobile());
         userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,registerCodeView.getPassword()));
         userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
-        int registerNum = userInfoMasterMapper.insertSelective(userInfo);
+        int registerNum = userInfoMapper.insertSelective(userInfo);
 
         MessageView messageView = new MessageView();
         if (registerNum > 0){
@@ -292,7 +293,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         ReqUserInfo reqUserInfo = new ReqUserInfo();
         BeanCopier copier = BeanCopier.create(ReqLoginUserInfo.class, ReqUserInfo.class, false);
         copier.copy(reqLoginUserInfo,reqUserInfo,null);
-        UserInfo queryUserInfo = userInfoMasterMapper.loginQueryUserInfo(reqUserInfo);
+        UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqUserInfo);
 
         if (queryUserInfo == null){
             ReqLoginLog loginLog = new ReqLoginLog();
@@ -320,19 +321,19 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfoView userInfoView = new UserInfoView();
         switch (loginType){
             case 1:
-                userInfo = userInfoMasterMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                userInfo = userInfoMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
                 break;
             case 2:
-                userInfo = userInfoMasterMapper.findUserByUserNicknameAndPassword(reqLoginUserInfo.getUserNickname(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                userInfo = userInfoMapper.findUserByUserNicknameAndPassword(reqLoginUserInfo.getUserNickname(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
                 break;
             case 3:
-                userInfo = userInfoMasterMapper.findMobileAndPassword(reqLoginUserInfo.getMobile(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                userInfo = userInfoMapper.findMobileAndPassword(reqLoginUserInfo.getMobile(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
                 break;
             case 4:
-                userInfo = userInfoMasterMapper.findIdCardAndPassword(reqLoginUserInfo.getIdCard(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                userInfo = userInfoMapper.findIdCardAndPassword(reqLoginUserInfo.getIdCard(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
                 break;
             default:
-                userInfo = userInfoMasterMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
+                userInfo = userInfoMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
                 break;
         }
         if (userInfo == null){
@@ -358,6 +359,25 @@ public class UserInfoServiceImpl implements UserInfoService {
         BeanCopier beanCopier = BeanCopier.create(UserInfo.class, UserInfoView.class, false);
         beanCopier.copy(userInfo,userInfoView,null);
         return userInfoView;
+    }
+
+    /**
+     * 根据Id 获取用户记录详情
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public UserInfoView findUserById(Integer id) {
+        log.info("根据Id 获取用户记录详情 请求参数：{}",id);
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(id);
+        if (userInfo == null){
+            return null;
+        }
+        UserInfoView view = new UserInfoView();
+        BeanCopier beanCopier = BeanCopier.create(UserInfo.class,UserInfoView.class,false);
+        beanCopier.copy(userInfo,view,null);
+        return view;
     }
 
     public static String dateToString(){

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -48,4 +49,12 @@ public class UserInfoView implements Serializable{
     private String emergencyContactName;
 
     private String emergencyContactMobile;
+
+    private String founder;
+
+    private String modifier;
+
+    private Date createDate;
+
+    private Date updateDate;
 }

@@ -1,8 +1,6 @@
 package com.fenghuang.job.service;
 
-import com.fenghuang.job.request.ReqLoginUserInfo;
-import com.fenghuang.job.request.ReqMessage;
-import com.fenghuang.job.request.ReqUserInfo;
+import com.fenghuang.job.request.*;
 import com.fenghuang.job.view.MessageView;
 import com.fenghuang.job.view.RegisterCodeView;
 import com.fenghuang.job.view.UserInfoView;
@@ -18,7 +16,7 @@ import java.util.List;
 public interface UserInfoService {
 
     /**
-     * 根据用户名获取一条或多条用户信息记录
+     * 根据用户名获取用户信息记录[可能有重名的人]
      * @param userName
      * @return
      */
@@ -32,23 +30,23 @@ public interface UserInfoService {
 
     /**
      * 更新用户信息
-     * @param reqUserInfo
+     * @param reqUserInfoUpdate
      * @return
      */
-    int modifyUserInfo(ReqUserInfo reqUserInfo);
+    int modifyUserInfo(ReqUserInfoUpdate reqUserInfoUpdate);
 
     /**
      *根据用户id|用户昵称|用户手机号|身份证 获取唯一一条用户信息记录
-     * @param reqUserInfo
+     * @param reqUserInfoQuery
      * @return
      */
-    UserInfoView findUserInfo(ReqUserInfo reqUserInfo);
+    UserInfoView findUserInfo(ReqUserInfoQuery reqUserInfoQuery);
     /**
      * 根据条件进行查询用户信息且进行分页
-     * @param reqUserInfo
+     * @param reqUserInfoQuery
      * @return
      */
-    PageInfo <UserInfoView> findUserInfoPage(ReqUserInfo reqUserInfo);
+    PageInfo <UserInfoView> findUserInfoPage(ReqUserInfoQuery reqUserInfoQuery);
 
     /**
      * 用户进行修改密码
@@ -77,4 +75,11 @@ public interface UserInfoService {
      * @return
      */
     UserInfoView login(ReqLoginUserInfo reqLoginUserInfo);
+
+    /**
+     * 根据Id 获取用户记录详情
+     * @param id
+     * @return
+     */
+    UserInfoView findUserById(Integer id);
 }

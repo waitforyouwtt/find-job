@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fenghuang.job.dao.master.UserInfoMasterMapper">
+<mapper namespace="com.fenghuang.job.dao.master.UserInfoMapper">
   <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.UserInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="user_nickName" jdbcType="VARCHAR" property="userNickname" />
-    <result column="user_head" jdbcType="VARCHAR" property="userHead" />
     <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="user_head" jdbcType="VARCHAR" property="userHead" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="wechat" jdbcType="VARCHAR" property="wechat" />
     <result column="gender" jdbcType="INTEGER" property="gender" />
@@ -20,41 +20,46 @@
     <result column="user_level" jdbcType="INTEGER" property="userLevel" />
     <result column="emergency_contact_name" jdbcType="VARCHAR" property="emergencyContactName" />
     <result column="emergency_contact_mobile" jdbcType="VARCHAR" property="emergencyContactMobile" />
+    <result column="founder" jdbcType="VARCHAR" property="founder" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_name, user_nickName, user_head,id_card, password, wechat, gender, mobile, address,
-    id_card_x, id_card_y, user_status, amount, user_type, user_level, emergency_contact_name, 
-    emergency_contact_mobile
+    id, user_name, user_nickName, id_card, user_head, password, wechat, gender, mobile, 
+    address, id_card_x, id_card_y, user_status, amount, user_type, user_level, emergency_contact_name, 
+    emergency_contact_mobile, founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tb_userinfo
+    from userinfo
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_userinfo
+    delete from userinfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.fenghuang.job.entity.UserInfo">
-    insert into tb_userinfo (id, user_name, user_nickName, id_card,
-      user_head, password, wechat, 
-      gender, mobile, address, 
-      id_card_x, id_card_y, user_status, 
-      amount, user_type, user_level, 
-      emergency_contact_name, emergency_contact_mobile
-      )
-    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR},
-    , #{idCard,jdbcType=VARCHAR},
-      #{userHead,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, 
-      #{gender,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{idCardX,jdbcType=VARCHAR}, #{idCardY,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER}, 
-      #{amount,jdbcType=DECIMAL}, #{userType,jdbcType=INTEGER}, #{userLevel,jdbcType=INTEGER}, 
-      #{emergencyContactName,jdbcType=VARCHAR}, #{emergencyContactMobile,jdbcType=VARCHAR}
-      )
+    insert into userinfo (id, user_name, user_nickName, 
+      id_card, user_head, password, 
+      wechat, gender, mobile, 
+      address, id_card_x, id_card_y, 
+      user_status, amount, user_type, 
+      user_level, emergency_contact_name, emergency_contact_mobile, 
+      founder, modifier, create_date, 
+      update_date)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{userHead,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{wechat,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{idCardX,jdbcType=VARCHAR}, #{idCardY,jdbcType=VARCHAR}, 
+      #{userStatus,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{userType,jdbcType=INTEGER}, 
+      #{userLevel,jdbcType=INTEGER}, #{emergencyContactName,jdbcType=VARCHAR}, #{emergencyContactMobile,jdbcType=VARCHAR}, 
+      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.UserInfo">
-    insert into tb_userinfo
+    insert into userinfo
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -65,11 +70,11 @@
       <if test="userNickname != null">
         user_nickName,
       </if>
-      <if test="userHead != null">
-        user_head,
-      </if>
       <if test="idCard != null">
         id_card,
+      </if>
+      <if test="userHead != null">
+        user_head,
       </if>
       <if test="password != null">
         password,
@@ -110,6 +115,18 @@
       <if test="emergencyContactMobile != null">
         emergency_contact_mobile,
       </if>
+      <if test="founder != null">
+        founder,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -121,11 +138,11 @@
       <if test="userNickname != null">
         #{userNickname,jdbcType=VARCHAR},
       </if>
-      <if test="userHead != null">
-        #{userHead,jdbcType=VARCHAR},
-      </if>
       <if test="idCard != null">
         #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null">
+        #{userHead,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
@@ -166,16 +183,31 @@
       <if test="emergencyContactMobile != null">
         #{emergencyContactMobile,jdbcType=VARCHAR},
       </if>
+      <if test="founder != null">
+        #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.UserInfo">
-    update tb_userinfo
+    update userinfo
     <set>
       <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
       </if>
       <if test="userNickname != null">
         user_nickName = #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
       </if>
       <if test="userHead != null">
         user_head = #{userHead,jdbcType=VARCHAR},
@@ -219,13 +251,26 @@
       <if test="emergencyContactMobile != null">
         emergency_contact_mobile = #{emergencyContactMobile,jdbcType=VARCHAR},
       </if>
+      <if test="founder != null">
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.UserInfo">
-    update tb_userinfo
+    update userinfo
     set user_name = #{userName,jdbcType=VARCHAR},
       user_nickName = #{userNickname,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
       user_head = #{userHead,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       wechat = #{wechat,jdbcType=VARCHAR},
@@ -239,17 +284,21 @@
       user_type = #{userType,jdbcType=INTEGER},
       user_level = #{userLevel,jdbcType=INTEGER},
       emergency_contact_name = #{emergencyContactName,jdbcType=VARCHAR},
-      emergency_contact_mobile = #{emergencyContactMobile,jdbcType=VARCHAR}
+      emergency_contact_mobile = #{emergencyContactMobile,jdbcType=VARCHAR},
+      founder = #{founder,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
   <select id="findUserInfoByUserName" resultMap="BaseResultMap">
     select
-     <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />
     from tb_userinfo where user_name = #{userName}
   </select>
 
-  <select id="findUserInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
+  <select id="findUserInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfoQuery">
     select
     <include refid="Base_Column_List" />
     from tb_userinfo
@@ -275,7 +324,7 @@
     </where>
   </select>
 
-  <select id="findUserInfoPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
+  <select id="findUserInfoPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfoQuery">
     select
     <include refid="Base_Column_List" />
     from tb_userinfo
@@ -312,7 +361,7 @@
   </select>
 
   <update id="changePassword" parameterType="com.fenghuang.job.request.ReqUserInfo">
-     update tb_userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
+    update tb_userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
   </update>
 
   <select id="loginQueryUserInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
@@ -370,6 +419,5 @@
     and id_card = #{userName}
     and password = #{idCard}
   </select>
-
 
 </mapper>

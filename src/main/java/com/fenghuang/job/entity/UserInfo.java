@@ -2,8 +2,9 @@ package com.fenghuang.job.entity;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @ApiModel(value = "用户信息表")
@@ -14,9 +15,9 @@ public class UserInfo implements Serializable{
 
     private String userNickname;
 
-    private String userHead;
-
     private String idCard;
+
+    private String userHead;
 
     private String password;
 
@@ -34,7 +35,7 @@ public class UserInfo implements Serializable{
 
     private Integer userStatus;
 
-    private BigDecimal amount;
+    private Long amount;
 
     private Integer userType;
 
@@ -43,5 +44,13 @@ public class UserInfo implements Serializable{
     private String emergencyContactName;
 
     private String emergencyContactMobile;
+
+    private String founder;
+
+    private String modifier;
+
+    private Date createDate;
+
+    private Date updateDate;
 
 }
