@@ -21,6 +21,7 @@ public enum BusinessEnum {
     USERINFO_EXIST(1012,"当前登录账号不存在"),
     USERINFO_FROZEN(1013,"对不起，您的账号已被冻结"),
     LOGIN_ERROR(1014,"对不起，您的账号和密码不匹配，请重新登录"),
+    FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER(1015,"对不起，您操作频繁，请稍后[1hour]重试"),
 
 
     ;

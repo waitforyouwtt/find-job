@@ -80,7 +80,7 @@ public class UserInfoController {
     @PostMapping("/login")
     @ApiOperation(value = "根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
     public Result login(ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
-        String ip = BusinessUtils.getClientIpAddress(request);
+        String ip = BusinessUtils.getIpAddress(request);
         reqLoginUserInfo.setLoginIp(ip);
         return Result.success(userInfoService.login(reqLoginUserInfo));
     }
