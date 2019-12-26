@@ -45,4 +45,12 @@ public class Project implements Serializable{
 
     private Date projectEndDate;
 
+    private String founder;
+
+    private String modifier;
+
+    private Date createDate;
+
+    private Date updateDate;
+
 }

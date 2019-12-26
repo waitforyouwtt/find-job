@@ -2,12 +2,9 @@ package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.Project;
 import com.fenghuang.job.request.ReqProject;
-import org.apache.ibatis.annotations.Mapper;
-
 
 import java.util.List;
 
-@Mapper
 public interface ProjectMapper {
     int deleteByPrimaryKey(Integer id);
 

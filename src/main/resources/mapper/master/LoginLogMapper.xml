@@ -8,9 +8,14 @@
     <result column="login_date" jdbcType="TIMESTAMP" property="loginDate" />
     <result column="fail_remark" jdbcType="VARCHAR" property="failRemark" />
     <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+    <result column="founder" jdbcType="VARCHAR" property="founder" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, login_status, login_date, fail_remark, login_ip
+    id, user_id, login_status, login_date, fail_remark, login_ip, founder, modifier, 
+    create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,11 +29,13 @@
   </delete>
   <insert id="insert" parameterType="com.fenghuang.job.entity.LoginLog">
     insert into login_log (id, user_id, login_status, 
-      login_date, fail_remark, login_ip
-      )
+      login_date, fail_remark, login_ip, 
+      founder, modifier, create_date, 
+      update_date)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{loginStatus,jdbcType=INTEGER}, 
-      #{loginDate,jdbcType=TIMESTAMP}, #{failRemark,jdbcType=VARCHAR}, #{loginIp,jdbcType=VARCHAR}
-      )
+      #{loginDate,jdbcType=TIMESTAMP}, #{failRemark,jdbcType=VARCHAR}, #{loginIp,jdbcType=VARCHAR}, 
+      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.LoginLog">
     insert into login_log
@@ -51,6 +58,18 @@
       <if test="loginIp != null">
         login_ip,
       </if>
+      <if test="founder != null">
+        founder,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -70,6 +89,18 @@
       </if>
       <if test="loginIp != null">
         #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="founder != null">
+        #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -91,6 +122,18 @@
       <if test="loginIp != null">
         login_ip = #{loginIp,jdbcType=VARCHAR},
       </if>
+      <if test="founder != null">
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -100,13 +143,17 @@
       login_status = #{loginStatus,jdbcType=INTEGER},
       login_date = #{loginDate,jdbcType=TIMESTAMP},
       fail_remark = #{failRemark,jdbcType=VARCHAR},
-      login_ip = #{loginIp,jdbcType=VARCHAR}
+      login_ip = #{loginIp,jdbcType=VARCHAR},
+      founder = #{founder,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
   <select id="findLogin" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqLoginLog">
     select
-     <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />
     from login_log
     <where>
       <if test="id != null">
@@ -122,11 +169,12 @@
         and login_ip = #{loginIp}
       </if>
       <if test="loginDateBegin!=null and loginDateBegin!=''">
-       <![CDATA[   and DATE_FORMAT(login_date, '%Y-%m-%d')>=  DATE_FORMAT(#{loginDateBegin}, '%Y-%m-%d')   ]]>
+        <![CDATA[   and DATE_FORMAT(login_date, '%Y-%m-%d')>=  DATE_FORMAT(#{loginDateBegin}, '%Y-%m-%d')   ]]>
       </if>
       <if test="loginDateEnd!=null and loginDateEnd!=''">
         <![CDATA[  and DATE_FORMAT(login_date, '%Y-%m-%d') <= DATE_FORMAT(#{loginDateEnd}, '%Y-%m-%d')    ]]>
       </if>
     </where>
   </select>
+
 </mapper>

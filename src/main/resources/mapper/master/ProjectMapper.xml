@@ -20,12 +20,16 @@
     <result column="rank_field" jdbcType="INTEGER" property="rankField" />
     <result column="project_create_date" jdbcType="TIMESTAMP" property="projectCreateDate" />
     <result column="project_end_date" jdbcType="TIMESTAMP" property="projectEndDate" />
+    <result column="founder" jdbcType="VARCHAR" property="founder" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
     id, project_type_id, project_type_name, create_user_id, create_user_name, project_title, 
     project_content, project_min_price, project_max_price, project_status, examine_status, 
     project_need_people, is_direct_hire, is_trusteeship, trusteeship_amount, rank_field, 
-    project_create_date, project_end_date
+    project_create_date, project_end_date, founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -43,15 +47,17 @@
       project_content, project_min_price, project_max_price, 
       project_status, examine_status, project_need_people, 
       is_direct_hire, is_trusteeship, trusteeship_amount, 
-      rank_field, project_create_date, project_end_date
-      )
+      rank_field, project_create_date, project_end_date, 
+      founder, modifier, create_date, 
+      update_date)
     values (#{id,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectTypeName,jdbcType=VARCHAR}, 
       #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{projectTitle,jdbcType=VARCHAR}, 
       #{projectContent,jdbcType=VARCHAR}, #{projectMinPrice,jdbcType=DECIMAL}, #{projectMaxPrice,jdbcType=DECIMAL}, 
       #{projectStatus,jdbcType=INTEGER}, #{examineStatus,jdbcType=INTEGER}, #{projectNeedPeople,jdbcType=INTEGER}, 
       #{isDirectHire,jdbcType=INTEGER}, #{isTrusteeship,jdbcType=INTEGER}, #{trusteeshipAmount,jdbcType=DECIMAL}, 
-      #{rankField,jdbcType=INTEGER}, #{projectCreateDate,jdbcType=TIMESTAMP}, #{projectEndDate,jdbcType=TIMESTAMP}
-      )
+      #{rankField,jdbcType=INTEGER}, #{projectCreateDate,jdbcType=TIMESTAMP}, #{projectEndDate,jdbcType=TIMESTAMP}, 
+      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.Project">
     insert into project
@@ -110,6 +116,18 @@
       <if test="projectEndDate != null">
         project_end_date,
       </if>
+      <if test="founder != null">
+        founder,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -165,6 +183,18 @@
       </if>
       <if test="projectEndDate != null">
         #{projectEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="founder != null">
+        #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -222,6 +252,18 @@
       <if test="projectEndDate != null">
         project_end_date = #{projectEndDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="founder != null">
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -243,7 +285,11 @@
       trusteeship_amount = #{trusteeshipAmount,jdbcType=DECIMAL},
       rank_field = #{rankField,jdbcType=INTEGER},
       project_create_date = #{projectCreateDate,jdbcType=TIMESTAMP},
-      project_end_date = #{projectEndDate,jdbcType=TIMESTAMP}
+      project_end_date = #{projectEndDate,jdbcType=TIMESTAMP},
+      founder = #{founder,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

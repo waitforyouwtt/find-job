@@ -2,6 +2,7 @@ package com.fenghuang.job.entity;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,4 +20,13 @@ public class LoginLog implements Serializable{
     private String failRemark;
 
     private String loginIp;
+
+    private String founder;
+
+    private String modifier;
+
+    private Date createDate;
+
+    private Date updateDate;
+
 }

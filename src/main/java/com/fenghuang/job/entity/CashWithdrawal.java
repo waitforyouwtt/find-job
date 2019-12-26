@@ -2,8 +2,8 @@ package com.fenghuang.job.entity;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -15,7 +15,7 @@ public class CashWithdrawal implements Serializable{
 
     private Integer userId;
 
-    private BigDecimal cashWithdrawalAmount;
+    private Long cashWithdrawalAmount;
 
     private String cashWithdrawalAccount;
 

@@ -11,10 +11,15 @@
     <result column="cash_withdrawal_status" jdbcType="INTEGER" property="cashWithdrawalStatus" />
     <result column="cash_withdrawal_date" jdbcType="TIMESTAMP" property="cashWithdrawalDate" />
     <result column="examine_date" jdbcType="TIMESTAMP" property="examineDate" />
+    <result column="founder" jdbcType="VARCHAR" property="founder" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
     id, cash_withdrawal_order_id, user_id, cash_withdrawal_amount, cash_withdrawal_account, 
-    cash_withdrawal_account_type, cash_withdrawal_status, cash_withdrawal_date, examine_date
+    cash_withdrawal_account_type, cash_withdrawal_status, cash_withdrawal_date, examine_date, 
+    founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -30,11 +35,15 @@
     insert into cash_withdrawal (id, cash_withdrawal_order_id, user_id, 
       cash_withdrawal_amount, cash_withdrawal_account, 
       cash_withdrawal_account_type, cash_withdrawal_status, 
-      cash_withdrawal_date, examine_date)
+      cash_withdrawal_date, examine_date, founder, 
+      modifier, create_date, update_date
+      )
     values (#{id,jdbcType=INTEGER}, #{cashWithdrawalOrderId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
       #{cashWithdrawalAmount,jdbcType=DECIMAL}, #{cashWithdrawalAccount,jdbcType=VARCHAR}, 
       #{cashWithdrawalAccountType,jdbcType=INTEGER}, #{cashWithdrawalStatus,jdbcType=INTEGER}, 
-      #{cashWithdrawalDate,jdbcType=TIMESTAMP}, #{examineDate,jdbcType=TIMESTAMP})
+      #{cashWithdrawalDate,jdbcType=TIMESTAMP}, #{examineDate,jdbcType=TIMESTAMP}, #{founder,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.CashWithdrawal">
     insert into cash_withdrawal
@@ -66,6 +75,18 @@
       <if test="examineDate != null">
         examine_date,
       </if>
+      <if test="founder != null">
+        founder,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -94,6 +115,18 @@
       </if>
       <if test="examineDate != null">
         #{examineDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="founder != null">
+        #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -124,6 +157,18 @@
       <if test="examineDate != null">
         examine_date = #{examineDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="founder != null">
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -136,7 +181,11 @@
       cash_withdrawal_account_type = #{cashWithdrawalAccountType,jdbcType=INTEGER},
       cash_withdrawal_status = #{cashWithdrawalStatus,jdbcType=INTEGER},
       cash_withdrawal_date = #{cashWithdrawalDate,jdbcType=TIMESTAMP},
-      examine_date = #{examineDate,jdbcType=TIMESTAMP}
+      examine_date = #{examineDate,jdbcType=TIMESTAMP},
+      founder = #{founder,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
