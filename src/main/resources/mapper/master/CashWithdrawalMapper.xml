@@ -9,6 +9,7 @@
     <result column="cash_withdrawal_account" jdbcType="VARCHAR" property="cashWithdrawalAccount" />
     <result column="cash_withdrawal_account_type" jdbcType="INTEGER" property="cashWithdrawalAccountType" />
     <result column="cash_withdrawal_status" jdbcType="INTEGER" property="cashWithdrawalStatus" />
+    <result column="examine_status" jdbcType="INTEGER" property="examineStatus" />
     <result column="cash_withdrawal_date" jdbcType="TIMESTAMP" property="cashWithdrawalDate" />
     <result column="examine_date" jdbcType="TIMESTAMP" property="examineDate" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
@@ -18,8 +19,8 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, cash_withdrawal_order_id, user_id, cash_withdrawal_amount, cash_withdrawal_account, 
-    cash_withdrawal_account_type, cash_withdrawal_status, cash_withdrawal_date, examine_date, 
-    founder, modifier, create_date, update_date
+    cash_withdrawal_account_type, cash_withdrawal_status, examine_status, cash_withdrawal_date, 
+    examine_date, founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -35,15 +36,15 @@
     insert into cash_withdrawal (id, cash_withdrawal_order_id, user_id, 
       cash_withdrawal_amount, cash_withdrawal_account, 
       cash_withdrawal_account_type, cash_withdrawal_status, 
-      cash_withdrawal_date, examine_date, founder, 
-      modifier, create_date, update_date
-      )
+      examine_status, cash_withdrawal_date, examine_date, 
+      founder, modifier, create_date, 
+      update_date)
     values (#{id,jdbcType=INTEGER}, #{cashWithdrawalOrderId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
       #{cashWithdrawalAmount,jdbcType=DECIMAL}, #{cashWithdrawalAccount,jdbcType=VARCHAR}, 
       #{cashWithdrawalAccountType,jdbcType=INTEGER}, #{cashWithdrawalStatus,jdbcType=INTEGER}, 
-      #{cashWithdrawalDate,jdbcType=TIMESTAMP}, #{examineDate,jdbcType=TIMESTAMP}, #{founder,jdbcType=VARCHAR}, 
-      #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+      #{examineStatus,jdbcType=INTEGER}, #{cashWithdrawalDate,jdbcType=TIMESTAMP}, #{examineDate,jdbcType=TIMESTAMP}, 
+      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.CashWithdrawal">
     insert into cash_withdrawal
@@ -68,6 +69,9 @@
       </if>
       <if test="cashWithdrawalStatus != null">
         cash_withdrawal_status,
+      </if>
+      <if test="examineStatus != null">
+        examine_status,
       </if>
       <if test="cashWithdrawalDate != null">
         cash_withdrawal_date,
@@ -110,6 +114,9 @@
       <if test="cashWithdrawalStatus != null">
         #{cashWithdrawalStatus,jdbcType=INTEGER},
       </if>
+      <if test="examineStatus != null">
+        #{examineStatus,jdbcType=INTEGER},
+      </if>
       <if test="cashWithdrawalDate != null">
         #{cashWithdrawalDate,jdbcType=TIMESTAMP},
       </if>
@@ -151,6 +158,9 @@
       <if test="cashWithdrawalStatus != null">
         cash_withdrawal_status = #{cashWithdrawalStatus,jdbcType=INTEGER},
       </if>
+      <if test="examineStatus != null">
+        examine_status = #{examineStatus,jdbcType=INTEGER},
+      </if>
       <if test="cashWithdrawalDate != null">
         cash_withdrawal_date = #{cashWithdrawalDate,jdbcType=TIMESTAMP},
       </if>
@@ -180,6 +190,7 @@
       cash_withdrawal_account = #{cashWithdrawalAccount,jdbcType=VARCHAR},
       cash_withdrawal_account_type = #{cashWithdrawalAccountType,jdbcType=INTEGER},
       cash_withdrawal_status = #{cashWithdrawalStatus,jdbcType=INTEGER},
+      examine_status = #{examineStatus,jdbcType=INTEGER},
       cash_withdrawal_date = #{cashWithdrawalDate,jdbcType=TIMESTAMP},
       examine_date = #{examineDate,jdbcType=TIMESTAMP},
       founder = #{founder,jdbcType=VARCHAR},
