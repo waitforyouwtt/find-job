@@ -57,6 +57,10 @@ public class ProjectServiceImpl implements ProjectService {
         project.setProjectStatus(ProjectStatusEnum.INIT.getCode());
         project.setExamineStatus(ExamineStatusEnum.AUDITED.getCode());
         project.setProjectCreateDate(new Date());
+        project.setCreateDate(new Date());
+        project.setUpdateDate(new Date());
+        project.setFounder(reqProject.getCreateUserId());
+        project.setModifier(reqProject.getCreateUserId());
         return projectMapper.insertSelective( project );
     }
 

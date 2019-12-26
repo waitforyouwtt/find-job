@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,6 +52,10 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
         ProjectType projectType = new ProjectType();
         BeanCopier beanCopier = BeanCopier.create( ReqProjectType.class,ProjectType.class,false );
         beanCopier.copy( reqProjectType,projectType,null );
+        projectType.setFounder(reqProjectType.getFounder());
+        projectType.setModifier(reqProjectType.getModifier());
+        projectType.setCreateDate(new Date());
+        projectType.setUpdateDate(new Date());
         return projectTypeMapper.insertSelective( projectType );
     }
 

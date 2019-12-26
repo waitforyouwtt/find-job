@@ -48,6 +48,10 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         orderInfo.setOrderStatus( OrderStatusEnum.WAIT_BEGIN.getCode() );
         orderInfo.setOrderId( OrderIdUtils.generateOrderSn( reqOrderInfo.getUserId().toString() ) );
         orderInfo.setOrderDate( new Date(  ) );
+        orderInfo.setFounder(reqOrderInfo.getUserId().toString());
+        orderInfo.setModifier(reqOrderInfo.getUserId().toString());
+        orderInfo.setCreateDate(new Date());
+        orderInfo.setUpdateDate(new Date());
         orderInfoMapper.insertSelective( orderInfo );
         String orderId = orderInfo.getOrderId();
         log.info( "生成订单返回的订单号为：{}",orderId );

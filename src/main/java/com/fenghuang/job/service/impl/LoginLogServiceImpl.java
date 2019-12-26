@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -95,6 +96,10 @@ public class LoginLogServiceImpl implements LoginLogService {
         LoginLog loginLog = new LoginLog();
         BeanCopier beanCopier = BeanCopier.create(ReqLoginLog.class, LoginLog.class, false);
         beanCopier.copy(reqLoginLog,loginLog,null);
+        loginLog.setCreateDate(new Date());
+        loginLog.setUpdateDate(new Date());
+        loginLog.setFounder(reqLoginLog.getUserId().toString());
+        loginLog.setModifier(reqLoginLog.getUserId().toString());
         return loginLogMapper.insertSelective(loginLog);
     }
 }

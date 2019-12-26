@@ -115,6 +115,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         beanCopier.copy(reqUserInfo,userInfo,null);
         userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfo.getPassword()));
         userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
+        userInfo.setFounder(reqUserInfo.getMobile());
+        userInfo.setModifier(reqUserInfo.getMobile());
+        userInfo.setCreateDate(new Date());
+        userInfo.setUpdateDate(new Date());
         return userInfoMapper.insertSelective(userInfo);
     }
 

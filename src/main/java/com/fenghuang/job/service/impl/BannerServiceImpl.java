@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +42,8 @@ public class BannerServiceImpl implements BannerService {
         BeanCopier beanCopier = BeanCopier.create(ReqBanner.class,Banner.class,false);
         beanCopier.copy(reqBanner,banner,null);
         banner.setBannerImgStatus(BannerImgStatusEnum.NORMAL.getCode());
+        banner.setCreateDate(new Date());
+        banner.setUpdateDate(new Date());
         return bannerMapper.insertSelective(banner);
     }
 

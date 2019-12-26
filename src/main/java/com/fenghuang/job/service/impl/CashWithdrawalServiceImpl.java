@@ -3,6 +3,8 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.CashWithdrawalMapper;
 import com.fenghuang.job.entity.CashWithdrawal;
+import com.fenghuang.job.enums.CashWithdrawalStatusEnum;
+import com.fenghuang.job.enums.ExamineStatusEnum;
 import com.fenghuang.job.request.ReqCashWithdrawal;
 import com.fenghuang.job.service.CashWithdrawalService;
 import com.fenghuang.job.view.CashWithdrawalView;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +44,10 @@ public class CashWithdrawalServiceImpl implements CashWithdrawalService {
         CashWithdrawal cashWithdrawal = new CashWithdrawal();
         BeanCopier beanCopier = BeanCopier.create(ReqCashWithdrawal.class, CashWithdrawal.class, false);
         beanCopier.copy(reqCashWithdrawal,cashWithdrawal,null);
+        cashWithdrawal.setCreateDate(new Date());
+        cashWithdrawal.setUpdateDate(new Date());
+        cashWithdrawal.setCashWithdrawalStatus(CashWithdrawalStatusEnum.PROCESSING.getCode());
+        cashWithdrawal.setExamineStatus(ExamineStatusEnum.AUDITED.getCode());
         return cashWithdrawalMapper.insertSelective(cashWithdrawal);
     }
 

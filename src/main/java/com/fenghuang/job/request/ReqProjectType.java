@@ -1,6 +1,7 @@
 package com.fenghuang.job.request;
 
 import com.fenghuang.job.utils.PageHelps;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -26,4 +27,10 @@ public class ReqProjectType extends PageHelps implements Serializable {
 
     private Double chargeRateMin;
     private Double chargeRateMax;
+
+    @ApiModelProperty("创建人")
+    private String founder;
+
+    @ApiModelProperty("修改人")
+    private String modifier;
 }

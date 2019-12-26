@@ -53,6 +53,8 @@ public class MessageCountServiceImpl implements MessageCountService {
         messageCount.setCreateDate(new Date());
         messageCount.setUpdateDate(new Date());
         messageCount.setSendDate(new Date());
+        messageCount.setFounder(reqMessageCount.getUserId().toString());
+        messageCount.setModifier(reqMessageCount.getUserId().toString());
         return messageCountMapper.insertSelective(messageCount);
     }
 
