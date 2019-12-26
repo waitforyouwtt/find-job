@@ -198,12 +198,20 @@
       <if test="messageType != null">
         and message_type = #{messageType}
       </if>
-      <if test="oneHourAgoDate!=null and oneHourAgoDate!=''">
+      <if test="oneHourAgoDate!=null">
+        and send_date &gt;= #{oneHourAgoDate}
+      </if>
+      <if test="currentSendDate!=null">
+        and send_date &lt;= #{currentSendDate}
+      </if>
+
+
+<!--      <if test="oneHourAgoDate!=null and oneHourAgoDate!=''">
         <![CDATA[   and DATE_FORMAT(send_date, '%Y-%m-%d  %H:%i:%S')>=  DATE_FORMAT(#{oneHourAgoDate}, '%Y-%m-%d %H:%i:%S')   ]]>
       </if>
       <if test="currentSendDate!=null and currentSendDate!=''">
         <![CDATA[  and DATE_FORMAT(send_date, '%Y-%m-%d  %H:%i:%S') <= DATE_FORMAT(#{currentSendDate}, '%Y-%m-%d %H:%i:%S')    ]]>
-      </if>
+      </if>-->
     </where>
   </select>
 
