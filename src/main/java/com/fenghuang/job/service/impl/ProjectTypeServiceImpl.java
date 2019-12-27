@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,7 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
     public int insertProjectType(ReqProjectType reqProjectType) {
         log.info( "新增项目类型 请求参数：{}", JSON.toJSONString( reqProjectType ) );
         reqProjectType.setProjectTypeStatus( ProjectTypeStatusEnum.NORMAL.getCode() );
+        //若存在相同名字的项目类型且为正常的状态则不允许创建
         List<ProjectType> queryProjectTypes = projectTypeMapper.findProjectType(reqProjectType);
         if (!CollectionUtils.isEmpty( queryProjectTypes )){
             throw new BusinessException( BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg() );
@@ -68,6 +70,9 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
     @Override
     public int modifyProjectType(ReqProjectType reqProjectType) {
         log.info( "更新项目类型字段 请求参数：{}",JSON.toJSONString( reqProjectType ) );
+        if(StringUtils.isEmpty(reqProjectType.getId())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         ProjectType projectType = new ProjectType();
         BeanCopier beanCopier = BeanCopier.create( ReqProjectType.class,ProjectType.class,false );
         beanCopier.copy( reqProjectType,projectType,null );

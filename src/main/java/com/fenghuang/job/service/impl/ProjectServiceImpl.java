@@ -73,6 +73,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int modifyProject(ReqProject reqProject) {
         log.info( "根据id更新项目相关字段 请求参数：{}",JSON.toJSONString( reqProject ) );
+        if (StringUtils.isEmpty(reqProject.getId())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         Project project = new Project();
         BeanCopier beanCopier = BeanCopier.create( ReqProject.class,Project.class,false );
         beanCopier.copy( reqProject,project,null );
@@ -88,6 +91,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int modifyProjectStatus(ReqProjectStatus reqProjectStatus) {
         log.info( "根据id更新项目状态 请求参数：{}",JSON.toJSONString( reqProjectStatus ) );
+        if (StringUtils.isEmpty(reqProjectStatus.getId())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         Project project = projectMapper.selectByPrimaryKey(reqProjectStatus.getId());
         if (project == null){
             throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
