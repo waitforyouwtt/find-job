@@ -93,7 +93,7 @@ public class ProjectServiceImpl implements ProjectService {
             throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
         }
         Project projectParam = new Project();
-        //只修改项目状态
+        //如果审核状态没有则只修改项目状态 ; 否则就是管理员在审核，审核应该修改相应的项目状态
         projectParam.setId(reqProjectStatus.getId());
         if (StringUtils.isEmpty(reqProjectStatus.getExamineStatus())){
             projectParam.setProjectStatus(reqProjectStatus.getProjectStatus());

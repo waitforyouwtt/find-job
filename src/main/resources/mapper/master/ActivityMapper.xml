@@ -184,11 +184,13 @@
       </if>
     </where>
   </select>
+
   <select id="queryActivityByTitle" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from activity where activity_title = #{title} and activity_status in(1,2);
   </select>
+
   <select id="findActivityPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqActivityQuery">
     select
     <include refid="Base_Column_List" />

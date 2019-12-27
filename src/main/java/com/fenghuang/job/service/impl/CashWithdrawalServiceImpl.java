@@ -3,8 +3,10 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.CashWithdrawalMapper;
 import com.fenghuang.job.entity.CashWithdrawal;
+import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.CashWithdrawalStatusEnum;
 import com.fenghuang.job.enums.ExamineStatusEnum;
+import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqCashWithdrawal;
 import com.fenghuang.job.service.CashWithdrawalService;
 import com.fenghuang.job.view.CashWithdrawalView;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,9 +95,13 @@ public class CashWithdrawalServiceImpl implements CashWithdrawalService {
     @Override
     public int modifyCashWithdrawalStatus(ReqCashWithdrawal reqCashWithdrawal) {
         log.info("根据订单id更新提现订单信息表状态 请求参数：{}",JSON.toJSONString(reqCashWithdrawal));
+        if (StringUtils.isEmpty(reqCashWithdrawal.getId())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         CashWithdrawal cashWithdrawal = new CashWithdrawal();
         BeanCopier beanCopier = BeanCopier.create(ReqCashWithdrawal.class, CashWithdrawal.class, false);
         beanCopier.copy(reqCashWithdrawal,cashWithdrawal,null);
+        cashWithdrawal.setUpdateDate(new Date());
         return cashWithdrawalMapper.updateByPrimaryKeySelective(cashWithdrawal);
     }
 

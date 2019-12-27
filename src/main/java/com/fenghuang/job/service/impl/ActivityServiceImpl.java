@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public int insertActivity(ReqActivity reqActivity) {
         log.info("新增活动请求参数：{}", JSON.toJSONString(reqActivity));
+        //新增活动时：相同名字且状态为待审核| 进行中的活动不能创建
         Activity queryActivity = activityMapper.queryActivityByTitle(reqActivity.getActivityTitle());
         if (queryActivity != null){
             throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
@@ -68,9 +70,13 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public int modifyActivity(ReqActivityUpdate reqActivityUpdate) {
         log.info("根据ID修改活动相关信息 请求参数：{}",JSON.toJSONString(reqActivityUpdate));
+        if (StringUtils.isEmpty(reqActivityUpdate.getId())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         Activity activity = new Activity();
         BeanCopier beanCopier = BeanCopier.create(ReqActivity.class,Activity.class,false);
         beanCopier.copy(reqActivityUpdate,activity,null);
+        activity.setUpdateDate(new Date());
         return activityMapper.updateByPrimaryKeySelective(activity);
     }
 
@@ -107,7 +113,7 @@ public class ActivityServiceImpl implements ActivityService {
             Page<?> page = PageHelper.startPage(reqActivityQuery.getPageNum(),reqActivityQuery.getPageSize());
             List<Activity> queryActivities = activityMapper.findActivityPage(reqActivityQuery);
             if (CollectionUtils.isEmpty(queryActivities)){
-                pageInfo = new PageInfo<>(new ArrayList<>());
+                pageInfo = new PageInfo<>(new ArrayList<>(16));
             }else{
                 List<ActivityView> views = new ArrayList<>();
                 queryActivities.stream().forEach(activity -> {

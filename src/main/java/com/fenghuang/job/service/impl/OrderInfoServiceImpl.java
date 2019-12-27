@@ -3,7 +3,9 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.OrderInfoMapper;
 import com.fenghuang.job.entity.OrderInfo;
+import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.OrderStatusEnum;
+import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqOrderInfo;
 import com.fenghuang.job.service.OrderInfoService;
 import com.fenghuang.job.utils.OrderIdUtils;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,9 +122,14 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     @Override
     public int modifyOrderStatus(ReqOrderInfo reqOrderInfo) {
         log.info( "更新订单状态 请求参数：{}",JSON.toJSONString( reqOrderInfo ) );
+        if (StringUtils.isEmpty(reqOrderInfo.getId())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         OrderInfo orderInfo = new OrderInfo();
         BeanCopier copier = BeanCopier.create( ReqOrderInfo.class, OrderInfo.class, false );
         copier.copy( reqOrderInfo,orderInfo,null );
+        orderInfo.setUpdateDate(new Date());
+        orderInfo.setModifier(reqOrderInfo.getUserId().toString());
         return orderInfoMapper.updateByPrimaryKeySelective( orderInfo );
     }
 }

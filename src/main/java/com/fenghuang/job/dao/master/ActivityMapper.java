@@ -24,6 +24,11 @@ public interface ActivityMapper {
 
     Activity queryActivity(ReqActivityQuery reqActivityQuery);
 
+    /**
+     * 新增活动时：相同名字且状态为待审核| 进行中的活动不能创建
+     * @param title
+     * @return
+     */
     Activity queryActivityByTitle(@Param("title") String title);
 
     List<Activity> findActivityPage(ReqActivityQuery reqActivityQuery);

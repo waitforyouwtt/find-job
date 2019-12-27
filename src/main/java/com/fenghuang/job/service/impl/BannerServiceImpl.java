@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.BannerMapper;
 import com.fenghuang.job.entity.Banner;
 import com.fenghuang.job.enums.BannerImgStatusEnum;
+import com.fenghuang.job.enums.BusinessEnum;
+import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqBanner;
 import com.fenghuang.job.request.ReqBannerStatus;
 import com.fenghuang.job.service.BannerService;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,9 +83,14 @@ public class BannerServiceImpl implements BannerService {
      */
     @Override
     public int modifyBannerStatus(ReqBannerStatus reqBannerStatus) {
+        log.info("根据ID更新轮播图状态 请求参数：{}",JSON.toJSONString(reqBannerStatus));
+        if (StringUtils.isEmpty(reqBannerStatus.getId())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
         Banner banner = new Banner();
         BeanCopier beanCopier = BeanCopier.create(ReqBannerStatus.class,Banner.class,false);
         beanCopier.copy(reqBannerStatus,banner,null);
+        banner.setUpdateDate(new Date());
         return bannerMapper.updateByPrimaryKeySelective(banner);
     }
 
