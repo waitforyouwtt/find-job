@@ -173,8 +173,14 @@
       <if test="id != null">
         and id = #{id}
       </if>
-      <if test="userId != null">
-        and activity_title = #{userId}
+      <if test="activityTitle != null">
+        and activity_title = #{activityTitle}
+      </if>
+      <if test="activityStatus != null">
+        and activity_status = #{activityStatus}
+      </if>
+      <if test="examineStatus != null">
+        and examine_status = #{examineStatus}
       </if>
     </where>
   </select>
@@ -182,5 +188,24 @@
     select
     <include refid="Base_Column_List" />
     from activity where activity_title = #{title} and activity_status in(1,2);
+  </select>
+  <select id="findActivityPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqActivityQuery">
+    select
+    <include refid="Base_Column_List" />
+    from activity
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="activityTitle != null">
+        and activity_title = #{activityTitle}
+      </if>
+      <if test="activityStatus != null">
+        and activity_status = #{activityStatus}
+      </if>
+      <if test="examineStatus != null">
+        and examine_status = #{examineStatus}
+      </if>
+    </where>
   </select>
 </mapper>

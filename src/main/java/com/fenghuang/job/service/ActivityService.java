@@ -1,8 +1,10 @@
 package com.fenghuang.job.service;
 
 import com.fenghuang.job.request.ReqActivity;
+import com.fenghuang.job.request.ReqActivityQuery;
 import com.fenghuang.job.request.ReqActivityUpdate;
 import com.fenghuang.job.view.ActivityView;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -30,4 +32,11 @@ public interface ActivityService {
      * @return
      */
     ActivityView findActivityById(Integer id);
+
+    /**
+     * 根据条件查询活动且分页
+     * @param reqActivityQuery
+     * @return
+     */
+    PageInfo<ActivityView> findActivityPage(ReqActivityQuery reqActivityQuery);
 }

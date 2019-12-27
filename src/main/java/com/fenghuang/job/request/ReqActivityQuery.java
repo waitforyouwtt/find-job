@@ -1,5 +1,6 @@
 package com.fenghuang.job.request;
 
+import com.fenghuang.job.utils.PageHelps;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,9 +11,13 @@ import java.io.Serializable;
  * @Email: 15290810931@163.com
  */
 @Data
-public class ReqActivityQuery implements Serializable{
+public class ReqActivityQuery extends PageHelps implements Serializable{
+
+    private Integer id;
 
     private String activityTitle;
 
     private Integer activityStatus;
+
+    private Integer examineStatus;
 }

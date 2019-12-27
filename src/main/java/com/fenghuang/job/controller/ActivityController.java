@@ -2,8 +2,10 @@ package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqActivity;
+import com.fenghuang.job.request.ReqActivityQuery;
 import com.fenghuang.job.request.ReqActivityUpdate;
 import com.fenghuang.job.service.ActivityService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2019/12/25 14:16
  * @Email: 15290810931@163.com
  */
+@Api(value = "活动信息表相关接口",description = "活动信息表相关接口")
 @RestController
 public class ActivityController {
 
@@ -38,6 +41,12 @@ public class ActivityController {
     @GetMapping("/findActivityById")
     public Result findActivityById(@RequestParam("id") Integer id){
         return Result.success(activityService.findActivityById(id));
+    }
+
+    @ApiOperation(value = "根据条件查询活动且分页")
+    @PostMapping("/findActivityPage")
+    public Result findActivityPage(ReqActivityQuery reqActivityQuery){
+        return Result.success(activityService.findActivityPage(reqActivityQuery));
     }
 
 }

@@ -6,6 +6,8 @@ import com.fenghuang.job.request.ReqActivityQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface ActivityMapper {
     int deleteByPrimaryKey(Integer id);
@@ -23,4 +25,6 @@ public interface ActivityMapper {
     Activity queryActivity(ReqActivityQuery reqActivityQuery);
 
     Activity queryActivityByTitle(@Param("title") String title);
+
+    List<Activity> findActivityPage(ReqActivityQuery reqActivityQuery);
 }

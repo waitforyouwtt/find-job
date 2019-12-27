@@ -4,6 +4,7 @@ import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqBanner;
 import com.fenghuang.job.request.ReqBannerStatus;
 import com.fenghuang.job.service.BannerService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2019/12/23 17:48
  * @Email: 15290810931@163.com
  */
+@Api(value = "轮播图信息表相关接口",description = "轮播图信息表相关接口")
 @RestController
 public class BannerController {
 
