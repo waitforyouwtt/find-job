@@ -17,4 +17,6 @@ public class ReqMessage implements Serializable{
     private String signId;
 
     private String messageId;
+
+    private String ip;
 }

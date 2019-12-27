@@ -43,11 +43,22 @@ public class DateUtil {
         return sdf.format(calendar.getTime());
     }
 
+    /**
+     * data to string
+     * @return
+     */
+    public static String dateToString(Date date){
+        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+    }
+
+
     public static void main(String[] args) throws ParseException {
       /*  String time = subMinute(new Date(),-60);
         System.out.println(time);*/
-        Date date = DateUtils.parseDate("2019-12-26 15:06:00", "yyyy-MM-dd hh:mm:ss");
-        System.out.println("得到的时间："+date);
+       /* Date date = DateUtils.parseDate("2019-12-26 15:06:00", "yyyy-MM-dd hh:mm:ss");
+        System.out.println("得到的时间："+date);*/
+
+        System.out.println(dateToString(new Date()));
 
     }
 

@@ -1,6 +1,7 @@
 package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.master.MessageCountMapper;
 import com.fenghuang.job.entity.MessageCount;
 import com.fenghuang.job.enums.BusinessEnum;
@@ -91,12 +92,16 @@ public class MessageCountServiceImpl implements MessageCountService {
      * @param reqMessageCountQuery2
      */
     @Override
-    public List<MessageCountView> findMessageCount(ReqMessageCountQuery2 reqMessageCountQuery2) throws ParseException {
-        reqMessageCountQuery2.setOneHourAgoDate(DateUtil.subMinute(DateUtils.parseDate(reqMessageCountQuery2.getCurrentSendDate(),"yyyy-MM-dd hh:mm:ss"),-60));
-        log.info(" 根据条件统计一个人一小时发送短信的条数 请求参数：{}",JSON.toJSONString(reqMessageCountQuery2));
+    public List<MessageCountView> findMessageCount(ReqMessageCountQuery2 reqMessageCountQuery2){
+        log.info(" 根据条件统计一个人30分钟之内发送短信的条数 请求参数：{}",JSON.toJSONString(reqMessageCountQuery2));
+        try {
+            reqMessageCountQuery2.setOneHourAgoDate(DateUtil.subMinute(DateUtils.parseDate(reqMessageCountQuery2.getCurrentSendDate(),"yyyy-MM-dd hh:mm:ss"), Constants.MESSAGE_MINUTE));
+        } catch (ParseException e) {
+            log.info("根据条件统计一个人30分钟之内发送短信的条数 时间转换异常：{}",e.getMessage());
+        }
         List<MessageCount> queryMessageCount = messageCountMapper.findMessageCount(reqMessageCountQuery2);
-        log.info("根据条件统计一个人一小时发送短信的条数 返回记录：{}",JSON.toJSONString(queryMessageCount));
-        if (queryMessageCount.size() > 3){
+        log.info("根据条件统计一个人30分钟之内发送短信的条数 返回记录：{}",JSON.toJSONString(queryMessageCount));
+        if (queryMessageCount.size() > Constants.MESSAGE_COUNT){
             throw new BusinessException(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg());
         }
         List<MessageCountView> views = new ArrayList<>();

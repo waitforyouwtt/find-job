@@ -67,7 +67,9 @@ public class UserInfoController {
 
     @PostMapping("/messageRegister")
     @ApiOperation(value = "用户短信注册，发送验证码")
-    public Result messageRegister(ReqMessage reqMessage){
+    public Result messageRegister(ReqMessage reqMessage,HttpServletRequest request){
+        String ip = BusinessUtils.getIpAddress(request);
+        reqMessage.setIp(ip);
       return Result.success(userInfoService.messageRegister(reqMessage));
     }
 

@@ -6,25 +6,22 @@ import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.cluster.UserInfoClusterMapper;
 import com.fenghuang.job.dao.master.UserInfoMapper;
 import com.fenghuang.job.entity.UserInfo;
-import com.fenghuang.job.enums.BusinessEnum;
-import com.fenghuang.job.enums.LoginStatus;
-import com.fenghuang.job.enums.SystemCodeEnum;
-import com.fenghuang.job.enums.UserInfoStatusEnum;
+import com.fenghuang.job.enums.*;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.LoginLogService;
+import com.fenghuang.job.service.MessageCountService;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.AesUtil;
+import com.fenghuang.job.utils.DateUtil;
 import com.fenghuang.job.utils.SmsSenderUtil;
 import com.fenghuang.job.utils.StringCustomizedUtils;
-import com.fenghuang.job.view.JSONMessage;
-import com.fenghuang.job.view.MessageView;
-import com.fenghuang.job.view.RegisterCodeView;
-import com.fenghuang.job.view.UserInfoView;
+import com.fenghuang.job.view.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
@@ -59,6 +56,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     SmsSenderUtil smsSenderUtil;
+
+    @Autowired
+    MessageCountService messageCountService;
 
     /**
      * 根据用户名字获取记录[可能有重名的人]
@@ -220,11 +220,21 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
         reqUserInfoQuery.setMobile(reqMessage.getMobile());
+        //如果当前手机号已在系统中存在，则进行提示：该手机号用户已存在，不能重复注册
         UserInfo userInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (userInfo != null){
             throw new BusinessException(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg());
         }
+        //发送短信为注册时,如果当前手机号| ip 30分钟内频繁的发送短信超过5条，则视为用户进行恶意攻击
+        ReqMessageCountQuery2 messageCountQuery2 = new ReqMessageCountQuery2();
+        messageCountQuery2.setMessageType(MessageTypeEnum.REGISTER.getCode());
+        messageCountQuery2.setSendIp(reqMessage.getIp());
+        messageCountQuery2.setMobile(reqMessage.getMobile());
+        messageCountQuery2.setCurrentSendDate(DateUtil.dateToString(new Date()));
+        List<MessageCountView> messageCount = messageCountService.findMessageCount(messageCountQuery2);
+        log.info("当前手机号 | ip 30分钟之内发送的短信条数为：{}",messageCount.size());
         String sendMsm = smsSenderUtil.sendMsm(reqMessage.getMobile(), reqMessage.getSignId(), reqMessage.getMessageId());
+        //如果调用发送短信返回信息为空，则抛出错误信息
         if (StringUtils.isEmpty(sendMsm)){
             throw new BusinessException(BusinessEnum.CALL_SEND_MSM_NULL.getCode(),BusinessEnum.CALL_SEND_MSM_NULL.getMsg());
         }
@@ -234,6 +244,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (jsonMessage.getCode().equals(SystemCodeEnum.SUCCESS.getCode())){
             messageView.setCode(SystemCodeEnum.SUCCESS.getCode());
             messageView.setDesc("短信发送成功");
+            //发送短信成功，则往短信统计记录表中插入相关数据
+            ReqMessageCount reqMessageCount = new ReqMessageCount();
+            reqMessageCount.setSendIp(reqMessage.getIp());
+            reqMessageCount.setCreateDate(new Date());
+            reqMessageCount.setUpdateDate(new Date());
+            reqMessageCount.setFounder(reqMessage.getMobile());
+            reqMessageCount.setModifier(reqMessage.getMobile());
+            reqMessageCount.setMobile(reqMessage.getMobile());
+            reqMessageCount.setMessageType(MessageTypeEnum.REGISTER.getCode());
+            reqMessageCount.setSendContent("您正在进行使用短信注册新账号：{}"+JSON.toJSONString(sendMsm));
+            messageCountService.insertMessageCount(reqMessageCount);
         }else if (jsonMessage.getCode().equals(SystemCodeEnum.EXCEPTION.getCode()) ){
             messageView.setCode(SystemCodeEnum.ERROR.getCode());
             messageView.setDesc("短信发送异常");
@@ -395,11 +416,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         beanCopier.copy(userInfo,view,null);
         return view;
     }
-
-    public static String dateToString(){
-       return new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").format(new Date());
-    }
-
 
 
 }

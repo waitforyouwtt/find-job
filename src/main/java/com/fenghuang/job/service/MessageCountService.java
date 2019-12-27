@@ -30,7 +30,7 @@ public interface MessageCountService {
      */
     PageInfo<MessageCountView> findMessageCountPage(ReqMessageCountQuery messageCountQuery);
     /**
-     * 根据条件统计一个人一小时发送短信的条数
+     * 根据条件统计一个人30分钟发送短信的条数
      */
-    List<MessageCountView> findMessageCount(ReqMessageCountQuery2 reqMessageCountQuery2) throws ParseException;
+    List<MessageCountView> findMessageCount(ReqMessageCountQuery2 reqMessageCountQuery2);
 }
