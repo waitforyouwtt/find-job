@@ -15,6 +15,8 @@ project 访问地址: http://127.0.0.1:8081/ <br/>
 swagger 访问地址: http://127.0.0.1:8081/swagger-ui.html <br/>
 druid   访问地址: http://127.0.0.1:8081/druid/login.html <br/>
 
+alipay 支付参考：https://www.cnblogs.com/xifengxiaoma/p/10107635.html
+
 mybatis generator 如何在idea 中使用：
 1.创建spring boot 项目
 2.在resources 下创建generator 文件夹
