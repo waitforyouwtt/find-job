@@ -6,6 +6,7 @@ import com.fenghuang.job.request.ReqMessageCountQuery;
 import com.fenghuang.job.request.ReqMessageCountQuery2;
 import com.fenghuang.job.service.MessageCountService;
 import com.fenghuang.job.utils.BusinessUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import java.text.ParseException;
  * @Date: 2019/12/25 17:49
  * @Email: 15290810931@163.com
  */
+@Api(value = "短信发送记录统计相关接口",description = "短信发送记录统计相关接口")
 @RestController
 public class MessageCountController {
 

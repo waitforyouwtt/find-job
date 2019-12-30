@@ -3,6 +3,7 @@ package com.fenghuang.job.controller;
 import com.alipay.api.AlipayApiException;
 import com.fenghuang.job.alipay.AlipayBean;
 import com.fenghuang.job.service.PayService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2019/12/27 16:12
  * @Email: 15290810931@163.com
  */
+@Api(value = "alipay 支付相关接口",description = "alipay 支付相关接口")
 @RestController
 public class AlipayController {
 
