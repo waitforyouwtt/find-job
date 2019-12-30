@@ -7,10 +7,7 @@ import com.fenghuang.job.service.BannerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -26,18 +23,18 @@ public class BannerController {
 
     @ApiOperation(value = "添加轮播图banner")
     @PostMapping("/insertBanner")
-    public Result insertBanner(ReqBanner reqBanner){
+    public Result insertBanner(@RequestBody ReqBanner reqBanner){
         return Result.success(bannerService.insertBanner(reqBanner));
     }
 
     @ApiOperation(value = "根据条件查找banner")
     @PostMapping("/findBanner")
-    public Result findBanner(ReqBanner reqBanner){
+    public Result findBanner(@RequestBody ReqBanner reqBanner){
         return Result.success(bannerService.findBanner(reqBanner));
     }
     @ApiOperation(value = "根据ID更新轮播图状态")
     @PostMapping("/modifyBannerStatus")
-    public Result modifyBannerStatus(ReqBannerStatus reqBannerStatus){
+    public Result modifyBannerStatus(@RequestBody ReqBannerStatus reqBannerStatus){
         return Result.success(bannerService.modifyBannerStatus(reqBannerStatus));
     }
 

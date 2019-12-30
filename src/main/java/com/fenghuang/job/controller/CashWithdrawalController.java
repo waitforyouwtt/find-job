@@ -6,10 +6,7 @@ import com.fenghuang.job.service.CashWithdrawalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -25,19 +22,19 @@ public class CashWithdrawalController {
 
     @ApiOperation(value = "申请提现接口")
     @PostMapping("/applyCashWithdrawal")
-    public Result applyCashWithdrawal(ReqCashWithdrawal reqCashWithdrawal){
+    public Result applyCashWithdrawal(@RequestBody ReqCashWithdrawal reqCashWithdrawal){
         return Result.success(cashWithdrawalService.insertCashWithdrawal(reqCashWithdrawal));
     }
 
     @ApiOperation(value = "根据条件查询且分页提现订单申请信息表")
     @PostMapping("/findCashWithdrawalPage")
-    public Result findCashWithdrawalPage(ReqCashWithdrawal reqCashWithdrawal){
+    public Result findCashWithdrawalPage(@RequestBody ReqCashWithdrawal reqCashWithdrawal){
         return Result.success(cashWithdrawalService.findCashWithdrawalPage(reqCashWithdrawal));
     }
 
     @ApiOperation(value = "根据订单id更新提现订单信息表状态")
     @PostMapping("/modifyCashWithdrawalStatus")
-    public Result modifyCashWithdrawalStatus(ReqCashWithdrawal reqCashWithdrawal){
+    public Result modifyCashWithdrawalStatus(@RequestBody ReqCashWithdrawal reqCashWithdrawal){
         return Result.success(cashWithdrawalService.modifyCashWithdrawalStatus(reqCashWithdrawal));
     }
 

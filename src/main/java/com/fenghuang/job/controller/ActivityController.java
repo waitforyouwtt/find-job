@@ -8,10 +8,7 @@ import com.fenghuang.job.service.ActivityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -27,13 +24,13 @@ public class ActivityController {
 
     @ApiOperation(value = "新增活动")
     @PostMapping(value = "/insertActivity")
-    public Result insertActivity(ReqActivity reqActivity){
+    public Result insertActivity(@RequestBody ReqActivity reqActivity){
         return Result.success(activityService.insertActivity(reqActivity));
     }
 
     @ApiOperation(value = "根据ID修改活动相关信息")
     @PostMapping("/modifyActivity")
-    public Result modifyActivity(ReqActivityUpdate reqActivityUpdate){
+    public Result modifyActivity(@RequestBody ReqActivityUpdate reqActivityUpdate){
         return Result.success(activityService.modifyActivity(reqActivityUpdate));
     }
 
@@ -45,7 +42,7 @@ public class ActivityController {
 
     @ApiOperation(value = "根据条件查询活动且分页")
     @PostMapping("/findActivityPage")
-    public Result findActivityPage(ReqActivityQuery reqActivityQuery){
+    public Result findActivityPage(@RequestBody ReqActivityQuery reqActivityQuery){
         return Result.success(activityService.findActivityPage(reqActivityQuery));
     }
 

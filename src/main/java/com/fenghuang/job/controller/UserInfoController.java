@@ -61,13 +61,13 @@ public class UserInfoController {
 
     @PostMapping("/changePassword")
     @ApiOperation(value = "用户进行修改密码")
-    public Result changePassword(ReqUserInfoUpdate reqUserInfoUpdate){
+    public Result changePassword(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
         return Result.success(userInfoService.changePassword(reqUserInfoUpdate));
     }
 
     @PostMapping("/messageRegister")
     @ApiOperation(value = "用户短信注册，发送验证码")
-    public Result messageRegister(ReqMessage reqMessage,HttpServletRequest request){
+    public Result messageRegister(@RequestBody ReqMessage reqMessage,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqMessage.setIp(ip);
       return Result.success(userInfoService.messageRegister(reqMessage));
@@ -75,13 +75,13 @@ public class UserInfoController {
 
     @PostMapping("/checkRegisterCode")
     @ApiOperation(value = "用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败")
-    public Result checkRegisterCode(ReqRegisterCode registerCode) {
+    public Result checkRegisterCode(@RequestBody ReqRegisterCode registerCode) {
         return Result.success(userInfoService.checkRegisterCode(registerCode));
     }
 
     @PostMapping("/login")
     @ApiOperation(value = "根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
-    public Result login(ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
+    public Result login(@RequestBody ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqLoginUserInfo.setLoginIp(ip);
         return Result.success(userInfoService.login(reqLoginUserInfo));
@@ -89,7 +89,7 @@ public class UserInfoController {
 
     @PostMapping("/loginByMessage")
     @ApiOperation(value = "使用短信进行登录，发送验证码")
-    public Result loginByMessage(HttpServletRequest request,ReqMessage reqMessage){
+    public Result loginByMessage(@RequestBody HttpServletRequest request,ReqMessage reqMessage){
         String ip = BusinessUtils.getIpAddress(request);
         reqMessage.setIp(ip);
         return Result.success(userInfoService.loginByMessage(reqMessage));
@@ -97,7 +97,7 @@ public class UserInfoController {
 
     @PostMapping("/checkLoginCode")
     @ApiOperation(value = "用户短信登录，输入验证码，验证通过则登录成功，验证失败则登录失败")
-    public Result checkLoginCode(ReqLoginUserInfo reqLoginUserInfo) {
+    public Result checkLoginCode(@RequestBody ReqLoginUserInfo reqLoginUserInfo) {
         return Result.success(userInfoService.checkLoginCode(reqLoginUserInfo));
     }
 

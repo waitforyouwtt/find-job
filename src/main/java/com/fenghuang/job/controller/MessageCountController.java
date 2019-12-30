@@ -9,6 +9,7 @@ import com.fenghuang.job.utils.BusinessUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class MessageCountController {
 
     @ApiOperation(value = "插入短信统计表")
     @PostMapping("/insertMessageCount")
-    public Result insertMessageCount(ReqMessageCount reqMessageCount,HttpServletRequest request){
+    public Result insertMessageCount(@RequestBody ReqMessageCount reqMessageCount, HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqMessageCount.setSendIp(ip);
         return Result.success(messageCountService.insertMessageCount(reqMessageCount));
@@ -37,13 +38,13 @@ public class MessageCountController {
 
     @ApiOperation(value = "根据条件进行查询短信统计且分页")
     @PostMapping("/findMessageCountPage")
-    public Result findMessageCountPage(ReqMessageCountQuery messageCountQuery){
+    public Result findMessageCountPage(@RequestBody ReqMessageCountQuery messageCountQuery){
         return Result.success(messageCountService.findMessageCountPage(messageCountQuery));
     }
 
     @ApiOperation(value = "根据条件统计一个人一小时发送短信的条数")
     @PostMapping("/findMessageCount")
-    public Result findMessageCount (ReqMessageCountQuery2 messageCountQuery2) throws ParseException {
+    public Result findMessageCount (@RequestBody ReqMessageCountQuery2 messageCountQuery2) throws ParseException {
         return Result.success(messageCountService.findMessageCount(messageCountQuery2));
     }
 

@@ -6,10 +6,7 @@ import com.fenghuang.job.service.ProjectTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -26,12 +23,12 @@ public class ProjectTypeController {
 
     @ApiOperation( value = "新增项目类型")
     @PostMapping("/insertProjectType")
-    public Result insertProjectType(ReqProjectType reqProjectType){
+    public Result insertProjectType(@RequestBody ReqProjectType reqProjectType){
         return Result.success( projectTypeService.insertProjectType(reqProjectType) );
     }
     @ApiOperation( value = "更新项目类型字段")
     @PostMapping("/modifyProjectType")
-    public Result modifyProjectType(ReqProjectType reqProjectType){
+    public Result modifyProjectType(@RequestBody ReqProjectType reqProjectType){
         return Result.success( projectTypeService.modifyProjectType(reqProjectType) );
     }
     @ApiOperation( value = "根据id 查询项目类型相关信息")
@@ -41,7 +38,7 @@ public class ProjectTypeController {
     }
     @ApiOperation( value = "根据条件查询项目类型 且分页")
     @PostMapping("/findProjectTypePage")
-    public Result findProjectTypePage(ReqProjectType reqProjectType){
+    public Result findProjectTypePage(@RequestBody ReqProjectType reqProjectType){
         return Result.success( projectTypeService.findProjectTypePage(reqProjectType) );
     }
 

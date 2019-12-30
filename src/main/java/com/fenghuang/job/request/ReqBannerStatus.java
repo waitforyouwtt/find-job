@@ -1,5 +1,6 @@
 package com.fenghuang.job.request;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,19 +16,27 @@ public class ReqBannerStatus implements Serializable{
 
     private Integer id;
 
+    @ApiModelProperty("活动ID")
     private Integer activityId;
 
+    @ApiModelProperty("活动图片地址url")
     private String activityImg;
 
+    @ApiModelProperty("排序")
     private Integer rankField;
 
+    @ApiModelProperty("轮播图图片状态：1 正常 2失效")
     private Integer bannerImgStatus;
 
+    @ApiModelProperty("创建人")
     private String founder;
 
+    @ApiModelProperty("修改人")
     private String modifier;
 
+    @ApiModelProperty("创建时间")
     private Date createDate;
 
+    @ApiModelProperty("创建时间")
     private Date updateDate;
 }

@@ -6,10 +6,7 @@ import com.fenghuang.job.service.OrderInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -26,13 +23,13 @@ public class OrderInfoController {
 
     @ApiOperation( value = "生成订单且返回订单号")
     @PostMapping("/createOrder")
-    public Result createOrder(ReqOrderInfo reqOrderInfo){
+    public Result createOrder(@RequestBody ReqOrderInfo reqOrderInfo){
      return Result.success(orderInfoService.createOrder(reqOrderInfo));
     }
 
     @ApiOperation( value = "根据条件进行查询订单信息表且分页")
     @PostMapping("/findOrderInfoPage")
-    public Result findOrderInfoPage(ReqOrderInfo reqOrderInfo){
+    public Result findOrderInfoPage(@RequestBody ReqOrderInfo reqOrderInfo){
         return Result.success( orderInfoService.findOrderInfoPage(reqOrderInfo) );
     }
 
@@ -44,7 +41,7 @@ public class OrderInfoController {
 
     @ApiOperation( value = "更新订单状态")
     @PostMapping("/modifyOrderStatus")
-    public Result modifyOrderStatus(ReqOrderInfo reqOrderInfo){
+    public Result modifyOrderStatus(@RequestBody ReqOrderInfo reqOrderInfo){
         return Result.success( orderInfoService.modifyOrderStatus(reqOrderInfo) );
     }
 
