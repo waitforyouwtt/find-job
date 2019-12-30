@@ -44,6 +44,15 @@ public class ReqUserInfo implements Serializable{
     @ApiModelProperty("用户手机号")
     private String mobile;
 
+    @ApiModelProperty("省份ID")
+    private Integer provinceId;
+
+    @ApiModelProperty("城市ID")
+    private Integer cityId;
+
+    @ApiModelProperty("县区ID")
+    private Integer countyAreaId;
+
     @ApiModelProperty("用户详细地址")
     private String address;
 

@@ -29,7 +29,7 @@ public interface UserInfoMapper {
 
     List<UserInfo> findUserInfoPage(ReqUserInfoQuery reqUserInfoQuery);
 
-    UserInfo findUserInfoByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
+    UserInfo findUserInfoByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
 
     int changePassword(ReqUserInfoUpdate reqUserInfoUpdate);
 

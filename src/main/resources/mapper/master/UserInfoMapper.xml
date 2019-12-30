@@ -11,6 +11,9 @@
     <result column="wechat" jdbcType="VARCHAR" property="wechat" />
     <result column="gender" jdbcType="INTEGER" property="gender" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="county_Area_id" jdbcType="INTEGER" property="countyAreaId" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="id_card_x" jdbcType="VARCHAR" property="idCardX" />
     <result column="id_card_y" jdbcType="VARCHAR" property="idCardY" />
@@ -27,8 +30,9 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, user_name, user_nickName, id_card, user_head, password, wechat, gender, mobile, 
-    address, id_card_x, id_card_y, user_status, amount, user_type, user_level, emergency_contact_name, 
-    emergency_contact_mobile, founder, modifier, create_date, update_date
+    province_id, city_id, county_Area_id, address, id_card_x, id_card_y, user_status, 
+    amount, user_type, user_level, emergency_contact_name, emergency_contact_mobile, 
+    founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -44,6 +48,7 @@
     insert into userinfo (id, user_name, user_nickName, 
       id_card, user_head, password, 
       wechat, gender, mobile, 
+      province_id, city_id, county_Area_id, 
       address, id_card_x, id_card_y, 
       user_status, amount, user_type, 
       user_level, emergency_contact_name, emergency_contact_mobile, 
@@ -52,6 +57,7 @@
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR}, 
       #{idCard,jdbcType=VARCHAR}, #{userHead,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{wechat,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{countyAreaId,jdbcType=INTEGER}, 
       #{address,jdbcType=VARCHAR}, #{idCardX,jdbcType=VARCHAR}, #{idCardY,jdbcType=VARCHAR}, 
       #{userStatus,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{userType,jdbcType=INTEGER}, 
       #{userLevel,jdbcType=INTEGER}, #{emergencyContactName,jdbcType=VARCHAR}, #{emergencyContactMobile,jdbcType=VARCHAR}, 
@@ -87,6 +93,15 @@
       </if>
       <if test="mobile != null">
         mobile,
+      </if>
+      <if test="provinceId != null">
+        province_id,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="countyAreaId != null">
+        county_Area_id,
       </if>
       <if test="address != null">
         address,
@@ -156,6 +171,15 @@
       <if test="mobile != null">
         #{mobile,jdbcType=VARCHAR},
       </if>
+      <if test="provinceId != null">
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="countyAreaId != null">
+        #{countyAreaId,jdbcType=INTEGER},
+      </if>
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
@@ -224,6 +248,15 @@
       <if test="mobile != null">
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
+      <if test="provinceId != null">
+        province_id = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="countyAreaId != null">
+        county_Area_id = #{countyAreaId,jdbcType=INTEGER},
+      </if>
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
       </if>
@@ -276,6 +309,9 @@
       wechat = #{wechat,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=INTEGER},
       mobile = #{mobile,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER},
+      county_Area_id = #{countyAreaId,jdbcType=INTEGER},
       address = #{address,jdbcType=VARCHAR},
       id_card_x = #{idCardX,jdbcType=VARCHAR},
       id_card_y = #{idCardY,jdbcType=VARCHAR},
@@ -419,5 +455,4 @@
     and id_card = #{userName}
     and password = #{idCard}
   </select>
-
 </mapper>
