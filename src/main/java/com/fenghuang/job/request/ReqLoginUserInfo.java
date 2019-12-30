@@ -23,8 +23,10 @@ public class ReqLoginUserInfo implements Serializable {
 
     private String password;
 
+    private String verificationCode;
+
     private String LoginIp;
 
-    @ApiModelProperty(value = "登录方式：1.[用户名&密码] 2.[用户昵称&密码]3.[手机号&密码]4.[身份证号&密码]")
+    @ApiModelProperty(value = "登录方式：1.[用户名&密码] 2.[用户昵称&密码]3.[手机号&密码]4.[身份证号&密码] 5.[手机号&短信]")
     private Integer loginType;
 }

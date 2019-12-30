@@ -14,4 +14,5 @@ public class MessageView implements Serializable{
 
     private Integer code;
     private String desc;
+
 }

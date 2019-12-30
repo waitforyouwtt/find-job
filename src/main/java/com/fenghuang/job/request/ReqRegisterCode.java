@@ -1,4 +1,4 @@
-package com.fenghuang.job.view;
+package com.fenghuang.job.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(value = "手机号注册")
-public class RegisterCodeView implements Serializable{
+public class ReqRegisterCode implements Serializable{
 
     @ApiModelProperty("注册手机号")
     private String mobile;

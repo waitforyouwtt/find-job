@@ -4,7 +4,7 @@ import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.BusinessUtils;
-import com.fenghuang.job.view.RegisterCodeView;
+import com.fenghuang.job.request.ReqRegisterCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +75,8 @@ public class UserInfoController {
 
     @PostMapping("/checkRegisterCode")
     @ApiOperation(value = "用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败")
-    public Result checkRegisterCode(RegisterCodeView registerCodeView) {
-        return Result.success(userInfoService.checkRegisterCode(registerCodeView));
+    public Result checkRegisterCode(ReqRegisterCode registerCode) {
+        return Result.success(userInfoService.checkRegisterCode(registerCode));
     }
 
     @PostMapping("/login")
@@ -85,6 +85,20 @@ public class UserInfoController {
         String ip = BusinessUtils.getIpAddress(request);
         reqLoginUserInfo.setLoginIp(ip);
         return Result.success(userInfoService.login(reqLoginUserInfo));
+    }
+
+    @PostMapping("/loginByMessage")
+    @ApiOperation(value = "使用短信进行登录，发送验证码")
+    public Result loginByMessage(HttpServletRequest request,ReqMessage reqMessage){
+        String ip = BusinessUtils.getIpAddress(request);
+        reqMessage.setIp(ip);
+        return Result.success(userInfoService.loginByMessage(reqMessage));
+    }
+
+    @PostMapping("/checkLoginCode")
+    @ApiOperation(value = "用户短信登录，输入验证码，验证通过则登录成功，验证失败则登录失败")
+    public Result checkLoginCode(ReqLoginUserInfo reqLoginUserInfo) {
+        return Result.success(userInfoService.checkLoginCode(reqLoginUserInfo));
     }
 
     @ApiOperation(value = "根据Id 获取用户记录详情")

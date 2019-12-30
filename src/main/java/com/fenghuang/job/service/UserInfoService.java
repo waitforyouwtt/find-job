@@ -2,7 +2,7 @@ package com.fenghuang.job.service;
 
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.view.MessageView;
-import com.fenghuang.job.view.RegisterCodeView;
+import com.fenghuang.job.request.ReqRegisterCode;
 import com.fenghuang.job.view.UserInfoView;
 import com.github.pagehelper.PageInfo;
 
@@ -64,10 +64,10 @@ public interface UserInfoService {
 
     /**
      *用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败
-     * @param registerCodeView
+     * @param registerCode
      * @return
      */
-    MessageView checkRegisterCode(RegisterCodeView registerCodeView);
+    MessageView checkRegisterCode(ReqRegisterCode registerCode);
 
     /**
      * 根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录
@@ -82,4 +82,18 @@ public interface UserInfoService {
      * @return
      */
     UserInfoView findUserById(Integer id);
+
+    /**
+     * 使用短信进行登录，发送验证码
+     * @param reqMessage
+     * @return
+     */
+    MessageView loginByMessage(ReqMessage reqMessage);
+
+    /**
+     * 用户短信登录，输入验证码，验证通过则登录成功，验证失败则登录失败
+     * @param reqLoginUserInfo
+     * @return
+     */
+    UserInfoView checkLoginCode(ReqLoginUserInfo reqLoginUserInfo);
 }
