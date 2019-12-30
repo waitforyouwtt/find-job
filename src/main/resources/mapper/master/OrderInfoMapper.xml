@@ -166,6 +166,10 @@
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.OrderInfo">
     update order_info
