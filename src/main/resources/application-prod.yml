@@ -38,14 +38,14 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 
   #指定spring data jpa 的表配置[update],及显示sql
-  jpa:
-      hibernate:
-        ddl-auto: update
+  #jpa:
+      #hibernate:
+      #  ddl-auto: update
         #配合database-platform 创建表默认的存储引擎为MyISam ,修改为 innodb
-        naming:
-          physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-      show-sql: true
-      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        #naming:
+        #  physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      #show-sql: true
+      #database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
 #指定redis 的相关配置
   redis:

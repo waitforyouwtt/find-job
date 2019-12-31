@@ -1,3 +1,4 @@
+/*
 package org.hibernate.cfg;
 
 import org.hibernate.AnnotationException;
@@ -18,11 +19,13 @@ import org.jboss.logging.Logger;
 import javax.persistence.*;
 import java.util.*;
 
+*/
 /**
  * @Author: 凤凰[小哥哥]
  * @Date: 2019/9/24 22:47
  * @Email: 15290810931@163.com
- */
+ *//*
+
 public class PropertyContainer {
 
     private static final CoreMessageLogger LOG = (CoreMessageLogger) Logger.getMessageLogger(CoreMessageLogger.class, PropertyContainer.class.getName());
@@ -211,3 +214,4 @@ public class PropertyContainer {
         return property.isAnnotationPresent(Transient.class) || "net.sf.cglib.transform.impl.InterceptFieldCallback".equals(property.getType().getName()) || "org.hibernate.bytecode.internal.javassist.FieldHandler".equals(property.getType().getName());
     }
 }
+*/
