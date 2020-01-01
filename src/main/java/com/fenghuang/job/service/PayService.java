@@ -1,6 +1,6 @@
 package com.fenghuang.job.service;
 
-import com.alipay.api.AlipayApiException;
+//import com.alipay.api.AlipayApiException;
 import com.fenghuang.job.alipay.AlipayBean;
 
 /**
@@ -16,5 +16,5 @@ public interface PayService {
      * @return
      * @throws AlipayApiException
      */
-    String aliPay(AlipayBean alipayBean) throws AlipayApiException;
+   // String aliPay(AlipayBean alipayBean) throws AlipayApiException;
 }
