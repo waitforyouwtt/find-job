@@ -314,7 +314,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             loginLog.setLoginDate(new Date());
             loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
             loginLog.setUserId(queryUserInfo.getId());
-            loginLog.setLoginStatus(LoginStatus.FAIL.getCode());
+            loginLog.setLoginStatus(LoginStatusEnum.FAIL.getCode());
             loginLog.setFailRemark(BusinessEnum.USERINFO_FROZEN.getMsg());
             log.info("记录登录日志请求参数：{}");
             loginLogService.insertLoginLog(loginLog);
@@ -345,7 +345,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             loginLog.setLoginDate(new Date());
             loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
             loginLog.setUserId(queryUserInfo.getId());
-            loginLog.setLoginStatus(LoginStatus.FAIL.getCode());
+            loginLog.setLoginStatus(LoginStatusEnum.FAIL.getCode());
             loginLog.setFailRemark(BusinessEnum.LOGIN_ERROR.getMsg());
             log.info("记录登录日志请求参数：{}");
             loginLogService.insertLoginLog(loginLog);
@@ -355,7 +355,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             loginLog.setLoginDate(new Date());
             loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
             loginLog.setUserId(queryUserInfo.getId());
-            loginLog.setLoginStatus(LoginStatus.SUCCESS.getCode());
+            loginLog.setLoginStatus(LoginStatusEnum.SUCCESS.getCode());
             loginLog.setFailRemark("登录成功");
             log.info("记录登录日志请求参数：{}",JSON.toJSONString(loginLog));
             loginLogService.insertLoginLog(loginLog);
@@ -449,7 +449,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 loginLog.setLoginDate(new Date());
                 loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
                 loginLog.setUserId(0);
-                loginLog.setLoginStatus(LoginStatus.SUCCESS.getCode());
+                loginLog.setLoginStatus(LoginStatusEnum.SUCCESS.getCode());
                 loginLog.setFailRemark("短信登录成功");
                 log.info("记录登录日志请求参数：{}");
                 loginLogService.insertLoginLog(loginLog);
@@ -463,7 +463,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         loginLog.setLoginDate(new Date());
         loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
         loginLog.setUserId(0);
-        loginLog.setLoginStatus(LoginStatus.FAIL.getCode());
+        loginLog.setLoginStatus(LoginStatusEnum.FAIL.getCode());
         loginLog.setFailRemark(BusinessEnum.USERINFO_EXIST.getMsg());
         log.info("记录登录日志请求参数：{}");
         loginLogService.insertLoginLog(loginLog);

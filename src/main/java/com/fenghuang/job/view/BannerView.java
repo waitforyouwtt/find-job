@@ -31,6 +31,9 @@ public class BannerView implements Serializable {
     @ApiModelProperty("图片状态：1 正常 2失效")
     private Integer bannerImgStatus;
 
+    @ApiModelProperty("图片状态：1 正常 2失效")
+    private String bannerImgStatusDesc;
+
     @ApiModelProperty("创建人")
     private String founder;
 

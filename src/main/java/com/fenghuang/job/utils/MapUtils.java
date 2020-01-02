@@ -31,7 +31,7 @@ public class MapUtils {
     private static double[] getLatAndLonByAddress(String address) {
         try {
             String requestUrl = API.replaceAll("<address>", URLEncoder.encode(address, "UTF-8"));
-            RequestResult requestResult = RequestUtils.getJsonText(requestUrl, null);
+            RequestResult requestResult = null;//RequestUtils.getJsonText(requestUrl, null);
             if (200 != requestResult.getCode()) {
                 return null;
             }
