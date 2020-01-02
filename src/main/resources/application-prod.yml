@@ -1,14 +1,14 @@
-#数据源采取主从配置
+#数据源采取主从配置[小光头的ip]
 master:
   datasource:
-    url: jdbc:mysql://localhost:3307/druid_master?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
-    username: root
-    password: root
+    url: jdbc:mysql://cdb-9dv88oee.bj.tencentcdb.com:10145/mowa_db?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: luoxian
+    password: luoxian123
     driverClassName: com.mysql.jdbc.Driver
 #从库配置
 cluster:
   datasource:
-    url: jdbc:mysql://localhost:3307/druid_cluster?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://cdb-9dv88oee.bj.tencentcdb.com:10145/mowa_db?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     username: root
     password: root
     driverClassName: com.mysql.jdbc.Driver
@@ -75,4 +75,4 @@ message:
   appKey: 1e20414203304a00855b02b4ceb1486b
 
 server:
-  port: 8081
+  port: 7009

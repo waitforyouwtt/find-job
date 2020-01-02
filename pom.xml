@@ -120,11 +120,11 @@
 		</dependency>
 
 		<!-- alipay 支付宝支付 -->
-		<dependency>
+<!--		<dependency>
 			<groupId>com.alipay.sdk</groupId>
 			<artifactId>alipay-sdk-java</artifactId>
 			<version>4.8.103.ALL</version>
-		</dependency>
+		</dependency>-->
 
 		<!--wxPay-->
 		<dependency>

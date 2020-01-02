@@ -1,3 +1,4 @@
+/*
 package com.fenghuang.job.alipay;
 
 import com.alibaba.fastjson.JSON;
@@ -8,11 +9,13 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+*/
 /**
  * @Author: 凤凰[小哥哥]
  * @Date: 2019/12/27 11:27
  * @Email: 15290810931@163.com
- */
+ *//*
+
 @Component
 @Slf4j
 public class Alipay {
@@ -49,3 +52,4 @@ public class Alipay {
         return result;
     }
 }
+*/
