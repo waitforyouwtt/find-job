@@ -33,9 +33,11 @@ public class ActivityView implements Serializable{
 
     @ApiModelProperty("活动状态：1 初始化 2 有效 3 失效")
     private Integer activityStatus;
+    private String activityStatusDesc;
 
     @ApiModelProperty("审核状态：1 待审核 2 已通过 3已驳回")
     private Integer examineStatus;
+    private String examineStatusDesc;
 
     @ApiModelProperty("创建人")
     private String founder;

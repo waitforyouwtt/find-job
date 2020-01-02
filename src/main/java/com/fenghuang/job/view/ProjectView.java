@@ -46,9 +46,11 @@ public class ProjectView implements Serializable {
 
     @ApiModelProperty("项目状态： 1 初始化 2进行中 3 结束")
     private Integer projectStatus;
+    private String  projectStatusDesc;
 
     @ApiModelProperty("审核状态 1待审核 2 已通过 3 已驳回")
     private Integer examineStatus;
+    private String  examineStatusDesc;
 
     @ApiModelProperty("项目需要人数")
     private Integer projectNeedPeople;

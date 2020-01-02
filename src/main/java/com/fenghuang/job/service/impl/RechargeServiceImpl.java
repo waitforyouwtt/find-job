@@ -3,6 +3,7 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.RechargeMapper;
 import com.fenghuang.job.entity.Recharge;
+import com.fenghuang.job.enums.RechargeAccountTypeEnum;
 import com.fenghuang.job.enums.RechargeOrderStatusEnum;
 import com.fenghuang.job.request.ReqRecharge;
 import com.fenghuang.job.service.RechargeService;
@@ -76,6 +77,8 @@ public class RechargeServiceImpl implements RechargeService {
                     RechargeView view = new RechargeView();
                     BeanCopier beanCopier = BeanCopier.create(Recharge.class,RechargeView.class,false);
                     beanCopier.copy(recharge,view,null);
+                    view.setRechargeAccountTypeDesc(RechargeAccountTypeEnum.fromValue(recharge.getRechargeAccountType()).getMsg());
+                    view.setRechargeOrderStatusDesc(RechargeOrderStatusEnum.fromValue(recharge.getRechargeOrderStatus()).getMsg());
                     views.add(view);
                 });
                 pageInfo = new PageInfo<>(views);

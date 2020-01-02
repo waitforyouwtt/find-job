@@ -24,6 +24,7 @@ public class LoginLogView implements Serializable{
 
     @ApiModelProperty("登陆状态：1成功 2 失败")
     private Integer loginStatus;
+    private String  loginStatusDesc;
 
     @ApiModelProperty("登陆日期")
     private Date loginDate;

@@ -113,6 +113,7 @@ public class BannerServiceImpl implements BannerService {
         BannerView view = new BannerView();
         BeanCopier beanCopier = BeanCopier.create(Banner.class,BannerView.class,false);
         beanCopier.copy(queryBanner,view,null);
+        view.setBannerImgStatusDesc(BannerImgStatusEnum.fromValue(banner.getBannerImgStatus()).getMsg());
         log.info("根据id 查询banner 详情返回结果：{}",JSON.toJSONString(view));
         return view;
     }

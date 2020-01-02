@@ -50,6 +50,7 @@ public class OrderInfoView implements Serializable {
 
     @ApiModelProperty("订单状态:1待开始 2进行中 3交易成功 4订单取消[用户] 5订单关闭[商家]")
     private Integer orderStatus;
+    private String  orderStatusDesc;
 
     @ApiModelProperty("原因")
     private String remark;

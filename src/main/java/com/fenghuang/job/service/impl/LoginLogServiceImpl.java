@@ -3,6 +3,7 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.LoginLogMapper;
 import com.fenghuang.job.entity.LoginLog;
+import com.fenghuang.job.enums.LoginStatusEnum;
 import com.fenghuang.job.request.ReqLoginLog;
 import com.fenghuang.job.service.LoginLogService;
 import com.fenghuang.job.view.LoginLogView;
@@ -62,6 +63,7 @@ public class LoginLogServiceImpl implements LoginLogService {
             LoginLogView view = new LoginLogView();
             BeanCopier beanCopier = BeanCopier.create(LoginLog.class, LoginLogView.class, false);
             beanCopier.copy(loginLog,view,null);
+            view.setLoginStatusDesc(LoginStatusEnum.fromValue(loginLog.getLoginStatus()).getMsg());
             views.add(view);
         });
     }

@@ -183,6 +183,8 @@ public class ProjectServiceImpl implements ProjectService {
             ProjectView view = new ProjectView();
             BeanCopier beanCopier = BeanCopier.create( Project.class, ProjectView.class, false );
             beanCopier.copy( project, view, null );
+            view.setProjectStatusDesc(ProjectStatusEnum.fromValue(project.getProjectStatus()).getMsg());
+            view.setExamineStatusDesc(ExamineStatusEnum.fromValue(project.getExamineStatus()).getMsg());
             views.add( view );
         } );
     }

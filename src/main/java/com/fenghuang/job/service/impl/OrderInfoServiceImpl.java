@@ -82,6 +82,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
                     OrderInfoView view = new OrderInfoView();
                     BeanCopier copier = BeanCopier.create( OrderInfo.class, OrderInfoView.class, false );
                     copier.copy( orderInfo,view,null );
+                    view.setOrderStatusDesc(OrderStatusEnum.fromValue(orderInfo.getOrderStatus()).getMsg());
                     views.add( view );
                 } );
                 pageInfo = new PageInfo<>( views );
@@ -109,6 +110,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         OrderInfoView orderInfoView = new OrderInfoView();
         BeanCopier copier = BeanCopier.create( OrderInfo.class, OrderInfoView.class, false );
         copier.copy( queryOrderInfo,orderInfoView,null );
+        orderInfoView.setOrderStatusDesc(OrderStatusEnum.fromValue(queryOrderInfo.getOrderStatus()).getMsg());
         log.info( "根据订单id 获取订单详情 返回结果：{}",JSON.toJSONString( queryOrderInfo ) );
         return orderInfoView;
     }

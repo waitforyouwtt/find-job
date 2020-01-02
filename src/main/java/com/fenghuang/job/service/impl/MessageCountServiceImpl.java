@@ -5,6 +5,7 @@ import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.master.MessageCountMapper;
 import com.fenghuang.job.entity.MessageCount;
 import com.fenghuang.job.enums.BusinessEnum;
+import com.fenghuang.job.enums.MessageTypeEnum;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqMessageCount;
 import com.fenghuang.job.request.ReqMessageCountQuery;
@@ -112,6 +113,7 @@ public class MessageCountServiceImpl implements MessageCountService {
             MessageCountView view = new MessageCountView();
             BeanCopier beanCopier = BeanCopier.create(MessageCount.class, MessageCountView.class, false);
             beanCopier.copy(messageCount,view,null);
+            view.setMessageTypeDesc(MessageTypeEnum.fromValue(messageCount.getMessageType()).getMsg());
             views.add(view);
         });
     }

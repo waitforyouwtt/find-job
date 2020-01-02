@@ -27,6 +27,7 @@ public class MessageCountView implements Serializable{
 
     @ApiModelProperty("短信类型: 1 注册 2 找回密码 3.登录")
     private Integer messageType;
+    private String  messageTypeDesc;
 
     @ApiModelProperty("短信发送内容")
     private String sendContent;

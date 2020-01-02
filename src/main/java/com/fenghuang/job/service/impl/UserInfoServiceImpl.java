@@ -86,6 +86,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             UserInfoView view = new UserInfoView();
             BeanCopier beanCopier = BeanCopier.create(UserInfo.class, UserInfoView.class, false);
             beanCopier.copy(userInfo, view, null);
+            view.setGenderDesc(GenderEnum.fromValue(userInfo.getGender()).getMsg());
+            view.setUserStatusDesc(UserInfoStatusEnum.fromValue(userInfo.getUserStatus()).getMsg());
+            view.setUserTypeDesc(UserTypeEnum.fromValue(userInfo.getUserType()).getMsg());
             userInfoViews.add(view);
         });
     }

@@ -96,6 +96,8 @@ public class ActivityServiceImpl implements ActivityService {
         ActivityView view = new ActivityView();
         BeanCopier copier = BeanCopier.create(Activity.class,ActivityView.class,false);
         copier.copy(activity,view,null);
+        view.setActivityStatusDesc(ActivityStatusEnum.fromValue(activity.getActivityStatus()).getMsg());
+        view.setExamineStatusDesc(ExamineStatusEnum.fromValue(activity.getExamineStatus()).getMsg());
         return view;
     }
 
@@ -120,6 +122,8 @@ public class ActivityServiceImpl implements ActivityService {
                     ActivityView view = new ActivityView();
                     BeanCopier beanCopier = BeanCopier.create(Activity.class,ActivityView.class,false);
                     beanCopier.copy(activity,view,null);
+                    view.setActivityStatusDesc(ActivityStatusEnum.fromValue(activity.getActivityStatus()).getMsg());
+                    view.setExamineStatusDesc(ExamineStatusEnum.fromValue(activity.getExamineStatus()).getMsg());
                     views.add(view);
                 });
                 pageInfo = new PageInfo<>(views);

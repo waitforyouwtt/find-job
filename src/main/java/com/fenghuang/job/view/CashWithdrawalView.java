@@ -34,12 +34,15 @@ public class CashWithdrawalView implements Serializable{
 
     @ApiModelProperty("提现账号类型：1 支付宝 2 微信 3 qq 4 银行卡 5 红包 6 转账")
     private Integer cashWithdrawalAccountType;
+    private String  cashWithdrawalAccountTypeDesc;
 
     @ApiModelProperty("提现状态：1 处理中 2 成功 3 失败")
     private Integer cashWithdrawalStatus;
+    private String  cashWithdrawalStatusDesc;
 
     @ApiModelProperty("审核状态：1 待审核 2 已通过 3已驳回")
     private Integer examineStatus;
+    private String  examineStatusDesc;
 
     @ApiModelProperty("提现时间")
     private Date cashWithdrawalDate;

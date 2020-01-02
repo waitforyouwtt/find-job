@@ -40,6 +40,7 @@ public class UserInfoView implements Serializable{
 
     @ApiModelProperty("性别：1 男 2 女")
     private Integer gender;
+    private String  genderDesc;
 
     @ApiModelProperty("用户手机号")
     private String mobile;
@@ -55,12 +56,14 @@ public class UserInfoView implements Serializable{
 
     @ApiModelProperty("用户状态：1冻结，2正常")
     private Integer userStatus;
+    private String  userStatusDesc;
 
     @ApiModelProperty("余额")
     private BigDecimal amount;
 
     @ApiModelProperty("用户类型：1个人 2 公司")
     private Integer userType;
+    private String  userTypeDesc;
 
     @ApiModelProperty("用户等级")
     private Integer userLevel;

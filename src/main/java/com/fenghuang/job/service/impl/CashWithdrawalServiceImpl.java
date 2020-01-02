@@ -75,6 +75,8 @@ public class CashWithdrawalServiceImpl implements CashWithdrawalService {
                     CashWithdrawalView view = new CashWithdrawalView();
                     BeanCopier beanCopier = BeanCopier.create(CashWithdrawal.class, CashWithdrawalView.class, false);
                     beanCopier.copy(cashWithdrawal,view,null);
+                    view.setCashWithdrawalStatusDesc(CashWithdrawalStatusEnum.fromValue(cashWithdrawal.getCashWithdrawalStatus()).getMsg());
+                    view.setExamineStatusDesc(ExamineStatusEnum.fromValue(cashWithdrawal.getExamineStatus()).getMsg());
                     views.add(view);
                 });
                 pageInfo = new PageInfo<>(views);
@@ -122,6 +124,8 @@ public class CashWithdrawalServiceImpl implements CashWithdrawalService {
             BeanCopier beanCopier = BeanCopier.create( CashWithdrawal.class, CashWithdrawalView.class, false );
             beanCopier.copy( cashWithdrawal,view,null );
             log.info( "根据Id 查询提现订单相关信息 返回结果：{}",JSON.toJSONString( view ) );
+            view.setCashWithdrawalStatusDesc(CashWithdrawalStatusEnum.fromValue(cashWithdrawal.getCashWithdrawalStatus()).getMsg());
+            view.setExamineStatusDesc(ExamineStatusEnum.fromValue(cashWithdrawal.getExamineStatus()).getMsg());
             return view;
         }
     }
