@@ -126,6 +126,14 @@
 			<version>4.8.103.ALL</version>
 		</dependency>
 
+		<!--wxPay-->
+		<dependency>
+			<groupId>com.github.wxpay</groupId>
+			<artifactId>wxpay-sdk</artifactId>
+			<version>0.0.3</version>
+		</dependency>
+
+
 
 
 	</dependencies>
