@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqActivity;
 import com.fenghuang.job.request.ReqActivityQuery;
 import com.fenghuang.job.request.ReqActivityUpdate;
@@ -17,7 +18,7 @@ public interface ActivityService {
      * @param reqActivity
      * @return
      */
-    int insertActivity(ReqActivity reqActivity);
+    Result insertActivity(ReqActivity reqActivity);
 
     /**
      * 根据ID修改活动相关信息

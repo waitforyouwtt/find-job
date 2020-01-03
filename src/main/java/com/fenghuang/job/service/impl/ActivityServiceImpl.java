@@ -3,6 +3,7 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.ActivityMapper;
 import com.fenghuang.job.entity.Activity;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.ActivityStatusEnum;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.ExamineStatusEnum;
@@ -44,12 +45,12 @@ public class ActivityServiceImpl implements ActivityService {
      * @return
      */
     @Override
-    public int insertActivity(ReqActivity reqActivity) {
+    public Result insertActivity(ReqActivity reqActivity) {
         log.info("新增活动请求参数：{}", JSON.toJSONString(reqActivity));
         //新增活动时：相同名字且状态为待审核| 进行中的活动不能创建
         Activity queryActivity = activityMapper.queryActivityByTitle(reqActivity.getActivityTitle());
         if (queryActivity != null){
-            throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
+            return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),null);
         }
         Activity activity = new Activity();
         BeanCopier beanCopier = BeanCopier.create(ReqActivity.class,Activity.class,false);
@@ -58,7 +59,7 @@ public class ActivityServiceImpl implements ActivityService {
         activity.setExamineStatus(ExamineStatusEnum.AUDITED.getCode());
         activity.setCreateDate(new Date());
         activity.setUpdateDate(new Date());
-        return activityMapper.insertSelective(activity);
+        return Result.success(activityMapper.insertSelective(activity));
     }
 
     /**

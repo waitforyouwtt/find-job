@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqBanner;
 import com.fenghuang.job.request.ReqBannerStatus;
 import com.fenghuang.job.view.BannerView;
@@ -18,7 +19,7 @@ public interface BannerService {
      * @param reqBanner
      * @return
      */
-    int insertBanner(ReqBanner reqBanner);
+    Result insertBanner(ReqBanner reqBanner);
 
     /**
      * 根据条件查找banner

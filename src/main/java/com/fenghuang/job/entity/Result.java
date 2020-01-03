@@ -58,6 +58,14 @@ public class Result<T> {
         return response;
     }
 
+    public static <T> Result<T> error(Integer code,String message,T data) {
+        Result<T> response = new Result();
+        response.setCode(code);
+        response.setMessage(message);
+        response.setData(null);
+        return response;
+    }
+
     public boolean isFlag() {
         return flag;
     }

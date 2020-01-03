@@ -31,9 +31,11 @@ public class BannerController {
 
     @ApiOperation(value = "添加轮播图banner")
     @PostMapping("/insertBanner")
+    @ResponseBody
     @CrossOrigin
     public Result insertBanner( ReqBanner reqBanner){
-        return Result.success(bannerService.insertBanner(reqBanner));
+        Result result = bannerService.insertBanner(reqBanner);
+        return result;
     }
 
     @ApiOperation(value = "根据条件查找banner")

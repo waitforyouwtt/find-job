@@ -25,7 +25,7 @@ public class ActivityController {
     @ApiOperation(value = "新增活动")
     @PostMapping(value = "/insertActivity")
     public Result insertActivity(@RequestBody ReqActivity reqActivity){
-        return Result.success(activityService.insertActivity(reqActivity));
+        return activityService.insertActivity(reqActivity);
     }
 
     @ApiOperation(value = "根据ID修改活动相关信息")

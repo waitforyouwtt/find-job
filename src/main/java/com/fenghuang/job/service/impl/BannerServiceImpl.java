@@ -3,8 +3,10 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.BannerMapper;
 import com.fenghuang.job.entity.Banner;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.BannerImgStatusEnum;
 import com.fenghuang.job.enums.BusinessEnum;
+import com.fenghuang.job.exception.BizException;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqBanner;
 import com.fenghuang.job.request.ReqBannerStatus;
@@ -39,14 +41,15 @@ public class BannerServiceImpl implements BannerService {
      * @return
      */
     @Override
-    public int insertBanner(ReqBanner reqBanner) {
+    public Result insertBanner(ReqBanner reqBanner) {
         log.info("添加轮播图banner 请求参数：{}", JSON.toJSONString(reqBanner));
         if (StringUtils.isEmpty(reqBanner.getActivityId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
         Banner bannerByActivityId = bannerMapper.findBannerByActivityId(reqBanner.getActivityId());
         if (bannerByActivityId != null){
-           throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
+           // throw  new BizException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
+           return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
         }
         Banner banner = new Banner();
         BeanCopier beanCopier = BeanCopier.create(ReqBanner.class,Banner.class,false);
@@ -56,7 +59,7 @@ public class BannerServiceImpl implements BannerService {
         }
         banner.setCreateDate(new Date());
         banner.setUpdateDate(new Date());
-        return bannerMapper.insertSelective(banner);
+        return Result.success(bannerMapper.insertSelective(banner));
     }
 
     /**
