@@ -33,7 +33,7 @@ public class ProjectController {
 
     @ApiOperation( value = "根据id更新项目相关字段")
     @PostMapping("/modifyProject")
-    public Result modifyProject(@RequestBody ReqProject reqProject){
+    public Result modifyProject( ReqProject reqProject){
       return Result.success(projectService.modifyProject(reqProject));
     }
 

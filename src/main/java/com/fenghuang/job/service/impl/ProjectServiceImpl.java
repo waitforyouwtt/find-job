@@ -86,6 +86,10 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project();
         BeanCopier beanCopier = BeanCopier.create( ReqProject.class,Project.class,false );
         beanCopier.copy( reqProject,project,null );
+        if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
+            String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
+            project.setProjectLabels(StringUtils.strip(labels,""));
+        }
         return projectMapper.updateByPrimaryKeySelective( project );
     }
 
