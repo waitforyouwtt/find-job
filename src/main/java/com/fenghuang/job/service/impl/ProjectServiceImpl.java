@@ -15,12 +15,14 @@ import com.fenghuang.job.view.ProjectView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +56,11 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project();
         BeanCopier beanCopier = BeanCopier.create(ReqProject.class,Project.class,false  );
         beanCopier.copy( reqProject,project,null );
+        //        String key = Joiner.on(" ").join(baseBrandInfoByBrandCodes.stream().map(BaseBrandInfo:: getBrandCode).collect(Collectors.toList()));
+        if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
+          String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
+            project.setProjectLabels(StringUtils.strip(labels,""));
+        }
         project.setProjectStatus(ProjectStatusEnum.INIT.getCode());
         project.setExamineStatus(ExamineStatusEnum.AUDITED.getCode());
         project.setProjectCreateDate(new Date());
@@ -73,7 +80,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int modifyProject(ReqProject reqProject) {
         log.info( "根据id更新项目相关字段 请求参数：{}",JSON.toJSONString( reqProject ) );
-        if (StringUtils.isEmpty(reqProject.getId())){
+        if (StringUtils.isBlank(reqProject.getId().toString())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
         Project project = new Project();
@@ -91,7 +98,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int modifyProjectStatus(ReqProjectStatus reqProjectStatus) {
         log.info( "根据id更新项目状态 请求参数：{}",JSON.toJSONString( reqProjectStatus ) );
-        if (StringUtils.isEmpty(reqProjectStatus.getId())){
+        if (StringUtils.isEmpty(reqProjectStatus.getId().toString())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
         Project project = projectMapper.selectByPrimaryKey(reqProjectStatus.getId());
@@ -101,7 +108,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project projectParam = new Project();
         //如果审核状态没有则只修改项目状态 ; 否则就是管理员在审核，审核应该修改相应的项目状态
         projectParam.setId(reqProjectStatus.getId());
-        if (StringUtils.isEmpty(reqProjectStatus.getExamineStatus())){
+        if (StringUtils.isEmpty(reqProjectStatus.getExamineStatus().toString())){
             projectParam.setProjectStatus(reqProjectStatus.getProjectStatus());
         }else{
             if (reqProjectStatus.getExamineStatus().equals(ExamineStatusEnum.PASSED.getCode())){
@@ -185,6 +192,7 @@ public class ProjectServiceImpl implements ProjectService {
             beanCopier.copy( project, view, null );
             view.setProjectStatusDesc(ProjectStatusEnum.fromValue(project.getProjectStatus()).getMsg());
             view.setExamineStatusDesc(ExamineStatusEnum.fromValue(project.getExamineStatus()).getMsg());
+            view.setProjectLabels(Splitter.on(",").trimResults().splitToList(project.getProjectLabels()));
             views.add( view );
         } );
     }

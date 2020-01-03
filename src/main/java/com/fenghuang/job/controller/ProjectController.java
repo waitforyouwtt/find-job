@@ -6,6 +6,7 @@ import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.service.ProjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class ProjectController {
 
     @ApiOperation( value = "创建项目")
     @PostMapping("/insertProject")
-    public Result insertProject(@RequestBody ReqProject reqProject){
+    public Result insertProject( ReqProject reqProject){
         return Result.success(projectService.insertProject(reqProject));
     }
 
@@ -45,6 +46,7 @@ public class ProjectController {
     @ApiOperation( value = "根据条件查询项目信息")
     @PostMapping("/findProject")
     public Result findProject(@RequestBody ReqProject reqProject){
+
       return Result.success(projectService.findProject(reqProject));
     }
 

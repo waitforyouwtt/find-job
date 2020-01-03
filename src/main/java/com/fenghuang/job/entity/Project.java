@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -23,9 +24,11 @@ public class Project implements Serializable{
 
     private String projectContent;
 
-    private Long projectMinPrice;
+    private String projectLabels;
 
-    private Long projectMaxPrice;
+    private BigDecimal projectMinPrice;
+
+    private BigDecimal projectMaxPrice;
 
     private Integer projectStatus;
 
@@ -37,7 +40,7 @@ public class Project implements Serializable{
 
     private Integer isTrusteeship;
 
-    private Long trusteeshipAmount;
+    private BigDecimal trusteeshipAmount;
 
     private Integer rankField;
 

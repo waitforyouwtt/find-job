@@ -37,10 +37,10 @@ public class OrderInfoView implements Serializable {
     private String projectTypeName;
 
     @ApiModelProperty("项目金额")
-    private Long projectAmount;
+    private BigDecimal projectAmount;
 
     @ApiModelProperty("订单价格")
-    private Long orderAmount;
+    private BigDecimal orderAmount;
 
     @ApiModelProperty("项目ID")
     private Integer projectId;

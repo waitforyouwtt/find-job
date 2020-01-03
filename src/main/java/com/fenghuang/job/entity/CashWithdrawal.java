@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 @Data
 @ApiModel(value = "提现订单信息表")
@@ -14,7 +15,7 @@ public class CashWithdrawal implements Serializable{
 
     private Integer userId;
 
-    private Long cashWithdrawalAmount;
+    private BigDecimal cashWithdrawalAmount;
 
     private String cashWithdrawalAccount;
 

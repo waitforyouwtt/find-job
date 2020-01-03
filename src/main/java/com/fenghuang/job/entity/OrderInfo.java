@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @ApiModel(value = "订单信息表")
@@ -21,9 +22,9 @@ public class OrderInfo implements Serializable{
 
     private String projectTypeName;
 
-    private Long projectAmount;
+    private BigDecimal projectAmount;
 
-    private Long orderAmount;
+    private BigDecimal orderAmount;
 
     private Integer projectId;
 

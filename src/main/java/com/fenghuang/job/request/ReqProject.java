@@ -7,6 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -36,6 +37,9 @@ public class ReqProject extends PageHelps implements Serializable {
 
     @ApiModelProperty("项目简介")
     private String projectContent;
+
+    @ApiModelProperty("项目标签")
+    private List<String> projectLabels;
 
     @ApiModelProperty("项目金额min")
     private BigDecimal projectMinPrice;

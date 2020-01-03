@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -35,14 +37,17 @@ public class ProjectView implements Serializable {
     @ApiModelProperty("项目标题")
     private String projectTitle;
 
+    @ApiModelProperty("项目标签")
+    private List<String> projectLabels;
+
     @ApiModelProperty("项目简述")
     private String projectContent;
 
     @ApiModelProperty("项目价格min")
-    private Long projectMinPrice;
+    private BigDecimal projectMinPrice;
 
     @ApiModelProperty("项目价格max")
-    private Long projectMaxPrice;
+    private BigDecimal projectMaxPrice;
 
     @ApiModelProperty("项目状态： 1 初始化 2进行中 3 结束")
     private Integer projectStatus;
@@ -62,7 +67,7 @@ public class ProjectView implements Serializable {
     private Integer isTrusteeship;
 
     @ApiModelProperty("项目托管金额")
-    private Long trusteeshipAmount;
+    private BigDecimal trusteeshipAmount;
 
     @ApiModelProperty("排名次")
     private Integer rankField;

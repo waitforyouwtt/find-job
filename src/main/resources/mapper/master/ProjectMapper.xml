@@ -9,6 +9,7 @@
     <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
     <result column="project_title" jdbcType="VARCHAR" property="projectTitle" />
     <result column="project_content" jdbcType="VARCHAR" property="projectContent" />
+    <result column="project_labels" jdbcType="VARCHAR" property="projectLabels" />
     <result column="project_min_price" jdbcType="DECIMAL" property="projectMinPrice" />
     <result column="project_max_price" jdbcType="DECIMAL" property="projectMaxPrice" />
     <result column="project_status" jdbcType="INTEGER" property="projectStatus" />
@@ -27,7 +28,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, project_type_id, project_type_name, create_user_id, create_user_name, project_title, 
-    project_content, project_min_price, project_max_price, project_status, examine_status, 
+    project_content,project_labels,project_min_price, project_max_price, project_status, examine_status,
     project_need_people, is_direct_hire, is_trusteeship, trusteeship_amount, rank_field, 
     project_create_date, project_end_date, founder, modifier, create_date, update_date
   </sql>
@@ -82,6 +83,9 @@
       </if>
       <if test="projectContent != null">
         project_content,
+      </if>
+      <if test="projectLabels != null">
+        project_labels,
       </if>
       <if test="projectMinPrice != null">
         project_min_price,
@@ -151,6 +155,9 @@
       <if test="projectContent != null">
         #{projectContent,jdbcType=VARCHAR},
       </if>
+      <if test="projectLabels != null">
+        #{projectLabels,jdbcType=VARCHAR},
+      </if>
       <if test="projectMinPrice != null">
         #{projectMinPrice,jdbcType=DECIMAL},
       </if>
@@ -218,6 +225,9 @@
       </if>
       <if test="projectContent != null">
         project_content = #{projectContent,jdbcType=VARCHAR},
+      </if>
+      <if test="projectLabels != null">
+        project_labels = #{projectLabels,jdbcType=VARCHAR},
       </if>
       <if test="projectMinPrice != null">
         project_min_price = #{projectMinPrice,jdbcType=DECIMAL},
