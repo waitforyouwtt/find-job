@@ -151,9 +151,23 @@
       <if test="activityId != null">
         and activity_id = #{activityId}
       </if>
-      <if test="bannerImgStatus != null">
+      <if test="bannerImgStatus != null and bannerImgStatus != 0 ">
         and banner_img_status = #{bannerImgStatus}
       </if>
+      <if test="founder != null and founder !='' ">
+        and founder = #{founder}
+      </if>
+      <if test="createDateBegin!=null and createDateBegin!='' ">
+        and create_date &gt;= #{createDateBegin}
+      </if>
+      <if test="createDateEnd!=null and createDateEnd!='' ">
+        and create_date &lt;= #{createDateEnd}
+      </if>
     </where>
+  </select>
+  <select id="findBannerByActivityId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from banner where activity_id = #{activityId} and banner_img_status = 1;
   </select>
 </mapper>

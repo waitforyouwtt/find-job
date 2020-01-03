@@ -41,10 +41,19 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public int insertBanner(ReqBanner reqBanner) {
         log.info("添加轮播图banner 请求参数：{}", JSON.toJSONString(reqBanner));
+        if (StringUtils.isEmpty(reqBanner.getActivityId())){
+            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        }
+        Banner bannerByActivityId = bannerMapper.findBannerByActivityId(reqBanner.getActivityId());
+        if (bannerByActivityId != null){
+           throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
+        }
         Banner banner = new Banner();
         BeanCopier beanCopier = BeanCopier.create(ReqBanner.class,Banner.class,false);
         beanCopier.copy(reqBanner,banner,null);
-        banner.setBannerImgStatus(BannerImgStatusEnum.NORMAL.getCode());
+        if (StringUtils.isEmpty(reqBanner.getBannerImgStatus().toString())){
+            banner.setBannerImgStatus(BannerImgStatusEnum.NORMAL.getCode());
+        }
         banner.setCreateDate(new Date());
         banner.setUpdateDate(new Date());
         return bannerMapper.insertSelective(banner);
@@ -59,7 +68,12 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public List<BannerView> findBanner(ReqBanner reqBanner) {
         log.info("根据条件查找banner 请求参数：{}",JSON.toJSONString(reqBanner));
-        reqBanner.setBannerImgStatus( BannerImgStatusEnum.NORMAL.getCode() );
+        if (!StringUtils.isEmpty(reqBanner.getCreateDateBegin())){
+            reqBanner.setCreateDateBegin(reqBanner.getCreateDateBegin()+" "+"00:00:00");
+        }
+        if (!StringUtils.isEmpty(reqBanner.getCreateDateEnd())){
+            reqBanner.setCreateDateEnd(reqBanner.getCreateDateEnd()+" "+"23:59:59");
+        }
         List<Banner> queryBanner = bannerMapper.findBanner(reqBanner);
         if (CollectionUtils.isEmpty(queryBanner)){
             return new ArrayList<>(16);
