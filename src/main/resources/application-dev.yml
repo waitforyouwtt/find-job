@@ -81,3 +81,41 @@ message:
 
 server:
   port: 8081
+
+#使用自己的配置文件
+org:
+  quartz:
+    dataSource:
+      quartzMOWa:
+        driver: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3307/druid_master?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
+        username: root
+        password: root
+        maxConnections: 5
+
+    jobStore:
+      useProperties: true
+      #存储方式使用JobStoreTX ,[数据库]
+      class: org.quartz.impl.jdbcjobstore.JobStoreTX
+      driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      #是否使用集群（如果项目只部署到 一台服务器，就不用了）
+      isClustered: false
+      clusterCheckinInterval: 20000
+      tablePrefix: qrtz_
+      dataSource: quartzMOWa
+
+    scheduler:
+      #默认或者自己定义的名字
+      instanceName: defaultQuartzScheduler
+      #如果使用集群，instanceId必须唯一，设置成AUTO
+      instanceId: AUTO
+
+    threadPool:
+      class: org.quartz.simpl.SimpleThreadPool
+      threadCount: 10
+      threadPriority: 5
+      threadsInheritContextClassLoaderOfInitializingThread: true
+
+
+
+
