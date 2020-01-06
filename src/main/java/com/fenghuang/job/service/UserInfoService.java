@@ -22,7 +22,7 @@ public interface UserInfoService {
      */
     List<UserInfoView> findUserInfoByUserName(String userName);
     /**
-     * 注册新用户
+     * 常规注册新用户
      * @param reqUserInfo
      * @return
      */

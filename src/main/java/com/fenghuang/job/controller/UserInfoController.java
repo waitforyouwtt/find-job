@@ -33,7 +33,7 @@ public class UserInfoController {
     @Autowired
     UserInfoService userInfoService;
 
-    @ApiOperation(value = "注册新用户")
+    @ApiOperation(value = "常规方式注册新用户")
     @PostMapping("/userRegister")
     public Result userRegister(@RequestBody ReqUserInfo reqUserInfo){
         return Result.success(userInfoService.insertUser(reqUserInfo));

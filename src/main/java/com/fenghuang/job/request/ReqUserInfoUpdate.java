@@ -17,7 +17,7 @@ public class ReqUserInfoUpdate implements Serializable {
 
     private Integer id;
 
-    @ApiModelProperty("用户名")
+    @ApiModelProperty("用户名[用户名一但注册不可修改]")
     private String userName;
 
     @ApiModelProperty("用户昵称")
