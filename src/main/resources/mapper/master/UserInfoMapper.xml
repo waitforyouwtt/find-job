@@ -9,6 +9,8 @@
     <result column="user_head" jdbcType="VARCHAR" property="userHead" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="wechat" jdbcType="VARCHAR" property="wechat" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="gender" jdbcType="INTEGER" property="gender" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="province_id" jdbcType="INTEGER" property="provinceId" />
@@ -18,6 +20,7 @@
     <result column="id_card_x" jdbcType="VARCHAR" property="idCardX" />
     <result column="id_card_y" jdbcType="VARCHAR" property="idCardY" />
     <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="user_type" jdbcType="INTEGER" property="userType" />
     <result column="user_level" jdbcType="INTEGER" property="userLevel" />
@@ -29,9 +32,9 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_name, user_nickName, id_card, user_head, password, wechat, gender, mobile, 
-    province_id, city_id, county_Area_id, address, id_card_x, id_card_y, user_status, 
-    amount, user_type, user_level, emergency_contact_name, emergency_contact_mobile, 
+    id, user_name, user_nickName, id_card, user_head, password, wechat, qq, email, gender, 
+    mobile, province_id, city_id, county_Area_id, address, id_card_x, id_card_y, user_status, 
+    is_delete, amount, user_type, user_level, emergency_contact_name, emergency_contact_mobile, 
     founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -47,19 +50,21 @@
   <insert id="insert" parameterType="com.fenghuang.job.entity.UserInfo">
     insert into userinfo (id, user_name, user_nickName, 
       id_card, user_head, password, 
-      wechat, gender, mobile, 
-      province_id, city_id, county_Area_id, 
-      address, id_card_x, id_card_y, 
-      user_status, amount, user_type, 
+      wechat, qq, email, 
+      gender, mobile, province_id, 
+      city_id, county_Area_id, address, 
+      id_card_x, id_card_y, user_status, 
+      is_delete, amount, user_type, 
       user_level, emergency_contact_name, emergency_contact_mobile, 
       founder, modifier, create_date, 
       update_date)
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR}, 
       #{idCard,jdbcType=VARCHAR}, #{userHead,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{wechat,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, 
-      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{countyAreaId,jdbcType=INTEGER}, 
-      #{address,jdbcType=VARCHAR}, #{idCardX,jdbcType=VARCHAR}, #{idCardY,jdbcType=VARCHAR}, 
-      #{userStatus,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{userType,jdbcType=INTEGER}, 
+      #{wechat,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, 
+      #{cityId,jdbcType=INTEGER}, #{countyAreaId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{idCardX,jdbcType=VARCHAR}, #{idCardY,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{userType,jdbcType=INTEGER}, 
       #{userLevel,jdbcType=INTEGER}, #{emergencyContactName,jdbcType=VARCHAR}, #{emergencyContactMobile,jdbcType=VARCHAR}, 
       #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateDate,jdbcType=TIMESTAMP})
@@ -88,6 +93,12 @@
       <if test="wechat != null">
         wechat,
       </if>
+      <if test="qq != null">
+        qq,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
       <if test="gender != null">
         gender,
       </if>
@@ -114,6 +125,9 @@
       </if>
       <if test="userStatus != null">
         user_status,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
       </if>
       <if test="amount != null">
         amount,
@@ -165,6 +179,12 @@
       <if test="wechat != null">
         #{wechat,jdbcType=VARCHAR},
       </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
       <if test="gender != null">
         #{gender,jdbcType=INTEGER},
       </if>
@@ -191,6 +211,9 @@
       </if>
       <if test="userStatus != null">
         #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="amount != null">
         #{amount,jdbcType=DECIMAL},
@@ -242,6 +265,12 @@
       <if test="wechat != null">
         wechat = #{wechat,jdbcType=VARCHAR},
       </if>
+      <if test="qq != null">
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
       <if test="gender != null">
         gender = #{gender,jdbcType=INTEGER},
       </if>
@@ -268,6 +297,9 @@
       </if>
       <if test="userStatus != null">
         user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="amount != null">
         amount = #{amount,jdbcType=DECIMAL},
@@ -307,6 +339,8 @@
       user_head = #{userHead,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       wechat = #{wechat,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=INTEGER},
       mobile = #{mobile,jdbcType=VARCHAR},
       province_id = #{provinceId,jdbcType=INTEGER},
@@ -316,6 +350,7 @@
       id_card_x = #{idCardX,jdbcType=VARCHAR},
       id_card_y = #{idCardY,jdbcType=VARCHAR},
       user_status = #{userStatus,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER},
       amount = #{amount,jdbcType=DECIMAL},
       user_type = #{userType,jdbcType=INTEGER},
       user_level = #{userLevel,jdbcType=INTEGER},

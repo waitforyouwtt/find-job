@@ -38,6 +38,12 @@ public class ReqUserInfo implements Serializable{
     @ApiModelProperty("用户微信")
     private String wechat;
 
+    @ApiModelProperty("用户QQ")
+    private String qq;
+
+    @ApiModelProperty("用户邮箱")
+    private String email;
+
     @ApiModelProperty("性别：1 男 2 女")
     private Integer gender;
 

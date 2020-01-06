@@ -4,12 +4,10 @@ import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.request.ReqUserInfoQuery;
 import com.fenghuang.job.request.ReqUserInfoUpdate;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Mapper
 public interface UserInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
