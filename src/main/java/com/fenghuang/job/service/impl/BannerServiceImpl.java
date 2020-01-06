@@ -46,9 +46,9 @@ public class BannerServiceImpl implements BannerService {
         if (StringUtils.isEmpty(reqBanner.getActivityId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
+        //添加轮播图根据活动id 和状态去查询是否已存在
         Banner bannerByActivityId = bannerMapper.findBannerByActivityId(reqBanner.getActivityId());
         if (bannerByActivityId != null){
-           // throw  new BizException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
            return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
         }
         Banner banner = new Banner();

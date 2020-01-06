@@ -3,7 +3,9 @@ package com.fenghuang.job.service;
 import com.fenghuang.job.request.ReqMessageCount;
 import com.fenghuang.job.request.ReqMessageCountQuery;
 import com.fenghuang.job.request.ReqMessageCountQuery2;
+import com.fenghuang.job.view.JSONMessage;
 import com.fenghuang.job.view.MessageCountView;
+import com.fenghuang.job.view.MessageView;
 import com.github.pagehelper.PageInfo;
 
 import java.text.ParseException;
@@ -15,6 +17,15 @@ import java.util.List;
  * @Email: 15290810931@163.com
  */
 public interface MessageCountService {
+
+    /**
+     * 插入短信统计表
+     * @param ip
+     * @param mobile
+     * @param jsonMessage
+     * @param messageType
+     */
+    MessageView insertMessageCountRecordByType(String ip, String mobile, JSONMessage jsonMessage, Integer messageType);
 
     /**
      *插入短信统计表

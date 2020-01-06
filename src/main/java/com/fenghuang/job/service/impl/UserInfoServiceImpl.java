@@ -94,7 +94,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
-     * 注册新用户
+     * 常规注册新用户
      *
      * @param reqUserInfo
      * @return
@@ -105,8 +105,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
         reqUserInfoQuery.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
         reqUserInfoQuery.setUserNickname(reqUserInfo.getUserNickname());
-        reqUserInfoQuery.setMobile(reqUserInfo.getMobile());
         reqUserInfo.setIdCard(reqUserInfo.getIdCard());
+        reqUserInfoQuery.setMobile(reqUserInfo.getMobile());
+        //注册新用户，根据注册填充数据[昵称|手机号|身份证]去查询数据库(因为姓名可以重复)，如果存在则不允许注册新用户
         UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (queryUserInfo != null){
             throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
@@ -114,6 +115,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = new UserInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqUserInfo.class, UserInfo.class, false);
         beanCopier.copy(reqUserInfo,userInfo,null);
+        //新用户默认正常用户且进行密码加密
         userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfo.getPassword()));
         userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
         userInfo.setFounder(reqUserInfo.getMobile());
@@ -153,6 +155,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfoView findUserInfo(ReqUserInfoQuery reqUserInfoQuery) {
         log.info("根据用户id|用户昵称|用户手机号|身份证 获取唯一一条记录 请求参数：{}",JSON.toJSON(reqUserInfoQuery));
+        reqUserInfoQuery.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
         UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (queryUserInfo == null){
             return null;
@@ -214,7 +217,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public MessageView messageRegister(ReqMessage reqMessage) {
+    public void messageRegister(ReqMessage reqMessage) {
         log.info("用户短信注册，发送验证码 请求参数：{}",JSON.toJSONString(reqMessage));
         if (StringUtils.isEmpty(reqMessage.getMobile())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
@@ -241,15 +244,13 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         JSONObject json = JSON.parseObject(sendMsm);
         JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
-        MessageView messageView = new MessageView();
-        sendMessageByType(reqMessage, sendMsm, jsonMessage, messageView,MessageTypeEnum.REGISTER.getCode());
-        return messageView;
+        messageCountService.insertMessageCountRecordByType(reqMessage.getIp(), reqMessage.getMobile(), jsonMessage,MessageTypeEnum.REGISTER.getCode());
     }
 
     /**
      * 用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败
      *
-     * @param registerCodeView
+     * @param registerCode
      * @return
      */
     @Override
@@ -270,6 +271,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         String mobile = (String) request.getSession(true).getAttribute("mobile");
         String VerificationCode = (String) request.getSession(true).getAttribute("messageVerificationCode");
 
+        //如果发送验证码的手机号和当前手机号不同，则抛出异常;
+        //如果验证码错误，则抛出异常
         if (!registerCode.getMobile().equals(mobile)){
             throw new BusinessException(BusinessEnum.REGISTER_VERIFICATION_MOBILE_DIFFERENT.getCode(),BusinessEnum.REGISTER_VERIFICATION_MOBILE_DIFFERENT.getMsg());
         }else if (!registerCode.getRegisterCode().equals(VerificationCode)){
@@ -277,6 +280,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setMobile(registerCode.getMobile());
+        //密码加密，默认正常用户
         userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,registerCode.getPassword()));
         userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
         int registerNum = userInfoMapper.insertSelective(userInfo);
@@ -304,14 +308,17 @@ public class UserInfoServiceImpl implements UserInfoService {
             throw new BusinessException(BusinessEnum.LOGIN_TYPE_NULL.getCode(),BusinessEnum.LOGIN_TYPE_NULL.getMsg());
         }
         Integer loginType = reqLoginUserInfo.getLoginType();
-        //首先去判断数据库有没有该用户 & 登录者的账号是否是正常账号
         ReqUserInfo reqUserInfo = new ReqUserInfo();
         BeanCopier copier = BeanCopier.create(ReqLoginUserInfo.class, ReqUserInfo.class, false);
         copier.copy(reqLoginUserInfo,reqUserInfo,null);
+        //登录前根据[用户名 or 昵称 or 身份证id or 手机号]查询数据库，判断数据库有没有该用户 & 检查登录者的账号是否是正常账号
         UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqUserInfo);
-
+        //根据条件查询数据库:
+        // 1.不存在则抛出异常;
+        // 2.存在，但状态为冻结，则抛出异常
         if (queryUserInfo == null){
             insertLoginLog(reqLoginUserInfo);
+            throw new BusinessException(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg());
         }else if(queryUserInfo != null & queryUserInfo.getUserStatus().equals(UserInfoStatusEnum.FROZEN.getCode())){
             ReqLoginLog loginLog = new ReqLoginLog();
             loginLog.setLoginDate(new Date());
@@ -343,6 +350,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 userInfo = userInfoMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
                 break;
         }
+        //根据[用户名or 手机号 or 身份证id or 昵称] & 密码进行login
         if (userInfo == null){
             ReqLoginLog loginLog = new ReqLoginLog();
             loginLog.setLoginDate(new Date());
@@ -407,7 +415,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         JSONObject json = JSON.parseObject(sendMsm);
         JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
         MessageView messageView = new MessageView();
-        sendMessageByType(reqMessage, sendMsm, jsonMessage, messageView,MessageTypeEnum.LOGIN.getCode());
+        messageCountService.insertMessageCountRecordByType(reqMessage.getIp(), reqMessage.getMobile(), jsonMessage,MessageTypeEnum.LOGIN.getCode());
         return messageView;
     }
 
@@ -426,13 +434,15 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         UserInfoView userInfoView = new UserInfoView();
 
-        //首先去判断数据库有没有该用户 & 登录者的账号是否是正常账号
         ReqUserInfo reqUserInfo = new ReqUserInfo();
         BeanCopier copier = BeanCopier.create(ReqLoginUserInfo.class, ReqUserInfo.class, false);
         copier.copy(reqLoginUserInfo,reqUserInfo,null);
+        //首先去判断数据库有没有该用户 & 登录者的账号是否是正常账号
+        // 1.为空则记录日志，抛出异常；2 不为空判断验证码
         UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqUserInfo);
         if (queryUserInfo == null){
-            return insertLoginLog(reqLoginUserInfo);
+            insertLoginLog(reqLoginUserInfo);
+            throw new BusinessException(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg());
         }else{
             RequestAttributes ra = RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
@@ -461,7 +471,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         return userInfoView;
     }
 
-    private UserInfoView insertLoginLog(ReqLoginUserInfo reqLoginUserInfo) {
+    private void insertLoginLog(ReqLoginUserInfo reqLoginUserInfo) {
         ReqLoginLog loginLog = new ReqLoginLog();
         loginLog.setLoginDate(new Date());
         loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
@@ -470,36 +480,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         loginLog.setFailRemark(BusinessEnum.USERINFO_EXIST.getMsg());
         log.info("记录登录日志请求参数：{}");
         loginLogService.insertLoginLog(loginLog);
-        throw new BusinessException(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg());
-    }
-
-    private void sendMessageByType(ReqMessage reqMessage, String sendMsm, JSONMessage jsonMessage, MessageView messageView,Integer messageType) {
-        if (jsonMessage.getCode().equals(SystemCodeEnum.SUCCESS.getCode())){
-            messageView.setCode(SystemCodeEnum.SUCCESS.getCode());
-            messageView.setDesc("短信发送成功");
-            //发送短信成功，则往短信统计记录表中插入相关数据
-            ReqMessageCount reqMessageCount = new ReqMessageCount();
-            reqMessageCount.setSendIp(reqMessage.getIp());
-            reqMessageCount.setCreateDate(new Date());
-            reqMessageCount.setUpdateDate(new Date());
-            reqMessageCount.setFounder(reqMessage.getMobile());
-            reqMessageCount.setModifier(reqMessage.getMobile());
-            reqMessageCount.setMobile(reqMessage.getMobile());
-            if (messageType.equals(MessageTypeEnum.REGISTER.getCode())){
-                reqMessageCount.setMessageType(MessageTypeEnum.REGISTER.getCode());
-                reqMessageCount.setSendContent("您正在进行使用短信注册新账号：{}"+ JSON.toJSONString(sendMsm));
-            }else if(messageType.equals(MessageTypeEnum.LOGIN.getCode())){
-                reqMessageCount.setMessageType(MessageTypeEnum.LOGIN.getCode());
-                reqMessageCount.setSendContent("您正在进行使用短信登录账号：{}"+ JSON.toJSONString(sendMsm));
-            }
-            messageCountService.insertMessageCount(reqMessageCount);
-        }else if (jsonMessage.getCode().equals(SystemCodeEnum.EXCEPTION.getCode()) ){
-            messageView.setCode(SystemCodeEnum.ERROR.getCode());
-            messageView.setDesc("短信发送异常");
-        }else{
-            messageView.setCode(SystemCodeEnum.ERROR.getCode());
-            messageView.setDesc("网络问题，请稍后重试");
-        }
     }
 
 

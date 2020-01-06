@@ -6,13 +6,17 @@ import com.fenghuang.job.dao.master.MessageCountMapper;
 import com.fenghuang.job.entity.MessageCount;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.MessageTypeEnum;
+import com.fenghuang.job.enums.SystemCodeEnum;
 import com.fenghuang.job.exception.BusinessException;
+import com.fenghuang.job.request.ReqMessage;
 import com.fenghuang.job.request.ReqMessageCount;
 import com.fenghuang.job.request.ReqMessageCountQuery;
 import com.fenghuang.job.request.ReqMessageCountQuery2;
 import com.fenghuang.job.service.MessageCountService;
 import com.fenghuang.job.utils.DateUtil;
+import com.fenghuang.job.view.JSONMessage;
 import com.fenghuang.job.view.MessageCountView;
+import com.fenghuang.job.view.MessageView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import java.text.ParseException;
@@ -38,6 +43,47 @@ public class MessageCountServiceImpl implements MessageCountService {
 
     @Autowired
     MessageCountMapper messageCountMapper;
+
+    /**
+     * 插入短信统计表
+     * @param ip
+     * @param mobile
+     * @param jsonMessage
+     * @param messageType
+     */
+    @Override
+    @Async
+    public MessageView insertMessageCountRecordByType(String ip, String mobile, JSONMessage jsonMessage, Integer messageType) {
+        MessageView messageView = new MessageView();
+        if (jsonMessage.getCode().equals(SystemCodeEnum.SUCCESS.getCode())){
+            messageView.setCode(SystemCodeEnum.SUCCESS.getCode());
+            messageView.setDesc("短信发送成功");
+            //发送短信成功，则往短信统计记录表中插入相关数据
+            MessageCount reqMessageCount = new MessageCount();
+            reqMessageCount.setSendIp(ip);
+            reqMessageCount.setCreateDate(new Date());
+            reqMessageCount.setUpdateDate(new Date());
+            reqMessageCount.setFounder(mobile);
+            reqMessageCount.setModifier(mobile);
+            reqMessageCount.setMobile(mobile);
+            if (messageType.equals(MessageTypeEnum.REGISTER.getCode())){
+                reqMessageCount.setMessageType(MessageTypeEnum.REGISTER.getCode());
+                reqMessageCount.setSendContent("您正在进行使用短信注册新账号");
+            }else if(messageType.equals(MessageTypeEnum.LOGIN.getCode())){
+                reqMessageCount.setMessageType(MessageTypeEnum.LOGIN.getCode());
+                reqMessageCount.setSendContent("您正在进行使用短信登录账号");
+            }
+            messageCountMapper.insertSelective(reqMessageCount);
+        }else if (jsonMessage.getCode().equals(SystemCodeEnum.EXCEPTION.getCode()) ){
+            messageView.setCode(SystemCodeEnum.ERROR.getCode());
+            messageView.setDesc("短信发送异常");
+        }else{
+            messageView.setCode(SystemCodeEnum.ERROR.getCode());
+            messageView.setDesc("网络问题，请稍后重试");
+        }
+        log.info("返回信息是：{}",JSON.toJSONString(messageView));
+        return messageView;
+    }
     /**
      * 插入短信统计表
      *

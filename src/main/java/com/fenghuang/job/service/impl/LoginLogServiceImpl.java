@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -93,6 +94,7 @@ public class LoginLogServiceImpl implements LoginLogService {
      * @return
      */
     @Override
+    @Async
     public int insertLoginLog(ReqLoginLog reqLoginLog) {
         log.info("添加登录日志请求参数：{}", JSON.toJSONString(reqLoginLog));
         LoginLog loginLog = new LoginLog();

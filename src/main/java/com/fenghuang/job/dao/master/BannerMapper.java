@@ -23,5 +23,6 @@ public interface BannerMapper {
 
     List<Banner> findBanner(ReqBanner reqBanner);
 
+    //添加活动前查询是否存在相同活动的轮播图
     Banner findBannerByActivityId(@Param("activityId") Integer activityId);
 }

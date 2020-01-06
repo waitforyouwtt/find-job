@@ -33,7 +33,7 @@ public class UserInfoController {
     @Autowired
     UserInfoService userInfoService;
 
-    @ApiOperation(value = "注册新用户")
+    @ApiOperation(value = "常规方式注册新用户")
     @PostMapping("/userRegister")
     public Result userRegister(@RequestBody ReqUserInfo reqUserInfo){
         return Result.success(userInfoService.insertUser(reqUserInfo));
@@ -80,7 +80,8 @@ public class UserInfoController {
     public Result messageRegister(@RequestBody ReqMessage reqMessage,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqMessage.setIp(ip);
-      return Result.success(userInfoService.messageRegister(reqMessage));
+        userInfoService.messageRegister(reqMessage);
+      return Result.success();
     }
 
     @PostMapping("/checkRegisterCode")
