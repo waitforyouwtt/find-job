@@ -23,8 +23,8 @@ public interface UserInfoMapper {
 
     int updateByPrimaryKey(UserInfo record);
 
+    //根据用户名查询列表信息
     List<UserInfo> findUserInfoByUserName(String userName);
-
     /**
      * 根据id|用户名|昵称|身份证|手机号|状态查询用户记录
      * @param reqUserInfoQuery
