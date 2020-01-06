@@ -23,7 +23,6 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -218,7 +217,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public MessageView messageRegister(ReqMessage reqMessage) {
+    public void messageRegister(ReqMessage reqMessage) {
         log.info("用户短信注册，发送验证码 请求参数：{}",JSON.toJSONString(reqMessage));
         if (StringUtils.isEmpty(reqMessage.getMobile())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
@@ -245,9 +244,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         JSONObject json = JSON.parseObject(sendMsm);
         JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
-        MessageView messageView = new MessageView();
-        insertMessageCountRecordByType(reqMessage, sendMsm, jsonMessage, messageView,MessageTypeEnum.REGISTER.getCode());
-        return messageView;
+        messageCountService.insertMessageCountRecordByType(reqMessage.getIp(), reqMessage.getMobile(), jsonMessage,MessageTypeEnum.REGISTER.getCode());
     }
 
     /**
@@ -418,7 +415,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         JSONObject json = JSON.parseObject(sendMsm);
         JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
         MessageView messageView = new MessageView();
-        insertMessageCountRecordByType(reqMessage, sendMsm, jsonMessage, messageView,MessageTypeEnum.LOGIN.getCode());
+        messageCountService.insertMessageCountRecordByType(reqMessage.getIp(), reqMessage.getMobile(), jsonMessage,MessageTypeEnum.LOGIN.getCode());
         return messageView;
     }
 
@@ -441,7 +438,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         BeanCopier copier = BeanCopier.create(ReqLoginUserInfo.class, ReqUserInfo.class, false);
         copier.copy(reqLoginUserInfo,reqUserInfo,null);
         //首先去判断数据库有没有该用户 & 登录者的账号是否是正常账号
-        // 1.为空则记录日志，抛出异常；2 不为空判断验证码是否正确
+        // 1.为空则记录日志，抛出异常；2 不为空判断验证码
         UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqUserInfo);
         if (queryUserInfo == null){
             insertLoginLog(reqLoginUserInfo);
@@ -483,36 +480,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         loginLog.setFailRemark(BusinessEnum.USERINFO_EXIST.getMsg());
         log.info("记录登录日志请求参数：{}");
         loginLogService.insertLoginLog(loginLog);
-    }
-
-    //@Async
-    private void insertMessageCountRecordByType(ReqMessage reqMessage, String sendMsm, JSONMessage jsonMessage, MessageView messageView,Integer messageType) {
-        if (jsonMessage.getCode().equals(SystemCodeEnum.SUCCESS.getCode())){
-            messageView.setCode(SystemCodeEnum.SUCCESS.getCode());
-            messageView.setDesc("短信发送成功");
-            //发送短信成功，则往短信统计记录表中插入相关数据
-            ReqMessageCount reqMessageCount = new ReqMessageCount();
-            reqMessageCount.setSendIp(reqMessage.getIp());
-            reqMessageCount.setCreateDate(new Date());
-            reqMessageCount.setUpdateDate(new Date());
-            reqMessageCount.setFounder(reqMessage.getMobile());
-            reqMessageCount.setModifier(reqMessage.getMobile());
-            reqMessageCount.setMobile(reqMessage.getMobile());
-            if (messageType.equals(MessageTypeEnum.REGISTER.getCode())){
-                reqMessageCount.setMessageType(MessageTypeEnum.REGISTER.getCode());
-                reqMessageCount.setSendContent("您正在进行使用短信注册新账号：{}"+ JSON.toJSONString(sendMsm));
-            }else if(messageType.equals(MessageTypeEnum.LOGIN.getCode())){
-                reqMessageCount.setMessageType(MessageTypeEnum.LOGIN.getCode());
-                reqMessageCount.setSendContent("您正在进行使用短信登录账号：{}"+ JSON.toJSONString(sendMsm));
-            }
-            messageCountService.insertMessageCount(reqMessageCount);
-        }else if (jsonMessage.getCode().equals(SystemCodeEnum.EXCEPTION.getCode()) ){
-            messageView.setCode(SystemCodeEnum.ERROR.getCode());
-            messageView.setDesc("短信发送异常");
-        }else{
-            messageView.setCode(SystemCodeEnum.ERROR.getCode());
-            messageView.setDesc("网络问题，请稍后重试");
-        }
     }
 
 

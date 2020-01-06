@@ -80,7 +80,8 @@ public class UserInfoController {
     public Result messageRegister(@RequestBody ReqMessage reqMessage,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqMessage.setIp(ip);
-      return Result.success(userInfoService.messageRegister(reqMessage));
+        userInfoService.messageRegister(reqMessage);
+      return Result.success();
     }
 
     @PostMapping("/checkRegisterCode")

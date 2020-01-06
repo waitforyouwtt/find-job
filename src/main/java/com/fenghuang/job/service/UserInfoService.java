@@ -60,7 +60,7 @@ public interface UserInfoService {
      * @param reqMessage
      * @return
      */
-    MessageView messageRegister(ReqMessage reqMessage);
+    void messageRegister(ReqMessage reqMessage);
 
     /**
      *用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败
