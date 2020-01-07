@@ -8,7 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface ProjectInfoMapper {
-
     int deleteByPrimaryKey(Integer id);
 
     int insert(ProjectInfo record);

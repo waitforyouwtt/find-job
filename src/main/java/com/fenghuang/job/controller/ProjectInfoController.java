@@ -27,7 +27,7 @@ public class ProjectInfoController {
     @ApiOperation( value = "创建项目")
     @PostMapping("/insertProject")
     public Result insertProject( ReqProjectInfo reqProject){
-        return Result.success(projectService.insertProject(reqProject));
+        return projectService.insertProject(reqProject);
     }
 
     @ApiOperation( value = "根据id更新项目相关字段")

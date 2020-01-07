@@ -36,8 +36,8 @@
     <result column="project_remark" jdbcType="VARCHAR" property="projectRemark" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, project_title, project_content, project_type_id, project_type_name, 
@@ -46,7 +46,7 @@
     work_welfares_id, project_need_num, project_contacts_name, project_contacts_mobile, 
     project_contacts_email, project_skill, work_time_num, work_time_unit, work_time_interval_min, 
     work_time_interval_max, work_time_requirement, project_begin_time, project_end_time, 
-    project_remark, founder, modifier, create_time, update_time
+    project_remark, founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -70,8 +70,8 @@
       project_skill, work_time_num, work_time_unit, 
       work_time_interval_min, work_time_interval_max, work_time_requirement, 
       project_begin_time, project_end_time, project_remark, 
-      founder, modifier, create_time, 
-      update_time)
+      founder, modifier, create_date, 
+      update_date)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{projectTitle,jdbcType=VARCHAR}, 
       #{projectContent,jdbcType=VARCHAR}, #{projectTypeId,jdbcType=INTEGER}, #{projectTypeName,jdbcType=VARCHAR}, 
       #{projectAscriptionCompany,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
@@ -83,8 +83,8 @@
       #{projectSkill,jdbcType=VARCHAR}, #{workTimeNum,jdbcType=INTEGER}, #{workTimeUnit,jdbcType=VARCHAR}, 
       #{workTimeIntervalMin,jdbcType=TIME}, #{workTimeIntervalMax,jdbcType=TIME}, #{workTimeRequirement,jdbcType=VARCHAR}, 
       #{projectBeginTime,jdbcType=TIMESTAMP}, #{projectEndTime,jdbcType=TIMESTAMP}, #{projectRemark,jdbcType=VARCHAR}, 
-      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.ProjectInfo">
     insert into project_info
@@ -191,11 +191,11 @@
       <if test="modifier != null">
         modifier,
       </if>
-      <if test="createTime != null">
-        create_time,
+      <if test="createDate != null">
+        create_date,
       </if>
-      <if test="updateTime != null">
-        update_time,
+      <if test="updateDate != null">
+        update_date,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -301,11 +301,11 @@
       <if test="modifier != null">
         #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -411,11 +411,11 @@
       <if test="modifier != null">
         modifier = #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -455,8 +455,8 @@
       project_remark = #{projectRemark,jdbcType=VARCHAR},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -531,22 +531,18 @@
       <if test="id != null">
         and id = #{id}
       </if>
+      <if test="projectTitle != null">
+        and project_title = #{projectTitle}
+      </if>
       <if test="projectTypeId != null">
         and project_type_id = #{projectTypeId}
       </if>
       <if test="projectTypeName != null">
         and project_type_name = #{projectTypeName}
       </if>
-      <if test="createUserId != null">
-        and create_user_id = #{createUserId}
+      <if test="projectTypeName != null">
+        and project_type_name = #{projectTypeName}
       </if>
-      <if test="createUserName != null">
-        and create_user_name = #{createUserName}
-      </if>
-      <if test="projectTitle != null">
-        and project_title = #{projectTitle}
-      </if>
-      and project_status in(1,2)
     </where>
   </select>
 
@@ -614,4 +610,6 @@
       ORDER BY ${sortField} ${sort};
     </if>
   </select>
+
+
 </mapper>

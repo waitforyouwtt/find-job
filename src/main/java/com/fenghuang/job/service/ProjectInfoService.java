@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqProjectInfo;
 import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.view.ProjectView;
@@ -19,7 +20,7 @@ public interface ProjectInfoService {
      * @param reqProject
      * @return
      */
-    int insertProject(ReqProjectInfo reqProject);
+    Result insertProject(ReqProjectInfo reqProject);
 
     /**
      * 根据id更新项目相关字段

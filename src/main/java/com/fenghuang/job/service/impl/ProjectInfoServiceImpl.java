@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.ProjectInfoMapper;
 import com.fenghuang.job.entity.Project;
 import com.fenghuang.job.entity.ProjectInfo;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.ExamineStatusEnum;
 import com.fenghuang.job.enums.ProjectStatusEnum;
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -48,28 +50,28 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public int insertProject(ReqProjectInfo reqProject) {
+    @Transactional(rollbackFor = Exception.class)
+    public Result insertProject(ReqProjectInfo reqProject) {
         log.info( "创建项目 请求参数：{}", JSON.toJSONString(reqProject) );
+        //同一用户 & 同一类型 & 相同标题 状态为未删除的项目不允许重复
         ProjectInfo projects = projectMapper.findProjectParams(reqProject);
         if (projects != null){
-            throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
+            return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),null);
         }
         ProjectInfo project = new ProjectInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqProjectInfo.class,Project.class,false  );
         beanCopier.copy( reqProject,project,null );
-        //        String key = Joiner.on(" ").join(baseBrandInfoByBrandCodes.stream().map(BaseBrandInfo:: getBrandCode).collect(Collectors.toList()));
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
           String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
             project.setProjectLabel(Integer.parseInt(StringUtils.strip(labels,"")));
         }
         project.setProjectState(ProjectStatusEnum.PUBLISH.getCode());
         project.setExamineStatus(ExamineStatusEnum.PASSED.getCode());
-/*        project.setProjectCreateDate(new Date());
         project.setCreateDate(new Date());
-        project.setUpdateDate(new Date());*/
-        project.setFounder(reqProject.getCreateUserId());
-        project.setModifier(reqProject.getCreateUserId());
-        return projectMapper.insertSelective( project );
+        project.setUpdateDate(new Date());
+        project.setFounder(reqProject.getUserId().toString());
+        project.setModifier(reqProject.getUserId().toString());
+        return Result.success(projectMapper.insertSelective( project ));
     }
 
     /**
