@@ -161,4 +161,37 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findSignUpInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqSignUpInfoQuery">
+    select
+    <include refid="Base_Column_List" />
+    from sign_up_info
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="projectId != null">
+        and project_id = #{projectId}
+      </if>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
+      <if test="userMobile != null">
+        and user_mobile = #{userMobile}
+      </if>
+      <if test="isDeletes != null">
+        and is_delete in
+        <foreach collection="isDeletes" item="isDeletes" index="index" open="(" close=")" separator=",">
+          #{isDeletes}
+        </foreach>
+      </if>
+      <if test="states != null">
+        and state in
+        <foreach collection="states" item="states" index="index" open="(" close=")" separator=",">
+          #{states}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
 </mapper>

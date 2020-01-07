@@ -1,10 +1,13 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.entity.SignUpInfo;
 import com.fenghuang.job.request.ReqSignUpInfo;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
 import com.fenghuang.job.request.ReqSignUpInfoUpdate;
 import com.fenghuang.job.view.SignUpInfoView;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -34,4 +37,10 @@ public interface SignUpInfoService {
      * @return
      */
     PageInfo <SignUpInfoView> findSignUpInfoPage(ReqSignUpInfoQuery reqSignUpInfoQuery);
+    /**
+     * 根据条件查询用户兼职报名记录信息
+     * @param reqSignUpInfoQuery
+     * @return
+     */
+    List<SignUpInfo> findSignUpInfo(ReqSignUpInfoQuery reqSignUpInfoQuery);
 }
