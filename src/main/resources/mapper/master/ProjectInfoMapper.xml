@@ -1,82 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fenghuang.job.dao.master.ProjectInfoMapper">
-  <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.Project">
+  <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.ProjectInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="project_type_id" jdbcType="INTEGER" property="projectTypeId" />
-    <result column="project_type_name" jdbcType="VARCHAR" property="projectTypeName" />
-    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
-    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="project_title" jdbcType="VARCHAR" property="projectTitle" />
     <result column="project_content" jdbcType="VARCHAR" property="projectContent" />
-    <result column="project_labels" jdbcType="VARCHAR" property="projectLabels" />
-    <result column="project_min_price" jdbcType="DECIMAL" property="projectMinPrice" />
-    <result column="project_max_price" jdbcType="DECIMAL" property="projectMaxPrice" />
-    <result column="project_status" jdbcType="INTEGER" property="projectStatus" />
+    <result column="project_type_id" jdbcType="INTEGER" property="projectTypeId" />
+    <result column="project_type_name" jdbcType="VARCHAR" property="projectTypeName" />
+    <result column="project_ascription_company" jdbcType="VARCHAR" property="projectAscriptionCompany" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="work_address" jdbcType="VARCHAR" property="workAddress" />
+    <result column="project_state" jdbcType="INTEGER" property="projectState" />
     <result column="examine_status" jdbcType="INTEGER" property="examineStatus" />
-    <result column="project_need_people" jdbcType="INTEGER" property="projectNeedPeople" />
-    <result column="is_direct_hire" jdbcType="INTEGER" property="isDirectHire" />
-    <result column="is_trusteeship" jdbcType="INTEGER" property="isTrusteeship" />
-    <result column="trusteeship_amount" jdbcType="DECIMAL" property="trusteeshipAmount" />
-    <result column="rank_field" jdbcType="INTEGER" property="rankField" />
-    <result column="project_create_date" jdbcType="TIMESTAMP" property="projectCreateDate" />
-    <result column="project_end_date" jdbcType="TIMESTAMP" property="projectEndDate" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="gender_requirement" jdbcType="INTEGER" property="genderRequirement" />
+    <result column="project_labels" jdbcType="INTEGER" property="projectLabels" />
+    <result column="salary_unit" jdbcType="INTEGER" property="salaryUnit" />
+    <result column="settlement_cycle" jdbcType="INTEGER" property="settlementCycle" />
+    <result column="work_welfares_id" jdbcType="INTEGER" property="workWelfaresId" />
+    <result column="project_need_num" jdbcType="INTEGER" property="projectNeedNum" />
+    <result column="project_contacts_name" jdbcType="VARCHAR" property="projectContactsName" />
+    <result column="project_contacts_mobile" jdbcType="VARCHAR" property="projectContactsMobile" />
+    <result column="project_contacts_email" jdbcType="VARCHAR" property="projectContactsEmail" />
+    <result column="project_skill" jdbcType="VARCHAR" property="projectSkill" />
+    <result column="work_time_num" jdbcType="INTEGER" property="workTimeNum" />
+    <result column="work_time_unit" jdbcType="VARCHAR" property="workTimeUnit" />
+    <result column="work_time_interval_min" jdbcType="TIME" property="workTimeIntervalMin" />
+    <result column="work_time_interval_max" jdbcType="TIME" property="workTimeIntervalMax" />
+    <result column="work_time_requirement" jdbcType="VARCHAR" property="workTimeRequirement" />
+    <result column="project_begin_time" jdbcType="TIMESTAMP" property="projectBeginTime" />
+    <result column="project_end_time" jdbcType="TIMESTAMP" property="projectEndTime" />
+    <result column="project_remark" jdbcType="VARCHAR" property="projectRemark" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, project_type_id, project_type_name, create_user_id, create_user_name, project_title, 
-    project_content,project_labels,project_min_price, project_max_price, project_status, examine_status,
-    project_need_people, is_direct_hire, is_trusteeship, trusteeship_amount, rank_field, 
-    project_create_date, project_end_date, founder, modifier, create_date, update_date
+    id, user_id, project_title, project_content, project_type_id, project_type_name, 
+    project_ascription_company, province_id, city_id, area_id, work_address, project_state, 
+    examine_status, is_delete, gender_requirement, project_labels, salary_unit, settlement_cycle, 
+    work_welfares_id, project_need_num, project_contacts_name, project_contacts_mobile, 
+    project_contacts_email, project_skill, work_time_num, work_time_unit, work_time_interval_min, 
+    work_time_interval_max, work_time_requirement, project_begin_time, project_end_time, 
+    project_remark, founder, modifier, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from project
+    from project_info
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from project
+    delete from project_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.fenghuang.job.entity.Project">
-    insert into project (id, project_type_id, project_type_name, 
-      create_user_id, create_user_name, project_title, 
-      project_content, project_min_price, project_max_price, 
-      project_status, examine_status, project_need_people, 
-      is_direct_hire, is_trusteeship, trusteeship_amount, 
-      rank_field, project_create_date, project_end_date, 
-      founder, modifier, create_date, 
-      update_date)
-    values (#{id,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectTypeName,jdbcType=VARCHAR}, 
-      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{projectTitle,jdbcType=VARCHAR}, 
-      #{projectContent,jdbcType=VARCHAR}, #{projectMinPrice,jdbcType=DECIMAL}, #{projectMaxPrice,jdbcType=DECIMAL}, 
-      #{projectStatus,jdbcType=INTEGER}, #{examineStatus,jdbcType=INTEGER}, #{projectNeedPeople,jdbcType=INTEGER}, 
-      #{isDirectHire,jdbcType=INTEGER}, #{isTrusteeship,jdbcType=INTEGER}, #{trusteeshipAmount,jdbcType=DECIMAL}, 
-      #{rankField,jdbcType=INTEGER}, #{projectCreateDate,jdbcType=TIMESTAMP}, #{projectEndDate,jdbcType=TIMESTAMP}, 
-      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.fenghuang.job.entity.ProjectInfo">
+    insert into project_info (id, user_id, project_title, 
+      project_content, project_type_id, project_type_name, 
+      project_ascription_company, province_id, city_id, 
+      area_id, work_address, project_state, 
+      examine_status, is_delete, gender_requirement, 
+      project_labels, salary_unit, settlement_cycle, 
+      work_welfares_id, project_need_num, project_contacts_name, 
+      project_contacts_mobile, project_contacts_email, 
+      project_skill, work_time_num, work_time_unit, 
+      work_time_interval_min, work_time_interval_max, work_time_requirement, 
+      project_begin_time, project_end_time, project_remark, 
+      founder, modifier, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{projectTitle,jdbcType=VARCHAR}, 
+      #{projectContent,jdbcType=VARCHAR}, #{projectTypeId,jdbcType=INTEGER}, #{projectTypeName,jdbcType=VARCHAR}, 
+      #{projectAscriptionCompany,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
+      #{areaId,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{projectState,jdbcType=INTEGER}, 
+      #{examineStatus,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{genderRequirement,jdbcType=INTEGER}, 
+      #{projectLabels,jdbcType=INTEGER}, #{salaryUnit,jdbcType=INTEGER}, #{settlementCycle,jdbcType=INTEGER}, 
+      #{workWelfaresId,jdbcType=INTEGER}, #{projectNeedNum,jdbcType=INTEGER}, #{projectContactsName,jdbcType=VARCHAR}, 
+      #{projectContactsMobile,jdbcType=VARCHAR}, #{projectContactsEmail,jdbcType=VARCHAR}, 
+      #{projectSkill,jdbcType=VARCHAR}, #{workTimeNum,jdbcType=INTEGER}, #{workTimeUnit,jdbcType=VARCHAR}, 
+      #{workTimeIntervalMin,jdbcType=TIME}, #{workTimeIntervalMax,jdbcType=TIME}, #{workTimeRequirement,jdbcType=VARCHAR}, 
+      #{projectBeginTime,jdbcType=TIMESTAMP}, #{projectEndTime,jdbcType=TIMESTAMP}, #{projectRemark,jdbcType=VARCHAR}, 
+      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.fenghuang.job.entity.Project">
-    insert into project
+  <insert id="insertSelective" parameterType="com.fenghuang.job.entity.ProjectInfo">
+    insert into project_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="projectTypeId != null">
-        project_type_id,
-      </if>
-      <if test="projectTypeName != null">
-        project_type_name,
-      </if>
-      <if test="createUserId != null">
-        create_user_id,
-      </if>
-      <if test="createUserName != null">
-        create_user_name,
+      <if test="userId != null">
+        user_id,
       </if>
       <if test="projectTitle != null">
         project_title,
@@ -84,41 +101,89 @@
       <if test="projectContent != null">
         project_content,
       </if>
-      <if test="projectLabels != null">
-        project_labels,
+      <if test="projectTypeId != null">
+        project_type_id,
       </if>
-      <if test="projectMinPrice != null">
-        project_min_price,
+      <if test="projectTypeName != null">
+        project_type_name,
       </if>
-      <if test="projectMaxPrice != null">
-        project_max_price,
+      <if test="projectAscriptionCompany != null">
+        project_ascription_company,
       </if>
-      <if test="projectStatus != null">
-        project_status,
+      <if test="provinceId != null">
+        province_id,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="workAddress != null">
+        work_address,
+      </if>
+      <if test="projectState != null">
+        project_state,
       </if>
       <if test="examineStatus != null">
         examine_status,
       </if>
-      <if test="projectNeedPeople != null">
-        project_need_people,
+      <if test="isDelete != null">
+        is_delete,
       </if>
-      <if test="isDirectHire != null">
-        is_direct_hire,
+      <if test="genderRequirement != null">
+        gender_requirement,
       </if>
-      <if test="isTrusteeship != null">
-        is_trusteeship,
+      <if test="projectLabels != null">
+        project_labels,
       </if>
-      <if test="trusteeshipAmount != null">
-        trusteeship_amount,
+      <if test="salaryUnit != null">
+        salary_unit,
       </if>
-      <if test="rankField != null">
-        rank_field,
+      <if test="settlementCycle != null">
+        settlement_cycle,
       </if>
-      <if test="projectCreateDate != null">
-        project_create_date,
+      <if test="workWelfaresId != null">
+        work_welfares_id,
       </if>
-      <if test="projectEndDate != null">
-        project_end_date,
+      <if test="projectNeedNum != null">
+        project_need_num,
+      </if>
+      <if test="projectContactsName != null">
+        project_contacts_name,
+      </if>
+      <if test="projectContactsMobile != null">
+        project_contacts_mobile,
+      </if>
+      <if test="projectContactsEmail != null">
+        project_contacts_email,
+      </if>
+      <if test="projectSkill != null">
+        project_skill,
+      </if>
+      <if test="workTimeNum != null">
+        work_time_num,
+      </if>
+      <if test="workTimeUnit != null">
+        work_time_unit,
+      </if>
+      <if test="workTimeIntervalMin != null">
+        work_time_interval_min,
+      </if>
+      <if test="workTimeIntervalMax != null">
+        work_time_interval_max,
+      </if>
+      <if test="workTimeRequirement != null">
+        work_time_requirement,
+      </if>
+      <if test="projectBeginTime != null">
+        project_begin_time,
+      </if>
+      <if test="projectEndTime != null">
+        project_end_time,
+      </if>
+      <if test="projectRemark != null">
+        project_remark,
       </if>
       <if test="founder != null">
         founder,
@@ -126,28 +191,19 @@
       <if test="modifier != null">
         modifier,
       </if>
-      <if test="createDate != null">
-        create_date,
+      <if test="createTime != null">
+        create_time,
       </if>
-      <if test="updateDate != null">
-        update_date,
+      <if test="updateTime != null">
+        update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="projectTypeId != null">
-        #{projectTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="projectTypeName != null">
-        #{projectTypeName,jdbcType=VARCHAR},
-      </if>
-      <if test="createUserId != null">
-        #{createUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="createUserName != null">
-        #{createUserName,jdbcType=VARCHAR},
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
       <if test="projectTitle != null">
         #{projectTitle,jdbcType=VARCHAR},
@@ -155,41 +211,89 @@
       <if test="projectContent != null">
         #{projectContent,jdbcType=VARCHAR},
       </if>
-      <if test="projectLabels != null">
-        #{projectLabels,jdbcType=VARCHAR},
+      <if test="projectTypeId != null">
+        #{projectTypeId,jdbcType=INTEGER},
       </if>
-      <if test="projectMinPrice != null">
-        #{projectMinPrice,jdbcType=DECIMAL},
+      <if test="projectTypeName != null">
+        #{projectTypeName,jdbcType=VARCHAR},
       </if>
-      <if test="projectMaxPrice != null">
-        #{projectMaxPrice,jdbcType=DECIMAL},
+      <if test="projectAscriptionCompany != null">
+        #{projectAscriptionCompany,jdbcType=VARCHAR},
       </if>
-      <if test="projectStatus != null">
-        #{projectStatus,jdbcType=INTEGER},
+      <if test="provinceId != null">
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="workAddress != null">
+        #{workAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="projectState != null">
+        #{projectState,jdbcType=INTEGER},
       </if>
       <if test="examineStatus != null">
         #{examineStatus,jdbcType=INTEGER},
       </if>
-      <if test="projectNeedPeople != null">
-        #{projectNeedPeople,jdbcType=INTEGER},
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
       </if>
-      <if test="isDirectHire != null">
-        #{isDirectHire,jdbcType=INTEGER},
+      <if test="genderRequirement != null">
+        #{genderRequirement,jdbcType=INTEGER},
       </if>
-      <if test="isTrusteeship != null">
-        #{isTrusteeship,jdbcType=INTEGER},
+      <if test="projectLabels != null">
+        #{projectLabels,jdbcType=INTEGER},
       </if>
-      <if test="trusteeshipAmount != null">
-        #{trusteeshipAmount,jdbcType=DECIMAL},
+      <if test="salaryUnit != null">
+        #{salaryUnit,jdbcType=INTEGER},
       </if>
-      <if test="rankField != null">
-        #{rankField,jdbcType=INTEGER},
+      <if test="settlementCycle != null">
+        #{settlementCycle,jdbcType=INTEGER},
       </if>
-      <if test="projectCreateDate != null">
-        #{projectCreateDate,jdbcType=TIMESTAMP},
+      <if test="workWelfaresId != null">
+        #{workWelfaresId,jdbcType=INTEGER},
       </if>
-      <if test="projectEndDate != null">
-        #{projectEndDate,jdbcType=TIMESTAMP},
+      <if test="projectNeedNum != null">
+        #{projectNeedNum,jdbcType=INTEGER},
+      </if>
+      <if test="projectContactsName != null">
+        #{projectContactsName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectContactsMobile != null">
+        #{projectContactsMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="projectContactsEmail != null">
+        #{projectContactsEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="projectSkill != null">
+        #{projectSkill,jdbcType=VARCHAR},
+      </if>
+      <if test="workTimeNum != null">
+        #{workTimeNum,jdbcType=INTEGER},
+      </if>
+      <if test="workTimeUnit != null">
+        #{workTimeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="workTimeIntervalMin != null">
+        #{workTimeIntervalMin,jdbcType=TIME},
+      </if>
+      <if test="workTimeIntervalMax != null">
+        #{workTimeIntervalMax,jdbcType=TIME},
+      </if>
+      <if test="workTimeRequirement != null">
+        #{workTimeRequirement,jdbcType=VARCHAR},
+      </if>
+      <if test="projectBeginTime != null">
+        #{projectBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectEndTime != null">
+        #{projectEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectRemark != null">
+        #{projectRemark,jdbcType=VARCHAR},
       </if>
       <if test="founder != null">
         #{founder,jdbcType=VARCHAR},
@@ -197,28 +301,19 @@
       <if test="modifier != null">
         #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateDate != null">
-        #{updateDate,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.Project">
-    update project
+  <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.ProjectInfo">
+    update project_info
     <set>
-      <if test="projectTypeId != null">
-        project_type_id = #{projectTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="projectTypeName != null">
-        project_type_name = #{projectTypeName,jdbcType=VARCHAR},
-      </if>
-      <if test="createUserId != null">
-        create_user_id = #{createUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="createUserName != null">
-        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="projectTitle != null">
         project_title = #{projectTitle,jdbcType=VARCHAR},
@@ -226,41 +321,89 @@
       <if test="projectContent != null">
         project_content = #{projectContent,jdbcType=VARCHAR},
       </if>
-      <if test="projectLabels != null">
-        project_labels = #{projectLabels,jdbcType=VARCHAR},
+      <if test="projectTypeId != null">
+        project_type_id = #{projectTypeId,jdbcType=INTEGER},
       </if>
-      <if test="projectMinPrice != null">
-        project_min_price = #{projectMinPrice,jdbcType=DECIMAL},
+      <if test="projectTypeName != null">
+        project_type_name = #{projectTypeName,jdbcType=VARCHAR},
       </if>
-      <if test="projectMaxPrice != null">
-        project_max_price = #{projectMaxPrice,jdbcType=DECIMAL},
+      <if test="projectAscriptionCompany != null">
+        project_ascription_company = #{projectAscriptionCompany,jdbcType=VARCHAR},
       </if>
-      <if test="projectStatus != null">
-        project_status = #{projectStatus,jdbcType=INTEGER},
+      <if test="provinceId != null">
+        province_id = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="workAddress != null">
+        work_address = #{workAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="projectState != null">
+        project_state = #{projectState,jdbcType=INTEGER},
       </if>
       <if test="examineStatus != null">
         examine_status = #{examineStatus,jdbcType=INTEGER},
       </if>
-      <if test="projectNeedPeople != null">
-        project_need_people = #{projectNeedPeople,jdbcType=INTEGER},
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
-      <if test="isDirectHire != null">
-        is_direct_hire = #{isDirectHire,jdbcType=INTEGER},
+      <if test="genderRequirement != null">
+        gender_requirement = #{genderRequirement,jdbcType=INTEGER},
       </if>
-      <if test="isTrusteeship != null">
-        is_trusteeship = #{isTrusteeship,jdbcType=INTEGER},
+      <if test="projectLabels != null">
+        project_labels = #{projectLabels,jdbcType=INTEGER},
       </if>
-      <if test="trusteeshipAmount != null">
-        trusteeship_amount = #{trusteeshipAmount,jdbcType=DECIMAL},
+      <if test="salaryUnit != null">
+        salary_unit = #{salaryUnit,jdbcType=INTEGER},
       </if>
-      <if test="rankField != null">
-        rank_field = #{rankField,jdbcType=INTEGER},
+      <if test="settlementCycle != null">
+        settlement_cycle = #{settlementCycle,jdbcType=INTEGER},
       </if>
-      <if test="projectCreateDate != null">
-        project_create_date = #{projectCreateDate,jdbcType=TIMESTAMP},
+      <if test="workWelfaresId != null">
+        work_welfares_id = #{workWelfaresId,jdbcType=INTEGER},
       </if>
-      <if test="projectEndDate != null">
-        project_end_date = #{projectEndDate,jdbcType=TIMESTAMP},
+      <if test="projectNeedNum != null">
+        project_need_num = #{projectNeedNum,jdbcType=INTEGER},
+      </if>
+      <if test="projectContactsName != null">
+        project_contacts_name = #{projectContactsName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectContactsMobile != null">
+        project_contacts_mobile = #{projectContactsMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="projectContactsEmail != null">
+        project_contacts_email = #{projectContactsEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="projectSkill != null">
+        project_skill = #{projectSkill,jdbcType=VARCHAR},
+      </if>
+      <if test="workTimeNum != null">
+        work_time_num = #{workTimeNum,jdbcType=INTEGER},
+      </if>
+      <if test="workTimeUnit != null">
+        work_time_unit = #{workTimeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="workTimeIntervalMin != null">
+        work_time_interval_min = #{workTimeIntervalMin,jdbcType=TIME},
+      </if>
+      <if test="workTimeIntervalMax != null">
+        work_time_interval_max = #{workTimeIntervalMax,jdbcType=TIME},
+      </if>
+      <if test="workTimeRequirement != null">
+        work_time_requirement = #{workTimeRequirement,jdbcType=VARCHAR},
+      </if>
+      <if test="projectBeginTime != null">
+        project_begin_time = #{projectBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectEndTime != null">
+        project_end_time = #{projectEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectRemark != null">
+        project_remark = #{projectRemark,jdbcType=VARCHAR},
       </if>
       <if test="founder != null">
         founder = #{founder,jdbcType=VARCHAR},
@@ -268,42 +411,56 @@
       <if test="modifier != null">
         modifier = #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.Project">
-    update project
-    set project_type_id = #{projectTypeId,jdbcType=INTEGER},
-      project_type_name = #{projectTypeName,jdbcType=VARCHAR},
-      create_user_id = #{createUserId,jdbcType=VARCHAR},
-      create_user_name = #{createUserName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.ProjectInfo">
+    update project_info
+    set user_id = #{userId,jdbcType=INTEGER},
       project_title = #{projectTitle,jdbcType=VARCHAR},
       project_content = #{projectContent,jdbcType=VARCHAR},
-      project_min_price = #{projectMinPrice,jdbcType=DECIMAL},
-      project_max_price = #{projectMaxPrice,jdbcType=DECIMAL},
-      project_status = #{projectStatus,jdbcType=INTEGER},
+      project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      project_type_name = #{projectTypeName,jdbcType=VARCHAR},
+      project_ascription_company = #{projectAscriptionCompany,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      work_address = #{workAddress,jdbcType=VARCHAR},
+      project_state = #{projectState,jdbcType=INTEGER},
       examine_status = #{examineStatus,jdbcType=INTEGER},
-      project_need_people = #{projectNeedPeople,jdbcType=INTEGER},
-      is_direct_hire = #{isDirectHire,jdbcType=INTEGER},
-      is_trusteeship = #{isTrusteeship,jdbcType=INTEGER},
-      trusteeship_amount = #{trusteeshipAmount,jdbcType=DECIMAL},
-      rank_field = #{rankField,jdbcType=INTEGER},
-      project_create_date = #{projectCreateDate,jdbcType=TIMESTAMP},
-      project_end_date = #{projectEndDate,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      gender_requirement = #{genderRequirement,jdbcType=INTEGER},
+      project_labels = #{projectLabels,jdbcType=INTEGER},
+      salary_unit = #{salaryUnit,jdbcType=INTEGER},
+      settlement_cycle = #{settlementCycle,jdbcType=INTEGER},
+      work_welfares_id = #{workWelfaresId,jdbcType=INTEGER},
+      project_need_num = #{projectNeedNum,jdbcType=INTEGER},
+      project_contacts_name = #{projectContactsName,jdbcType=VARCHAR},
+      project_contacts_mobile = #{projectContactsMobile,jdbcType=VARCHAR},
+      project_contacts_email = #{projectContactsEmail,jdbcType=VARCHAR},
+      project_skill = #{projectSkill,jdbcType=VARCHAR},
+      work_time_num = #{workTimeNum,jdbcType=INTEGER},
+      work_time_unit = #{workTimeUnit,jdbcType=VARCHAR},
+      work_time_interval_min = #{workTimeIntervalMin,jdbcType=TIME},
+      work_time_interval_max = #{workTimeIntervalMax,jdbcType=TIME},
+      work_time_requirement = #{workTimeRequirement,jdbcType=VARCHAR},
+      project_begin_time = #{projectBeginTime,jdbcType=TIMESTAMP},
+      project_end_time = #{projectEndTime,jdbcType=TIMESTAMP},
+      project_remark = #{projectRemark,jdbcType=VARCHAR},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="findProjectPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProject">
+  <select id="findProjectPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProjectInfo">
     select
     <include refid="Base_Column_List" />
     from project where 1 = 1
@@ -365,7 +522,7 @@
     </if>
 
   </select>
-  <select id="findProjectParams" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProject">
+  <select id="findProjectParams" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProjectInfo">
     select
     <include refid="Base_Column_List" />
     from project
@@ -393,7 +550,7 @@
     </where>
   </select>
 
-  <select id="findProject" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProject">
+  <select id="findProject" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProjectInfo">
     select
     <include refid="Base_Column_List" />
     from project where 1 = 1

@@ -1,7 +1,7 @@
 package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
-import com.fenghuang.job.request.ReqProject;
+import com.fenghuang.job.request.ReqProjectInfo;
 import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.service.ProjectInfoService;
 import io.swagger.annotations.Api;
@@ -26,13 +26,13 @@ public class ProjectInfoController {
 
     @ApiOperation( value = "创建项目")
     @PostMapping("/insertProject")
-    public Result insertProject( ReqProject reqProject){
+    public Result insertProject( ReqProjectInfo reqProject){
         return Result.success(projectService.insertProject(reqProject));
     }
 
     @ApiOperation( value = "根据id更新项目相关字段")
     @PostMapping("/modifyProject")
-    public Result modifyProject( ReqProject reqProject){
+    public Result modifyProject( ReqProjectInfo reqProject){
       return Result.success(projectService.modifyProject(reqProject));
     }
 
@@ -44,14 +44,14 @@ public class ProjectInfoController {
 
     @ApiOperation( value = "根据条件查询项目信息")
     @PostMapping("/findProject")
-    public Result findProject(@RequestBody ReqProject reqProject){
+    public Result findProject(@RequestBody ReqProjectInfo reqProject){
 
       return Result.success(projectService.findProject(reqProject));
     }
 
     @ApiOperation( value = "根据条件进行查询项目相关信息且分页")
     @PostMapping("/findProjectPage")
-    public Result findProjectPage(@RequestBody ReqProject reqProject){
+    public Result findProjectPage(@RequestBody ReqProjectInfo reqProject){
         return Result.success(projectService.findProjectPage(reqProject));
     }
 }

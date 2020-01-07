@@ -8,7 +8,7 @@ import com.fenghuang.job.enums.ExamineStatusEnum;
 import com.fenghuang.job.enums.ProjectStatusEnum;
 import com.fenghuang.job.enums.SortEnum;
 import com.fenghuang.job.exception.BusinessException;
-import com.fenghuang.job.request.ReqProject;
+import com.fenghuang.job.request.ReqProjectInfo;
 import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.ProjectView;
@@ -47,14 +47,14 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public int insertProject(ReqProject reqProject) {
+    public int insertProject(ReqProjectInfo reqProject) {
         log.info( "创建项目 请求参数：{}", JSON.toJSONString(reqProject) );
         Project projects = projectMapper.findProjectParams(reqProject);
         if (projects != null){
             throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
         }
         Project project = new Project();
-        BeanCopier beanCopier = BeanCopier.create(ReqProject.class,Project.class,false  );
+        BeanCopier beanCopier = BeanCopier.create(ReqProjectInfo.class,Project.class,false  );
         beanCopier.copy( reqProject,project,null );
         //        String key = Joiner.on(" ").join(baseBrandInfoByBrandCodes.stream().map(BaseBrandInfo:: getBrandCode).collect(Collectors.toList()));
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
@@ -78,13 +78,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public int modifyProject(ReqProject reqProject) {
+    public int modifyProject(ReqProjectInfo reqProject) {
         log.info( "根据id更新项目相关字段 请求参数：{}",JSON.toJSONString( reqProject ) );
         if (StringUtils.isBlank(reqProject.getId().toString())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
         Project project = new Project();
-        BeanCopier beanCopier = BeanCopier.create( ReqProject.class,Project.class,false );
+        BeanCopier beanCopier = BeanCopier.create( ReqProjectInfo.class,Project.class,false );
         beanCopier.copy( reqProject,project,null );
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
             String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
@@ -132,7 +132,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public List<ProjectView> findProject(ReqProject reqProject) {
+    public List<ProjectView> findProject(ReqProjectInfo reqProject) {
         log.info( "根据条件查询项目信息 请求参数：{}",JSON.toJSONString( reqProject ) );
         convertSort(reqProject);
         List<Project> queryProject  =  projectMapper.findProject(reqProject);
@@ -152,7 +152,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public PageInfo<ProjectView> findProjectPage(ReqProject reqProject) {
+    public PageInfo<ProjectView> findProjectPage(ReqProjectInfo reqProject) {
         log.info( "根据条件进行查询项目相关信息且分页 请求参数：{}",JSON.toJSONString( reqProject ) );
         PageInfo<ProjectView> pageInfo = null;
         try {
@@ -172,7 +172,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         return pageInfo;
     }
 
-    private void convertSort(ReqProject reqProject) {
+    private void convertSort(ReqProjectInfo reqProject) {
         if (StringUtils.isEmpty( reqProject.getSortField() )){
             reqProject.setSortField( "project_create_date" );
             reqProject.setSort( SortEnum.DESC.getMsg() );

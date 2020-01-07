@@ -1,6 +1,6 @@
 package com.fenghuang.job.service;
 
-import com.fenghuang.job.request.ReqProject;
+import com.fenghuang.job.request.ReqProjectInfo;
 import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.view.ProjectView;
 import com.github.pagehelper.PageInfo;
@@ -19,14 +19,14 @@ public interface ProjectInfoService {
      * @param reqProject
      * @return
      */
-    int insertProject(ReqProject reqProject);
+    int insertProject(ReqProjectInfo reqProject);
 
     /**
      * 根据id更新项目相关字段
       * @param reqProject
      * @return
      */
-    int modifyProject(ReqProject reqProject);
+    int modifyProject(ReqProjectInfo reqProject);
 
     /**
      *根据id更新项目状态
@@ -40,12 +40,12 @@ public interface ProjectInfoService {
      * @param reqProject
      * @return
      */
-    List<ProjectView> findProject(ReqProject reqProject);
+    List<ProjectView> findProject(ReqProjectInfo reqProject);
 
     /**
      *根据条件进行查询项目相关信息且分页
       * @param reqProject
      * @return
      */
-    PageInfo<ProjectView> findProjectPage(ReqProject reqProject);
+    PageInfo<ProjectView> findProjectPage(ReqProjectInfo reqProject);
 }

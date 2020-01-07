@@ -16,7 +16,7 @@ import java.util.List;
  * @Email: 15290810931@163.com
  */
 @Data
-public class ReqProject extends PageHelps implements Serializable {
+public class ReqProjectInfo extends PageHelps implements Serializable {
 
     private Integer id;
 

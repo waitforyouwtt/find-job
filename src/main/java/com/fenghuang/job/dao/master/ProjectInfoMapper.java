@@ -1,26 +1,26 @@
 package com.fenghuang.job.dao.master;
 
-import com.fenghuang.job.entity.Project;
-import com.fenghuang.job.request.ReqProject;
+import com.fenghuang.job.entity.ProjectInfo;
+import com.fenghuang.job.request.ReqProjectInfo;
 
 import java.util.List;
 
 public interface ProjectInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Project record);
+    int insert(ProjectInfo record);
 
-    int insertSelective(Project record);
+    int insertSelective(ProjectInfo record);
 
-    Project selectByPrimaryKey(Integer id);
+    ProjectInfo selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Project record);
+    int updateByPrimaryKeySelective(ProjectInfo record);
 
-    int updateByPrimaryKey(Project record);
+    int updateByPrimaryKey(ProjectInfo record);
 
-    List<Project> findProjectPage(ReqProject reqProject);
+    List<ProjectInfo> findProjectPage(ReqProjectInfo reqProject);
 
-    Project findProjectParams(ReqProject reqProject);
+    ProjectInfo findProjectParams(ReqProjectInfo reqProject);
 
-    List<Project> findProject(ReqProject reqProject);
+    List<ProjectInfo> findProject(ReqProjectInfo reqProject);
 }
