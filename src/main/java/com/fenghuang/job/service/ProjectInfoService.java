@@ -13,7 +13,7 @@ import java.util.List;
  * @Version: 1.0
  * @Email: 15290810931@163.com
  */
-public interface ProjectService {
+public interface ProjectInfoService {
     /**
      * 创建项目
      * @param reqProject

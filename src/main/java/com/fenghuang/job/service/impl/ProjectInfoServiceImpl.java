@@ -1,7 +1,7 @@
 package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.fenghuang.job.dao.master.ProjectMapper;
+import com.fenghuang.job.dao.master.ProjectInfoMapper;
 import com.fenghuang.job.entity.Project;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.ExamineStatusEnum;
@@ -10,7 +10,7 @@ import com.fenghuang.job.enums.SortEnum;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqProject;
 import com.fenghuang.job.request.ReqProjectStatus;
-import com.fenghuang.job.service.ProjectService;
+import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.ProjectView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -36,10 +36,10 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class ProjectServiceImpl implements ProjectService {
+public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Autowired
-    ProjectMapper projectMapper;
+    ProjectInfoMapper projectMapper;
     /**
      * 创建项目
      *

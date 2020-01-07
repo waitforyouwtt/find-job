@@ -5,7 +5,7 @@ import com.fenghuang.job.request.ReqProject;
 
 import java.util.List;
 
-public interface ProjectMapper {
+public interface ProjectInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Project record);
