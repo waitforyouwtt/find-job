@@ -2,6 +2,7 @@ package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.SignUpInfoMapper;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.entity.SignUpInfo;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.DeleteEnum;
@@ -45,27 +46,27 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
      * @return
      */
     @Override
-    public int insertSignUpInfo(ReqSignUpInfo reqSignUpInfo) {
+    public Result insertSignUpInfo(ReqSignUpInfo reqSignUpInfo) {
         log.info( "保存用户兼职报名信息 请求参数：{}", JSON.toJSONString(reqSignUpInfo) );
-        //同一兼职项目不可以再次报名
         ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
         query.setProjectId(reqSignUpInfo.getProjectId());
         query.setUserId(reqSignUpInfo.getUserId());
         query.setUserMobile(reqSignUpInfo.getUserMobile());
         query.setStates(Arrays.asList(SignUpInfoEnum.WAIT_ADMISSION.getCode(),SignUpInfoEnum.HAD_ADMISSION.getCode()));
-        List<SignUpInfo> signUpInfo = signUpInfoMapper.findSignUpInfo(query);
-        if (!CollectionUtils.isEmpty(signUpInfo)){
-            throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
+        //同一兼职项目同一用户处于待录用和已录用的状态不可以再次报名
+        List<SignUpInfo> querySignUpInfo = signUpInfoMapper.findSignUpInfo(query);
+        log.info("检索同一兼职项目同一用户处于待录用和已录用的状态 返回结果：{}",JSON.toJSONString(querySignUpInfo));
+        if (!CollectionUtils.isEmpty(querySignUpInfo)){
+            return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),null);
         }
-
         SignUpInfo signUpInfoParams = new SignUpInfo();
         BeanCopier beanCopier = BeanCopier.create( ReqSignUpInfo.class, SignUpInfo.class,false );
         beanCopier.copy( reqSignUpInfo,signUpInfoParams,null );
-        signUpInfoParams.setCreateTime( new Date(  ) );
-        signUpInfoParams.setUpdateTime( new Date(  ) );
+        signUpInfoParams.setCreateDate( new Date(  ) );
+        signUpInfoParams.setUpdateDate( new Date(  ) );
         signUpInfoParams.setIsDelete( DeleteEnum.NO.getCode() );
         signUpInfoParams.setState( SignUpInfoEnum.WAIT_ADMISSION.getCode() );
-        return signUpInfoMapper.insertSelective( signUpInfoParams );
+        return Result.success(signUpInfoMapper.insertSelective( signUpInfoParams ));
     }
 
     /**
@@ -75,15 +76,15 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
      * @return
      */
     @Override
-    public int updateSignUpInfoState(ReqSignUpInfoUpdate reqSignUpInfoUpdate) {
+    public Result updateSignUpInfoState(ReqSignUpInfoUpdate reqSignUpInfoUpdate) {
         log.info("修改用户兼职报名信息状态 请求参数：{}",JSON.toJSONString(reqSignUpInfoUpdate));
-        if (!StringUtils.isEmpty(reqSignUpInfoUpdate.getId().toString())){
-            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+        if (reqSignUpInfoUpdate.getId() ==null){
+            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
         }
         SignUpInfo update = new SignUpInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqSignUpInfoUpdate.class,SignUpInfo.class,false);
         beanCopier.copy(reqSignUpInfoUpdate,update,null);
-        return signUpInfoMapper.updateByPrimaryKeySelective(update);
+        return Result.success(signUpInfoMapper.updateByPrimaryKeySelective(update));
     }
 
     /**
@@ -98,17 +99,12 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
         PageInfo<SignUpInfoView> pageInfo = null;
         try{
             Page<?> page = PageHelper.startPage(reqSignUpInfoQuery.getPageNum(),reqSignUpInfoQuery.getPageSize());
-            List<SignUpInfo> signUpInfoList = signUpInfoMapper.findSignUpInfo(reqSignUpInfoQuery);
-            if (CollectionUtils.isEmpty(signUpInfoList)){
+            List<SignUpInfo> querySignUpInfo = signUpInfoMapper.findSignUpInfo(reqSignUpInfoQuery);
+            if (CollectionUtils.isEmpty(querySignUpInfo)){
                 pageInfo = new PageInfo<>(new ArrayList<>());
             }else{
                 List<SignUpInfoView> views = new ArrayList<>(16);
-                signUpInfoList.stream().forEach(signUpInfo -> {
-                    SignUpInfoView view = new SignUpInfoView();
-                    BeanCopier beanCopier = BeanCopier.create(SignUpInfo.class,SignUpInfoView.class,false);
-                    beanCopier.copy(signUpInfo,view,null);
-                    views.add(view);
-                });
+                convertView(querySignUpInfo, views);
                 pageInfo = new PageInfo<>(views);
             }
             log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
@@ -125,12 +121,40 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
      * @return
      */
     @Override
-    public List<SignUpInfo> findSignUpInfo(ReqSignUpInfoQuery reqSignUpInfoQuery) {
+    public List<SignUpInfoView> findSignUpInfo(ReqSignUpInfoQuery reqSignUpInfoQuery) {
         log.info("根据条件查询用户兼职报名记录信息 请求参数：{}",JSON.toJSONString(reqSignUpInfoQuery));
-        List<SignUpInfo> signUpInfoList = signUpInfoMapper.findSignUpInfo(reqSignUpInfoQuery);
-        if (CollectionUtils.isEmpty(signUpInfoList)){
+        List<SignUpInfo> querySignUpInfo = signUpInfoMapper.findSignUpInfo(reqSignUpInfoQuery);
+        if (CollectionUtils.isEmpty(querySignUpInfo)){
            return new ArrayList<>();
         }
-        return signUpInfoList;
+        List<SignUpInfoView> views  = new ArrayList<>();
+        convertView(querySignUpInfo, views);
+        return views;
+    }
+
+    private void convertView(List<SignUpInfo> querySignUpInfo, List<SignUpInfoView> views) {
+        querySignUpInfo.stream().forEach(signUpInfo -> {
+            SignUpInfoView view = new SignUpInfoView();
+            BeanCopier beanCopier = BeanCopier.create(SignUpInfo.class,SignUpInfoView.class,false);
+            beanCopier.copy(signUpInfo,view,null);
+            views.add(view);
+        });
+    }
+
+    /**
+     * 根据id查询用户兼职报名记录详情
+     * @param id
+     * @return
+     */
+    @Override
+    public SignUpInfoView findSignUpInfoById(Integer id) {
+        SignUpInfo querySignUpInfo = signUpInfoMapper.findSignUpInfoById(id);
+        if (querySignUpInfo == null){
+            return null;
+        }
+        SignUpInfoView view = new SignUpInfoView();
+        BeanCopier beanCopier = BeanCopier.create(SignUpInfo.class,SignUpInfoView.class,false);
+        beanCopier.copy(querySignUpInfo,view,null);
+        return view;
     }
 }

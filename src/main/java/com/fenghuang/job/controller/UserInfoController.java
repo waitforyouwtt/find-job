@@ -36,13 +36,13 @@ public class UserInfoController {
     @ApiOperation(value = "常规方式注册新用户")
     @PostMapping("/userRegister")
     public Result userRegister(@RequestBody ReqUserInfo reqUserInfo){
-        return Result.success(userInfoService.insertUser(reqUserInfo));
+        return userInfoService.insertUser(reqUserInfo);
     }
 
     @ApiOperation(value = "更新用户状态信息")
     @PostMapping("/modifyUserStatus")
     public Result modifyUserStatus(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
-        return Result.success(userInfoService.modifyUserInfo(reqUserInfoUpdate));
+        return userInfoService.modifyUserInfo(reqUserInfoUpdate);
     }
 
     @ApiOperation(value = "更新用户信息")
@@ -72,22 +72,21 @@ public class UserInfoController {
     @PostMapping("/changePassword")
     @ApiOperation(value = "用户进行修改密码")
     public Result changePassword(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
-        return Result.success(userInfoService.changePassword(reqUserInfoUpdate));
+        return userInfoService.changePassword(reqUserInfoUpdate);
     }
 
     @PostMapping("/messageRegister")
     @ApiOperation(value = "用户短信注册，发送验证码")
-    public Result messageRegister(@RequestBody ReqMessage reqMessage,HttpServletRequest request){
+    public Result messageRegister(@RequestParam("messageId")String messageId,@RequestParam("signId")String signId,
+                                  @RequestParam("mobile")String mobile,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
-        reqMessage.setIp(ip);
-        userInfoService.messageRegister(reqMessage);
-      return Result.success();
+        return userInfoService.messageRegister(messageId,signId,mobile,ip);
     }
 
     @PostMapping("/checkRegisterCode")
     @ApiOperation(value = "用户短信注册，输入密码并校验验证码，验证通过则注册成功，验证失败则注册失败")
     public Result checkRegisterCode(@RequestBody ReqRegisterCode registerCode) {
-        return Result.success(userInfoService.checkRegisterCode(registerCode));
+        return userInfoService.checkRegisterCode(registerCode);
     }
 
     @PostMapping("/login")
@@ -95,27 +94,27 @@ public class UserInfoController {
     public Result login(ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqLoginUserInfo.setLoginIp(ip);
-        return Result.success(userInfoService.login(reqLoginUserInfo));
+        return userInfoService.login(reqLoginUserInfo);
     }
 
     @PostMapping("/loginByMessage")
     @ApiOperation(value = "使用短信进行登录，发送验证码")
-    public Result loginByMessage(@RequestBody HttpServletRequest request,ReqMessage reqMessage){
+    public Result loginByMessage(@RequestBody HttpServletRequest request,@RequestParam("messageId")String messageId,
+                                 @RequestParam("signId")String signId,@RequestParam("mobile")String mobile){
         String ip = BusinessUtils.getIpAddress(request);
-        reqMessage.setIp(ip);
-        return Result.success(userInfoService.loginByMessage(reqMessage));
+        return userInfoService.loginByMessage(messageId,signId,mobile,ip);
     }
 
     @PostMapping("/checkLoginCode")
     @ApiOperation(value = "用户短信登录，输入验证码，验证通过则登录成功，验证失败则登录失败")
     public Result checkLoginCode(@RequestBody ReqLoginUserInfo reqLoginUserInfo) {
-        return Result.success(userInfoService.checkLoginCode(reqLoginUserInfo));
+        return userInfoService.checkLoginCode(reqLoginUserInfo);
     }
 
     @ApiOperation(value = "根据Id 获取用户记录详情")
     @GetMapping("/findUserById")
     public Result findUserById(@RequestParam("id") Integer id){
-        return Result.success(userInfoService.findUserById(id));
+        return userInfoService.findUserById(id);
     }
 
     @ApiOperation(value = "生成验证码，返回给前端")
@@ -158,7 +157,7 @@ public class UserInfoController {
         LocalDateTime localDateTime = (LocalDateTime)session.getAttribute("codeTime");
         long past = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        UserInfoView login = userInfoService.login(userInfo);
+        Result login = userInfoService.login(userInfo);
 
         if(verCodeStr == null || code == null || code.isEmpty() || !verCodeStr.equalsIgnoreCase(code)){
             request.setAttribute("errmsg", "验证码错误");

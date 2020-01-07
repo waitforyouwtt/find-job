@@ -1,6 +1,6 @@
 package com.fenghuang.job.service;
 
-import com.fenghuang.job.entity.SignUpInfo;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqSignUpInfo;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
 import com.fenghuang.job.request.ReqSignUpInfoUpdate;
@@ -22,14 +22,14 @@ public interface SignUpInfoService {
      * @param reqSignUpInfo
      * @return
      */
-    int insertSignUpInfo(ReqSignUpInfo reqSignUpInfo);
+    Result insertSignUpInfo(ReqSignUpInfo reqSignUpInfo);
 
     /**
      *修改用户兼职报名信息状态
      * @param reqSignUpInfoUpdate
      * @return
      */
-    int updateSignUpInfoState(ReqSignUpInfoUpdate reqSignUpInfoUpdate);
+    Result updateSignUpInfoState(ReqSignUpInfoUpdate reqSignUpInfoUpdate);
 
     /**
      * 根据条件查询用户兼职报名记录且分页
@@ -42,5 +42,12 @@ public interface SignUpInfoService {
      * @param reqSignUpInfoQuery
      * @return
      */
-    List<SignUpInfo> findSignUpInfo(ReqSignUpInfoQuery reqSignUpInfoQuery);
+    List<SignUpInfoView> findSignUpInfo(ReqSignUpInfoQuery reqSignUpInfoQuery);
+
+    /**
+     *根据id查询用户兼职报名记录详情
+     * @param id
+     * @return
+     */
+    SignUpInfoView findSignUpInfoById(Integer id);
 }

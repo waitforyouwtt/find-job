@@ -8,7 +8,9 @@ import com.fenghuang.job.service.SignUpInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,19 +29,25 @@ public class SignUpInfoController {
     @ApiOperation(value = "保存用户兼职报名信息")
     @PostMapping("/insertSignUpInfo")
     public Result insertSignUpInfo(ReqSignUpInfo reqSignUpInfo){
-        return Result.success( signUpInfoService.insertSignUpInfo(reqSignUpInfo) );
+        return signUpInfoService.insertSignUpInfo(reqSignUpInfo);
     }
 
     @ApiOperation(value = "修改用户兼职报名信息状态")
     @PostMapping("/updateSignUpInfoState")
     public Result updateSignUpInfoState(ReqSignUpInfoUpdate reqSignUpInfoUpdate){
-        return Result.success( signUpInfoService.updateSignUpInfoState(reqSignUpInfoUpdate) );
+        return signUpInfoService.updateSignUpInfoState(reqSignUpInfoUpdate);
     }
 
     @ApiOperation(value = "根据条件查询用户兼职报名记录且分页")
     @PostMapping("/findSignUpInfoPage")
     public Result findSignUpInfoPage(ReqSignUpInfoQuery reqSignUpInfoQuery){
         return Result.success( signUpInfoService.findSignUpInfoPage(reqSignUpInfoQuery) );
+    }
+
+    @ApiOperation(value = "根据id查询用户兼职报名记录详情")
+    @GetMapping("/findSignUpInfoById")
+    public Result findSignUpInfoById(@RequestParam("id") Integer id){
+        return Result.success(signUpInfoService.findSignUpInfoById(id));
     }
 
 }

@@ -11,12 +11,12 @@
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
     id, project_id, user_id, user_name, user_mobile, is_delete, state, founder, modifier, 
-    create_time, update_time
+    create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -32,11 +32,11 @@
     insert into sign_up_info (id, project_id, user_id, 
       user_name, user_mobile, is_delete, 
       state, founder, modifier, 
-      create_time, update_time)
+      create_date, update_date)
     values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{userName,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
       #{state,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.SignUpInfo">
     insert into sign_up_info
@@ -68,11 +68,11 @@
       <if test="modifier != null">
         modifier,
       </if>
-      <if test="createTime != null">
-        create_time,
+      <if test="createDate != null">
+        create_date,
       </if>
-      <if test="updateTime != null">
-        update_time,
+      <if test="updateDate != null">
+        update_date,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -103,11 +103,11 @@
       <if test="modifier != null">
         #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -138,11 +138,11 @@
       <if test="modifier != null">
         modifier = #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -157,8 +157,8 @@
       state = #{state,jdbcType=INTEGER},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -194,4 +194,9 @@
     </where>
   </select>
 
+  <select id="findSignUpInfoById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sign_up_info where id = #{id}
+  </select>
 </mapper>
