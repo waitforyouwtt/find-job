@@ -1,6 +1,5 @@
-package com.fenghuang.job.view;
+package com.fenghuang.job.request;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -9,14 +8,12 @@ import java.util.Date;
 
 /**
  * @Author: 凤凰[小哥哥]
- * @Date: 2019/12/25 18:04
+ * @Date: 2019/12/25 18:02
  * @Email: 15290810931@163.com
  */
 @Data
-@ApiModel(value = "短信统计信息表")
-public class MessageCountView implements Serializable{
+public class ReqMessageRecord implements Serializable{
 
-    @ApiModelProperty("id")
     private Integer id;
 
     @ApiModelProperty("用户id")
@@ -27,15 +24,14 @@ public class MessageCountView implements Serializable{
 
     @ApiModelProperty("短信类型: 1 注册 2 找回密码 3.登录")
     private Integer messageType;
-    private String  messageTypeDesc;
 
     @ApiModelProperty("短信发送内容")
     private String sendContent;
 
-    @ApiModelProperty("发送时间")
+    @ApiModelProperty("短信发送日期")
     private Date sendDate;
 
-    @ApiModelProperty("发送ip")
+    @ApiModelProperty("短信发送ip")
     private String sendIp;
 
     @ApiModelProperty("创建人")

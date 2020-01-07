@@ -1,10 +1,10 @@
 package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
-import com.fenghuang.job.request.ReqMessageCount;
-import com.fenghuang.job.request.ReqMessageCountQuery;
-import com.fenghuang.job.request.ReqMessageCountQuery2;
-import com.fenghuang.job.service.MessageCountService;
+import com.fenghuang.job.request.ReqMessageRecord;
+import com.fenghuang.job.request.ReqMessageRecordQuery;
+import com.fenghuang.job.request.ReqMessageRecordQuery2;
+import com.fenghuang.job.service.MessageRecordService;
 import com.fenghuang.job.utils.BusinessUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 
 /**
@@ -25,14 +23,14 @@ import java.text.ParseException;
  */
 @Api(value = "短信发送记录统计相关接口",description = "短信发送记录统计相关接口")
 @RestController
-public class MessageCountController {
+public class MessageRecordController {
 
     @Autowired
-    MessageCountService messageCountService;
+    MessageRecordService messageCountService;
 
     @ApiOperation(value = "插入短信统计表")
     @PostMapping("/insertMessageCount")
-    public Result insertMessageCount(@RequestBody ReqMessageCount reqMessageCount, HttpServletRequest request){
+    public Result insertMessageCount(@RequestBody ReqMessageRecord reqMessageCount, HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqMessageCount.setSendIp(ip);
         return Result.success(messageCountService.insertMessageCount(reqMessageCount));
@@ -40,13 +38,13 @@ public class MessageCountController {
 
     @ApiOperation(value = "根据条件进行查询短信统计且分页")
     @PostMapping("/findMessageCountPage")
-    public Result findMessageCountPage(@RequestBody ReqMessageCountQuery messageCountQuery){
+    public Result findMessageCountPage(@RequestBody ReqMessageRecordQuery messageCountQuery){
         return Result.success(messageCountService.findMessageCountPage(messageCountQuery));
     }
 
     @ApiOperation(value = "根据条件统计一个人一小时发送短信的条数")
     @PostMapping("/findMessageCount")
-    public Result findMessageCount (@RequestBody ReqMessageCountQuery2 messageCountQuery2) throws ParseException {
+    public Result findMessageCount (@RequestBody ReqMessageRecordQuery2 messageCountQuery2) throws ParseException {
         return Result.success(messageCountService.findMessageCount(messageCountQuery2));
     }
 

@@ -13,7 +13,7 @@ import java.util.Date;
  * @Email: 15290810931@163.com
  */
 @Data
-public class ReqMessageCountQuery extends PageHelps implements Serializable{
+public class ReqMessageRecordQuery extends PageHelps implements Serializable{
 
     private Integer id;
 

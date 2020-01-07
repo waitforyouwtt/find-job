@@ -2,20 +2,18 @@ package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.constant.Constants;
-import com.fenghuang.job.dao.master.MessageCountMapper;
-import com.fenghuang.job.entity.MessageCount;
-import com.fenghuang.job.enums.BusinessEnum;
+import com.fenghuang.job.dao.master.MessageRecordMapper;
+import com.fenghuang.job.entity.MessageRecord;
+import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.enums.MessageTypeEnum;
 import com.fenghuang.job.enums.SystemCodeEnum;
-import com.fenghuang.job.exception.BusinessException;
-import com.fenghuang.job.request.ReqMessage;
-import com.fenghuang.job.request.ReqMessageCount;
-import com.fenghuang.job.request.ReqMessageCountQuery;
-import com.fenghuang.job.request.ReqMessageCountQuery2;
-import com.fenghuang.job.service.MessageCountService;
+import com.fenghuang.job.request.ReqMessageRecord;
+import com.fenghuang.job.request.ReqMessageRecordQuery;
+import com.fenghuang.job.request.ReqMessageRecordQuery2;
+import com.fenghuang.job.service.MessageRecordService;
 import com.fenghuang.job.utils.DateUtil;
 import com.fenghuang.job.view.JSONMessage;
-import com.fenghuang.job.view.MessageCountView;
+import com.fenghuang.job.view.MessageRecordView;
 import com.fenghuang.job.view.MessageView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -39,10 +37,10 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class MessageCountServiceImpl implements MessageCountService {
+public class MessageRecordServiceImpl implements MessageRecordService {
 
     @Autowired
-    MessageCountMapper messageCountMapper;
+    MessageRecordMapper messageCountMapper;
 
     /**
      * 插入短信统计表
@@ -59,21 +57,23 @@ public class MessageCountServiceImpl implements MessageCountService {
             messageView.setCode(SystemCodeEnum.SUCCESS.getCode());
             messageView.setDesc("短信发送成功");
             //发送短信成功，则往短信统计记录表中插入相关数据
-            MessageCount reqMessageCount = new MessageCount();
-            reqMessageCount.setSendIp(ip);
-            reqMessageCount.setCreateDate(new Date());
-            reqMessageCount.setUpdateDate(new Date());
-            reqMessageCount.setFounder(mobile);
-            reqMessageCount.setModifier(mobile);
-            reqMessageCount.setMobile(mobile);
+            MessageRecord messageRecord = new MessageRecord();
+            messageRecord.setSendIp(ip);
+            messageRecord.setCreateDate(new Date());
+            messageRecord.setUpdateDate(new Date());
+            messageRecord.setFounder(mobile);
+            messageRecord.setModifier(mobile);
+            messageRecord.setMobile(mobile);
+            messageRecord.setSendDate(new Date());
+            messageRecord.setIsDelete(DeleteEnum.NO.getCode());
             if (messageType.equals(MessageTypeEnum.REGISTER.getCode())){
-                reqMessageCount.setMessageType(MessageTypeEnum.REGISTER.getCode());
-                reqMessageCount.setSendContent("您正在进行使用短信注册新账号");
+                messageRecord.setMessageType(MessageTypeEnum.REGISTER.getCode());
+                messageRecord.setSendContent("您正在进行使用短信注册新账号");
             }else if(messageType.equals(MessageTypeEnum.LOGIN.getCode())){
-                reqMessageCount.setMessageType(MessageTypeEnum.LOGIN.getCode());
-                reqMessageCount.setSendContent("您正在进行使用短信登录账号");
+                messageRecord.setMessageType(MessageTypeEnum.LOGIN.getCode());
+                messageRecord.setSendContent("您正在进行使用短信登录账号");
             }
-            messageCountMapper.insertSelective(reqMessageCount);
+            messageCountMapper.insertSelective(messageRecord);
         }else if (jsonMessage.getCode().equals(SystemCodeEnum.EXCEPTION.getCode()) ){
             messageView.setCode(SystemCodeEnum.ERROR.getCode());
             messageView.setDesc("短信发送异常");
@@ -91,10 +91,10 @@ public class MessageCountServiceImpl implements MessageCountService {
      * @return
      */
     @Override
-    public int insertMessageCount(ReqMessageCount reqMessageCount) {
+    public int insertMessageCount(ReqMessageRecord reqMessageCount) {
         log.info("插入短信统计表 请求参数：{}", JSON.toJSONString(reqMessageCount));
-        MessageCount messageCount = new MessageCount();
-        BeanCopier beanCopier = BeanCopier.create(ReqMessageCount.class,MessageCount.class,false);
+        MessageRecord messageCount = new MessageRecord();
+        BeanCopier beanCopier = BeanCopier.create(ReqMessageRecord.class,MessageRecord.class,false);
         beanCopier.copy(reqMessageCount,messageCount,null);
         messageCount.setCreateDate(new Date());
         messageCount.setUpdateDate(new Date());
@@ -111,16 +111,16 @@ public class MessageCountServiceImpl implements MessageCountService {
      * @return
      */
     @Override
-    public PageInfo<MessageCountView> findMessageCountPage(ReqMessageCountQuery messageCountQuery) {
+    public PageInfo<MessageRecordView> findMessageCountPage(ReqMessageRecordQuery messageCountQuery) {
         log.info("根据条件进行查询短信统计且分页 请求参数：{}",JSON.toJSONString(messageCountQuery));
-        PageInfo<MessageCountView> pageInfo = null;
+        PageInfo<MessageRecordView> pageInfo = null;
         try{
             Page<?> page = PageHelper.startPage(messageCountQuery.getPageNum(),messageCountQuery.getPageSize());
-            List<MessageCount> queryMessageCount = messageCountMapper.findMessageCountPage(messageCountQuery);
+            List<MessageRecord> queryMessageCount = messageCountMapper.findMessageCountPage(messageCountQuery);
             if (CollectionUtils.isEmpty( queryMessageCount )){
                 pageInfo = new PageInfo<>( new ArrayList<>(  ) );
             }else{
-                List<MessageCountView> views = new ArrayList<>();
+                List<MessageRecordView> views = new ArrayList<>();
                 convertView(queryMessageCount, views);
                 pageInfo = new PageInfo<>( views );
             }
@@ -137,27 +137,24 @@ public class MessageCountServiceImpl implements MessageCountService {
      * @param reqMessageCountQuery2
      */
     @Override
-    public List<MessageCountView> findMessageCount(ReqMessageCountQuery2 reqMessageCountQuery2){
+    public List<MessageRecordView> findMessageCount(ReqMessageRecordQuery2 reqMessageCountQuery2){
         log.info(" 根据条件统计一个人30分钟之内发送短信的条数 请求参数：{}",JSON.toJSONString(reqMessageCountQuery2));
         try {
             reqMessageCountQuery2.setOneHourAgoDate(DateUtil.subMinute(DateUtils.parseDate(reqMessageCountQuery2.getCurrentSendDate(),"yyyy-MM-dd hh:mm:ss"), Constants.MESSAGE_MINUTE));
         } catch (ParseException e) {
             log.info("根据条件统计一个人30分钟之内发送短信的条数 时间转换异常：{}",e.getMessage());
         }
-        List<MessageCount> queryMessageCount = messageCountMapper.findMessageCount(reqMessageCountQuery2);
+        List<MessageRecord> queryMessageCount = messageCountMapper.findMessageCount(reqMessageCountQuery2);
         log.info("根据条件统计一个人30分钟之内发送短信的条数 返回记录：{}",JSON.toJSONString(queryMessageCount));
-        if (queryMessageCount.size() > Constants.MESSAGE_COUNT){
-            throw new BusinessException(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg());
-        }
-        List<MessageCountView> views = new ArrayList<>();
+        List<MessageRecordView> views = new ArrayList<>();
         convertView(queryMessageCount, views);
         return views;
     }
 
-    private void convertView(List<MessageCount> queryMessageCount, List<MessageCountView> views) {
+    private void convertView(List<MessageRecord> queryMessageCount, List<MessageRecordView> views) {
         queryMessageCount.stream().forEach(messageCount -> {
-            MessageCountView view = new MessageCountView();
-            BeanCopier beanCopier = BeanCopier.create(MessageCount.class, MessageCountView.class, false);
+            MessageRecordView view = new MessageRecordView();
+            BeanCopier beanCopier = BeanCopier.create(MessageRecord.class, MessageRecordView.class, false);
             beanCopier.copy(messageCount,view,null);
             view.setMessageTypeDesc(MessageTypeEnum.fromValue(messageCount.getMessageType()).getMsg());
             views.add(view);

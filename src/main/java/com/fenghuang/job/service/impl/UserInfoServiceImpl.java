@@ -11,7 +11,7 @@ import com.fenghuang.job.enums.*;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.LoginLogService;
-import com.fenghuang.job.service.MessageCountService;
+import com.fenghuang.job.service.MessageRecordService;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.AesUtil;
 import com.fenghuang.job.utils.DateUtil;
@@ -57,7 +57,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     SmsSenderUtil smsSenderUtil;
 
     @Autowired
-    MessageCountService messageCountService;
+    MessageRecordService messageCountService;
 
     /**
      * 根据用户名字获取记录[可能有重名的人]
@@ -229,12 +229,15 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
         }
         //发送短信为注册时,如果当前手机号| ip 30分钟内频繁的发送短信超过5条，则视为用户进行恶意攻击
-        ReqMessageCountQuery2 messageCountQuery2 = new ReqMessageCountQuery2();
+        ReqMessageRecordQuery2 messageCountQuery2 = new ReqMessageRecordQuery2();
         messageCountQuery2.setMessageType(MessageTypeEnum.REGISTER.getCode());
         messageCountQuery2.setSendIp(ip);
         messageCountQuery2.setMobile(mobile);
         messageCountQuery2.setCurrentSendDate(DateUtil.dateToString(new Date()));
-        List<MessageCountView> messageCount = messageCountService.findMessageCount(messageCountQuery2);
+        List<MessageRecordView> messageCount = messageCountService.findMessageCount(messageCountQuery2);
+        if (messageCount.size() > Constants.MESSAGE_COUNT){
+            return Result.error(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg(),null);
+        }
         log.info("当前手机号 | ip 30分钟之内发送的短信条数为：{}",messageCount.size());
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId,messageId);
         //如果调用发送短信返回信息为空，则抛出错误信息

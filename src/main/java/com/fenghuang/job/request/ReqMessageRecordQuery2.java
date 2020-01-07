@@ -12,7 +12,7 @@ import java.util.Date;
  * @Email: 15290810931@163.com
  */
 @Data
-public class ReqMessageCountQuery2 implements Serializable{
+public class ReqMessageRecordQuery2 implements Serializable{
 
     @ApiModelProperty("用户id")
     private Integer userId;

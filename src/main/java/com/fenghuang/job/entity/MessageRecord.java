@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "短信统计信息表")
-public class MessageCount implements Serializable{
+public class MessageRecord implements Serializable{
     private Integer id;
 
     private Integer userId;
@@ -22,6 +22,8 @@ public class MessageCount implements Serializable{
     private Date sendDate;
 
     private String sendIp;
+
+    private Integer isDelete;
 
     private String founder;
 

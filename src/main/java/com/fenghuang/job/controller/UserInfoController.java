@@ -48,7 +48,7 @@ public class UserInfoController {
     @ApiOperation(value = "更新用户信息")
     @PostMapping("/modifyUserInfo")
     public Result modifyUserInfo(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
-        return Result.success(userInfoService.modifyUserInfo(reqUserInfoUpdate));
+        return userInfoService.modifyUserInfo(reqUserInfoUpdate);
     }
 
     @ApiOperation(value = "根据用户名获取用户信息记录[可能有重名的人]")
