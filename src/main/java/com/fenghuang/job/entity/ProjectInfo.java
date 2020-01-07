@@ -7,7 +7,6 @@ import java.util.Date;
 
 @Data
 public class ProjectInfo implements Serializable{
-
     private Integer id;
 
     private Integer userId;
@@ -38,7 +37,7 @@ public class ProjectInfo implements Serializable{
 
     private Integer genderRequirement;
 
-    private Integer projectLabels;
+    private Integer projectLabel;
 
     private Integer salaryUnit;
 

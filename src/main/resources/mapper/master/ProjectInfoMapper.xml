@@ -17,7 +17,7 @@
     <result column="examine_status" jdbcType="INTEGER" property="examineStatus" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="gender_requirement" jdbcType="INTEGER" property="genderRequirement" />
-    <result column="project_labels" jdbcType="INTEGER" property="projectLabels" />
+    <result column="project_label" jdbcType="INTEGER" property="projectLabel" />
     <result column="salary_unit" jdbcType="INTEGER" property="salaryUnit" />
     <result column="settlement_cycle" jdbcType="INTEGER" property="settlementCycle" />
     <result column="work_welfares_id" jdbcType="INTEGER" property="workWelfaresId" />
@@ -42,7 +42,7 @@
   <sql id="Base_Column_List">
     id, user_id, project_title, project_content, project_type_id, project_type_name, 
     project_ascription_company, province_id, city_id, area_id, work_address, project_state, 
-    examine_status, is_delete, gender_requirement, project_labels, salary_unit, settlement_cycle, 
+    examine_status, is_delete, gender_requirement, project_label, salary_unit, settlement_cycle, 
     work_welfares_id, project_need_num, project_contacts_name, project_contacts_mobile, 
     project_contacts_email, project_skill, work_time_num, work_time_unit, work_time_interval_min, 
     work_time_interval_max, work_time_requirement, project_begin_time, project_end_time, 
@@ -64,7 +64,7 @@
       project_ascription_company, province_id, city_id, 
       area_id, work_address, project_state, 
       examine_status, is_delete, gender_requirement, 
-      project_labels, salary_unit, settlement_cycle, 
+      project_label, salary_unit, settlement_cycle, 
       work_welfares_id, project_need_num, project_contacts_name, 
       project_contacts_mobile, project_contacts_email, 
       project_skill, work_time_num, work_time_unit, 
@@ -77,7 +77,7 @@
       #{projectAscriptionCompany,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
       #{areaId,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{projectState,jdbcType=INTEGER}, 
       #{examineStatus,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{genderRequirement,jdbcType=INTEGER}, 
-      #{projectLabels,jdbcType=INTEGER}, #{salaryUnit,jdbcType=INTEGER}, #{settlementCycle,jdbcType=INTEGER}, 
+      #{projectLabel,jdbcType=INTEGER}, #{salaryUnit,jdbcType=INTEGER}, #{settlementCycle,jdbcType=INTEGER}, 
       #{workWelfaresId,jdbcType=INTEGER}, #{projectNeedNum,jdbcType=INTEGER}, #{projectContactsName,jdbcType=VARCHAR}, 
       #{projectContactsMobile,jdbcType=VARCHAR}, #{projectContactsEmail,jdbcType=VARCHAR}, 
       #{projectSkill,jdbcType=VARCHAR}, #{workTimeNum,jdbcType=INTEGER}, #{workTimeUnit,jdbcType=VARCHAR}, 
@@ -134,8 +134,8 @@
       <if test="genderRequirement != null">
         gender_requirement,
       </if>
-      <if test="projectLabels != null">
-        project_labels,
+      <if test="projectLabel != null">
+        project_label,
       </if>
       <if test="salaryUnit != null">
         salary_unit,
@@ -244,8 +244,8 @@
       <if test="genderRequirement != null">
         #{genderRequirement,jdbcType=INTEGER},
       </if>
-      <if test="projectLabels != null">
-        #{projectLabels,jdbcType=INTEGER},
+      <if test="projectLabel != null">
+        #{projectLabel,jdbcType=INTEGER},
       </if>
       <if test="salaryUnit != null">
         #{salaryUnit,jdbcType=INTEGER},
@@ -354,8 +354,8 @@
       <if test="genderRequirement != null">
         gender_requirement = #{genderRequirement,jdbcType=INTEGER},
       </if>
-      <if test="projectLabels != null">
-        project_labels = #{projectLabels,jdbcType=INTEGER},
+      <if test="projectLabel != null">
+        project_label = #{projectLabel,jdbcType=INTEGER},
       </if>
       <if test="salaryUnit != null">
         salary_unit = #{salaryUnit,jdbcType=INTEGER},
@@ -436,7 +436,7 @@
       examine_status = #{examineStatus,jdbcType=INTEGER},
       is_delete = #{isDelete,jdbcType=INTEGER},
       gender_requirement = #{genderRequirement,jdbcType=INTEGER},
-      project_labels = #{projectLabels,jdbcType=INTEGER},
+      project_label = #{projectLabel,jdbcType=INTEGER},
       salary_unit = #{salaryUnit,jdbcType=INTEGER},
       settlement_cycle = #{settlementCycle,jdbcType=INTEGER},
       work_welfares_id = #{workWelfaresId,jdbcType=INTEGER},

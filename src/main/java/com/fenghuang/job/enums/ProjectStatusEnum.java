@@ -11,9 +11,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public enum ProjectStatusEnum {
 
-    INIT(1,"初始化"),
-    CONDUCTING(2,"进行中"),
-    END(3,"已结束");
+    PUBLISH(1,"项目发布"),
+    APPLY(2,"用户报名"),
+    WORK(3,"开始工作"),
+    FINISHED(4,"交易完成")
+    ;
 
     //根据code 找到desc 描述
     private static final Map<Integer,ProjectStatusEnum> valueLookup = new ConcurrentHashMap<>(values().length);

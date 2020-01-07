@@ -3,6 +3,7 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.ProjectInfoMapper;
 import com.fenghuang.job.entity.Project;
+import com.fenghuang.job.entity.ProjectInfo;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.ExamineStatusEnum;
 import com.fenghuang.job.enums.ProjectStatusEnum;
@@ -49,23 +50,23 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public int insertProject(ReqProjectInfo reqProject) {
         log.info( "创建项目 请求参数：{}", JSON.toJSONString(reqProject) );
-        Project projects = projectMapper.findProjectParams(reqProject);
+        ProjectInfo projects = projectMapper.findProjectParams(reqProject);
         if (projects != null){
             throw new BusinessException(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg());
         }
-        Project project = new Project();
+        ProjectInfo project = new ProjectInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqProjectInfo.class,Project.class,false  );
         beanCopier.copy( reqProject,project,null );
         //        String key = Joiner.on(" ").join(baseBrandInfoByBrandCodes.stream().map(BaseBrandInfo:: getBrandCode).collect(Collectors.toList()));
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
           String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
-            project.setProjectLabels(StringUtils.strip(labels,""));
+            project.setProjectLabel(Integer.parseInt(StringUtils.strip(labels,"")));
         }
-        project.setProjectStatus(ProjectStatusEnum.INIT.getCode());
-        project.setExamineStatus(ExamineStatusEnum.AUDITED.getCode());
-        project.setProjectCreateDate(new Date());
+        project.setProjectState(ProjectStatusEnum.PUBLISH.getCode());
+        project.setExamineStatus(ExamineStatusEnum.PASSED.getCode());
+/*        project.setProjectCreateDate(new Date());
         project.setCreateDate(new Date());
-        project.setUpdateDate(new Date());
+        project.setUpdateDate(new Date());*/
         project.setFounder(reqProject.getCreateUserId());
         project.setModifier(reqProject.getCreateUserId());
         return projectMapper.insertSelective( project );
@@ -90,7 +91,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
             project.setProjectLabels(StringUtils.strip(labels,""));
         }
-        return projectMapper.updateByPrimaryKeySelective( project );
+        return 0;//projectMapper.updateByPrimaryKeySelective( project );
     }
 
     /**
@@ -105,7 +106,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if (StringUtils.isEmpty(reqProjectStatus.getId().toString())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
-        Project project = projectMapper.selectByPrimaryKey(reqProjectStatus.getId());
+        ProjectInfo project = projectMapper.selectByPrimaryKey(reqProjectStatus.getId());
         if (project == null){
             throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
         }
@@ -116,13 +117,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             projectParam.setProjectStatus(reqProjectStatus.getProjectStatus());
         }else{
             if (reqProjectStatus.getExamineStatus().equals(ExamineStatusEnum.PASSED.getCode())){
-                projectParam.setProjectStatus(ProjectStatusEnum.CONDUCTING.getCode());
+                //projectParam.setProjectStatus(ProjectStatusEnum.CONDUCTING.getCode());
                 projectParam.setExamineStatus(ExamineStatusEnum.PASSED.getCode());
             }else{
                 projectParam.setExamineStatus(ExamineStatusEnum.REJECTED.getCode());
             }
         }
-        return projectMapper.updateByPrimaryKeySelective(projectParam);
+        return 0;// projectMapper.updateByPrimaryKeySelective(projectParam);
     }
 
     /**
@@ -135,12 +136,12 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public List<ProjectView> findProject(ReqProjectInfo reqProject) {
         log.info( "根据条件查询项目信息 请求参数：{}",JSON.toJSONString( reqProject ) );
         convertSort(reqProject);
-        List<Project> queryProject  =  projectMapper.findProject(reqProject);
+        List<ProjectInfo> queryProject  =  projectMapper.findProject(reqProject);
         if (CollectionUtils.isEmpty( queryProject )){
             return new ArrayList<>(  );
         }
         List<ProjectView>  views = new ArrayList<>(  );
-        convertView( queryProject, views );
+        //convertView( queryProject, views );
         log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
         return views;
     }
@@ -157,12 +158,12 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         PageInfo<ProjectView> pageInfo = null;
         try {
             Page<?> page = PageHelper.startPage(reqProject.getPageNum(),reqProject.getPageSize());
-            List<Project> queryProject  =  projectMapper.findProjectPage(reqProject);
+            List<ProjectInfo> queryProject  =  projectMapper.findProjectPage(reqProject);
             if (CollectionUtils.isEmpty( queryProject )){
                 pageInfo = new PageInfo<>(new ArrayList<>());
             }else{
                 List<ProjectView>  views = new ArrayList<>(  );
-                convertView( queryProject, views );
+               // convertView( queryProject, views );
                 pageInfo = new PageInfo<>(views);
             }
             log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
