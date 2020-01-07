@@ -5,9 +5,11 @@ import lombok.Data;
 
 import java.util.Date;
 
+
 @Data
 @ApiModel(value = "项目类型信息表")
 public class ProjectType {
+
     private Integer id;
 
     private Integer parentId;
@@ -18,6 +20,8 @@ public class ProjectType {
 
     private Integer projectTypeStatus;
 
+    private Integer isDelete;
+
     private String founder;
 
     private String modifier;
@@ -25,5 +29,4 @@ public class ProjectType {
     private Date createDate;
 
     private Date updateDate;
-
 }

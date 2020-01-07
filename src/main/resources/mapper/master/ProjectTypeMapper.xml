@@ -7,14 +7,15 @@
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
     <result column="charge_rate" jdbcType="DOUBLE" property="chargeRate" />
     <result column="project_type_status" jdbcType="INTEGER" property="projectTypeStatus" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parent_id, category_name, charge_rate, project_type_status, founder, modifier, 
-    create_date, update_date
+    id, parent_id, category_name, charge_rate, project_type_status, is_delete, founder, 
+    modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -28,13 +29,13 @@
   </delete>
   <insert id="insert" parameterType="com.fenghuang.job.entity.ProjectType">
     insert into project_type (id, parent_id, category_name, 
-      charge_rate, project_type_status, founder, 
-      modifier, create_date, update_date
-      )
+      charge_rate, project_type_status, is_delete, 
+      founder, modifier, create_date, 
+      update_date)
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, 
-      #{chargeRate,jdbcType=DOUBLE}, #{projectTypeStatus,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, 
-      #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+      #{chargeRate,jdbcType=DOUBLE}, #{projectTypeStatus,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, 
+      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.ProjectType">
     insert into project_type
@@ -53,6 +54,9 @@
       </if>
       <if test="projectTypeStatus != null">
         project_type_status,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
       </if>
       <if test="founder != null">
         founder,
@@ -83,6 +87,9 @@
       <if test="projectTypeStatus != null">
         #{projectTypeStatus,jdbcType=INTEGER},
       </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
       <if test="founder != null">
         #{founder,jdbcType=VARCHAR},
       </if>
@@ -112,6 +119,9 @@
       <if test="projectTypeStatus != null">
         project_type_status = #{projectTypeStatus,jdbcType=INTEGER},
       </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
       <if test="founder != null">
         founder = #{founder,jdbcType=VARCHAR},
       </if>
@@ -133,6 +143,7 @@
       category_name = #{categoryName,jdbcType=VARCHAR},
       charge_rate = #{chargeRate,jdbcType=DOUBLE},
       project_type_status = #{projectTypeStatus,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
