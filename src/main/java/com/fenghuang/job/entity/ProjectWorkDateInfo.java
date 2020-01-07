@@ -8,8 +8,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "上班日期信息表")
-public class ProjectWorkDateInfo implements Serializable{
-
+public class ProjectWorkDateInfo implements Serializable {
     private Integer id;
 
     private Integer projectId;
@@ -24,8 +23,7 @@ public class ProjectWorkDateInfo implements Serializable{
 
     private String modifier;
 
-    private Date createTime;
+    private Date createDate;
 
-    private Date updateTime;
-
+    private Date updateDate;
 }

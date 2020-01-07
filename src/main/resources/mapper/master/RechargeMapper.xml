@@ -5,21 +5,23 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="recharge_order_id" jdbcType="VARCHAR" property="rechargeOrderId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="recharge_amount" jdbcType="DECIMAL" property="rechargeAmount" />
     <result column="recharge_account" jdbcType="VARCHAR" property="rechargeAccount" />
     <result column="recharge_account_type" jdbcType="INTEGER" property="rechargeAccountType" />
     <result column="recharge_date" jdbcType="TIMESTAMP" property="rechargeDate" />
     <result column="recharge_order_status" jdbcType="INTEGER" property="rechargeOrderStatus" />
     <result column="thread_callback_params" jdbcType="VARCHAR" property="threadCallbackParams" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, recharge_order_id, user_id, recharge_amount, recharge_account, recharge_account_type, 
-    recharge_date, recharge_order_status, thread_callback_params, founder, modifier, 
-    create_date, update_date
+    id, recharge_order_id, user_id, user_name, recharge_amount, recharge_account, recharge_account_type, 
+    recharge_date, recharge_order_status, thread_callback_params, is_delete, founder, 
+    modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -33,15 +35,17 @@
   </delete>
   <insert id="insert" parameterType="com.fenghuang.job.entity.Recharge">
     insert into recharge (id, recharge_order_id, user_id, 
-      recharge_amount, recharge_account, recharge_account_type, 
-      recharge_date, recharge_order_status, thread_callback_params, 
-      founder, modifier, create_date, 
-      update_date)
+      user_name, recharge_amount, recharge_account, 
+      recharge_account_type, recharge_date, recharge_order_status, 
+      thread_callback_params, is_delete, founder, 
+      modifier, create_date, update_date
+      )
     values (#{id,jdbcType=INTEGER}, #{rechargeOrderId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{rechargeAmount,jdbcType=DECIMAL}, #{rechargeAccount,jdbcType=VARCHAR}, #{rechargeAccountType,jdbcType=INTEGER}, 
-      #{rechargeDate,jdbcType=TIMESTAMP}, #{rechargeOrderStatus,jdbcType=INTEGER}, #{threadCallbackParams,jdbcType=VARCHAR}, 
-      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{userName,jdbcType=VARCHAR}, #{rechargeAmount,jdbcType=DECIMAL}, #{rechargeAccount,jdbcType=VARCHAR}, 
+      #{rechargeAccountType,jdbcType=INTEGER}, #{rechargeDate,jdbcType=TIMESTAMP}, #{rechargeOrderStatus,jdbcType=INTEGER}, 
+      #{threadCallbackParams,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.Recharge">
     insert into recharge
@@ -54,6 +58,9 @@
       </if>
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
       </if>
       <if test="rechargeAmount != null">
         recharge_amount,
@@ -72,6 +79,9 @@
       </if>
       <if test="threadCallbackParams != null">
         thread_callback_params,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
       </if>
       <if test="founder != null">
         founder,
@@ -96,6 +106,9 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
       <if test="rechargeAmount != null">
         #{rechargeAmount,jdbcType=DECIMAL},
       </if>
@@ -114,6 +127,9 @@
       <if test="threadCallbackParams != null">
         #{threadCallbackParams,jdbcType=VARCHAR},
       </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
       <if test="founder != null">
         #{founder,jdbcType=VARCHAR},
       </if>
@@ -127,11 +143,6 @@
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
-
-    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.Recharge">
     update recharge
@@ -141,6 +152,9 @@
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
       <if test="rechargeAmount != null">
         recharge_amount = #{rechargeAmount,jdbcType=DECIMAL},
@@ -159,6 +173,9 @@
       </if>
       <if test="threadCallbackParams != null">
         thread_callback_params = #{threadCallbackParams,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="founder != null">
         founder = #{founder,jdbcType=VARCHAR},
@@ -179,12 +196,14 @@
     update recharge
     set recharge_order_id = #{rechargeOrderId,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
       recharge_amount = #{rechargeAmount,jdbcType=DECIMAL},
       recharge_account = #{rechargeAccount,jdbcType=VARCHAR},
       recharge_account_type = #{rechargeAccountType,jdbcType=INTEGER},
       recharge_date = #{rechargeDate,jdbcType=TIMESTAMP},
       recharge_order_status = #{rechargeOrderStatus,jdbcType=INTEGER},
       thread_callback_params = #{threadCallbackParams,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

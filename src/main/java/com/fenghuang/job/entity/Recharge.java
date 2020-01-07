@@ -16,6 +16,8 @@ public class Recharge implements Serializable{
 
     private Integer userId;
 
+    private String userName;
+
     private BigDecimal rechargeAmount;
 
     private String rechargeAccount;
@@ -27,6 +29,8 @@ public class Recharge implements Serializable{
     private Integer rechargeOrderStatus;
 
     private String threadCallbackParams;
+
+    private Integer isDelete;
 
     private String founder;
 
