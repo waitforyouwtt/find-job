@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.ProjectWorkTimeInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
-    <result column="work_time_begin" jdbcType="DATE" property="workTimeBegin" />
-    <result column="work_time_end" jdbcType="DATE" property="workTimeEnd" />
+    <result column="work_time_begin" jdbcType="TIME" property="workTimeBegin" />
+    <result column="work_time_end" jdbcType="TIME" property="workTimeEnd" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
@@ -31,8 +31,8 @@
       work_time_end, is_delete, founder, 
       modifier, create_date, update_date
       )
-    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{workTimeBegin,jdbcType=DATE}, 
-      #{workTimeEnd,jdbcType=DATE}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{workTimeBegin,jdbcType=TIME}, 
+      #{workTimeEnd,jdbcType=TIME}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, 
       #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -75,10 +75,10 @@
         #{projectId,jdbcType=INTEGER},
       </if>
       <if test="workTimeBegin != null">
-        #{workTimeBegin,jdbcType=DATE},
+        #{workTimeBegin,jdbcType=TIME},
       </if>
       <if test="workTimeEnd != null">
-        #{workTimeEnd,jdbcType=DATE},
+        #{workTimeEnd,jdbcType=TIME},
       </if>
       <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
@@ -104,10 +104,10 @@
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
       <if test="workTimeBegin != null">
-        work_time_begin = #{workTimeBegin,jdbcType=DATE},
+        work_time_begin = #{workTimeBegin,jdbcType=TIME},
       </if>
       <if test="workTimeEnd != null">
-        work_time_end = #{workTimeEnd,jdbcType=DATE},
+        work_time_end = #{workTimeEnd,jdbcType=TIME},
       </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
@@ -130,8 +130,146 @@
   <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.ProjectWorkTimeInfo">
     update project_work_time_info
     set project_id = #{projectId,jdbcType=INTEGER},
-      work_time_begin = #{workTimeBegin,jdbcType=DATE},
-      work_time_end = #{workTimeEnd,jdbcType=DATE},
+      work_time_begin = #{workTimeBegin,jdbcType=TIME},
+      work_time_end = #{workTimeEnd,jdbcType=TIME},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      founder = #{founder,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.ProjectWorkTimeInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="work_time_begin" jdbcType="TIME" property="workTimeBegin" />
+    <result column="work_time_end" jdbcType="TIME" property="workTimeEnd" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="founder" jdbcType="VARCHAR" property="founder" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_id, work_time_begin, work_time_end, is_delete, founder, modifier, create_date, 
+    update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from project_work_time_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from project_work_time_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fenghuang.job.entity.ProjectWorkTimeInfo">
+    insert into project_work_time_info (id, project_id, work_time_begin, 
+      work_time_end, is_delete, founder, 
+      modifier, create_date, update_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{workTimeBegin,jdbcType=TIME}, 
+      #{workTimeEnd,jdbcType=TIME}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fenghuang.job.entity.ProjectWorkTimeInfo">
+    insert into project_work_time_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="workTimeBegin != null">
+        work_time_begin,
+      </if>
+      <if test="workTimeEnd != null">
+        work_time_end,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="founder != null">
+        founder,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="workTimeBegin != null">
+        #{workTimeBegin,jdbcType=TIME},
+      </if>
+      <if test="workTimeEnd != null">
+        #{workTimeEnd,jdbcType=TIME},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="founder != null">
+        #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.ProjectWorkTimeInfo">
+    update project_work_time_info
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="workTimeBegin != null">
+        work_time_begin = #{workTimeBegin,jdbcType=TIME},
+      </if>
+      <if test="workTimeEnd != null">
+        work_time_end = #{workTimeEnd,jdbcType=TIME},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="founder != null">
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.ProjectWorkTimeInfo">
+    update project_work_time_info
+    set project_id = #{projectId,jdbcType=INTEGER},
+      work_time_begin = #{workTimeBegin,jdbcType=TIME},
+      work_time_end = #{workTimeEnd,jdbcType=TIME},
       is_delete = #{isDelete,jdbcType=INTEGER},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR},
