@@ -86,4 +86,10 @@ public class BannerController {
         }
     }
 
+    @PostMapping("/deleteTest")
+    public Result deleteTest(@RequestParam("userName") String userName){
+       return Result.success(bannerService.deleteTest(userName));
+    }
+
+
 }

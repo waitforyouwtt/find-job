@@ -22,6 +22,8 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -133,5 +135,33 @@ public class BannerServiceImpl implements BannerService {
         view.setBannerImgStatusDesc(BannerImgStatusEnum.fromValue(banner.getBannerImgStatus()).getMsg());
         log.info("根据id 查询banner 详情返回结果：{}",JSON.toJSONString(view));
         return view;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int deleteTest(String userName) {
+        ReqBanner reqBanner = new ReqBanner();
+        reqBanner.setFounder(userName);
+        List<Banner> list = bannerMapper.findBanner(reqBanner);
+        if (CollectionUtils.isEmpty(list)){
+            log.info("没有要删除的数据");
+            return 0;
+        }
+        Map<Integer, List<Banner>> map = list.stream().collect(Collectors.groupingBy(Banner::getBannerImgStatus));
+        map.forEach((k,v)->{
+            log.info("得到的结果：{}", JSON.toJSON(k.toString()));
+            List<Integer> activityId = v.stream().map(Banner::getActivityId).collect(Collectors.toList());
+            log.info("删除的参数是：{}，{}",k,activityId);
+            if (CollectionUtils.isEmpty(activityId)){
+                log.info("============没有要删除的数据===========");
+            }else{
+                int i = bannerMapper.deleteGroupKV(k, activityId);
+                log.info("删除的结果是：{}",i);
+            }
+        });
+
+        return 0;
     }
 }

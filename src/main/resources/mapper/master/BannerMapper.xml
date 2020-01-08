@@ -170,4 +170,12 @@
     <include refid="Base_Column_List" />
     from banner where activity_id = #{activityId} and banner_img_status = 1;
   </select>
+
+
+  <delete id="deleteGroupKV">
+    delete from banner where banner_img_status = #{state} and activity_id in
+    <foreach item="activityIds" index="index" collection="activityIds" open="(" separator="," close=")">
+      #{activityIds}
+    </foreach>
+  </delete>
 </mapper>

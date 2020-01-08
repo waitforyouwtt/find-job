@@ -2,13 +2,13 @@ package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.ProjectInfoMapper;
+import com.fenghuang.job.dao.master.ProjectWorkDateInfoMapper;
+import com.fenghuang.job.dao.master.ProjectWorkTimeInfoMapper;
 import com.fenghuang.job.entity.Project;
 import com.fenghuang.job.entity.ProjectInfo;
+import com.fenghuang.job.entity.ProjectWorkDateInfo;
 import com.fenghuang.job.entity.Result;
-import com.fenghuang.job.enums.BusinessEnum;
-import com.fenghuang.job.enums.ExamineStatusEnum;
-import com.fenghuang.job.enums.ProjectStatusEnum;
-import com.fenghuang.job.enums.SortEnum;
+import com.fenghuang.job.enums.*;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqProjectInfo;
 import com.fenghuang.job.request.ReqProjectStatus;
@@ -43,6 +43,12 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Autowired
     ProjectInfoMapper projectMapper;
+
+    @Autowired
+    ProjectWorkDateInfoMapper projectWorkDateInfoMapper;
+
+    @Autowired
+    ProjectWorkTimeInfoMapper projectWorkTimeInfoMapper;
     /**
      * 创建项目
      *
@@ -54,6 +60,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result insertProject(ReqProjectInfo reqProject) {
         log.info( "创建项目 请求参数：{}", JSON.toJSONString(reqProject) );
         //同一用户 & 同一类型 & 相同标题 状态为未删除的项目不允许重复
+        reqProject.setIsDelete(DeleteEnum.NO.getCode());
         ProjectInfo projects = projectMapper.findProjectParams(reqProject);
         if (projects != null){
             return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),null);
@@ -61,6 +68,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         ProjectInfo project = new ProjectInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqProjectInfo.class,Project.class,false  );
         beanCopier.copy( reqProject,project,null );
+        //当标签不为空时处理成int 存到数据库
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
           String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
             project.setProjectLabel(Integer.parseInt(StringUtils.strip(labels,"")));
@@ -71,7 +79,22 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         project.setUpdateDate(new Date());
         project.setFounder(reqProject.getUserId().toString());
         project.setModifier(reqProject.getUserId().toString());
-        return Result.success(projectMapper.insertSelective( project ));
+        int i = projectMapper.insertSelective(project);
+        Integer projectId = project.getId();
+        log.info( "生成订单返回的订单号为：{}",projectId );
+
+        ProjectWorkDateInfo projectWorkDateInfo = new ProjectWorkDateInfo();
+        projectWorkDateInfo.setProjectId(projectId);
+/*        projectWorkDateInfo.setWorkDateBegin(reqProject.getworkD);
+                projectWorkDateInfo
+        projectWorkDateInfo
+                projectWorkDateInfo
+        projectWorkDateInfo
+                projectWorkDateInfo
+        projectWorkDateInfo
+        projectWorkDateInfoMapper.insertSelective();*/
+
+        return Result.success("创建项目成功");
     }
 
     /**
@@ -159,7 +182,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         log.info( "根据条件进行查询项目相关信息且分页 请求参数：{}",JSON.toJSONString( reqProject ) );
         PageInfo<ProjectView> pageInfo = null;
         try {
-            Page<?> page = PageHelper.startPage(reqProject.getPageNum(),reqProject.getPageSize());
+           /* Page<?> page = PageHelper.startPage(reqProject.getPageNum(),reqProject.getPageSize());
             List<ProjectInfo> queryProject  =  projectMapper.findProjectPage(reqProject);
             if (CollectionUtils.isEmpty( queryProject )){
                 pageInfo = new PageInfo<>(new ArrayList<>());
@@ -167,8 +190,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 List<ProjectView>  views = new ArrayList<>(  );
                // convertView( queryProject, views );
                 pageInfo = new PageInfo<>(views);
-            }
-            log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
+            }*/
+           //log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
         }catch (Exception e){
             log.info( "根据条件进行查询项目相关信息且分页 查询异常：{}",e.getMessage() );
         }

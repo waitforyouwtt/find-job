@@ -41,4 +41,10 @@ public interface BannerService {
      * @return
      */
     BannerView findBannerById(Integer id);
+
+    /**
+     *
+     * @return
+     */
+    int deleteTest(String userName);
 }

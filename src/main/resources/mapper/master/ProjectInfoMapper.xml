@@ -3,9 +3,14 @@
 <mapper namespace="com.fenghuang.job.dao.master.ProjectInfoMapper">
   <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.ProjectInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="project_title" jdbcType="VARCHAR" property="projectTitle" />
     <result column="project_content" jdbcType="VARCHAR" property="projectContent" />
+    <result column="totalPay_amount" jdbcType="DECIMAL" property="totalpayAmount" />
+    <result column="service_charge" jdbcType="DECIMAL" property="serviceCharge" />
+    <result column="service_charge_rate" jdbcType="DECIMAL" property="serviceChargeRate" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
     <result column="project_type_id" jdbcType="INTEGER" property="projectTypeId" />
     <result column="project_type_name" jdbcType="VARCHAR" property="projectTypeName" />
     <result column="project_ascription_company" jdbcType="VARCHAR" property="projectAscriptionCompany" />
@@ -40,13 +45,14 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, project_title, project_content, project_type_id, project_type_name, 
-    project_ascription_company, province_id, city_id, area_id, work_address, project_state, 
-    examine_status, is_delete, gender_requirement, project_label, salary_unit, settlement_cycle, 
-    work_welfares_id, project_need_num, project_contacts_name, project_contacts_mobile, 
-    project_contacts_email, project_skill, work_time_num, work_time_unit, work_time_interval_min, 
-    work_time_interval_max, work_time_requirement, project_begin_time, project_end_time, 
-    project_remark, founder, modifier, create_date, update_date
+    id, order_id, user_id, project_title, project_content, totalPay_amount, service_charge, 
+    service_charge_rate, order_state, project_type_id, project_type_name, project_ascription_company, 
+    province_id, city_id, area_id, work_address, project_state, examine_status, is_delete, 
+    gender_requirement, project_label, salary_unit, settlement_cycle, work_welfares_id, 
+    project_need_num, project_contacts_name, project_contacts_mobile, project_contacts_email, 
+    project_skill, work_time_num, work_time_unit, work_time_interval_min, work_time_interval_max, 
+    work_time_requirement, project_begin_time, project_end_time, project_remark, founder, 
+    modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -59,38 +65,45 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.fenghuang.job.entity.ProjectInfo">
-    insert into project_info (id, user_id, project_title, 
-      project_content, project_type_id, project_type_name, 
-      project_ascription_company, province_id, city_id, 
-      area_id, work_address, project_state, 
-      examine_status, is_delete, gender_requirement, 
-      project_label, salary_unit, settlement_cycle, 
-      work_welfares_id, project_need_num, project_contacts_name, 
-      project_contacts_mobile, project_contacts_email, 
-      project_skill, work_time_num, work_time_unit, 
-      work_time_interval_min, work_time_interval_max, work_time_requirement, 
-      project_begin_time, project_end_time, project_remark, 
-      founder, modifier, create_date, 
-      update_date)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{projectTitle,jdbcType=VARCHAR}, 
-      #{projectContent,jdbcType=VARCHAR}, #{projectTypeId,jdbcType=INTEGER}, #{projectTypeName,jdbcType=VARCHAR}, 
-      #{projectAscriptionCompany,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
-      #{areaId,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{projectState,jdbcType=INTEGER}, 
-      #{examineStatus,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{genderRequirement,jdbcType=INTEGER}, 
-      #{projectLabel,jdbcType=INTEGER}, #{salaryUnit,jdbcType=INTEGER}, #{settlementCycle,jdbcType=INTEGER}, 
-      #{workWelfaresId,jdbcType=INTEGER}, #{projectNeedNum,jdbcType=INTEGER}, #{projectContactsName,jdbcType=VARCHAR}, 
-      #{projectContactsMobile,jdbcType=VARCHAR}, #{projectContactsEmail,jdbcType=VARCHAR}, 
-      #{projectSkill,jdbcType=VARCHAR}, #{workTimeNum,jdbcType=INTEGER}, #{workTimeUnit,jdbcType=VARCHAR}, 
-      #{workTimeIntervalMin,jdbcType=TIME}, #{workTimeIntervalMax,jdbcType=TIME}, #{workTimeRequirement,jdbcType=VARCHAR}, 
-      #{projectBeginTime,jdbcType=TIMESTAMP}, #{projectEndTime,jdbcType=TIMESTAMP}, #{projectRemark,jdbcType=VARCHAR}, 
-      #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+    insert into project_info (id, order_id, user_id, 
+      project_title, project_content, totalPay_amount, 
+      service_charge, service_charge_rate, order_state, 
+      project_type_id, project_type_name, project_ascription_company, 
+      province_id, city_id, area_id, 
+      work_address, project_state, examine_status, 
+      is_delete, gender_requirement, project_label, 
+      salary_unit, settlement_cycle, work_welfares_id, 
+      project_need_num, project_contacts_name, project_contacts_mobile, 
+      project_contacts_email, project_skill, work_time_num, 
+      work_time_unit, work_time_interval_min, work_time_interval_max, 
+      work_time_requirement, project_begin_time, 
+      project_end_time, project_remark, founder, 
+      modifier, create_date, update_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{projectTitle,jdbcType=VARCHAR}, #{projectContent,jdbcType=VARCHAR}, #{totalpayAmount,jdbcType=DECIMAL}, 
+      #{serviceCharge,jdbcType=DECIMAL}, #{serviceChargeRate,jdbcType=DECIMAL}, #{orderState,jdbcType=INTEGER}, 
+      #{projectTypeId,jdbcType=INTEGER}, #{projectTypeName,jdbcType=VARCHAR}, #{projectAscriptionCompany,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{workAddress,jdbcType=VARCHAR}, #{projectState,jdbcType=INTEGER}, #{examineStatus,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=INTEGER}, #{genderRequirement,jdbcType=INTEGER}, #{projectLabel,jdbcType=INTEGER}, 
+      #{salaryUnit,jdbcType=INTEGER}, #{settlementCycle,jdbcType=INTEGER}, #{workWelfaresId,jdbcType=INTEGER}, 
+      #{projectNeedNum,jdbcType=INTEGER}, #{projectContactsName,jdbcType=VARCHAR}, #{projectContactsMobile,jdbcType=VARCHAR}, 
+      #{projectContactsEmail,jdbcType=VARCHAR}, #{projectSkill,jdbcType=VARCHAR}, #{workTimeNum,jdbcType=INTEGER}, 
+      #{workTimeUnit,jdbcType=VARCHAR}, #{workTimeIntervalMin,jdbcType=TIME}, #{workTimeIntervalMax,jdbcType=TIME}, 
+      #{workTimeRequirement,jdbcType=VARCHAR}, #{projectBeginTime,jdbcType=TIMESTAMP}, 
+      #{projectEndTime,jdbcType=TIMESTAMP}, #{projectRemark,jdbcType=VARCHAR}, #{founder,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.ProjectInfo">
     insert into project_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="orderId != null">
+        order_id,
       </if>
       <if test="userId != null">
         user_id,
@@ -100,6 +113,18 @@
       </if>
       <if test="projectContent != null">
         project_content,
+      </if>
+      <if test="totalpayAmount != null">
+        totalPay_amount,
+      </if>
+      <if test="serviceCharge != null">
+        service_charge,
+      </if>
+      <if test="serviceChargeRate != null">
+        service_charge_rate,
+      </if>
+      <if test="orderState != null">
+        order_state,
       </if>
       <if test="projectTypeId != null">
         project_type_id,
@@ -202,6 +227,9 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
@@ -210,6 +238,18 @@
       </if>
       <if test="projectContent != null">
         #{projectContent,jdbcType=VARCHAR},
+      </if>
+      <if test="totalpayAmount != null">
+        #{totalpayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceCharge != null">
+        #{serviceCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceChargeRate != null">
+        #{serviceChargeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="orderState != null">
+        #{orderState,jdbcType=INTEGER},
       </if>
       <if test="projectTypeId != null">
         #{projectTypeId,jdbcType=INTEGER},
@@ -308,10 +348,16 @@
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.ProjectInfo">
     update project_info
     <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
@@ -320,6 +366,18 @@
       </if>
       <if test="projectContent != null">
         project_content = #{projectContent,jdbcType=VARCHAR},
+      </if>
+      <if test="totalpayAmount != null">
+        totalPay_amount = #{totalpayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceCharge != null">
+        service_charge = #{serviceCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceChargeRate != null">
+        service_charge_rate = #{serviceChargeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="orderState != null">
+        order_state = #{orderState,jdbcType=INTEGER},
       </if>
       <if test="projectTypeId != null">
         project_type_id = #{projectTypeId,jdbcType=INTEGER},
@@ -422,9 +480,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.ProjectInfo">
     update project_info
-    set user_id = #{userId,jdbcType=INTEGER},
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
       project_title = #{projectTitle,jdbcType=VARCHAR},
       project_content = #{projectContent,jdbcType=VARCHAR},
+      totalPay_amount = #{totalpayAmount,jdbcType=DECIMAL},
+      service_charge = #{serviceCharge,jdbcType=DECIMAL},
+      service_charge_rate = #{serviceChargeRate,jdbcType=DECIMAL},
+      order_state = #{orderState,jdbcType=INTEGER},
       project_type_id = #{projectTypeId,jdbcType=INTEGER},
       project_type_name = #{projectTypeName,jdbcType=VARCHAR},
       project_ascription_company = #{projectAscriptionCompany,jdbcType=VARCHAR},
@@ -531,6 +594,9 @@
       <if test="id != null">
         and id = #{id}
       </if>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
       <if test="projectTitle != null">
         and project_title = #{projectTitle}
       </if>
@@ -540,8 +606,8 @@
       <if test="projectTypeName != null">
         and project_type_name = #{projectTypeName}
       </if>
-      <if test="projectTypeName != null">
-        and project_type_name = #{projectTypeName}
+      <if test="isDelete != null">
+        and is_delete = #{isDelete}
       </if>
     </where>
   </select>
@@ -610,6 +676,4 @@
       ORDER BY ${sortField} ${sort};
     </if>
   </select>
-
-
 </mapper>

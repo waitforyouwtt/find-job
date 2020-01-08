@@ -25,4 +25,6 @@ public interface BannerMapper {
 
     //添加活动前查询是否存在相同活动的轮播图
     Banner findBannerByActivityId(@Param("activityId") Integer activityId);
+
+    int deleteGroupKV(@Param("state") Integer k,@Param("activityIds") List<Integer> activityIds);
 }
