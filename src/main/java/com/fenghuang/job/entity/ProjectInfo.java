@@ -14,6 +14,8 @@ public class ProjectInfo implements Serializable {
 
     private Integer userId;
 
+    private String  userName;
+
     private Integer projectTypeId;
 
     private String projectTypeName;
@@ -34,13 +36,13 @@ public class ProjectInfo implements Serializable {
 
     private Integer genderRequirement;
 
-    private Integer projectLabel;
+    private String projectLabel;
 
     private Integer salaryUnit;
 
     private Integer settlementCycle;
 
-    private Integer workWelfaresId;
+    private String workWelfaresId;
 
     private Integer projectNeedNum;
 

@@ -6,12 +6,9 @@ import com.fenghuang.job.dao.master.ProjectWorkDateInfoMapper;
 import com.fenghuang.job.dao.master.ProjectWorkTimeInfoMapper;
 import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
-import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
-import com.fenghuang.job.view.ProjectView;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.fenghuang.job.view.ProjectInfoView;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -23,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,13 +64,43 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         }
         ProjectInfo project = new ProjectInfo();
 
+        project.setUserId(reqProject.getUserId());
+        project.setProjectTypeId(reqProject.getProjectTypeId());
+        project.setProjectTypeName(reqProject.getProjectTypeName());
+        project.setProjectTitle(reqProject.getProjectTitle());
+        project.setProjectContent(reqProject.getProjectContent());
+        project.setProjectAscriptionCompany(reqProject.getProjectAscriptionCompany());
+        project.setProvinceId(reqProject.getProvinceId());
+        project.setCityId(reqProject.getCityId());
+        project.setAreaId(reqProject.getAreaId());
+        project.setWorkAddress(reqProject.getWorkAddress());
+        project.setGenderRequirement(reqProject.getGenderRequirement());
         //当标签不为空时处理成int 存到数据库
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
           String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
-            project.setProjectLabel(Integer.parseInt(StringUtils.strip(labels,"")));
+          //Integer.parseInt(StringUtils.strip(labels,""))
+            project.setProjectLabel(labels);
         }
-        project.setProjectState(ProjectStatusEnum.PUBLISH.getCode());
+        project.setSalaryUnit(reqProject.getSalaryUnit());
+        project.setSettlementCycle(reqProject.getSettlementCycle());
+        //工作福利
+        if (!CollectionUtils.isEmpty(reqProject.getWorkWelfaresId())){
+            String workWelfaresId = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
+            project.setWorkWelfaresId(StringUtils.strip(workWelfaresId,""));
+        }
+        project.setProjectNeedNum(reqProject.getProjectNeedNum());
+        project.setProjectContactsName(reqProject.getProjectContactsName());
+        project.setProjectContactsMobile(reqProject.getProjectContactsMobile());
+        project.setProjectContactsEmail(reqProject.getProjectContactsEmail());
+        project.setProjectSkill(reqProject.getProjectSkill());
+        project.setWorkTimeNum(reqProject.getWorkTimeNum());
+        project.setWorkTimeUnit(reqProject.getWorkTimeUnit());
+        project.setWorkTimeRequirement(reqProject.getWorkTimeRequirement());
+        project.setProjectBeginTime(reqProject.getProjectBeginTime());
+        project.setProjectEndTime(reqProject.getProjectEndTime());
+        project.setProjectState(ProjectStateEnum.PUBLISH.getCode());
         project.setExamineStatus(ExamineStatusEnum.PASSED.getCode());
+        project.setIsDelete(DeleteEnum.NO.getCode());
         project.setCreateDate(new Date());
         project.setUpdateDate(new Date());
         project.setFounder(reqProject.getUserId().toString());
@@ -115,19 +141,57 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public int modifyProject(ReqProjectInfo reqProject) {
+    public Result modifyProject(ReqProjectInfo reqProject) {
         log.info( "根据id更新项目相关字段 请求参数：{}",JSON.toJSONString( reqProject ) );
         if (StringUtils.isBlank(reqProject.getId().toString())){
-            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+           return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
         }
-        Project project = new Project();
-        BeanCopier beanCopier = BeanCopier.create( ReqProjectInfo.class,Project.class,false );
-        beanCopier.copy( reqProject,project,null );
+
+        ProjectInfo project = new ProjectInfo();
+
+        project.setUserId(reqProject.getUserId());
+        project.setProjectTypeId(reqProject.getProjectTypeId());
+        project.setProjectTypeName(reqProject.getProjectTypeName());
+        project.setProjectTitle(reqProject.getProjectTitle());
+        project.setProjectContent(reqProject.getProjectContent());
+        //所属公司|上班区域地址应该不可以修改
+        /*project.setProjectAscriptionCompany(reqProject.getProjectAscriptionCompany());
+        project.setProvinceId(reqProject.getProvinceId());
+        project.setCityId(reqProject.getCityId());
+        project.setAreaId(reqProject.getAreaId());
+        project.setWorkAddress(reqProject.getWorkAddress());*/
+        project.setGenderRequirement(reqProject.getGenderRequirement());
+        //当标签不为空时处理成int 存到数据库
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
             String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
-            project.setProjectLabels(StringUtils.strip(labels,""));
+            //Integer.parseInt(StringUtils.strip(labels,""))
+            project.setProjectLabel(labels);
         }
-        return 0;//projectMapper.updateByPrimaryKeySelective( project );
+        project.setSalaryUnit(reqProject.getSalaryUnit());
+        project.setSettlementCycle(reqProject.getSettlementCycle());
+        //工作福利
+        if (!CollectionUtils.isEmpty(reqProject.getWorkWelfaresId())){
+            String workWelfaresId = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
+            project.setWorkWelfaresId(StringUtils.strip(workWelfaresId,""));
+        }
+        project.setProjectNeedNum(reqProject.getProjectNeedNum());
+        project.setProjectContactsName(reqProject.getProjectContactsName());
+        project.setProjectContactsMobile(reqProject.getProjectContactsMobile());
+        project.setProjectContactsEmail(reqProject.getProjectContactsEmail());
+        project.setProjectSkill(reqProject.getProjectSkill());
+        project.setWorkTimeNum(reqProject.getWorkTimeNum());
+        project.setWorkTimeUnit(reqProject.getWorkTimeUnit());
+        project.setWorkTimeRequirement(reqProject.getWorkTimeRequirement());
+        project.setProjectBeginTime(reqProject.getProjectBeginTime());
+        project.setProjectEndTime(reqProject.getProjectEndTime());
+        project.setProjectState(ProjectStateEnum.PUBLISH.getCode());
+        project.setExamineStatus(ExamineStatusEnum.PASSED.getCode());
+        project.setIsDelete(DeleteEnum.NO.getCode());
+        project.setCreateDate(new Date());
+        project.setUpdateDate(new Date());
+        project.setModifier(reqProject.getUserId().toString());
+        projectMapper.updateByPrimaryKeySelective( project );
+        return Result.success("修改成功");
     }
 
     /**
@@ -137,47 +201,92 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public int modifyProjectStatus(ReqProjectStatus reqProjectStatus) {
+    public Result modifyProjectStatus(ReqProjectStatus reqProjectStatus) {
         log.info( "根据id更新项目状态 请求参数：{}",JSON.toJSONString( reqProjectStatus ) );
         if (StringUtils.isEmpty(reqProjectStatus.getId().toString())){
-            throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
+            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
         }
         ProjectInfo project = projectMapper.selectByPrimaryKey(reqProjectStatus.getId());
         if (project == null){
-            throw new BusinessException(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg());
+            return Result.error(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg(),null);
         }
-        Project projectParam = new Project();
+        ProjectInfo projectParam = new ProjectInfo();
         //如果审核状态没有则只修改项目状态 ; 否则就是管理员在审核，审核应该修改相应的项目状态
         projectParam.setId(reqProjectStatus.getId());
         if (StringUtils.isEmpty(reqProjectStatus.getExamineStatus().toString())){
-            projectParam.setProjectStatus(reqProjectStatus.getProjectStatus());
+            projectParam.setProjectState(reqProjectStatus.getProjectState());
         }else{
             if (reqProjectStatus.getExamineStatus().equals(ExamineStatusEnum.PASSED.getCode())){
-                //projectParam.setProjectStatus(ProjectStatusEnum.CONDUCTING.getCode());
+                projectParam.setProjectState(ProjectStateEnum.PUBLISH.getCode());
                 projectParam.setExamineStatus(ExamineStatusEnum.PASSED.getCode());
             }else{
                 projectParam.setExamineStatus(ExamineStatusEnum.REJECTED.getCode());
             }
         }
-        return 0;// projectMapper.updateByPrimaryKeySelective(projectParam);
+        int i = projectMapper.updateByPrimaryKeySelective(projectParam);
+        if (i == 0){
+            return Result.error("修改失败");
+        }
+        return Result.success("修改成功");
     }
 
     /**
      * 根据条件查询项目信息
      *
-     * @param reqProject
+     * @param reqProjectInfoQuery
      * @return
      */
     @Override
-    public List<ProjectView> findProject(ReqProjectInfo reqProject) {
-        log.info( "根据条件查询项目信息 请求参数：{}",JSON.toJSONString( reqProject ) );
-        //convertSort(reqProject);
-        List<ProjectInfo> queryProject  =  projectMapper.findProject(reqProject);
+    public List<ProjectInfoView> findProject(ReqProjectInfoQuery reqProjectInfoQuery) {
+        log.info( "根据条件查询项目信息 请求参数：{}",JSON.toJSONString( reqProjectInfoQuery ) );
+        List<ProjectInfoView> queryProject  =  projectMapper.findProject(reqProjectInfoQuery);
         if (CollectionUtils.isEmpty( queryProject )){
             return new ArrayList<>(  );
         }
-        List<ProjectView>  views = new ArrayList<>(  );
-        //convertView( queryProject, views );
+        List<ProjectInfoView>  views = new ArrayList<>(  );
+        queryProject.stream().forEach(projectInfo -> {
+            ProjectInfoView view  = new ProjectInfoView();
+
+            BeanCopier beanCopier = BeanCopier.create(ProjectInfoView.class,ProjectInfoView.class,false);
+            beanCopier.copy(projectInfo,view,null);
+            //性别限制转换
+            view.setGenderRequirementDesc(GenderRequirementEnum.fromValue(projectInfo.getGenderRequirement()).getMsg());
+            //工资单位转换：1 天 2 小时 3 月 4 次 5 单
+            view.setSalaryUnitDesc(SalaryUnitEnum.fromValue(projectInfo.getSalaryUnit()).getMsg());
+            //结算周期转换：1 完工结 2 日结 3 周结 4 月结
+            view.setSettlementCycleDesc(SettlementCycleEnum.fromValue(projectInfo.getSettlementCycle()).getMsg());
+            //工作周期转换：工作时间单位：1.小时 2.天 3.月 4年
+            view.setWorkTimeUnitDesc(WorkTimeUnitEnum.fromValue(projectInfo.getWorkTimeUnit()).getMsg());
+            //福利转换：
+
+            String projectLabel = projectInfo.getProjectLabel();
+            List<String> projectLabels = Splitter.on(",").trimResults().splitToList(projectLabel);
+            List<String> labels = new ArrayList<>();
+            if (CollectionUtils.isEmpty(projectLabels)){
+                view.setProjectLabelsDesc(labels);
+            }else{
+                projectLabels.stream().forEach(s -> {
+                    if (s.equals(ProjectLabelEnum.LONG_WORKER.getCode().toString())){
+                        labels.add(ProjectLabelEnum.LONG_WORKER.getMsg());
+                    }
+                    if (s.equals(ProjectLabelEnum.SHORT_WORKER.getCode().toString())){
+                        labels.add(ProjectLabelEnum.SHORT_WORKER.getMsg());
+                    }
+                    if (s.equals(ProjectLabelEnum.WINTER_WORKER.getCode().toString())){
+                        labels.add(ProjectLabelEnum.WINTER_WORKER.getMsg());
+                    }
+                    if (s.equals(ProjectLabelEnum.SUMMER_WORKER.getCode().toString())){
+                        labels.add(ProjectLabelEnum.SUMMER_WORKER.getMsg());
+                    }
+                    if (s.equals(ProjectLabelEnum.HOURLY_WORKER.getCode().toString())){
+                        labels.add(ProjectLabelEnum.HOURLY_WORKER.getMsg());
+                    }
+                });
+                view.setProjectLabelsDesc(labels);
+            }
+
+            views.add(view);
+        });
         log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
         return views;
     }
@@ -189,9 +298,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public PageInfo<ProjectView> findProjectPage(ReqProjectInfo reqProject) {
+    public PageInfo<ProjectInfoView> findProjectPage(ReqProjectInfo reqProject) {
         log.info( "根据条件进行查询项目相关信息且分页 请求参数：{}",JSON.toJSONString( reqProject ) );
-        PageInfo<ProjectView> pageInfo = null;
+        PageInfo<ProjectInfoView> pageInfo = null;
         try {
            /* Page<?> page = PageHelper.startPage(reqProject.getPageNum(),reqProject.getPageSize());
             List<ProjectInfo> queryProject  =  projectMapper.findProjectPage(reqProject);
@@ -226,15 +335,15 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         }
     }*/
 
-    private void convertView(List<Project> queryProject, List<ProjectView> views) {
+/*    private void convertView(List<Project> queryProject, List<ProjectView> views) {
         queryProject.stream().forEach( project -> {
             ProjectView view = new ProjectView();
             BeanCopier beanCopier = BeanCopier.create( Project.class, ProjectView.class, false );
             beanCopier.copy( project, view, null );
-            view.setProjectStatusDesc(ProjectStatusEnum.fromValue(project.getProjectStatus()).getMsg());
+            view.setProjectStatusDesc(ProjectStateEnum.fromValue(project.getProjectStatus()).getMsg());
             view.setExamineStatusDesc(ExamineStatusEnum.fromValue(project.getExamineStatus()).getMsg());
             view.setProjectLabels(Splitter.on(",").trimResults().splitToList(project.getProjectLabels()));
             views.add( view );
         } );
-    }
+    }*/
 }

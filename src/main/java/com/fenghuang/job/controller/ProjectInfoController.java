@@ -2,6 +2,7 @@ package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqProjectInfo;
+import com.fenghuang.job.request.ReqProjectInfoQuery;
 import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.service.ProjectInfoService;
 import io.swagger.annotations.Api;
@@ -33,7 +34,7 @@ public class ProjectInfoController {
     @ApiOperation( value = "根据id更新项目相关字段")
     @PostMapping("/modifyProject")
     public Result modifyProject( ReqProjectInfo reqProject){
-      return Result.success(projectService.modifyProject(reqProject));
+      return projectService.modifyProject(reqProject);
     }
 
     @ApiOperation( value = "根据id更新项目状态")
@@ -44,9 +45,8 @@ public class ProjectInfoController {
 
     @ApiOperation( value = "根据条件查询项目信息")
     @PostMapping("/findProject")
-    public Result findProject(@RequestBody ReqProjectInfo reqProject){
-
-      return Result.success(projectService.findProject(reqProject));
+    public Result findProject( ReqProjectInfoQuery reqProjectInfoQuery){
+      return Result.success(projectService.findProject(reqProjectInfoQuery));
     }
 
     @ApiOperation( value = "根据条件进行查询项目相关信息且分页")
