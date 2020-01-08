@@ -2,6 +2,7 @@ package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.ProjectInfo;
 import com.fenghuang.job.request.ReqProjectInfo;
+import com.fenghuang.job.request.ReqProjectInfoQuery;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface ProjectInfoMapper {
 
     List<ProjectInfo> findProjectPage(ReqProjectInfo reqProject);
 
-    ProjectInfo findProjectParams(ReqProjectInfo reqProject);
+    ProjectInfo findProjectParams(ReqProjectInfoQuery reqProjectInfoQuery);
 
     List<ProjectInfo> findProject(ReqProjectInfo reqProject);
 }

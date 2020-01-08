@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.ProjectWorkDateInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
-    <result column="work_date_begin" jdbcType="DATE" property="workDateBegin" />
-    <result column="work_date_end" jdbcType="DATE" property="workDateEnd" />
+    <result column="work_date_begin" jdbcType="VARCHAR" property="workDateBegin" />
+    <result column="work_date_end" jdbcType="VARCHAR" property="workDateEnd" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
@@ -31,8 +31,8 @@
       work_date_end, is_delete, founder, 
       modifier, create_date, update_date
       )
-    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{workDateBegin,jdbcType=DATE}, 
-      #{workDateEnd,jdbcType=DATE}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{workDateBegin,jdbcType=VARCHAR},
+      #{workDateEnd,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR},
       #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -75,10 +75,10 @@
         #{projectId,jdbcType=INTEGER},
       </if>
       <if test="workDateBegin != null">
-        #{workDateBegin,jdbcType=DATE},
+        #{workDateBegin,jdbcType=VARCHAR},
       </if>
       <if test="workDateEnd != null">
-        #{workDateEnd,jdbcType=DATE},
+        #{workDateEnd,jdbcType=VARCHAR},
       </if>
       <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
@@ -104,10 +104,10 @@
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
       <if test="workDateBegin != null">
-        work_date_begin = #{workDateBegin,jdbcType=DATE},
+        work_date_begin = #{workDateBegin,jdbcType=VARCHAR},
       </if>
       <if test="workDateEnd != null">
-        work_date_end = #{workDateEnd,jdbcType=DATE},
+        work_date_end = #{workDateEnd,jdbcType=VARCHAR},
       </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
@@ -130,8 +130,8 @@
   <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.ProjectWorkDateInfo">
     update project_work_date_info
     set project_id = #{projectId,jdbcType=INTEGER},
-      work_date_begin = #{workDateBegin,jdbcType=DATE},
-      work_date_end = #{workDateEnd,jdbcType=DATE},
+      work_date_begin = #{workDateBegin,jdbcType=VARCHAR},
+      work_date_end = #{workDateEnd,jdbcType=VARCHAR},
       is_delete = #{isDelete,jdbcType=INTEGER},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR},

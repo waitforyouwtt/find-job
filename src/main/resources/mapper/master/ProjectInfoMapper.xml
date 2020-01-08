@@ -526,7 +526,7 @@
   <select id="findProjectPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProjectInfo">
     select
     <include refid="Base_Column_List" />
-    from project where 1 = 1
+    from project_info where 1 = 1
     <if test="id != null">
       and id = #{id}
     </if>
@@ -585,10 +585,10 @@
     </if>
 
   </select>
-  <select id="findProjectParams" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProjectInfo">
+  <select id="findProjectParams" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProjectInfoQuery">
     select
     <include refid="Base_Column_List" />
-    from project
+    from project_info
     <where>
       and 1 = 1
       <if test="id != null">
@@ -615,7 +615,7 @@
   <select id="findProject" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProjectInfo">
     select
     <include refid="Base_Column_List" />
-    from project where 1 = 1
+    from project_info where 1 = 1
     <if test="id != null">
       and id = #{id}
     </if>

@@ -1,22 +1,19 @@
 package com.fenghuang.job.entity;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "上班时段信息表")
 public class ProjectWorkTimeInfo implements Serializable{
-
     private Integer id;
 
     private Integer projectId;
 
-    private Date workTimeBegin;
+    private String workTimeBegin;
 
-    private Date workTimeEnd;
+    private String workTimeEnd;
 
     private Integer isDelete;
 

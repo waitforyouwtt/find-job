@@ -2,9 +2,8 @@ package com.fenghuang.job.request;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @Email: 15290810931@163.com
  */
 @Data
-public class ReqProjectInfo implements Serializable {
+public class ReqProjectInfoQuery implements Serializable {
 
     private Integer id;
 
@@ -61,7 +60,7 @@ public class ReqProjectInfo implements Serializable {
     @ApiModelProperty("结算周期：1 完工结 2 日结 3 周结 4 月结")
     private Integer settlementCycle;
 
-    @ApiModelProperty("工作福利：1 管饭 2 培训 3 交通费 4 话费 5 暂无")
+    @ApiModelProperty("工作福利")
     private List<Integer> workWelfaresId;
 
     @ApiModelProperty("项目需要人数")
@@ -120,6 +119,9 @@ public class ReqProjectInfo implements Serializable {
 
     @ApiModelProperty("结束时间")
     private Date updateDate;
+
+    @ApiModelProperty("是否删除：1 删除 2 未删除")
+    private Integer isDelete;
 
 
 }

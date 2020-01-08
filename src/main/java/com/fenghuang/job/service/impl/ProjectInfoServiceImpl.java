@@ -4,14 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.ProjectInfoMapper;
 import com.fenghuang.job.dao.master.ProjectWorkDateInfoMapper;
 import com.fenghuang.job.dao.master.ProjectWorkTimeInfoMapper;
-import com.fenghuang.job.entity.Project;
-import com.fenghuang.job.entity.ProjectInfo;
-import com.fenghuang.job.entity.ProjectWorkDateInfo;
-import com.fenghuang.job.entity.Result;
+import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
 import com.fenghuang.job.exception.BusinessException;
-import com.fenghuang.job.request.ReqProjectInfo;
-import com.fenghuang.job.request.ReqProjectStatus;
+import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.ProjectView;
 import com.github.pagehelper.Page;
@@ -27,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,15 +56,18 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Transactional(rollbackFor = Exception.class)
     public Result insertProject(ReqProjectInfo reqProject) {
         log.info( "创建项目 请求参数：{}", JSON.toJSONString(reqProject) );
+        ReqProjectInfoQuery query = new ReqProjectInfoQuery();
+        query.setUserId(reqProject.getUserId());
+        query.setProjectTypeId(reqProject.getProjectTypeId());
+        query.setProjectTitle(reqProject.getProjectTitle());
+        query.setIsDelete(DeleteEnum.NO.getCode());
         //同一用户 & 同一类型 & 相同标题 状态为未删除的项目不允许重复
-        reqProject.setIsDelete(DeleteEnum.NO.getCode());
-        ProjectInfo projects = projectMapper.findProjectParams(reqProject);
+        ProjectInfo projects = projectMapper.findProjectParams(query);
         if (projects != null){
             return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),null);
         }
         ProjectInfo project = new ProjectInfo();
-        BeanCopier beanCopier = BeanCopier.create(ReqProjectInfo.class,Project.class,false  );
-        beanCopier.copy( reqProject,project,null );
+
         //当标签不为空时处理成int 存到数据库
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){
           String labels = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
@@ -79,20 +79,31 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         project.setUpdateDate(new Date());
         project.setFounder(reqProject.getUserId().toString());
         project.setModifier(reqProject.getUserId().toString());
-        int i = projectMapper.insertSelective(project);
+        int projectResult = projectMapper.insertSelective(project);
         Integer projectId = project.getId();
         log.info( "生成订单返回的订单号为：{}",projectId );
 
         ProjectWorkDateInfo projectWorkDateInfo = new ProjectWorkDateInfo();
         projectWorkDateInfo.setProjectId(projectId);
-/*        projectWorkDateInfo.setWorkDateBegin(reqProject.getworkD);
-                projectWorkDateInfo
-        projectWorkDateInfo
-                projectWorkDateInfo
-        projectWorkDateInfo
-                projectWorkDateInfo
-        projectWorkDateInfo
-        projectWorkDateInfoMapper.insertSelective();*/
+        projectWorkDateInfo.setWorkDateBegin(reqProject.getWorkDateBegin());
+        projectWorkDateInfo.setWorkDateEnd(reqProject.getWorkDateEnd());
+        projectWorkDateInfo.setIsDelete(DeleteEnum.NO.getCode());
+        projectWorkDateInfo.setFounder(reqProject.getUserId().toString());
+        projectWorkDateInfo.setModifier(reqProject.getUserId().toString());
+        projectWorkDateInfo.setCreateDate(new Date());
+        projectWorkDateInfo.setUpdateDate(new Date());
+        projectWorkDateInfoMapper.insertSelective(projectWorkDateInfo);
+
+        ProjectWorkTimeInfo projectWorkTimeInfo = new ProjectWorkTimeInfo();
+        projectWorkTimeInfo.setProjectId(projectId);
+        projectWorkTimeInfo.setWorkTimeBegin(reqProject.getWorkTimeBegin());
+        projectWorkTimeInfo.setWorkTimeEnd(reqProject.getWorkTimeEnd());
+        projectWorkTimeInfo.setIsDelete(DeleteEnum.NO.getCode());
+        projectWorkTimeInfo.setFounder(reqProject.getUserId().toString());
+        projectWorkTimeInfo.setModifier(reqProject.getUserId().toString());
+        projectWorkTimeInfo.setCreateDate(new Date());
+        projectWorkTimeInfo.setUpdateDate(new Date());
+        projectWorkTimeInfoMapper.insertSelective(projectWorkTimeInfo);
 
         return Result.success("创建项目成功");
     }
@@ -160,7 +171,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public List<ProjectView> findProject(ReqProjectInfo reqProject) {
         log.info( "根据条件查询项目信息 请求参数：{}",JSON.toJSONString( reqProject ) );
-        convertSort(reqProject);
+        //convertSort(reqProject);
         List<ProjectInfo> queryProject  =  projectMapper.findProject(reqProject);
         if (CollectionUtils.isEmpty( queryProject )){
             return new ArrayList<>(  );
@@ -198,7 +209,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         return pageInfo;
     }
 
-    private void convertSort(ReqProjectInfo reqProject) {
+/*    private void convertSort(ReqProjectInfo reqProject) {
         if (StringUtils.isEmpty( reqProject.getSortField() )){
             reqProject.setSortField( "project_create_date" );
             reqProject.setSort( SortEnum.DESC.getMsg() );
@@ -213,7 +224,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 }
             }
         }
-    }
+    }*/
 
     private void convertView(List<Project> queryProject, List<ProjectView> views) {
         queryProject.stream().forEach( project -> {

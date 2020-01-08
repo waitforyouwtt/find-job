@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -19,11 +20,11 @@ public class ProjectInfo implements Serializable{
 
     private String projectContent;
 
-    private Long totalpayAmount;
+    private BigDecimal totalpayAmount;
 
-    private Long serviceCharge;
+    private BigDecimal serviceCharge;
 
-    private Long serviceChargeRate;
+    private BigDecimal serviceChargeRate;
 
     private Integer orderState;
 
@@ -90,45 +91,5 @@ public class ProjectInfo implements Serializable{
     private Date createDate;
 
     private Date updateDate;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getProjectTitle() {
-        return projectTitle;
-    }
-
-    public void setProjectTitle(String projectTitle) {
-        this.projectTitle = projectTitle == null ? null : projectTitle.trim();
-    }
-
-    public String getProjectContent() {
-        return projectContent;
-    }
-
-    public void setProjectContent(String projectContent) {
-        this.projectContent = projectContent == null ? null : projectContent.trim();
-    }
 
 }

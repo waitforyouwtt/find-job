@@ -1,7 +1,9 @@
 package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.ProjectWorkTimeInfo;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ProjectWorkTimeInfoMapper {
     int deleteByPrimaryKey(Integer id);
 

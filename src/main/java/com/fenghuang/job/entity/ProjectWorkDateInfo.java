@@ -13,9 +13,9 @@ public class ProjectWorkDateInfo implements Serializable {
 
     private Integer projectId;
 
-    private Date workDateBegin;
+    private String workDateBegin;
 
-    private Date workDateEnd;
+    private String workDateEnd;
 
     private Integer isDelete;
 
