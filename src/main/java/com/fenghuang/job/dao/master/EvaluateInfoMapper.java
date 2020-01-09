@@ -1,0 +1,23 @@
+package com.fenghuang.job.dao.master;
+
+import com.fenghuang.job.entity.EvaluateInfo;
+import com.fenghuang.job.request.ReqEvaluateInfoQuery;
+
+import java.util.List;
+
+public interface EvaluateInfoMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(EvaluateInfo record);
+
+    int insertSelective(EvaluateInfo record);
+
+    EvaluateInfo selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(EvaluateInfo record);
+
+    int updateByPrimaryKey(EvaluateInfo record);
+
+    //评价分页查询
+    List<EvaluateInfo> findEvaluateInfo(ReqEvaluateInfoQuery reqEvaluateInfoQuery);
+}
