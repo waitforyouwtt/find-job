@@ -3,14 +3,13 @@ package com.fenghuang.job.controller;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqProjectInfo;
 import com.fenghuang.job.request.ReqProjectInfoQuery;
+import com.fenghuang.job.request.ReqProjectInfoQuery2;
 import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.service.ProjectInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -51,7 +50,13 @@ public class ProjectInfoController {
 
     @ApiOperation( value = "根据条件进行查询项目相关信息且分页")
     @PostMapping("/findProjectPage")
-    public Result findProjectPage(@RequestBody ReqProjectInfo reqProject){
-        return Result.success(projectService.findProjectPage(reqProject));
+    public Result findProjectPage( ReqProjectInfoQuery2 reqProjectInfoQuery2){
+        return Result.success(projectService.findProjectPage(reqProjectInfoQuery2));
+    }
+
+    @ApiOperation( value = "根据id查询项目信息详情")
+    @GetMapping("/findProjectDetailsById")
+    public Result findProjectDetailsById(@RequestParam("id") Integer id){
+        return Result.success(projectService.findProjectDetailsById(id));
     }
 }

@@ -1,5 +1,6 @@
 package com.fenghuang.job.request;
 
+import com.fenghuang.job.utils.PageHelps;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -14,12 +15,15 @@ import java.util.List;
  * @Email: 15290810931@163.com
  */
 @Data
-public class ReqProjectInfoQuery implements Serializable {
+public class ReqProjectInfoQuery2 extends PageHelps implements Serializable {
 
     private Integer id;
 
     @ApiModelProperty("商家用户id")
     private Integer userId;
+
+    @ApiModelProperty("商家名字")
+    private String userName;
 
     @ApiModelProperty("项目类型id")
     private Integer projectTypeId;
@@ -122,6 +126,16 @@ public class ReqProjectInfoQuery implements Serializable {
 
     @ApiModelProperty("是否删除：1 删除 2 未删除")
     private Integer isDelete;
+
+    //☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆
+    @ApiModelProperty("查询：创建时间min")
+    private String createDateBegin;
+    @ApiModelProperty("查询：创建时间max")
+    private String createDateEnd;
+    @ApiModelProperty("查询：项目状态：1 项目发布 2 用户报名 3 开始工作 4交易完成")
+    private Integer projectState;
+
+
 
 
 }

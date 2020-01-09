@@ -3,6 +3,7 @@ package com.fenghuang.job.service;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqProjectInfo;
 import com.fenghuang.job.request.ReqProjectInfoQuery;
+import com.fenghuang.job.request.ReqProjectInfoQuery2;
 import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.view.ProjectInfoView;
 import com.github.pagehelper.PageInfo;
@@ -46,8 +47,15 @@ public interface ProjectInfoService {
 
     /**
      *根据条件进行查询项目相关信息且分页
-      * @param reqProject
+      * @param reqProjectInfoQuery2
      * @return
      */
-    PageInfo<ProjectInfoView> findProjectPage(ReqProjectInfo reqProject);
+    PageInfo<ProjectInfoView> findProjectPage(ReqProjectInfoQuery2 reqProjectInfoQuery2);
+
+    /**
+     * 根据id查询项目信息详情
+     * @param id
+     * @return
+     */
+    ProjectInfoView findProjectDetailsById(Integer id);
 }

@@ -9,6 +9,8 @@ import com.fenghuang.job.enums.*;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.ProjectInfoView;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -20,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -245,6 +244,64 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             return new ArrayList<>(  );
         }
         List<ProjectInfoView>  views = new ArrayList<>(  );
+        convertView(queryProject, views);
+        views.sort(Comparator.comparing(ProjectInfoView::getCreateDate).reversed());
+        log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
+        return views;
+    }
+
+    /**
+     * 根据条件进行查询项目相关信息且分页
+     *
+     * @param reqProjectInfoQuery2
+     * @return
+     */
+    @Override
+    public PageInfo<ProjectInfoView> findProjectPage(ReqProjectInfoQuery2 reqProjectInfoQuery2) {
+        log.info( "根据条件进行查询项目相关信息且分页 请求参数：{}",JSON.toJSONString( reqProjectInfoQuery2 ) );
+        PageInfo<ProjectInfoView> pageInfo = null;
+        try {
+            Page<?> page = PageHelper.startPage(reqProjectInfoQuery2.getPageNum(),reqProjectInfoQuery2.getPageSize());
+
+            List<ProjectInfoView> queryProject  =  projectMapper.findProjectPage(reqProjectInfoQuery2);
+            if (CollectionUtils.isEmpty( queryProject )){
+                pageInfo = new PageInfo<>(new ArrayList<>());
+            }else{
+                List<ProjectInfoView>  views = new ArrayList<>(  );
+                convertView(queryProject, views);
+                views.sort(Comparator.comparing(ProjectInfoView::getCreateDate).reversed());
+                pageInfo = new PageInfo<>(views);
+            }
+           log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
+        }catch (Exception e){
+            log.info( "根据条件进行查询项目相关信息且分页 查询异常：{}",e.getMessage() );
+        }
+        return pageInfo;
+    }
+
+    /**
+     * 根据id查询项目信息详情
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public ProjectInfoView findProjectDetailsById(Integer id) {
+        log.info("根据id查询项目信息详情 请求参数：{}",id);
+
+        ReqProjectInfoQuery query = new ReqProjectInfoQuery();
+        query.setId(id);
+        List<ProjectInfoView> queryProject  =  projectMapper.findProject(query);
+        if (CollectionUtils.isEmpty( queryProject )){
+            return null;
+        }
+        List<ProjectInfoView>  views = new ArrayList<>(  );
+        convertView(queryProject, views);
+        log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
+        return views.get(0);
+    }
+
+    private void convertView(List<ProjectInfoView> queryProject, List<ProjectInfoView> views) {
         queryProject.stream().forEach(projectInfo -> {
             ProjectInfoView view  = new ProjectInfoView();
 
@@ -318,63 +375,6 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             }
             views.add(view);
         });
-        log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
-        return views;
     }
 
-    /**
-     * 根据条件进行查询项目相关信息且分页
-     *
-     * @param reqProject
-     * @return
-     */
-    @Override
-    public PageInfo<ProjectInfoView> findProjectPage(ReqProjectInfo reqProject) {
-        log.info( "根据条件进行查询项目相关信息且分页 请求参数：{}",JSON.toJSONString( reqProject ) );
-        PageInfo<ProjectInfoView> pageInfo = null;
-        try {
-           /* Page<?> page = PageHelper.startPage(reqProject.getPageNum(),reqProject.getPageSize());
-            List<ProjectInfo> queryProject  =  projectMapper.findProjectPage(reqProject);
-            if (CollectionUtils.isEmpty( queryProject )){
-                pageInfo = new PageInfo<>(new ArrayList<>());
-            }else{
-                List<ProjectView>  views = new ArrayList<>(  );
-               // convertView( queryProject, views );
-                pageInfo = new PageInfo<>(views);
-            }*/
-           //log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
-        }catch (Exception e){
-            log.info( "根据条件进行查询项目相关信息且分页 查询异常：{}",e.getMessage() );
-        }
-        return pageInfo;
-    }
-
-/*    private void convertSort(ReqProjectInfo reqProject) {
-        if (StringUtils.isEmpty( reqProject.getSortField() )){
-            reqProject.setSortField( "project_create_date" );
-            reqProject.setSort( SortEnum.DESC.getMsg() );
-        }else {
-            if (StringUtils.isEmpty( reqProject.getSort() )){
-                reqProject.setSort( SortEnum.DESC.getMsg() );
-            }else{
-                if (reqProject.getSort() .equals(  SortEnum.ASC.getCode().toString()) ){
-                    reqProject.setSort( SortEnum.ASC.getMsg() );
-                }else if (reqProject.getSort().equals( SortEnum.DESC.getCode().toString())){
-                    reqProject.setSort( SortEnum.DESC.getMsg() );
-                }
-            }
-        }
-    }*/
-
-/*    private void convertView(List<Project> queryProject, List<ProjectView> views) {
-        queryProject.stream().forEach( project -> {
-            ProjectView view = new ProjectView();
-            BeanCopier beanCopier = BeanCopier.create( Project.class, ProjectView.class, false );
-            beanCopier.copy( project, view, null );
-            view.setProjectStatusDesc(ProjectStateEnum.fromValue(project.getProjectStatus()).getMsg());
-            view.setExamineStatusDesc(ExamineStatusEnum.fromValue(project.getExamineStatus()).getMsg());
-            view.setProjectLabels(Splitter.on(",").trimResults().splitToList(project.getProjectLabels()));
-            views.add( view );
-        } );
-    }*/
 }

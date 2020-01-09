@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.entity.ProjectWorkDateInfo;
 import com.fenghuang.job.request.ReqProjectWorkDateInfo;
 
 /**
@@ -13,4 +14,10 @@ public interface ProjectWorkDateInfoService {
      * 新增上班日期
      */
     int insertProjectWorkDateInfo(ReqProjectWorkDateInfo reqProjectWorkDateInfo);
+
+    /**
+     * 新增
+     */
+    int saveProjectWorkDateInfo(ProjectWorkDateInfo workDateInfo);
+
 }

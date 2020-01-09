@@ -34,4 +34,15 @@ public class ProjectWorkDateInfoServiceImpl implements ProjectWorkDateInfoServic
         beanCopier.copy(reqProjectWorkDateInfo,projectWorkDateInfo,null);
         return projectWorkDateInfoMapper.insertSelective(projectWorkDateInfo);
     }
+
+    /**
+     * 新增
+     *
+     * @param workDateInfo
+     */
+    @Override
+    public int saveProjectWorkDateInfo(ProjectWorkDateInfo workDateInfo) {
+        log.info("新增参数：{}",JSON.toJSONString(workDateInfo));
+        return projectWorkDateInfoMapper.insertSelective(workDateInfo);
+    }
 }

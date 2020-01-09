@@ -613,7 +613,6 @@
     on a.id = b.project_id
     left join project_work_time_info as c
     on a.id = c.project_id
-
     <where>
      and 1 = 1
     <if test="userId != null">
@@ -644,7 +643,109 @@
       and a.gender_requirement = #{genderRequirement}
     </if>
     <if test="projectLabels != null">
-      and a.project_label
+      and a.project_label in
+      <foreach item="projectLabels" index="index" collection="projectLabels" open="(" separator="," close=")">
+        #{projectLabels}
+      </foreach>
+    </if>
+    <if test="settlementCycle != null">
+      and a.settlement_cycle = #{settlementCycle}
+    </if>
+    <if test="projectContactsName != null">
+      and a.project_contacts_name = #{projectContactsName}
+    </if>
+    <if test="isDelete != null">
+      and a.is_delete = #{isDelete}
+    </if>
+    </where>
+  </select>
+
+  <select id="findProjectPage" resultType="com.fenghuang.job.view.ProjectInfoView" parameterType="com.fenghuang.job.request.ReqProjectInfoQuery2">
+    select
+    a.id,
+    a.user_id userId,
+    a.user_name userName,
+    a.project_type_id projectTypeId,
+    a.project_type_name projectTypeName,
+    a.project_title projectTitle,
+    a.project_content projectContent,
+    a.project_ascription_company projectAscriptionCompany,
+    a.province_id provinceId,
+    a.city_id cityId,
+    a.area_id areaId,
+    a.work_address workAddress,
+    a.gender_requirement genderRequirement,
+    a.project_label projectLabel,
+    a.salary_unit salaryUnit,
+    a.settlement_cycle settlementCycle,
+    a.work_welfares_id workWelfaresId,
+    a.project_need_num projectNeedNum,
+    a.project_contacts_name projectContactsName,
+    a.project_contacts_mobile projectContactsMobile,
+    a.project_contacts_email projectContactsEmail,
+    a.project_skill projectSkill,
+    a.work_time_num workTimeNum,
+    a.work_time_unit workTimeUnit,
+    a.work_time_interval_min workTimeIntervalMin,
+    a.work_time_interval_max workTimeIntervalMax,
+    a.work_time_requirement workTimeRequirement,
+    a.project_begin_time projectBeginTime,
+    a.project_end_time projectEndTime,
+    a.project_remark projectRemark,
+    a.order_id orderId ,
+    a.totalPay_amount totalPayAmount,
+    a.service_charge serviceCharge,
+    a.service_charge_rate serviceChargeRate,
+    a.order_state orderState,
+    a.project_state projectState,
+    a.examine_status examineStatus,
+    a.is_delete isDelete,
+    a.founder,
+    a.modifier,
+    a.create_date createDate,
+    a.update_date updateDate,
+    b.work_date_begin workDateBegin,
+    b.work_date_end workDateEnd,
+    c.work_time_begin workTimeBegin,
+    c.work_time_end workTimeEnd
+    from project_info as a left join project_work_date_info as b
+    on a.id = b.project_id
+    left join project_work_time_info as c
+    on a.id = c.project_id
+    <where>
+    and 1 = 1
+    <if test="userId != null">
+      and a.user_id = #{userId}
+    </if>
+    <if test="userName != null">
+      and a.user_name like CONCAT('%',#{userName},'%')
+    </if>
+    <if test="projectTypeId != null">
+      and a.project_type_id = #{projectTypeId}
+    </if>
+    <if test="projectTypeName != null">
+      and a.project_type_name = #{projectTypeName}
+    </if>
+    <if test="projectTitle != null">
+      and a.project_title like CONCAT('%',#{projectTitle},'%')
+    </if>
+    <if test="projectAscriptionCompany != null">
+      and a.project_ascription_company like CONCAT('%',#{projectAscriptionCompany},'%')
+    </if>
+    <if test="provinceId != null">
+      and a.province_id = #{provinceId}
+    </if>
+    <if test="cityId != null">
+      and a.city_id = #{cityId}
+    </if>
+    <if test="areaId != null">
+      and a.area_id = #{areaId}
+    </if>
+    <if test="genderRequirement != null">
+      and a.gender_requirement = #{genderRequirement}
+    </if>
+    <if test="projectLabels != null">
+      and a.project_label in
       <foreach item="projectLabels" index="index" collection="projectLabels" open="(" separator="," close=")">
         #{projectLabels}
       </foreach>
@@ -659,92 +760,12 @@
       and a.is_delete = #{isDelete}
     </if>
 
-<!--    <if test="projectCreateDateBegin !=null and projectCreateDateBegin !=''">
-      and project_create_date >= TO_DATE(#{projectCreateDateBegin},'yyyy-mm-dd')
+    <if test="createDateBegin !=null and createDateBegin !=''">
+      and a.create_date >= TO_DATE(#{createDateBegin},'yyyy-mm-dd')
     </if>
-    <if test="projectCreateDateEnd !=null and projectCreateDateEnd !=''">
-      and TO_DATE(#{projectCreateDateEnd},'yyyy-mm-dd') >= project_create_date
+    <if test="createDateEnd !=null and createDateEnd !=''">
+      and TO_DATE(#{createDateEnd},'yyyy-mm-dd') >= a.create_date
     </if>
-
-    <if test="projectEndDateBegin!=null and projectEndDateBegin!=''">
-      <![CDATA[   and DATE_FORMAT(project_end_date, '%Y-%m-%d')>=  DATE_FORMAT(#{projectEndDateBegin}, '%Y-%m-%d')   ]]>
-    </if>
-    <if test="projectEndDateEnd!=null and projectEndDateEnd!=''">
-      <![CDATA[  and DATE_FORMAT(project_end_date, '%Y-%m-%d') <= DATE_FORMAT(#{projectEndDateEnd}, '%Y-%m-%d')    ]]>
-    </if>
-
-    <if test="projectDateBegin!=null and projectDateBegin!=''">
-      <![CDATA[   and DATE_FORMAT(project_create_date, '%Y-%m-%d')>=  DATE_FORMAT(#{projectDateBegin}, '%Y-%m-%d')   ]]>
-    </if>
-    <if test="projectDateEnd!=null and projectDateEnd!=''">
-      <![CDATA[  and DATE_FORMAT(project_end_date, '%Y-%m-%d') <= DATE_FORMAT(#{projectDateEnd}, '%Y-%m-%d')    ]]>
-    </if>
-    <if test="sortField != null">
-      ORDER BY ${sortField} ${sort};
-    </if>-->
     </where>
-  </select>
-
-  <select id="findProjectPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqProjectInfo">
-    select
-    <include refid="Base_Column_List" />
-    from project_info where 1 = 1
-    <if test="id != null">
-      and id = #{id}
-    </if>
-    <if test="projectTypeId != null">
-      and project_type_id = #{projectTypeId}
-    </if>
-    <if test="projectTypeName != null">
-      and project_type_name = #{projectTypeName}
-    </if>
-    <if test="createUserId != null">
-      and create_user_id = #{createUserId}
-    </if>
-    <if test="createUserName != null">
-      and create_user_name = #{createUserName}
-    </if>
-    <if test="projectTitle != null">
-      and project_title = #{projectTitle}
-    </if>
-    <if test="projectStatus != null">
-      and project_status = #{projectStatus}
-    </if>
-    <if test="examineStatus != null">
-      and examine_status = #{examineStatus}
-    </if>
-    <if test="projectNeedPeople != null">
-      and project_need_people = #{projectNeedPeople}
-    </if>
-    <if test="isDirectHire != null">
-      and is_direct_hire = #{isDirectHire}
-    </if>
-    <if test="isTrusteeship != null">
-      and is_trusteeship = #{isTrusteeship}
-    </if>
-    <if test="trusteeshipAmount != null">
-      and trusteeship_amount = #{trusteeshipAmount}
-    </if>
-    <if test="projectCreateDateBegin !=null and projectCreateDateBegin !=''">
-      and project_create_date >= TO_DATE(#{projectCreateDateBegin},'yyyy-mm-dd')
-    </if>
-    <if test="projectCreateDateEnd !=null and projectCreateDateEnd !=''">
-      and TO_DATE(#{projectCreateDateEnd},'yyyy-mm-dd') >= project_create_date
-    </if>
-
-    <if test="projectEndDateBegin!=null and projectEndDateBegin!=''">
-      <![CDATA[   and DATE_FORMAT(project_end_date, '%Y-%m-%d')>=  DATE_FORMAT(#{projectEndDateBegin}, '%Y-%m-%d')   ]]>
-    </if>
-    <if test="projectEndDateEnd!=null and projectEndDateEnd!=''">
-      <![CDATA[  and DATE_FORMAT(project_end_date, '%Y-%m-%d') <= DATE_FORMAT(#{projectEndDateEnd}, '%Y-%m-%d')    ]]>
-    </if>
-
-    <if test="projectDateBegin!=null and projectDateBegin!=''">
-      <![CDATA[   and DATE_FORMAT(project_create_date, '%Y-%m-%d')>=  DATE_FORMAT(#{projectDateBegin}, '%Y-%m-%d')   ]]>
-    </if>
-    <if test="projectDateEnd!=null and projectDateEnd!=''">
-      <![CDATA[  and DATE_FORMAT(project_end_date, '%Y-%m-%d') <= DATE_FORMAT(#{projectDateEnd}, '%Y-%m-%d')    ]]>
-    </if>
-
   </select>
 </mapper>
