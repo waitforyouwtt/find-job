@@ -69,7 +69,7 @@ public class ProjectInfoView implements Serializable {
 
     @ApiModelProperty("工作福利")
     private String workWelfaresId;
-    //private List<String>  workWelfaresIdDesc;
+    private List<String>  workWelfaresIdDesc;
 
     @ApiModelProperty("项目需要人数")
     private Integer projectNeedNum;
@@ -128,12 +128,14 @@ public class ProjectInfoView implements Serializable {
 
     @ApiModelProperty("项目状态：1 项目发布 2 用户报名 3 开始工作 4交易完成")
     private Integer projectState;
+    private String  projectStateDesc;
 
     @ApiModelProperty("审核状态：1待审核 2 已通过 3 已驳回")
     private Integer examineStatus;
 
     @ApiModelProperty("是否删除：1 删除 2 未删除")
     private Integer isDelete;
+    private String  isDeleteDesc;
 
     @ApiModelProperty("创建人")
     private String founder;

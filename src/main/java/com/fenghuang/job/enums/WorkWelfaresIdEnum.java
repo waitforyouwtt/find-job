@@ -11,10 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public enum  WorkWelfaresIdEnum {
 
-    DINER(1, "包饭"),
-    LIVE(2, "包住"),
-    CAR(3, "交通费"),
-    CALL(4, "电话费"),
+    DINER_COST(1, "包饭"),
+    LIVE_COST(2, "包住"),
+    CAR_COST(3, "交通费"),
+    CALL_COST(4, "电话费"),
     EQUITY(5, "股权"),
     ANNUAL_BONUS(6, "年终奖"),
     NO(7, "暂无福利");

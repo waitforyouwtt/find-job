@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -257,10 +258,41 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             view.setSettlementCycleDesc(SettlementCycleEnum.fromValue(projectInfo.getSettlementCycle()).getMsg());
             //工作周期转换：工作时间单位：1.小时 2.天 3.月 4年
             view.setWorkTimeUnitDesc(WorkTimeUnitEnum.fromValue(projectInfo.getWorkTimeUnit()).getMsg());
-            //福利转换：
+            //项目状态转换：
+            view.setProjectStateDesc(ProjectStateEnum.fromValue(projectInfo.getProjectState()).getMsg());
+            //是否删除转换：
+            view.setIsDeleteDesc(DeleteEnum.fromValue(projectInfo.getIsDelete()).getMsg());
 
-            String projectLabel = projectInfo.getProjectLabel();
-            List<String> projectLabels = Splitter.on(",").trimResults().splitToList(projectLabel);
+            //福利转换：
+            List<String> welfares = Splitter.on(",").trimResults().splitToList(projectInfo.getWorkWelfaresId());
+            List<String> welfareList = new ArrayList<>();
+            if (CollectionUtils.isEmpty(welfares)){
+                view.setWorkWelfaresIdDesc(Arrays.asList("暂无福利"));
+            }else{
+                welfares.stream().forEach(s -> {
+                    if (s.equals(WorkWelfaresIdEnum.DINER_COST.getCode().toString())){
+                        welfareList.add(WorkWelfaresIdEnum.DINER_COST.getMsg());
+                    }
+                    if (s.equals(WorkWelfaresIdEnum.LIVE_COST.getCode().toString())){
+                        welfareList.add(WorkWelfaresIdEnum.LIVE_COST.getMsg());
+                    }
+                    if (s.equals(WorkWelfaresIdEnum.CAR_COST.getCode().toString())){
+                        welfareList.add(WorkWelfaresIdEnum.CAR_COST.getMsg());
+                    }
+                    if (s.equals(WorkWelfaresIdEnum.CALL_COST.getCode().toString())){
+                        welfareList.add(WorkWelfaresIdEnum.CALL_COST.getMsg());
+                    }
+                    if (s.equals(WorkWelfaresIdEnum.EQUITY.getCode().toString())){
+                        welfareList.add(WorkWelfaresIdEnum.EQUITY.getMsg());
+                    }
+                    if (s.equals(WorkWelfaresIdEnum.ANNUAL_BONUS.getCode().toString())){
+                        welfareList.add(WorkWelfaresIdEnum.ANNUAL_BONUS.getMsg());
+                    }
+                });
+                view.setWorkWelfaresIdDesc(welfareList);
+            }
+            //标签转换：
+            List<String> projectLabels = Splitter.on(",").trimResults().splitToList(projectInfo.getProjectLabel());
             List<String> labels = new ArrayList<>();
             if (CollectionUtils.isEmpty(projectLabels)){
                 view.setProjectLabelsDesc(labels);
@@ -284,7 +316,6 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 });
                 view.setProjectLabelsDesc(labels);
             }
-
             views.add(view);
         });
         log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
