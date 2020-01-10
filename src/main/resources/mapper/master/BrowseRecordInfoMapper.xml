@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fenghuang.job.dao.master.BrowseRecordInfoMapper">
+  <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.BrowseRecordInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="project_title" jdbcType="VARCHAR" property="projectTitle" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="salary_unit" jdbcType="INTEGER" property="salaryUnit" />
+    <result column="project_label" jdbcType="VARCHAR" property="projectLabel" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="province_title" jdbcType="VARCHAR" property="provinceTitle" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="city_title" jdbcType="VARCHAR" property="cityTitle" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="area_title" jdbcType="VARCHAR" property="areaTitle" />
+    <result column="work_address" jdbcType="VARCHAR" property="workAddress" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="founder" jdbcType="VARCHAR" property="founder" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, company_id, company_name, project_id, project_title, salary, salary_unit, 
+    project_label, province_id, province_title, city_id, city_title, area_id, area_title, 
+    work_address, is_delete, founder, modifier, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from browse_record_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from browse_record_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fenghuang.job.entity.BrowseRecordInfo">
+    insert into browse_record_info (id, user_id, company_id, 
+      company_name, project_id, project_title, 
+      salary, salary_unit, project_label, 
+      province_id, province_title, city_id, 
+      city_title, area_id, area_title, 
+      work_address, is_delete, founder, 
+      modifier, create_date, update_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, 
+      #{companyName,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{projectTitle,jdbcType=VARCHAR}, 
+      #{salary,jdbcType=DECIMAL}, #{salaryUnit,jdbcType=INTEGER}, #{projectLabel,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=INTEGER}, #{provinceTitle,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, 
+      #{cityTitle,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, #{areaTitle,jdbcType=VARCHAR}, 
+      #{workAddress,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fenghuang.job.entity.BrowseRecordInfo">
+    insert into browse_record_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="projectTitle != null">
+        project_title,
+      </if>
+      <if test="salary != null">
+        salary,
+      </if>
+      <if test="salaryUnit != null">
+        salary_unit,
+      </if>
+      <if test="projectLabel != null">
+        project_label,
+      </if>
+      <if test="provinceId != null">
+        province_id,
+      </if>
+      <if test="provinceTitle != null">
+        province_title,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="cityTitle != null">
+        city_title,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="areaTitle != null">
+        area_title,
+      </if>
+      <if test="workAddress != null">
+        work_address,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="founder != null">
+        founder,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectTitle != null">
+        #{projectTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="salaryUnit != null">
+        #{salaryUnit,jdbcType=INTEGER},
+      </if>
+      <if test="projectLabel != null">
+        #{projectLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null">
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="provinceTitle != null">
+        #{provinceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cityTitle != null">
+        #{cityTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaTitle != null">
+        #{areaTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="workAddress != null">
+        #{workAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="founder != null">
+        #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.BrowseRecordInfo">
+    update browse_record_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectTitle != null">
+        project_title = #{projectTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        salary = #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="salaryUnit != null">
+        salary_unit = #{salaryUnit,jdbcType=INTEGER},
+      </if>
+      <if test="projectLabel != null">
+        project_label = #{projectLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null">
+        province_id = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="provinceTitle != null">
+        province_title = #{provinceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cityTitle != null">
+        city_title = #{cityTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaTitle != null">
+        area_title = #{areaTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="workAddress != null">
+        work_address = #{workAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="founder != null">
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.BrowseRecordInfo">
+    update browse_record_info
+    set user_id = #{userId,jdbcType=INTEGER},
+      company_id = #{companyId,jdbcType=INTEGER},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER},
+      project_title = #{projectTitle,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=DECIMAL},
+      salary_unit = #{salaryUnit,jdbcType=INTEGER},
+      project_label = #{projectLabel,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=INTEGER},
+      province_title = #{provinceTitle,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=INTEGER},
+      city_title = #{cityTitle,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=INTEGER},
+      area_title = #{areaTitle,jdbcType=VARCHAR},
+      work_address = #{workAddress,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      founder = #{founder,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
