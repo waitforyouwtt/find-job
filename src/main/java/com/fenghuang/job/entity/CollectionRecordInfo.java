@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -23,7 +22,7 @@ public class CollectionRecordInfo implements Serializable{
 
     private String projectTitle;
 
-    private BigDecimal salary;
+    private Long salary;
 
     private Integer salaryUnit;
 
@@ -31,9 +30,15 @@ public class CollectionRecordInfo implements Serializable{
 
     private Integer provinceId;
 
+    private String provinceTitle;
+
     private Integer cityId;
 
+    private String cityTitle;
+
     private Integer areaId;
+
+    private String areaTitle;
 
     private String workAddress;
 

@@ -47,11 +47,20 @@ public class CollectionRecordInfoView implements Serializable{
     @ApiModelProperty("省份id")
     private Integer provinceId;
 
+    @ApiModelProperty("省份名称")
+    private String provinceTitle;
+
     @ApiModelProperty("城市id")
     private Integer cityId;
 
+    @ApiModelProperty("城市名称")
+    private String cityTitle;
+
     @ApiModelProperty("区域id")
     private Integer areaId;
+
+    @ApiModelProperty("区域名称")
+    private String areaTitle;
 
     @ApiModelProperty("上班详细地址")
     private String workAddress;

@@ -1,12 +1,13 @@
 package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.CollectionRecordInfo;
-import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqCollectionRecordInfoQuery;
 import com.fenghuang.job.request.ReqCollectionRecordInfoState;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface CollectionRecordInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -24,4 +25,5 @@ public interface CollectionRecordInfoMapper {
     int updateCollectionRecordInfoState(ReqCollectionRecordInfoState recordInfoState);
 
     List<CollectionRecordInfo> findCollectionRecordInfo(ReqCollectionRecordInfoQuery recordInfoQuery);
+
 }
