@@ -6,6 +6,7 @@ import com.fenghuang.job.entity.BbsArea;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.service.BbsAreaService;
 import com.fenghuang.job.view.BbsAreaView;
+import com.fenghuang.job.view.BbsAreaView2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
@@ -48,5 +49,21 @@ public class BbsAreaServiceImpl implements BbsAreaService {
             });
         }
         return views;
+    }
+
+    /**
+     * 根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0
+     *
+     * @param pid
+     * @return
+     */
+    @Override
+    public List<BbsAreaView2> findBbsAreaByPid(Integer pid) {
+        log.info("根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0 请求参数：{}",pid);
+        List<BbsAreaView2> queryBbsAreas = bbsAreaMapper.findBbsAreaByPid(pid);
+        if (CollectionUtils.isEmpty(queryBbsAreas)){
+            return new ArrayList<>();
+        }
+        return queryBbsAreas;
     }
 }

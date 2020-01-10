@@ -3,6 +3,7 @@ package com.fenghuang.job.service;
 import com.fenghuang.job.entity.BbsArea;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.view.BbsAreaView;
+import com.fenghuang.job.view.BbsAreaView2;
 
 import java.util.List;
 
@@ -18,4 +19,11 @@ public interface BbsAreaService {
      * @return
      */
     List<BbsAreaView> findBbsArea(ReqBbsArea reqBbsArea);
+
+    /**
+     * 根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0
+     * @param pid
+     * @return
+     */
+    List<BbsAreaView2> findBbsAreaByPid(Integer pid);
 }

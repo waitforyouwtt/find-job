@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,5 +29,12 @@ public class BbsAreaController {
     @PostMapping("/findBbsArea")
     public Result findBbsArea(@RequestBody ReqBbsArea reqBbsArea){
         return Result.success(bbsAreaService.findBbsArea(reqBbsArea));
+    }
+
+    @Deprecated
+    @ApiOperation("根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0")
+    @PostMapping("/findBbsAreaByPid")
+    public Result findBbsAreaByPid(@RequestParam("pid") Integer pid){
+       return Result.success(bbsAreaService.findBbsAreaByPid(pid));
     }
 }
