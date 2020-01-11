@@ -35,7 +35,7 @@
     from browse_record_info
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from browse_record_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -280,4 +280,19 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findBrowseRecordInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqBrowseRecordInfoQuery">
+    select
+    <include refid="Base_Column_List" />
+    from browse_record_info
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
+    </where>
+  </select>
+
 </mapper>
