@@ -94,7 +94,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         project.setProjectContactsEmail(reqProject.getProjectContactsEmail());
         project.setProjectSkill(reqProject.getProjectSkill());
         project.setWorkTimeNum(reqProject.getWorkTimeNum());
-        project.setWorkTimeUnit(reqProject.getWorkTimeUnit());
+        project.setWorkTimeUnit(Integer.parseInt( reqProject.getWorkTimeUnit() ));
         project.setWorkTimeRequirement(reqProject.getWorkTimeRequirement());
         project.setProjectBeginTime(reqProject.getProjectBeginTime());
         project.setProjectEndTime(reqProject.getProjectEndTime());
@@ -180,7 +180,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         project.setProjectContactsEmail(reqProject.getProjectContactsEmail());
         project.setProjectSkill(reqProject.getProjectSkill());
         project.setWorkTimeNum(reqProject.getWorkTimeNum());
-        project.setWorkTimeUnit(reqProject.getWorkTimeUnit());
+        project.setWorkTimeUnit(Integer.parseInt( reqProject.getWorkTimeUnit() ));
         project.setWorkTimeRequirement(reqProject.getWorkTimeRequirement());
         project.setProjectBeginTime(reqProject.getProjectBeginTime());
         project.setProjectEndTime(reqProject.getProjectEndTime());
