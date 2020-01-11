@@ -68,6 +68,9 @@ public class ProjectInfoView implements Serializable {
     private String projectLabel;
     private List<String>  projectLabelsDesc;
 
+    @ApiModelProperty("薪水")
+    private BigDecimal salary;
+
     @ApiModelProperty("工资单位：1 天 2 小时 3 月 4 次 5 单")
     private Integer salaryUnit;
 

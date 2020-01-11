@@ -6,6 +6,7 @@ import com.fenghuang.job.dao.master.ProjectWorkDateInfoMapper;
 import com.fenghuang.job.dao.master.ProjectWorkTimeInfoMapper;
 import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
+import com.fenghuang.job.page.PageBean;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.ProjectInfoView;
@@ -257,26 +258,25 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public PageInfo<ProjectInfoView> findProjectPage(ReqProjectInfoQuery2 reqProjectInfoQuery2) {
+    public PageBean<ProjectInfoView> findProjectPage(ReqProjectInfoQuery2 reqProjectInfoQuery2) {
         log.info( "根据条件进行查询项目相关信息且分页 请求参数：{}",JSON.toJSONString( reqProjectInfoQuery2 ) );
         PageInfo<ProjectInfoView> pageInfo = null;
+        PageBean<ProjectInfoView> bean = null;
+        List<ProjectInfoView>  views = new ArrayList<>(  );
         try {
-            Page<?> page = PageHelper.startPage(reqProjectInfoQuery2.getPageNum(),reqProjectInfoQuery2.getPageSize());
-
+            Page<Object> page = PageHelper.startPage( reqProjectInfoQuery2.getPageNum(), reqProjectInfoQuery2.getPageSize() );
             List<ProjectInfoView> queryProject  =  projectMapper.findProjectPage(reqProjectInfoQuery2);
             if (CollectionUtils.isEmpty( queryProject )){
-                pageInfo = new PageInfo<>(new ArrayList<>());
+                return new PageBean<ProjectInfoView>( 1,10,0L,null );
             }else{
-                List<ProjectInfoView>  views = new ArrayList<>(  );
                 convertView(queryProject, views);
                 views.sort(Comparator.comparing(ProjectInfoView::getCreateDate).reversed());
-                pageInfo = new PageInfo<>(views);
+                bean = new PageBean<ProjectInfoView>( reqProjectInfoQuery2.getPageNum(),reqProjectInfoQuery2.getPageSize(),page.getTotal(),views );
             }
-           log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
         }catch (Exception e){
             log.info( "根据条件进行查询项目相关信息且分页 查询异常：{}",e.getMessage() );
         }
-        return pageInfo;
+        return bean;
     }
 
     /**

@@ -26,13 +26,13 @@ public class ProjectInfoController {
 
     @ApiOperation( value = "创建项目")
     @PostMapping("/insertProject")
-    public Result insertProject( ReqProjectInfo reqProject){
+    public Result insertProject(@RequestBody ReqProjectInfo reqProject){
         return projectService.insertProject(reqProject);
     }
 
     @ApiOperation( value = "根据id更新项目相关字段")
     @PostMapping("/modifyProject")
-    public Result modifyProject( ReqProjectInfo reqProject){
+    public Result modifyProject(@RequestBody ReqProjectInfo reqProject){
       return projectService.modifyProject(reqProject);
     }
 
@@ -44,13 +44,13 @@ public class ProjectInfoController {
 
     @ApiOperation( value = "根据条件查询项目信息")
     @PostMapping("/findProject")
-    public Result findProject( ReqProjectInfoQuery reqProjectInfoQuery){
+    public Result findProject(@RequestBody ReqProjectInfoQuery reqProjectInfoQuery){
       return Result.success(projectService.findProject(reqProjectInfoQuery));
     }
 
     @ApiOperation( value = "根据条件进行查询项目相关信息且分页")
     @PostMapping("/findProjectPage")
-    public Result findProjectPage( ReqProjectInfoQuery2 reqProjectInfoQuery2){
+    public Result findProjectPage(@RequestBody ReqProjectInfoQuery2 reqProjectInfoQuery2){
         return Result.success(projectService.findProjectPage(reqProjectInfoQuery2));
     }
 

@@ -32,22 +32,19 @@ public class BannerController {
     @ApiOperation(value = "添加轮播图banner")
     @PostMapping("/insertBanner")
     @ResponseBody
-    @CrossOrigin
-    public Result insertBanner( ReqBanner reqBanner){
+    public Result insertBanner(@RequestBody ReqBanner reqBanner){
         Result result = bannerService.insertBanner(reqBanner);
         return result;
     }
 
     @ApiOperation(value = "根据条件查找banner")
     @PostMapping("/findBanner")
-    @CrossOrigin
     @ResponseBody
-    public Result findBanner( ReqBanner reqBanner){
+    public Result findBanner(@RequestBody ReqBanner reqBanner){
         return Result.success(bannerService.findBanner(reqBanner));
     }
     @ApiOperation(value = "根据ID更新轮播图状态")
     @PostMapping("/modifyBannerStatus")
-    @CrossOrigin
     public Result modifyBannerStatus(ReqBannerStatus reqBannerStatus){
         return Result.success(bannerService.modifyBannerStatus(reqBannerStatus));
     }
