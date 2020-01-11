@@ -199,4 +199,7 @@
     <include refid="Base_Column_List" />
     from sign_up_info where id = #{id}
   </select>
+    <select id="findhadApplyNum" resultType="java.lang.Integer">
+      select count(id) from sign_up_info where project_id = #{projectId}
+    </select>
 </mapper>

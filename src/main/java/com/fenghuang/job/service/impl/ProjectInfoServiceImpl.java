@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.ProjectInfoMapper;
 import com.fenghuang.job.dao.master.ProjectWorkDateInfoMapper;
 import com.fenghuang.job.dao.master.ProjectWorkTimeInfoMapper;
+import com.fenghuang.job.dao.master.SignUpInfoMapper;
 import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
 import com.fenghuang.job.page.PageBean;
@@ -43,6 +44,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Autowired
     ProjectWorkTimeInfoMapper projectWorkTimeInfoMapper;
+
+    @Autowired
+    SignUpInfoMapper signUpInfoMapper;
     /**
      * 创建项目
      *
@@ -267,7 +271,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             Page<Object> page = PageHelper.startPage( reqProjectInfoQuery2.getPageNum(), reqProjectInfoQuery2.getPageSize() );
             List<ProjectInfoView> queryProject  =  projectMapper.findProjectPage(reqProjectInfoQuery2);
             if (CollectionUtils.isEmpty( queryProject )){
-                return new PageBean<ProjectInfoView>( 1,10,0L,null );
+                return new PageBean<ProjectInfoView>( 1,10,0L,new ArrayList<>(  ) );
             }else{
                 convertView(queryProject, views);
                 views.sort(Comparator.comparing(ProjectInfoView::getCreateDate).reversed());
@@ -282,16 +286,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     /**
      * 根据id查询项目信息详情
      *
-     * @param id
+     * @param queryParams
      * @return
      */
     @Override
-    public ProjectInfoView findProjectDetailsById(Integer id) {
-        log.info("根据id查询项目信息详情 请求参数：{}",id);
-
-        ReqProjectInfoQuery query = new ReqProjectInfoQuery();
-        query.setId(id);
-        List<ProjectInfoView> queryProject  =  projectMapper.findProject(query);
+    public ProjectInfoView findProjectDetailsById(ReqProjectInfoQuery queryParams) {
+        log.info("根据id查询项目信息详情 请求参数：{}",queryParams.getId());
+        List<ProjectInfoView> queryProject  =  projectMapper.findProject(queryParams);
         if (CollectionUtils.isEmpty( queryProject )){
             return null;
         }
@@ -299,6 +300,19 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         convertView(queryProject, views);
         log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
         return views.get(0);
+    }
+
+    /**
+     * 根据项目id查询项目已申请人数
+     *
+     * @param queryParams
+     * @return
+     */
+    @Override
+    public Integer findhadApplyNum(ReqProjectInfoQuery queryParams) {
+        log.info( "根据项目id查询项目已申请人数 请求参数：{}",JSON.toJSONString( queryParams.getId() ) );
+        Integer applyNum = signUpInfoMapper.findhadApplyNum(queryParams.getId());
+        return applyNum;
     }
 
     private void convertView(List<ProjectInfoView> queryProject, List<ProjectInfoView> views) {

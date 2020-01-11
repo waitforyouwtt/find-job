@@ -54,8 +54,15 @@ public interface ProjectInfoService {
 
     /**
      * 根据id查询项目信息详情
-     * @param id
+     * @param queryParams
      * @return
      */
-    ProjectInfoView findProjectDetailsById(Integer id);
+    ProjectInfoView findProjectDetailsById(ReqProjectInfoQuery queryParams);
+
+    /**
+     * 根据id查询项目已申请人数
+     * @param queryParams
+     * @return
+     */
+    Integer findhadApplyNum(ReqProjectInfoQuery queryParams);
 }

@@ -618,11 +618,15 @@
     a.project_content projectContent,
     a.project_ascription_company projectAscriptionCompany,
     a.province_id provinceId,
+    a.province_title provinceTitle,
     a.city_id cityId,
+    a.city_title cityTitle,
     a.area_id areaId,
+    a.area_title areaTitle,
     a.work_address workAddress,
     a.gender_requirement genderRequirement,
     a.project_label projectLabel,
+    a.salary,
     a.salary_unit salaryUnit,
     a.settlement_cycle settlementCycle,
     a.work_welfares_id workWelfaresId,
@@ -660,7 +664,9 @@
     left join project_work_time_info as c
     on a.id = c.project_id
     <where>
-      and 1 = 1
+      <if test="id != null">
+        and a.id = #{id}
+      </if>
       <if test="userId != null">
         and a.user_id = #{userId}
       </if>

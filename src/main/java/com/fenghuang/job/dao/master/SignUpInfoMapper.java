@@ -25,4 +25,6 @@ public interface SignUpInfoMapper {
     List<SignUpInfo> findSignUpInfo(ReqSignUpInfoQuery reqSignUpInfoQuery);
     //根据id 查询兼职项目详情
     SignUpInfo findSignUpInfoById(@Param("id") Integer id);
+    //根据项目id查询项目已申请人数
+    Integer findhadApplyNum(@Param( "projectId" ) Integer projectId);
 }

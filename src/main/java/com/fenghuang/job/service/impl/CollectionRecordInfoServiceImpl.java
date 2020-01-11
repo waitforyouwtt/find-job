@@ -11,6 +11,7 @@ import com.fenghuang.job.enums.SalaryUnitEnum;
 import com.fenghuang.job.request.ReqCollectionRecordInfo;
 import com.fenghuang.job.request.ReqCollectionRecordInfoQuery;
 import com.fenghuang.job.request.ReqCollectionRecordInfoState;
+import com.fenghuang.job.request.ReqProjectInfoQuery;
 import com.fenghuang.job.service.CollectionRecordInfoService;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.CollectionRecordInfoView;
@@ -152,6 +153,8 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
     @Override
     public ProjectInfoView findCollectionRecordInfoDetails(Integer projectId) {
         log.info("根据项目id查询收藏记录详情 请求参数：{}",projectId);
-        return projectInfoService.findProjectDetailsById(projectId);
+        ReqProjectInfoQuery query = new ReqProjectInfoQuery();
+        query.setId( projectId );
+        return projectInfoService.findProjectDetailsById(query);
     }
 }

@@ -55,8 +55,14 @@ public class ProjectInfoController {
     }
 
     @ApiOperation( value = "根据id查询项目信息详情")
-    @GetMapping("/findProjectDetailsById")
-    public Result findProjectDetailsById(@RequestParam("id") Integer id){
-        return Result.success(projectService.findProjectDetailsById(id));
+    @PostMapping("/findProjectDetailsById")
+    public Result findProjectDetailsById(@RequestBody ReqProjectInfoQuery queryParams){
+        return Result.success(projectService.findProjectDetailsById(queryParams));
+    }
+
+    @ApiOperation( value = "根据项目id查询项目已申请人数")
+    @PostMapping("/findhadApplyNum")
+    public Result findhadApplyNum(@RequestBody ReqProjectInfoQuery queryParams){
+        return Result.success(projectService.findhadApplyNum(queryParams));
     }
 }
