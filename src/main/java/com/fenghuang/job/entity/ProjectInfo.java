@@ -4,17 +4,17 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "项目兼职信息表")
+@ApiModel(value = "兼职信息表")
 public class ProjectInfo implements Serializable {
-
     private Integer id;
 
     private Integer userId;
 
-    private String  userName;
+    private String userName;
 
     private Integer projectTypeId;
 
@@ -28,15 +28,23 @@ public class ProjectInfo implements Serializable {
 
     private Integer provinceId;
 
+    private String provinceTitle;
+
     private Integer cityId;
 
+    private String cityTitle;
+
     private Integer areaId;
+
+    private String areaTitle;
 
     private String workAddress;
 
     private Integer genderRequirement;
 
     private String projectLabel;
+
+    private BigDecimal salary;
 
     private Integer salaryUnit;
 
@@ -56,7 +64,7 @@ public class ProjectInfo implements Serializable {
 
     private Integer workTimeNum;
 
-    private String workTimeUnit;
+    private Integer workTimeUnit;
 
     private Date workTimeIntervalMin;
 
@@ -72,11 +80,11 @@ public class ProjectInfo implements Serializable {
 
     private String orderId;
 
-    private Long totalpayAmount;
+    private BigDecimal totalpayAmount;
 
-    private Long serviceCharge;
+    private BigDecimal serviceCharge;
 
-    private Long serviceChargeRate;
+    private BigDecimal serviceChargeRate;
 
     private Integer orderState;
 
@@ -93,5 +101,4 @@ public class ProjectInfo implements Serializable {
     private Date createDate;
 
     private Date updateDate;
-
 }

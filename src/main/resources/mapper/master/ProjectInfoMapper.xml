@@ -11,11 +11,15 @@
     <result column="project_content" jdbcType="VARCHAR" property="projectContent" />
     <result column="project_ascription_company" jdbcType="VARCHAR" property="projectAscriptionCompany" />
     <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="province_title" jdbcType="VARCHAR" property="provinceTitle" />
     <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="city_title" jdbcType="VARCHAR" property="cityTitle" />
     <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="area_title" jdbcType="VARCHAR" property="areaTitle" />
     <result column="work_address" jdbcType="VARCHAR" property="workAddress" />
     <result column="gender_requirement" jdbcType="INTEGER" property="genderRequirement" />
     <result column="project_label" jdbcType="VARCHAR" property="projectLabel" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
     <result column="salary_unit" jdbcType="INTEGER" property="salaryUnit" />
     <result column="settlement_cycle" jdbcType="INTEGER" property="settlementCycle" />
     <result column="work_welfares_id" jdbcType="VARCHAR" property="workWelfaresId" />
@@ -46,14 +50,14 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id,user_name,project_type_id, project_type_name, project_title, project_content,
-    project_ascription_company, province_id, city_id, area_id, work_address, gender_requirement, 
-    project_label, salary_unit, settlement_cycle, work_welfares_id, project_need_num, 
-    project_contacts_name, project_contacts_mobile, project_contacts_email, project_skill, 
-    work_time_num, work_time_unit, work_time_interval_min, work_time_interval_max, work_time_requirement, 
-    project_begin_time, project_end_time, project_remark, order_id, totalPay_amount, 
-    service_charge, service_charge_rate, order_state, project_state, examine_status, 
-    is_delete, founder, modifier, create_date, update_date
+    id, user_id, user_name, project_type_id, project_type_name, project_title, project_content, 
+    project_ascription_company, province_id, province_title, city_id, city_title, area_id, 
+    area_title, work_address, gender_requirement, project_label, salary, salary_unit, 
+    settlement_cycle, work_welfares_id, project_need_num, project_contacts_name, project_contacts_mobile, 
+    project_contacts_email, project_skill, work_time_num, work_time_unit, work_time_interval_min, 
+    work_time_interval_max, work_time_requirement, project_begin_time, project_end_time, 
+    project_remark, order_id, totalPay_amount, service_charge, service_charge_rate, order_state, 
+    project_state, examine_status, is_delete, founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -66,11 +70,13 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.fenghuang.job.entity.ProjectInfo">
-    insert into project_info (id, user_id,user_name,project_type_id,
-      project_type_name, project_title, project_content, 
-      project_ascription_company, province_id, city_id, 
-      area_id, work_address, gender_requirement, 
-      project_label, salary_unit, settlement_cycle, 
+    insert into project_info (id, user_id, user_name, 
+      project_type_id, project_type_name, project_title, 
+      project_content, project_ascription_company, 
+      province_id, province_title, city_id, 
+      city_title, area_id, area_title, 
+      work_address, gender_requirement, project_label, 
+      salary, salary_unit, settlement_cycle, 
       work_welfares_id, project_need_num, project_contacts_name, 
       project_contacts_mobile, project_contacts_email, 
       project_skill, work_time_num, work_time_unit, 
@@ -81,14 +87,16 @@
       examine_status, is_delete, founder, 
       modifier, create_date, update_date
       )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR}, #{projectTypeId,jdbcType=INTEGER},
-      #{projectTypeName,jdbcType=VARCHAR}, #{projectTitle,jdbcType=VARCHAR}, #{projectContent,jdbcType=VARCHAR}, 
-      #{projectAscriptionCompany,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
-      #{areaId,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{genderRequirement,jdbcType=INTEGER}, 
-      #{projectLabel,jdbcType=VARCHAR}, #{salaryUnit,jdbcType=INTEGER}, #{settlementCycle,jdbcType=INTEGER},
-      #{workWelfaresId,jdbcType=VARCHAR}, #{projectNeedNum,jdbcType=INTEGER}, #{projectContactsName,jdbcType=VARCHAR},
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+      #{projectTypeId,jdbcType=INTEGER}, #{projectTypeName,jdbcType=VARCHAR}, #{projectTitle,jdbcType=VARCHAR}, 
+      #{projectContent,jdbcType=VARCHAR}, #{projectAscriptionCompany,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=INTEGER}, #{provinceTitle,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, 
+      #{cityTitle,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, #{areaTitle,jdbcType=VARCHAR}, 
+      #{workAddress,jdbcType=VARCHAR}, #{genderRequirement,jdbcType=INTEGER}, #{projectLabel,jdbcType=VARCHAR}, 
+      #{salary,jdbcType=DECIMAL}, #{salaryUnit,jdbcType=INTEGER}, #{settlementCycle,jdbcType=INTEGER}, 
+      #{workWelfaresId,jdbcType=VARCHAR}, #{projectNeedNum,jdbcType=INTEGER}, #{projectContactsName,jdbcType=VARCHAR}, 
       #{projectContactsMobile,jdbcType=VARCHAR}, #{projectContactsEmail,jdbcType=VARCHAR}, 
-      #{projectSkill,jdbcType=VARCHAR}, #{workTimeNum,jdbcType=INTEGER}, #{workTimeUnit,jdbcType=INTEGER},
+      #{projectSkill,jdbcType=VARCHAR}, #{workTimeNum,jdbcType=INTEGER}, #{workTimeUnit,jdbcType=INTEGER}, 
       #{workTimeIntervalMin,jdbcType=TIME}, #{workTimeIntervalMax,jdbcType=TIME}, #{workTimeRequirement,jdbcType=VARCHAR}, 
       #{projectBeginTime,jdbcType=TIMESTAMP}, #{projectEndTime,jdbcType=TIMESTAMP}, #{projectRemark,jdbcType=VARCHAR}, 
       #{orderId,jdbcType=VARCHAR}, #{totalpayAmount,jdbcType=DECIMAL}, #{serviceCharge,jdbcType=DECIMAL}, 
@@ -127,11 +135,20 @@
       <if test="provinceId != null">
         province_id,
       </if>
+      <if test="provinceTitle != null">
+        province_title,
+      </if>
       <if test="cityId != null">
         city_id,
       </if>
+      <if test="cityTitle != null">
+        city_title,
+      </if>
       <if test="areaId != null">
         area_id,
+      </if>
+      <if test="areaTitle != null">
+        area_title,
       </if>
       <if test="workAddress != null">
         work_address,
@@ -141,6 +158,9 @@
       </if>
       <if test="projectLabel != null">
         project_label,
+      </if>
+      <if test="salary != null">
+        salary,
       </if>
       <if test="salaryUnit != null">
         salary_unit,
@@ -255,11 +275,20 @@
       <if test="provinceId != null">
         #{provinceId,jdbcType=INTEGER},
       </if>
+      <if test="provinceTitle != null">
+        #{provinceTitle,jdbcType=VARCHAR},
+      </if>
       <if test="cityId != null">
         #{cityId,jdbcType=INTEGER},
       </if>
+      <if test="cityTitle != null">
+        #{cityTitle,jdbcType=VARCHAR},
+      </if>
       <if test="areaId != null">
         #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaTitle != null">
+        #{areaTitle,jdbcType=VARCHAR},
       </if>
       <if test="workAddress != null">
         #{workAddress,jdbcType=VARCHAR},
@@ -269,6 +298,9 @@
       </if>
       <if test="projectLabel != null">
         #{projectLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        #{salary,jdbcType=DECIMAL},
       </if>
       <if test="salaryUnit != null">
         #{salaryUnit,jdbcType=INTEGER},
@@ -355,9 +387,6 @@
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
-    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.ProjectInfo">
     update project_info
@@ -386,11 +415,20 @@
       <if test="provinceId != null">
         province_id = #{provinceId,jdbcType=INTEGER},
       </if>
+      <if test="provinceTitle != null">
+        province_title = #{provinceTitle,jdbcType=VARCHAR},
+      </if>
       <if test="cityId != null">
         city_id = #{cityId,jdbcType=INTEGER},
       </if>
+      <if test="cityTitle != null">
+        city_title = #{cityTitle,jdbcType=VARCHAR},
+      </if>
       <if test="areaId != null">
         area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaTitle != null">
+        area_title = #{areaTitle,jdbcType=VARCHAR},
       </if>
       <if test="workAddress != null">
         work_address = #{workAddress,jdbcType=VARCHAR},
@@ -400,6 +438,9 @@
       </if>
       <if test="projectLabel != null">
         project_label = #{projectLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        salary = #{salary,jdbcType=DECIMAL},
       </if>
       <if test="salaryUnit != null">
         salary_unit = #{salaryUnit,jdbcType=INTEGER},
@@ -491,17 +532,22 @@
   <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.ProjectInfo">
     update project_info
     set user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
       project_type_id = #{projectTypeId,jdbcType=INTEGER},
       project_type_name = #{projectTypeName,jdbcType=VARCHAR},
       project_title = #{projectTitle,jdbcType=VARCHAR},
       project_content = #{projectContent,jdbcType=VARCHAR},
       project_ascription_company = #{projectAscriptionCompany,jdbcType=VARCHAR},
       province_id = #{provinceId,jdbcType=INTEGER},
+      province_title = #{provinceTitle,jdbcType=VARCHAR},
       city_id = #{cityId,jdbcType=INTEGER},
+      city_title = #{cityTitle,jdbcType=VARCHAR},
       area_id = #{areaId,jdbcType=INTEGER},
+      area_title = #{areaTitle,jdbcType=VARCHAR},
       work_address = #{workAddress,jdbcType=VARCHAR},
       gender_requirement = #{genderRequirement,jdbcType=INTEGER},
       project_label = #{projectLabel,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=DECIMAL},
       salary_unit = #{salaryUnit,jdbcType=INTEGER},
       settlement_cycle = #{settlementCycle,jdbcType=INTEGER},
       work_welfares_id = #{workWelfaresId,jdbcType=VARCHAR},
@@ -614,49 +660,49 @@
     left join project_work_time_info as c
     on a.id = c.project_id
     <where>
-     and 1 = 1
-    <if test="userId != null">
-      and a.user_id = #{userId}
-    </if>
-     <if test="projectTypeId != null">
-       and a.project_type_id = #{projectTypeId}
-     </if>
-    <if test="projectTypeName != null">
-      and a.project_type_name = #{projectTypeName}
-    </if>
-    <if test="projectTitle != null">
-      and a.project_title = #{projectTitle}
-    </if>
-    <if test="projectAscriptionCompany != null">
-      and a.project_ascription_company like CONCAT('%',#{projectAscriptionCompany},'%')
-    </if>
-    <if test="provinceId != null">
-      and a.province_id = #{provinceId}
-    </if>
-    <if test="cityId != null">
-      and a.city_id = #{cityId}
-    </if>
-    <if test="areaId != null">
-      and a.area_id = #{areaId}
-    </if>
-    <if test="genderRequirement != null">
-      and a.gender_requirement = #{genderRequirement}
-    </if>
-    <if test="projectLabels != null">
-      and a.project_label in
-      <foreach item="projectLabels" index="index" collection="projectLabels" open="(" separator="," close=")">
-        #{projectLabels}
-      </foreach>
-    </if>
-    <if test="settlementCycle != null">
-      and a.settlement_cycle = #{settlementCycle}
-    </if>
-    <if test="projectContactsName != null">
-      and a.project_contacts_name = #{projectContactsName}
-    </if>
-    <if test="isDelete != null">
-      and a.is_delete = #{isDelete}
-    </if>
+      and 1 = 1
+      <if test="userId != null">
+        and a.user_id = #{userId}
+      </if>
+      <if test="projectTypeId != null">
+        and a.project_type_id = #{projectTypeId}
+      </if>
+      <if test="projectTypeName != null">
+        and a.project_type_name = #{projectTypeName}
+      </if>
+      <if test="projectTitle != null">
+        and a.project_title = #{projectTitle}
+      </if>
+      <if test="projectAscriptionCompany != null">
+        and a.project_ascription_company like CONCAT('%',#{projectAscriptionCompany},'%')
+      </if>
+      <if test="provinceId != null">
+        and a.province_id = #{provinceId}
+      </if>
+      <if test="cityId != null">
+        and a.city_id = #{cityId}
+      </if>
+      <if test="areaId != null">
+        and a.area_id = #{areaId}
+      </if>
+      <if test="genderRequirement != null">
+        and a.gender_requirement = #{genderRequirement}
+      </if>
+      <if test="projectLabels != null">
+        and a.project_label in
+        <foreach item="projectLabels" index="index" collection="projectLabels" open="(" separator="," close=")">
+          #{projectLabels}
+        </foreach>
+      </if>
+      <if test="settlementCycle != null">
+        and a.settlement_cycle = #{settlementCycle}
+      </if>
+      <if test="projectContactsName != null">
+        and a.project_contacts_name = #{projectContactsName}
+      </if>
+      <if test="isDelete != null">
+        and a.is_delete = #{isDelete}
+      </if>
     </where>
   </select>
 
@@ -713,59 +759,60 @@
     left join project_work_time_info as c
     on a.id = c.project_id
     <where>
-    and 1 = 1
-    <if test="userId != null">
-      and a.user_id = #{userId}
-    </if>
-    <if test="userName != null">
-      and a.user_name like CONCAT('%',#{userName},'%')
-    </if>
-    <if test="projectTypeId != null">
-      and a.project_type_id = #{projectTypeId}
-    </if>
-    <if test="projectTypeName != null">
-      and a.project_type_name = #{projectTypeName}
-    </if>
-    <if test="projectTitle != null">
-      and a.project_title like CONCAT('%',#{projectTitle},'%')
-    </if>
-    <if test="projectAscriptionCompany != null">
-      and a.project_ascription_company like CONCAT('%',#{projectAscriptionCompany},'%')
-    </if>
-    <if test="provinceId != null">
-      and a.province_id = #{provinceId}
-    </if>
-    <if test="cityId != null">
-      and a.city_id = #{cityId}
-    </if>
-    <if test="areaId != null">
-      and a.area_id = #{areaId}
-    </if>
-    <if test="genderRequirement != null">
-      and a.gender_requirement = #{genderRequirement}
-    </if>
-    <if test="projectLabels != null">
-      and a.project_label in
-      <foreach item="projectLabels" index="index" collection="projectLabels" open="(" separator="," close=")">
-        #{projectLabels}
-      </foreach>
-    </if>
-    <if test="settlementCycle != null">
-      and a.settlement_cycle = #{settlementCycle}
-    </if>
-    <if test="projectContactsName != null">
-      and a.project_contacts_name = #{projectContactsName}
-    </if>
-    <if test="isDelete != null">
-      and a.is_delete = #{isDelete}
-    </if>
+      and 1 = 1
+      <if test="userId != null">
+        and a.user_id = #{userId}
+      </if>
+      <if test="userName != null">
+        and a.user_name like CONCAT('%',#{userName},'%')
+      </if>
+      <if test="projectTypeId != null">
+        and a.project_type_id = #{projectTypeId}
+      </if>
+      <if test="projectTypeName != null">
+        and a.project_type_name = #{projectTypeName}
+      </if>
+      <if test="projectTitle != null">
+        and a.project_title like CONCAT('%',#{projectTitle},'%')
+      </if>
+      <if test="projectAscriptionCompany != null">
+        and a.project_ascription_company like CONCAT('%',#{projectAscriptionCompany},'%')
+      </if>
+      <if test="provinceId != null">
+        and a.province_id = #{provinceId}
+      </if>
+      <if test="cityId != null">
+        and a.city_id = #{cityId}
+      </if>
+      <if test="areaId != null">
+        and a.area_id = #{areaId}
+      </if>
+      <if test="genderRequirement != null">
+        and a.gender_requirement = #{genderRequirement}
+      </if>
+      <if test="projectLabels != null">
+        and a.project_label in
+        <foreach item="projectLabels" index="index" collection="projectLabels" open="(" separator="," close=")">
+          #{projectLabels}
+        </foreach>
+      </if>
+      <if test="settlementCycle != null">
+        and a.settlement_cycle = #{settlementCycle}
+      </if>
+      <if test="projectContactsName != null">
+        and a.project_contacts_name = #{projectContactsName}
+      </if>
+      <if test="isDelete != null">
+        and a.is_delete = #{isDelete}
+      </if>
 
-    <if test="createDateBegin !=null and createDateBegin !=''">
-      and a.create_date >= TO_DATE(#{createDateBegin},'yyyy-mm-dd')
-    </if>
-    <if test="createDateEnd !=null and createDateEnd !=''">
-      and TO_DATE(#{createDateEnd},'yyyy-mm-dd') >= a.create_date
-    </if>
+      <if test="createDateBegin !=null and createDateBegin !=''">
+        and a.create_date >= TO_DATE(#{createDateBegin},'yyyy-mm-dd')
+      </if>
+      <if test="createDateEnd !=null and createDateEnd !=''">
+        and TO_DATE(#{createDateEnd},'yyyy-mm-dd') >= a.create_date
+      </if>
     </where>
   </select>
+
 </mapper>

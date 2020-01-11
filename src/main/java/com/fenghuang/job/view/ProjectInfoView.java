@@ -42,11 +42,20 @@ public class ProjectInfoView implements Serializable {
     @ApiModelProperty("省份id")
     private Integer provinceId;
 
+    @ApiModelProperty("省份名称")
+    private String provinceTitle;
+
     @ApiModelProperty("城市id")
     private Integer cityId;
 
+    @ApiModelProperty("城市名称")
+    private String cityTitle;
+
     @ApiModelProperty("地区id")
     private Integer areaId;
+
+    @ApiModelProperty("区域名称")
+    private String areaTitle;
 
     @ApiModelProperty("上班详细地址")
     private String workAddress;
@@ -61,6 +70,7 @@ public class ProjectInfoView implements Serializable {
 
     @ApiModelProperty("工资单位：1 天 2 小时 3 月 4 次 5 单")
     private Integer salaryUnit;
+
     private String  salaryUnitDesc;
 
     @ApiModelProperty("结算周期：1 完工结 2 日结 3 周结 4 月结")

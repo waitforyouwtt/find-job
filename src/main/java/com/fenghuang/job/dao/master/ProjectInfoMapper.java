@@ -4,10 +4,9 @@ import com.fenghuang.job.entity.ProjectInfo;
 import com.fenghuang.job.request.ReqProjectInfoQuery;
 import com.fenghuang.job.request.ReqProjectInfoQuery2;
 import com.fenghuang.job.view.ProjectInfoView;
-import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 
-@Mapper
 public interface ProjectInfoMapper {
     int deleteByPrimaryKey(Integer id);
 

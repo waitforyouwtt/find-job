@@ -40,11 +40,20 @@ public class ReqProjectInfo implements Serializable {
     @ApiModelProperty("省份id")
     private Integer provinceId;
 
+    @ApiModelProperty("省份名称")
+    private String provinceTitle;
+
     @ApiModelProperty("城市id")
     private Integer cityId;
 
+    @ApiModelProperty("城市名称")
+    private String cityTitle;
+
     @ApiModelProperty("地区id")
     private Integer areaId;
+
+    @ApiModelProperty("区域名称")
+    private String areaTitle;
 
     @ApiModelProperty("上班详细地址")
     private String workAddress;
@@ -54,6 +63,9 @@ public class ReqProjectInfo implements Serializable {
 
     @ApiModelProperty("项目标签：1长期工 2 短期工 3寒假工 4暑假工 5钟点工")
     private List<Integer> projectLabels;
+
+    @ApiModelProperty("薪水")
+    private BigDecimal salary;
 
     @ApiModelProperty("工资单位：1 天 2 小时 3 月 4 次 5 单")
     private Integer salaryUnit;
