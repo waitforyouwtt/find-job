@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : dev
-Source Server Version : 50505
-Source Host           : localhost:3307
-Source Database       : druid_master
+Source Server         : find-job
+Source Server Version : 80013
+Source Host           : localhost:3306
+Source Database       : mowa_db
 
 Target Server Type    : MYSQL
-Target Server Version : 50505
+Target Server Version : 80013
 File Encoding         : 65001
 
-Date: 2020-01-10 11:02:10
+Date: 2020-01-11 10:55:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,12 +46,12 @@ DROP TABLE IF EXISTS `banner`;
 CREATE TABLE `banner` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `activity_id` int(11) DEFAULT NULL COMMENT '活动id',
-  `activity_img` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '活动图片url',
+  `activity_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '活动图片url',
   `rank_field` int(11) DEFAULT NULL COMMENT '排次',
   `banner_img_status` int(11) DEFAULT NULL COMMENT '图片状态：1 正常 2失效',
   `is_delete` int(11) DEFAULT NULL COMMENT '是否删除：1 删除 2 未删除',
-  `founder` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
-  `modifier` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
+  `founder` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
@@ -69,8 +69,8 @@ DROP TABLE IF EXISTS `bbs_area`;
 CREATE TABLE `bbs_area` (
   `area_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `title` varchar(255) DEFAULT NULL COMMENT '名称',
-  `pid` int(11) DEFAULT 0 COMMENT '父级ID',
-  `sort` int(11) DEFAULT 1 COMMENT '排序',
+  `pid` int(11) DEFAULT '0' COMMENT '父级ID',
+  `sort` int(11) DEFAULT '1' COMMENT '排序',
   PRIMARY KEY (`area_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3985 DEFAULT CHARSET=utf8;
 
@@ -4118,6 +4118,28 @@ CREATE TABLE `cash_withdrawal` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for change_amount_record_info
+-- ----------------------------
+DROP TABLE IF EXISTS `change_amount_record_info`;
+CREATE TABLE `change_amount_record_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `project_id` int(11) DEFAULT NULL COMMENT '项目id',
+  `change_amount` decimal(10,0) DEFAULT NULL COMMENT '变动余额',
+  `current_surplus_amount` decimal(10,0) DEFAULT NULL COMMENT '当前剩余余额',
+  `is_delete` int(11) DEFAULT NULL COMMENT '是否删除：1 删除 2 未删除',
+  `founder` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `modifier` varchar(50) DEFAULT NULL COMMENT '修改人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of change_amount_record_info
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for collection_record_info
 -- ----------------------------
 DROP TABLE IF EXISTS `collection_record_info`;
@@ -4190,11 +4212,11 @@ CREATE TABLE `login_log` (
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
   `login_status` int(11) DEFAULT NULL COMMENT '登陆状态：1成功 2 失败',
   `login_date` datetime DEFAULT NULL COMMENT '登陆日期',
-  `fail_remark` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '失败原因',
-  `login_ip` varchar(30) COLLATE utf8_bin DEFAULT '' COMMENT '登陆ip',
+  `fail_remark` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '失败原因',
+  `login_ip` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '' COMMENT '登陆ip',
   `is_delete` int(1) DEFAULT NULL COMMENT '是否删除：1删除，2未删除',
-  `founder` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
-  `modifier` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
+  `founder` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
@@ -4204,6 +4226,51 @@ CREATE TABLE `login_log` (
 -- Records of login_log
 -- ----------------------------
 INSERT INTO `login_log` VALUES ('22', '23', '1', '2020-01-07 15:41:33', '登录成功', '192.168.56.1', null, '23', '23', '2020-01-07 15:41:33', '2020-01-07 15:41:33');
+
+-- ----------------------------
+-- Table structure for login_log_info
+-- ----------------------------
+DROP TABLE IF EXISTS `login_log_info`;
+CREATE TABLE `login_log_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `login_status` int(11) DEFAULT NULL COMMENT '登陆状态：1成功 2 失败',
+  `login_date` datetime DEFAULT NULL COMMENT '登陆日期',
+  `fail_remark` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '失败原因',
+  `login_ip` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '' COMMENT '登陆ip',
+  `founder` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of login_log_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for message_count
+-- ----------------------------
+DROP TABLE IF EXISTS `message_count`;
+CREATE TABLE `message_count` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `mobile` varchar(12) DEFAULT NULL COMMENT '用户手机号',
+  `message_type` int(11) DEFAULT NULL COMMENT '短信类型: 1 注册 2 找回密码 3.登录',
+  `send_content` varchar(255) DEFAULT NULL COMMENT '短信发送内容',
+  `send_date` datetime DEFAULT NULL COMMENT '发送时间',
+  `send_ip` varchar(50) DEFAULT NULL COMMENT '发送ip',
+  `founder` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `modifier` varchar(50) DEFAULT NULL COMMENT '修改人',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of message_count
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for message_record
@@ -4245,11 +4312,15 @@ CREATE TABLE `project_info` (
   `project_content` varchar(255) DEFAULT NULL COMMENT '岗位简介',
   `project_ascription_company` varchar(100) DEFAULT NULL COMMENT '项目所属公司',
   `province_id` int(11) DEFAULT NULL COMMENT '省份id',
+  `province_title` varchar(100) DEFAULT NULL COMMENT '省份名称',
   `city_id` int(11) DEFAULT NULL COMMENT '城市id',
+  `city_title` varchar(100) DEFAULT NULL COMMENT '城市名称',
   `area_id` int(11) DEFAULT NULL COMMENT '县区[区域]id',
+  `area_title` varchar(100) DEFAULT NULL COMMENT '区域名称',
   `work_address` varchar(100) DEFAULT NULL COMMENT '上班详细地址',
   `gender_requirement` int(11) DEFAULT NULL COMMENT '性别要求：1 男 2 女 3 不限',
   `project_label` varchar(50) DEFAULT NULL COMMENT '项目标签：1长期工 2 短期工 3寒假工 4暑假工 5钟点工 ',
+  `salary` decimal(10,0) DEFAULT NULL COMMENT '薪水',
   `salary_unit` int(11) DEFAULT NULL COMMENT '工资单位：1 天 2 小时 3 月 4 次 5 单',
   `settlement_cycle` int(11) DEFAULT NULL COMMENT '结算周期：1 完工结 2 日结 3 周结 4 月结',
   `work_welfares_id` varchar(50) DEFAULT '' COMMENT '工作福利:1包饭 2 包住 3交通费 4电话费 5股权 6 年终奖 7 暂无   ',
@@ -4284,9 +4355,9 @@ CREATE TABLE `project_info` (
 -- ----------------------------
 -- Records of project_info
 -- ----------------------------
-INSERT INTO `project_info` VALUES ('1', '1', null, '1002', '杂志店', '插画师', '插画师', '插画师', '1', '2', '1', '浦东新区', '3', '1,2,3', '1', '1', '1,4', '1', '马浩然', '17621007255', '17621007255@163.com', '1', '5', '1', null, null, '1', null, null, null, null, null, null, null, null, '1', '2', '1', '1', '1', '2020-01-08 15:53:47', '2020-01-08 15:53:48');
-INSERT INTO `project_info` VALUES ('2', '1', null, '1002', '杂志店', '编辑', '编辑', '编辑', '1', '2', '1', '浦东新区', '3', '2,3,4', '1', '1', '1,2', '1', '马浩然', '17621007255', '17621007255@163.com', '1', '5', '1', null, null, '1', null, null, null, null, null, null, null, null, '1', '2', '2', '1', '1', '2020-01-08 15:55:43', '2020-01-08 15:55:43');
-INSERT INTO `project_info` VALUES ('3', '1', null, '1002', '杂志店', '模特', '模特', '模特', '1', '2', '1', '浦东新区', '3', '3,4,5', '1', '1', '1,3', '1', '马浩然', '17621007255', '17621007255@163.com', '1', '5', '1', null, null, '1', null, null, null, null, null, null, null, null, '1', '2', '2', '1', '1', '2020-01-08 15:58:13', '2020-01-08 15:58:13');
+INSERT INTO `project_info` VALUES ('1', '1', null, '1002', '杂志店', '插画师', '插画师', '插画师', '1', null, '2', null, '1', null, '浦东新区', '3', '1,2,3', null, '1', '1', '1,4', '1', '马浩然', '17621007255', '17621007255@163.com', '1', '5', '1', null, null, '1', null, null, null, null, null, null, null, null, '1', '2', '1', '1', '1', '2020-01-08 15:53:47', '2020-01-08 15:53:48');
+INSERT INTO `project_info` VALUES ('2', '1', null, '1002', '杂志店', '编辑', '编辑', '编辑', '1', null, '2', null, '1', null, '浦东新区', '3', '2,3,4', null, '1', '1', '1,2', '1', '马浩然', '17621007255', '17621007255@163.com', '1', '5', '1', null, null, '1', null, null, null, null, null, null, null, null, '1', '2', '2', '1', '1', '2020-01-08 15:55:43', '2020-01-08 15:55:43');
+INSERT INTO `project_info` VALUES ('3', '1', null, '1002', '杂志店', '模特', '模特', '模特', '1', null, '2', null, '1', null, '浦东新区', '3', '3,4,5', null, '1', '1', '1,3', '1', '马浩然', '17621007255', '17621007255@163.com', '1', '5', '1', null, null, '1', null, null, null, null, null, null, null, null, '1', '2', '2', '1', '1', '2020-01-08 15:58:13', '2020-01-08 15:58:13');
 
 -- ----------------------------
 -- Table structure for project_type
@@ -4295,12 +4366,12 @@ DROP TABLE IF EXISTS `project_type`;
 CREATE TABLE `project_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL COMMENT '父级id',
-  `category_name` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '分类名称',
+  `category_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '分类名称',
   `charge_rate` double DEFAULT NULL COMMENT '收费百分比',
   `project_type_status` int(11) DEFAULT NULL COMMENT '项目类型状态：1 正常 2.禁用',
   `is_delete` int(11) DEFAULT NULL COMMENT '是否删除：1 删除 2 未删除',
-  `founder` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
-  `modifier` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
+  `founder` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
@@ -4417,31 +4488,31 @@ INSERT INTO `sign_up_info` VALUES ('4', '3', '2', '凤凰小哥哥', '1762100725
 DROP TABLE IF EXISTS `userinfo`;
 CREATE TABLE `userinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '用户名',
-  `user_nickName` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '用户昵称',
-  `id_card` varchar(19) COLLATE utf8_bin DEFAULT NULL COMMENT '用户身份证号码',
-  `user_head` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '用户头像',
-  `password` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '用户密码',
-  `wechat` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '微信',
-  `qq` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT 'QQ',
-  `email` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '用户邮箱',
+  `user_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '用户名',
+  `user_nickName` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '用户昵称',
+  `id_card` varchar(19) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '用户身份证号码',
+  `user_head` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '用户头像',
+  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '用户密码',
+  `wechat` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '微信',
+  `qq` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT 'QQ',
+  `email` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '用户邮箱',
   `gender` int(2) DEFAULT NULL COMMENT '性别：1 男 2 女',
-  `mobile` varchar(12) COLLATE utf8_bin DEFAULT NULL COMMENT '用户手机号',
+  `mobile` varchar(12) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '用户手机号',
   `province_id` int(11) DEFAULT NULL COMMENT '省份id',
   `city_id` int(11) DEFAULT NULL COMMENT '城市id',
   `county_Area_id` int(11) DEFAULT NULL COMMENT '县区id',
-  `address` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '用户地址',
-  `id_card_x` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '身份证正面',
-  `id_card_y` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '身份证反面',
+  `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '用户地址',
+  `id_card_x` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '身份证正面',
+  `id_card_y` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '身份证反面',
   `user_status` int(1) DEFAULT NULL COMMENT '用户状态：1冻结，2正常',
   `is_delete` int(1) DEFAULT NULL COMMENT '是否删除：1删除，2未删除',
   `amount` decimal(10,0) DEFAULT NULL COMMENT '余额',
   `user_type` int(11) DEFAULT NULL COMMENT '用户类型：1前台[app用户] 2 后台[admin]',
   `user_level` int(11) DEFAULT NULL COMMENT '用户等级',
-  `emergency_contact_name` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '紧急联系人',
-  `emergency_contact_mobile` varchar(12) COLLATE utf8_bin DEFAULT NULL COMMENT '紧急联系人手机号',
-  `founder` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
-  `modifier` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
+  `emergency_contact_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '紧急联系人',
+  `emergency_contact_mobile` varchar(12) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '紧急联系人手机号',
+  `founder` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '修改人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
