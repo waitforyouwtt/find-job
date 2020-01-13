@@ -10,13 +10,11 @@ import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.enums.*;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.*;
+import com.fenghuang.job.service.CollectionRecordInfoService;
 import com.fenghuang.job.service.LoginLogService;
 import com.fenghuang.job.service.MessageRecordService;
 import com.fenghuang.job.service.UserInfoService;
-import com.fenghuang.job.utils.AesUtil;
-import com.fenghuang.job.utils.DateUtil;
-import com.fenghuang.job.utils.SmsSenderUtil;
-import com.fenghuang.job.utils.StringCustomizedUtils;
+import com.fenghuang.job.utils.*;
 import com.fenghuang.job.view.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -31,9 +29,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -58,6 +54,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     MessageRecordService messageCountService;
+
+    @Autowired
+    CollectionRecordInfoService recordInfoService;
 
     /**
      * 根据用户名字获取记录[可能有重名的人]
@@ -400,6 +399,25 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
+     * 根据Id 获取用户记录详情
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public UserInfoView findUserInfoById(Integer id) {
+        log.info("根据Id 获取用户记录详情 请求参数：{}",id);
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(id);
+        if (userInfo == null){
+            return null;
+        }
+        UserInfoView view = new UserInfoView();
+        BeanCopier beanCopier = BeanCopier.create(UserInfo.class,UserInfoView.class,false);
+        beanCopier.copy(userInfo,view,null);
+        return view;
+    }
+
+    /**
      * 使用短信进行登录，发送验证码
      * @return
      */
@@ -464,9 +482,30 @@ public class UserInfoServiceImpl implements UserInfoService {
                 loginLog.setFailRemark("短信登录成功");
                 log.info("记录登录日志请求参数：{}");
                 loginLogService.insertLoginLog(loginLog);
+
+                String token = JwtUtil.createJWT(6000000, queryUserInfo);
+                Map<String,Object> objectMap = new HashMap<>();
+                objectMap.put("token",token);
+                objectMap.put("userInfo",queryUserInfo);
+                return Result.success(objectMap);
             }
         }
-        return Result.success(userInfoView);
+    }
+
+    /**
+     * 根据登录token获取登录用户的钱包余额，收藏数，浏览数
+     *
+     * @param token
+     * @return
+     */
+    @Override
+    public UserInfoManagerView findWalletAndCollectionAndBrowse(String token) {
+        Integer userId = 5;
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        CollectionRecordInfoView byUserId = recordInfoService.findByUserId(userId);
+
+
+        return null;
     }
 
     private void insertLoginLog(ReqLoginUserInfo reqLoginUserInfo) {

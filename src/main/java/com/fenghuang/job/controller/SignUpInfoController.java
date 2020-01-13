@@ -23,7 +23,7 @@ public class SignUpInfoController {
     @Autowired
     SignUpInfoService signUpInfoService;
 
-    @ApiOperation(value = "保存用户兼职报名信息")
+    @ApiOperation(value = "前端用户点击报名保存兼职报名信息")
     @PostMapping("/insertSignUpInfo")
     public Result insertSignUpInfo(ReqSignUpInfo reqSignUpInfo){
         return signUpInfoService.insertSignUpInfo(reqSignUpInfo);

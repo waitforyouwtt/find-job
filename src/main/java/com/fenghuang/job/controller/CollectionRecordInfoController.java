@@ -8,10 +8,7 @@ import com.fenghuang.job.service.CollectionRecordInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -27,19 +24,19 @@ public class CollectionRecordInfoController {
 
     @ApiOperation(value = "用户新增收藏记录")
     @PostMapping("/insertCollectionRecordInfo")
-    public Result insertCollectionRecordInfo(ReqCollectionRecordInfo recordInfo){
+    public Result insertCollectionRecordInfo(@RequestBody ReqCollectionRecordInfo recordInfo){
        return collectionRecordInfoService.insertCollectionRecordInfo(recordInfo);
     }
 
     @ApiOperation(value = "用户变更收藏记录状态")
     @PostMapping("/updateCollectionRecordInfoState")
-    public Result updateCollectionRecordInfoState(ReqCollectionRecordInfoState recordInfoState){
+    public Result updateCollectionRecordInfoState(@RequestBody ReqCollectionRecordInfoState recordInfoState){
         return collectionRecordInfoService.updateCollectionRecordInfoState(recordInfoState);
     }
 
     @ApiOperation(value = "根据条件查询收藏记录且分页")
     @PostMapping("/findCollectionRecordInfoPage")
-    public Result findCollectionRecordInfoPage(ReqCollectionRecordInfoQuery recordInfoQuery){
+    public Result findCollectionRecordInfoPage(@RequestBody ReqCollectionRecordInfoQuery recordInfoQuery){
         return Result.success(collectionRecordInfoService.findCollectionRecordInfoPage(recordInfoQuery));
     }
 

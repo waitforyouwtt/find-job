@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,7 @@ public class EvaluateInfoController {
 
     @ApiOperation(value = "新增评价记录")
     @PostMapping("/insertEvaluateInfo")
-    public Result insertEvaluateInfo(ReqEvaluateInfo reqEvaluateInfo){
+    public Result insertEvaluateInfo(@RequestBody ReqEvaluateInfo reqEvaluateInfo){
         return evaluateInfoService.insertEvaluateInfo(reqEvaluateInfo);
     }
 
@@ -38,7 +39,7 @@ public class EvaluateInfoController {
 
     @ApiOperation("根据条件查看评价且分页")
     @PostMapping("/findEvaluateInfoPage")
-    public Result findEvaluateInfoPage( ReqEvaluateInfoQuery reqEvaluateInfoQuery){
+    public Result findEvaluateInfoPage(@RequestBody ReqEvaluateInfoQuery reqEvaluateInfoQuery){
        return Result.success(evaluateInfoService.findEvaluateInfoPage(reqEvaluateInfoQuery));
     }
 

@@ -3,6 +3,7 @@ package com.fenghuang.job.dao.master;
 import com.fenghuang.job.entity.CashWithdrawal;
 import com.fenghuang.job.request.ReqCashWithdrawal;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

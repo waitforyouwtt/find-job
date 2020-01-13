@@ -26,4 +26,8 @@ public class UUID {
     private UUID(){
 
     }
+
+    public static String randomUUID() {
+        return java.util.UUID.randomUUID().toString();
+    }
 }

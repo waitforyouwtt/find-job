@@ -31,5 +31,10 @@ public interface ActivityMapper {
      */
     Activity queryActivityByTitle(@Param("title") String title);
 
+    /**
+     * 根据条件查询活动且分页
+     * @param reqActivityQuery
+     * @return
+     */
     List<Activity> findActivityPage(ReqActivityQuery reqActivityQuery);
 }

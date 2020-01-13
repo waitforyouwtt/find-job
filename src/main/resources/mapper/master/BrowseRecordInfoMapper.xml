@@ -294,5 +294,10 @@
       </if>
     </where>
   </select>
+  <select id="findByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from browse_record_info where user_id = #{userId}
+  </select>
 
 </mapper>

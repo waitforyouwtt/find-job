@@ -1,5 +1,6 @@
 package com.fenghuang.job.controller;
 
+import com.fenghuang.job.config.LoginToken;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.UserInfoService;
@@ -99,6 +100,7 @@ public class UserInfoController {
 
     @PostMapping("/loginByMessage")
     @ApiOperation(value = "使用短信进行登录，发送验证码")
+    @LoginToken
     public Result loginByMessage(@RequestBody HttpServletRequest request,@RequestParam("messageId")String messageId,
                                  @RequestParam("signId")String signId,@RequestParam("mobile")String mobile){
         String ip = BusinessUtils.getIpAddress(request);
@@ -107,6 +109,7 @@ public class UserInfoController {
 
     @PostMapping("/checkLoginCode")
     @ApiOperation(value = "用户短信登录，输入验证码，验证通过则登录成功，验证失败则登录失败")
+    @LoginToken
     public Result checkLoginCode(@RequestBody ReqLoginUserInfo reqLoginUserInfo) {
         return userInfoService.checkLoginCode(reqLoginUserInfo);
     }
@@ -142,7 +145,6 @@ public class UserInfoController {
     @ApiOperation(value = "用户登陆，校验用户名，密码，验证码等信息。")
     @RequestMapping(value="valid-login",method=RequestMethod.GET)
     @ResponseBody
-    @CrossOrigin
     public Map<String,String> validImage(HttpServletRequest request, HttpSession session, ReqLoginUserInfo userInfo){
         String code = request.getParameter("code");
         Object verCode = session.getAttribute("verCode");
@@ -184,6 +186,13 @@ public class UserInfoController {
             result.put("message","登陆成功");
             return result;
         }
+    }
+
+    //😂
+    @ApiOperation(value = "根据登录token获取登录用户的钱包余额，收藏数，浏览数")
+    @PostMapping("/findWalletAndCollectionAndBrowse")
+    public Result findWalletAndCollectionAndBrowse(@RequestParam("token") String token){
+      return Result.success(userInfoService.findWalletAndCollectionAndBrowse(token));
     }
 
 

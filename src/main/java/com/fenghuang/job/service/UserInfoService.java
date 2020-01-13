@@ -4,6 +4,7 @@ import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.view.MessageView;
 import com.fenghuang.job.request.ReqRegisterCode;
+import com.fenghuang.job.view.UserInfoManagerView;
 import com.fenghuang.job.view.UserInfoView;
 import com.github.pagehelper.PageInfo;
 
@@ -84,6 +85,11 @@ public interface UserInfoService {
     Result findUserById(Integer id);
 
     /**
+     * 根据Id 获取用户记录详情
+     */
+    UserInfoView findUserInfoById(Integer id);
+
+    /**
      * 使用短信进行登录，发送验证码
      * @param
      * @return
@@ -96,4 +102,11 @@ public interface UserInfoService {
      * @return
      */
     Result checkLoginCode(ReqLoginUserInfo reqLoginUserInfo);
+
+    /**
+     * 根据登录token获取登录用户的钱包余额，收藏数，浏览数
+     * @param token
+     * @return
+     */
+    UserInfoManagerView findWalletAndCollectionAndBrowse(String token);
 }

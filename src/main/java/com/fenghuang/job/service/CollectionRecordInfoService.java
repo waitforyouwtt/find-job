@@ -42,4 +42,6 @@ public interface CollectionRecordInfoService {
      * @return
      */
     ProjectInfoView findCollectionRecordInfoDetails(Integer projectId);
+
+    CollectionRecordInfoView findByUserId(Integer userId);
 }
