@@ -107,6 +107,8 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
                 convertView(querySignUpInfo, views);
                 pageInfo = new PageInfo<>(views);
             }
+            pageInfo.setPages(page.getPages());
+            pageInfo.setTotal(page.getTotal());
             log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
         }catch (Exception e){
            log.info("根据条件查询用户兼职报名记录且分页 查询异常：{}",JSON.toJSONString(e.getMessage()));

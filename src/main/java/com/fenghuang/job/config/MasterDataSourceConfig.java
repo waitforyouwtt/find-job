@@ -142,7 +142,6 @@ public class MasterDataSourceConfig {
         properties.setProperty("reasonable", "false");
         interceptor.setProperties(properties);
         sessionFactory.setPlugins(new Interceptor[] {interceptor});
-
         return sessionFactory.getObject();
     }
 }

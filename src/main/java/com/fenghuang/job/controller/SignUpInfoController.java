@@ -8,10 +8,7 @@ import com.fenghuang.job.service.SignUpInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -40,7 +37,7 @@ public class SignUpInfoController {
 
     @ApiOperation(value = "根据条件查询用户兼职报名记录且分页")
     @PostMapping("/findSignUpInfoPage")
-    public Result findSignUpInfoPage(ReqSignUpInfoQuery reqSignUpInfoQuery){
+    public Result findSignUpInfoPage(@RequestBody ReqSignUpInfoQuery reqSignUpInfoQuery){
         return Result.success( signUpInfoService.findSignUpInfoPage(reqSignUpInfoQuery) );
     }
 

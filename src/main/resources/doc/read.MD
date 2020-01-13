@@ -27,3 +27,12 @@ mybatis generator 如何在idea 中使用：
 7.选择idea 工具栏的Run ---Edit configurations---选择 + ----选择maven---在Name 栏输入generator---Command line 输入:mybatis-generator:generate -e 
 ---apply---ok 即可
 
+
+遇到问题描述和原因及解决方案：
+1.PageHelper 分页 pages 和 total 总条数不对
+  原因：PageHelper.startPage会返回一个page对象，这个对象在查询结果出来后会把页数，记录总数给page对象,用page.getPages()和getTotal()获取页数和记录总数.
+        [也就是说用pageHelper直接接数据库对应的实体类可以，但是查找出来后再做转换就不可以了，需要做处理]
+  解决方案：在转换后,pageInfo = new PageInfo<>(views); 再进行pages total 赋值：
+  pageInfo.setPages(page.getPages());
+  pageInfo.setTotal(page.getTotal());      
+

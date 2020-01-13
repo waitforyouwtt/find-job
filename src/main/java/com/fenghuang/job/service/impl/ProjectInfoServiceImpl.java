@@ -7,7 +7,6 @@ import com.fenghuang.job.dao.master.ProjectWorkTimeInfoMapper;
 import com.fenghuang.job.dao.master.SignUpInfoMapper;
 import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
-import com.fenghuang.job.page.PageBean;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.ProjectInfoView;
@@ -262,25 +261,26 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public PageBean<ProjectInfoView> findProjectPage(ReqProjectInfoQuery2 reqProjectInfoQuery2) {
+    public PageInfo <ProjectInfoView> findProjectPage(ReqProjectInfoQuery2 reqProjectInfoQuery2) {
         log.info( "根据条件进行查询项目相关信息且分页 请求参数：{}",JSON.toJSONString( reqProjectInfoQuery2 ) );
         PageInfo<ProjectInfoView> pageInfo = null;
-        PageBean<ProjectInfoView> bean = null;
         List<ProjectInfoView>  views = new ArrayList<>(  );
         try {
             Page<Object> page = PageHelper.startPage( reqProjectInfoQuery2.getPageNum(), reqProjectInfoQuery2.getPageSize() );
             List<ProjectInfoView> queryProject  =  projectMapper.findProjectPage(reqProjectInfoQuery2);
             if (CollectionUtils.isEmpty( queryProject )){
-                return new PageBean<ProjectInfoView>( 1,10,0L,new ArrayList<>(  ) );
+                pageInfo = new PageInfo<>(new ArrayList<>());
             }else{
                 convertView(queryProject, views);
                 views.sort(Comparator.comparing(ProjectInfoView::getCreateDate).reversed());
-                bean = new PageBean<ProjectInfoView>( reqProjectInfoQuery2.getPageNum(),reqProjectInfoQuery2.getPageSize(),page.getTotal(),views );
+                pageInfo = new PageInfo<>(views);
             }
+            pageInfo.setPages(page.getPages());
+            pageInfo.setTotal(page.getTotal());
         }catch (Exception e){
             log.info( "根据条件进行查询项目相关信息且分页 查询异常：{}",e.getMessage() );
         }
-        return bean;
+        return pageInfo;
     }
 
     /**

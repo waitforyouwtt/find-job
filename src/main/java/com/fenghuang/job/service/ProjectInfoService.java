@@ -1,12 +1,12 @@
 package com.fenghuang.job.service;
 
 import com.fenghuang.job.entity.Result;
-import com.fenghuang.job.page.PageBean;
 import com.fenghuang.job.request.ReqProjectInfo;
 import com.fenghuang.job.request.ReqProjectInfoQuery;
 import com.fenghuang.job.request.ReqProjectInfoQuery2;
 import com.fenghuang.job.request.ReqProjectStatus;
 import com.fenghuang.job.view.ProjectInfoView;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public interface ProjectInfoService {
       * @param reqProjectInfoQuery2
      * @return
      */
-    PageBean<ProjectInfoView> findProjectPage(ReqProjectInfoQuery2 reqProjectInfoQuery2);
+    PageInfo<ProjectInfoView> findProjectPage(ReqProjectInfoQuery2 reqProjectInfoQuery2);
 
     /**
      * 根据id查询项目信息详情
