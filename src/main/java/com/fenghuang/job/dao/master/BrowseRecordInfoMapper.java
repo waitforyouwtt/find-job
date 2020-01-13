@@ -2,6 +2,7 @@ package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.BrowseRecordInfo;
 import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
+import com.fenghuang.job.view.BrowseRecordInfoView;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,5 +22,5 @@ public interface BrowseRecordInfoMapper {
 
     List<BrowseRecordInfo> findBrowseRecordInfo(ReqBrowseRecordInfoQuery recordInfoQuery);
 
-    BrowseRecordInfo findByUserId(@Param("userId") Integer userId);
+    List <BrowseRecordInfo> findByUserId(@Param("userId") Integer userId);
 }

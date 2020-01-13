@@ -157,4 +157,15 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
         query.setId( projectId );
         return projectInfoService.findProjectDetailsById(query);
     }
+
+    /**
+     * 根据用户id 查询收藏记录
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<CollectionRecordInfo> findByUserId(Integer userId) {
+        log.info("根据用户id 查询收藏记录 请求参数：{}",userId);
+        return collectionRecordInfoMapper.findByUserId(userId);
+    }
 }

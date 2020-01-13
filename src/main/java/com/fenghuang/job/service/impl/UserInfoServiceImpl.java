@@ -5,15 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.cluster.UserInfoClusterMapper;
 import com.fenghuang.job.dao.master.UserInfoMapper;
+import com.fenghuang.job.entity.BrowseRecordInfo;
+import com.fenghuang.job.entity.CollectionRecordInfo;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.enums.*;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.*;
-import com.fenghuang.job.service.CollectionRecordInfoService;
-import com.fenghuang.job.service.LoginLogService;
-import com.fenghuang.job.service.MessageRecordService;
-import com.fenghuang.job.service.UserInfoService;
+import com.fenghuang.job.service.*;
 import com.fenghuang.job.utils.*;
 import com.fenghuang.job.view.*;
 import com.github.pagehelper.Page;
@@ -57,6 +56,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     CollectionRecordInfoService recordInfoService;
+    
+    @Autowired
+    BrowseRecordInfoService browseRecordInfoService;
 
     /**
      * 根据用户名字获取记录[可能有重名的人]
@@ -500,12 +502,15 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public UserInfoManagerView findWalletAndCollectionAndBrowse(String token) {
-        Integer userId = 5;
+        Integer userId = 1;
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
-        CollectionRecordInfoView byUserId = recordInfoService.findByUserId(userId);
-
-
-        return null;
+        List<CollectionRecordInfo> byUserIdCollection = recordInfoService.findByUserId(userId);
+        List<BrowseRecordInfo> byUserIdBrowse = browseRecordInfoService.findByUserId(userId);
+        UserInfoManagerView view = new UserInfoManagerView();
+        view.setAmount(userInfo.getAmount() == null? null: userInfo.getAmount());
+        view.setCollectionNum(byUserIdCollection.size());
+        view.setBrowseNum(byUserIdBrowse.size());
+        return view;
     }
 
     private void insertLoginLog(ReqLoginUserInfo reqLoginUserInfo) {

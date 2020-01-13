@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.entity.CollectionRecordInfo;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqCollectionRecordInfo;
 import com.fenghuang.job.request.ReqCollectionRecordInfoQuery;
@@ -7,6 +8,8 @@ import com.fenghuang.job.request.ReqCollectionRecordInfoState;
 import com.fenghuang.job.view.CollectionRecordInfoView;
 import com.fenghuang.job.view.ProjectInfoView;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -43,5 +46,10 @@ public interface CollectionRecordInfoService {
      */
     ProjectInfoView findCollectionRecordInfoDetails(Integer projectId);
 
-    CollectionRecordInfoView findByUserId(Integer userId);
+    /**
+     * 根据用户id 查询收藏记录
+     * @param userId
+     * @return
+     */
+    List<CollectionRecordInfo> findByUserId(Integer userId);
 }

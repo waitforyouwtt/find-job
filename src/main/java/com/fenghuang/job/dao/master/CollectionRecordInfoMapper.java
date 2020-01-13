@@ -3,6 +3,7 @@ package com.fenghuang.job.dao.master;
 import com.fenghuang.job.entity.CollectionRecordInfo;
 import com.fenghuang.job.request.ReqCollectionRecordInfoQuery;
 import com.fenghuang.job.request.ReqCollectionRecordInfoState;
+import com.fenghuang.job.view.CollectionRecordInfoView;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -25,5 +26,6 @@ public interface CollectionRecordInfoMapper {
     int updateCollectionRecordInfoState(ReqCollectionRecordInfoState recordInfoState);
 
     List<CollectionRecordInfo> findCollectionRecordInfo(ReqCollectionRecordInfoQuery recordInfoQuery);
-
+   //根据用户id 查询收藏记录
+    List<CollectionRecordInfo> findByUserId(Integer userId);
 }

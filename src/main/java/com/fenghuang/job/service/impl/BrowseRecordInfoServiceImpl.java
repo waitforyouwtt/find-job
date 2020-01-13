@@ -60,4 +60,15 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
         }
         return pageInfo;
     }
+
+    /**
+     * 根据用户id 查询收藏记录
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<BrowseRecordInfo> findByUserId(Integer userId) {
+        log.info("根据用户id 查询收藏记录 请求参数：{}",userId);
+        return browseRecordInfoMapper.findByUserId(userId);
+    }
 }
