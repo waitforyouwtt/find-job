@@ -375,7 +375,13 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         BeanCopier beanCopier = BeanCopier.create(UserInfo.class, UserInfoView.class, false);
         beanCopier.copy(userInfo,userInfoView,null);
-        return Result.success(userInfoView);
+
+        Map<String,Object> objectMap = new HashMap<>();
+
+        String token = JwtUtil.createJWT(6000000, userInfo);
+        objectMap.put("token",token);
+        objectMap.put("userInfo",userInfo);
+        return Result.success(objectMap);
     }
 
     /**

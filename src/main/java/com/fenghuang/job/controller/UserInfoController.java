@@ -91,7 +91,8 @@ public class UserInfoController {
     }
 
     @PostMapping("/login")
-    @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
+    @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录;" +
+            "type分别为: 1，2,3,4,5")
     public Result login(ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqLoginUserInfo.setLoginIp(ip);

@@ -15,4 +15,6 @@ public class Constants {
     public static final Integer MESSAGE_COUNT  = 5;
     //七牛云地址
     public static final String QINIUURL = "http://rs.qiniu.com/mkbucketv2/";
+    //秘钥
+    public static final String MOWA_MIYAO = "shanghaizhaohaoxinxikejiyouxiangongsi";
 }
