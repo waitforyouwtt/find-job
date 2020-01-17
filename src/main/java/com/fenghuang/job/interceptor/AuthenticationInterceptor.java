@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.fenghuang.job.config.CheckToken;
 import com.fenghuang.job.config.LoginToken;
-import com.fenghuang.job.entity.UserInfo;
+import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.UserInfoView;
@@ -53,22 +53,22 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (checkToken.required()) {
                 // 执行认证
                 if (token == null) {
-                    throw new RuntimeException("无token，请重新登录");
+                    throw new BusinessException(400,"无token，请重新登录");
                 }
                 // 获取 token 中的 user id
                 String userId;
                 try {
                     userId = JWT.decode(token).getClaim("id").asString();
                 } catch (JWTDecodeException j) {
-                    throw new RuntimeException("访问异常！");
+                    throw new BusinessException("访问异常！");
                 }
                 UserInfoView user = userService.findUserInfoById(Integer.parseInt(userId));
                 if (user == null) {
-                    throw new RuntimeException("用户不存在，请重新登录");
+                    throw new BusinessException("用户不存在，请重新登录");
                 }
                 Boolean verify = JwtUtil.isVerify(token, user);
                 if (!verify) {
-                    throw new RuntimeException("非法访问！");
+                    throw new BusinessException("非法访问！");
                 }
                 return true;
             }

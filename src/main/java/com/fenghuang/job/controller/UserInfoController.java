@@ -1,5 +1,6 @@
 package com.fenghuang.job.controller;
 
+import com.fenghuang.job.config.CheckToken;
 import com.fenghuang.job.config.LoginToken;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;
@@ -7,7 +8,6 @@ import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.BusinessUtils;
 import com.fenghuang.job.request.ReqRegisterCode;
 import com.fenghuang.job.utils.VerifyCodeUtils;
-import com.fenghuang.job.view.UserInfoView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +93,7 @@ public class UserInfoController {
     @PostMapping("/login")
     @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录;" +
             "type分别为: 1，2,3,4,5")
-    public Result login(ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
+    public Result login(@RequestBody ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqLoginUserInfo.setLoginIp(ip);
         return userInfoService.login(reqLoginUserInfo);
@@ -190,6 +190,7 @@ public class UserInfoController {
     }
 
     //😂
+    @CheckToken
     @ApiOperation(value = "根据登录token获取登录用户的钱包余额，收藏数，浏览数")
     @PostMapping("/findWalletAndCollectionAndBrowse")
     public Result findWalletAndCollectionAndBrowse(@RequestParam("token") String token){

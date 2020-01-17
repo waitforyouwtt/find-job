@@ -80,7 +80,7 @@ message:
   appKey: 1e20414203304a00855b02b4ceb1486b
 
 server:
-  port: 8081
+  port: 8080
 
 #使用自己的配置文件
 org:
