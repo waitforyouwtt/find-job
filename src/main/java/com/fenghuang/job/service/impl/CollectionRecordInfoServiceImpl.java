@@ -12,7 +12,6 @@ import com.fenghuang.job.request.ReqProjectInfoQuery;
 import com.fenghuang.job.service.CollectionRecordInfoService;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.CollectionRecordInfoView;
-import com.fenghuang.job.view.ProjectInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -108,7 +107,7 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
       PageInfo<CollectionRecordInfoView> pageInfo = null;
       try{
           Page<?> page = PageHelper.startPage(recordInfoQuery.getPageNum(),recordInfoQuery.getPageSize());
-          List<CollectionRecordInfo> queryCollectionRecordInfo = collectionRecordInfoMapper.findCollectionRecordInfo(recordInfoQuery);
+          List<CollectionRecordInfoView> queryCollectionRecordInfo = collectionRecordInfoMapper.findCollectionRecordInfoPage(recordInfoQuery);
           if (CollectionUtils.isEmpty(queryCollectionRecordInfo)){
               pageInfo = new PageInfo<>(new ArrayList<>());
           }else{

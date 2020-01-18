@@ -6,7 +6,6 @@ import com.fenghuang.job.request.ReqCollectionRecordInfo;
 import com.fenghuang.job.request.ReqCollectionRecordInfoQuery;
 import com.fenghuang.job.request.ReqCollectionRecordInfoState;
 import com.fenghuang.job.view.CollectionRecordInfoView;
-import com.fenghuang.job.view.ProjectInfoView;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

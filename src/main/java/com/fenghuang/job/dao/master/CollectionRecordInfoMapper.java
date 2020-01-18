@@ -1,7 +1,6 @@
 package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.CollectionRecordInfo;
-import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqCollectionRecordInfoQuery;
 import com.fenghuang.job.request.ReqCollectionRecordInfoState;
 import com.fenghuang.job.view.CollectionRecordInfoView;
@@ -11,6 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface CollectionRecordInfoMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(CollectionRecordInfo record);
@@ -27,9 +27,12 @@ public interface CollectionRecordInfoMapper {
     int updateCollectionRecordInfoState(ReqCollectionRecordInfoState recordInfoState);
 
     List<CollectionRecordInfo> findCollectionRecordInfo(ReqCollectionRecordInfoQuery recordInfoQuery);
-   //根据用户id 查询收藏记录
+
+    //根据用户id 查询收藏记录
     List<CollectionRecordInfo> findByUserId(Integer userId);
 
     //用户取消收藏
     int cancelCollectionRecordInfo(ReqCollectionRecordInfoState recordInfoState);
+    //收藏分页查询
+    List<CollectionRecordInfoView> findCollectionRecordInfoPage(ReqCollectionRecordInfoQuery recordInfoQuery);
 }

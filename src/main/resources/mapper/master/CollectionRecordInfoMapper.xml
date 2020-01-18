@@ -4,20 +4,8 @@
   <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.CollectionRecordInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="company_id" jdbcType="INTEGER" property="companyId" />
-    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
     <result column="project_title" jdbcType="VARCHAR" property="projectTitle" />
-    <result column="salary" jdbcType="DECIMAL" property="salary" />
-    <result column="salary_unit" jdbcType="INTEGER" property="salaryUnit" />
-    <result column="project_label" jdbcType="VARCHAR" property="projectLabel" />
-    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
-    <result column="province_title" jdbcType="VARCHAR" property="provinceTitle" />
-    <result column="city_id" jdbcType="INTEGER" property="cityId" />
-    <result column="city_title" jdbcType="VARCHAR" property="cityTitle" />
-    <result column="area_id" jdbcType="INTEGER" property="areaId" />
-    <result column="area_title" jdbcType="VARCHAR" property="areaTitle" />
-    <result column="work_address" jdbcType="VARCHAR" property="workAddress" />
     <result column="is_collection" jdbcType="INTEGER" property="isCollection" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
@@ -26,9 +14,8 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, company_id, company_name, project_id, project_title, salary, salary_unit, 
-    project_label, province_id, province_title, city_id, city_title, area_id, area_title, 
-    work_address, is_collection, is_delete, founder, modifier, create_date, update_date
+    id, user_id, project_id, project_title, is_collection, is_delete, founder, modifier, 
+    create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -41,20 +28,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.fenghuang.job.entity.CollectionRecordInfo">
-    insert into collection_record_info (id, user_id, company_id, 
-      company_name, project_id, project_title, 
-      salary, salary_unit, project_label, 
-      province_id, province_title, city_id, 
-      city_title, area_id, area_title, 
-      work_address, is_collection, is_delete, 
+    insert into collection_record_info (id, user_id, project_id, 
+      project_title, is_collection, is_delete, 
       founder, modifier, create_date, 
       update_date)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, 
-      #{companyName,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{projectTitle,jdbcType=VARCHAR}, 
-      #{salary,jdbcType=DECIMAL}, #{salaryUnit,jdbcType=INTEGER}, #{projectLabel,jdbcType=VARCHAR}, 
-      #{provinceId,jdbcType=INTEGER}, #{provinceTitle,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, 
-      #{cityTitle,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, #{areaTitle,jdbcType=VARCHAR}, 
-      #{workAddress,jdbcType=VARCHAR}, #{isCollection,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
+      #{projectTitle,jdbcType=VARCHAR}, #{isCollection,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, 
       #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
@@ -67,47 +46,11 @@
       <if test="userId != null">
         user_id,
       </if>
-      <if test="companyId != null">
-        company_id,
-      </if>
-      <if test="companyName != null">
-        company_name,
-      </if>
       <if test="projectId != null">
         project_id,
       </if>
       <if test="projectTitle != null">
         project_title,
-      </if>
-      <if test="salary != null">
-        salary,
-      </if>
-      <if test="salaryUnit != null">
-        salary_unit,
-      </if>
-      <if test="projectLabel != null">
-        project_label,
-      </if>
-      <if test="provinceId != null">
-        province_id,
-      </if>
-      <if test="provinceTitle != null">
-        province_title,
-      </if>
-      <if test="cityId != null">
-        city_id,
-      </if>
-      <if test="cityTitle != null">
-        city_title,
-      </if>
-      <if test="areaId != null">
-        area_id,
-      </if>
-      <if test="areaTitle != null">
-        area_title,
-      </if>
-      <if test="workAddress != null">
-        work_address,
       </if>
       <if test="isCollection != null">
         is_collection,
@@ -135,47 +78,11 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="companyId != null">
-        #{companyId,jdbcType=INTEGER},
-      </if>
-      <if test="companyName != null">
-        #{companyName,jdbcType=VARCHAR},
-      </if>
       <if test="projectId != null">
         #{projectId,jdbcType=INTEGER},
       </if>
       <if test="projectTitle != null">
         #{projectTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="salary != null">
-        #{salary,jdbcType=DECIMAL},
-      </if>
-      <if test="salaryUnit != null">
-        #{salaryUnit,jdbcType=INTEGER},
-      </if>
-      <if test="projectLabel != null">
-        #{projectLabel,jdbcType=VARCHAR},
-      </if>
-      <if test="provinceId != null">
-        #{provinceId,jdbcType=INTEGER},
-      </if>
-      <if test="provinceTitle != null">
-        #{provinceTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="cityId != null">
-        #{cityId,jdbcType=INTEGER},
-      </if>
-      <if test="cityTitle != null">
-        #{cityTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="areaId != null">
-        #{areaId,jdbcType=INTEGER},
-      </if>
-      <if test="areaTitle != null">
-        #{areaTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="workAddress != null">
-        #{workAddress,jdbcType=VARCHAR},
       </if>
       <if test="isCollection != null">
         #{isCollection,jdbcType=INTEGER},
@@ -203,47 +110,11 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="companyId != null">
-        company_id = #{companyId,jdbcType=INTEGER},
-      </if>
-      <if test="companyName != null">
-        company_name = #{companyName,jdbcType=VARCHAR},
-      </if>
       <if test="projectId != null">
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
       <if test="projectTitle != null">
         project_title = #{projectTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="salary != null">
-        salary = #{salary,jdbcType=DECIMAL},
-      </if>
-      <if test="salaryUnit != null">
-        salary_unit = #{salaryUnit,jdbcType=INTEGER},
-      </if>
-      <if test="projectLabel != null">
-        project_label = #{projectLabel,jdbcType=VARCHAR},
-      </if>
-      <if test="provinceId != null">
-        province_id = #{provinceId,jdbcType=INTEGER},
-      </if>
-      <if test="provinceTitle != null">
-        province_title = #{provinceTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="cityId != null">
-        city_id = #{cityId,jdbcType=INTEGER},
-      </if>
-      <if test="cityTitle != null">
-        city_title = #{cityTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="areaId != null">
-        area_id = #{areaId,jdbcType=INTEGER},
-      </if>
-      <if test="areaTitle != null">
-        area_title = #{areaTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="workAddress != null">
-        work_address = #{workAddress,jdbcType=VARCHAR},
       </if>
       <if test="isCollection != null">
         is_collection = #{isCollection,jdbcType=INTEGER},
@@ -269,20 +140,8 @@
   <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.CollectionRecordInfo">
     update collection_record_info
     set user_id = #{userId,jdbcType=INTEGER},
-      company_id = #{companyId,jdbcType=INTEGER},
-      company_name = #{companyName,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=INTEGER},
       project_title = #{projectTitle,jdbcType=VARCHAR},
-      salary = #{salary,jdbcType=DECIMAL},
-      salary_unit = #{salaryUnit,jdbcType=INTEGER},
-      project_label = #{projectLabel,jdbcType=VARCHAR},
-      province_id = #{provinceId,jdbcType=INTEGER},
-      province_title = #{provinceTitle,jdbcType=VARCHAR},
-      city_id = #{cityId,jdbcType=INTEGER},
-      city_title = #{cityTitle,jdbcType=VARCHAR},
-      area_id = #{areaId,jdbcType=INTEGER},
-      area_title = #{areaTitle,jdbcType=VARCHAR},
-      work_address = #{workAddress,jdbcType=VARCHAR},
       is_collection = #{isCollection,jdbcType=INTEGER},
       is_delete = #{isDelete,jdbcType=INTEGER},
       founder = #{founder,jdbcType=VARCHAR},
@@ -329,5 +188,50 @@
   <update id="cancelCollectionRecordInfo" parameterType="com.fenghuang.job.request.ReqCollectionRecordInfoState">
     update collection_record_info set is_collection = #{collectionState},update_date = now() where user_id = #{userId} and id = #{id}
   </update>
+
+  <select id="findCollectionRecordInfoPage" resultType="com.fenghuang.job.view.CollectionRecordInfoView" parameterType="com.fenghuang.job.request.ReqCollectionRecordInfoQuery">
+      select
+      a.id as collectionRecordInfoId,
+      a.user_id as userId,
+      a.is_collection as isCollection,
+      b.id as projectId,
+      b.user_name as userName,
+      b.project_type_id as projectTypeId,
+      b.project_type_name as projectTypeName,
+      b.project_title as projectTitle,
+      b.project_content as projectContent,
+      b.project_ascription_company as projectAscriptionCompany,
+      b.province_id as provinceId,
+      b.province_title as provinceTitle,
+      b.city_id as cityId,
+      b.city_title as cityTitle,
+      b.area_id as areaId,
+      b.area_title as areaTitle,
+      b.work_address as workAddress,
+      b.gender_requirement as genderRequirement,
+      b.project_label as projectLabel,
+      b.salary ,
+      b.salary_unit as salaryUnit,
+      b.settlement_cycle as settlementCycle,
+      b.work_welfares_id as workWelfaresId,
+      b.project_need_num as projectNeedNum,
+      b.project_contacts_name as projectContactsName,
+      b.project_contacts_mobile as projectContactsMobile,
+      b.project_contacts_email as projectContactsEmail,
+      b.project_skill as projectSkill,
+      b.work_time_num as workTimeNum,
+      b.work_time_unit as workTimeUnit,
+      b.work_time_requirement as workTimeRequirement,
+      b.project_begin_time as  projectBeginTime,
+      b.project_end_time as projectEndTime,
+      b.project_remark as projectRemark,
+      b.project_state as projectState,
+      b.examine_status as examineStatus
+      from collection_record_info as a
+      left join project_info as b
+      on a.project_id = b.id
+      where a.user_id = 1 and a.is_delete = 2
+  </select>
+
 
 </mapper>

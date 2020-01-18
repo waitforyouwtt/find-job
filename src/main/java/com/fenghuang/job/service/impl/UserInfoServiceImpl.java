@@ -6,7 +6,6 @@ import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.cluster.UserInfoClusterMapper;
 import com.fenghuang.job.dao.master.UserInfoMapper;
 import com.fenghuang.job.entity.BrowseRecordInfo;
-import com.fenghuang.job.entity.CollectionRecordInfo;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.enums.*;
