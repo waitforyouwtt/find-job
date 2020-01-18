@@ -1,10 +1,7 @@
 package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.fenghuang.job.dao.master.ProjectInfoMapper;
-import com.fenghuang.job.dao.master.ProjectWorkDateInfoMapper;
-import com.fenghuang.job.dao.master.ProjectWorkTimeInfoMapper;
-import com.fenghuang.job.dao.master.SignUpInfoMapper;
+import com.fenghuang.job.dao.master.*;
 import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
 import com.fenghuang.job.request.*;
@@ -46,6 +43,10 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Autowired
     SignUpInfoMapper signUpInfoMapper;
+
+    @Autowired
+    CollectionRecordInfoMapper collectionRecordInfoMapper;
+
     /**
      * 创建项目
      *
@@ -290,7 +291,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public ProjectInfoView findProjectDetailsById(ReqProjectInfoQuery queryParams) {
+    public Result findProjectDetailsById(ReqProjectInfoQuery queryParams) {
         log.info("根据id查询项目信息详情 请求参数：{}",queryParams.getId());
         List<ProjectInfoView> queryProject  =  projectMapper.findProject(queryParams);
         if (CollectionUtils.isEmpty( queryProject )){
@@ -305,15 +306,28 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         query.setProjectId(queryParams.getId());
         query.setUserId(25);
         query.setStates(Arrays.asList(SignUpInfoEnum.WAIT_ADMISSION.getCode(),SignUpInfoEnum.HAD_ADMISSION.getCode()));
+        //判断用户是否已申请报名
         List<SignUpInfo> querySignUpInfo = signUpInfoMapper.findSignUpInfo(query);
-        if (CollectionUtils.isEmpty( queryProject )){
+        if (CollectionUtils.isEmpty( querySignUpInfo )){
             views.get( 0 ).setIsSignUp( 0 );
         }else{
             views.get( 0 ).setIsSignUp( 1 );
         }
+        //同一用户同一兼职项目未删除状态下不能重复收藏
+        ReqCollectionRecordInfoQuery recordInfoQuery = new ReqCollectionRecordInfoQuery();
+        recordInfoQuery.setIsDelete(  DeleteEnum.NO.getCode());
+        recordInfoQuery.setUserId( frontUserId );
+        recordInfoQuery.setProjectId( queryParams.getId());
+        recordInfoQuery.setIsCollection( CollectionEnum.YES.getCode() );
+        List<CollectionRecordInfo> queryCollectionRecordInfo = collectionRecordInfoMapper.findCollectionRecordInfo( recordInfoQuery );
+        if (CollectionUtils.isEmpty( queryCollectionRecordInfo )){
+            views.get( 0 ).setIsCollection( 0 );
+        }else{
+            views.get( 0 ).setIsCollection( 1);
+        }
 
         log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
-        return views.get(0);
+        return Result.success( views.get(0) );
     }
 
     /**

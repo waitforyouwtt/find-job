@@ -156,6 +156,13 @@ public class ProjectInfoView implements Serializable {
     @ApiModelProperty("是否已报名：1 是 2 否")
     private String isSignUpDesc;
 
+    @ApiModelProperty("是否收藏：1 已收藏 2 取消收藏")
+    private Integer isCollection;
+
+    @ApiModelProperty("是否收藏：1 已收藏 2 取消收藏")
+    private String isCollectionDesc;
+
+
     @ApiModelProperty("创建人")
     private String founder;
 

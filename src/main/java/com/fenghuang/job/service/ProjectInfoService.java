@@ -57,7 +57,7 @@ public interface ProjectInfoService {
      * @param queryParams
      * @return
      */
-    ProjectInfoView findProjectDetailsById(ReqProjectInfoQuery queryParams);
+    Result findProjectDetailsById(ReqProjectInfoQuery queryParams);
 
     /**
      * 根据id查询项目已申请人数

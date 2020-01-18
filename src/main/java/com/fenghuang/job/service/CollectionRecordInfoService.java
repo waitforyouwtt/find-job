@@ -44,7 +44,7 @@ public interface CollectionRecordInfoService {
      * @param projectId
      * @return
      */
-    ProjectInfoView findCollectionRecordInfoDetails(Integer projectId);
+    Result findCollectionRecordInfoDetails(Integer projectId);
 
     /**
      * 根据用户id 查询收藏记录

@@ -57,7 +57,7 @@ public class ProjectInfoController {
     @ApiOperation( value = "根据id查询项目信息详情")
     @PostMapping("/findProjectDetailsById")
     public Result findProjectDetailsById(@RequestBody ReqProjectInfoQuery queryParams){
-        return Result.success(projectService.findProjectDetailsById(queryParams));
+        return projectService.findProjectDetailsById(queryParams);
     }
 
     @ApiOperation( value = "根据项目id查询项目已申请人数")

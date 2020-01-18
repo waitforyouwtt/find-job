@@ -308,8 +308,14 @@
       <if test="userId != null">
         and user_id = #{userId}
       </if>
+      <if test="projectId != null">
+        and project_id = #{projectId}
+      </if>
       <if test="isDelete != null">
         and is_delete = #{isDelete}
+      </if>
+      <if test="isCollection != null">
+        and is_collection = #{isCollection}
       </if>
     </where>
   </select>
