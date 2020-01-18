@@ -34,6 +34,12 @@ public class CollectionRecordInfoController {
         return collectionRecordInfoService.updateCollectionRecordInfoState(recordInfoState);
     }
 
+    @ApiOperation(value = "用户取消收藏")
+    @PostMapping("/cancelCollectionRecordInfo")
+    public Result cancelCollectionRecordInfo(@RequestBody ReqCollectionRecordInfoState recordInfoState){
+        return collectionRecordInfoService.cancelCollectionRecordInfo(recordInfoState);
+    }
+
     @ApiOperation(value = "根据条件查询收藏记录且分页")
     @PostMapping("/findCollectionRecordInfoPage")
     public Result findCollectionRecordInfoPage(@RequestBody ReqCollectionRecordInfoQuery recordInfoQuery){

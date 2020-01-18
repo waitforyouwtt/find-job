@@ -52,4 +52,11 @@ public interface CollectionRecordInfoService {
      * @return
      */
     List<CollectionRecordInfo> findByUserId(Integer userId);
+
+    /**
+     * 用户取消收藏
+     * @param recordInfoState
+     * @return
+     */
+    Result cancelCollectionRecordInfo(ReqCollectionRecordInfoState recordInfoState);
 }

@@ -152,6 +152,7 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
           log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
       }catch (Exception e){
           log.info("根据条件查询收藏记录且分页查询异常：{}",e.getMessage());
+          e.printStackTrace();
       }
         return pageInfo;
     }
@@ -178,5 +179,18 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
     public List<CollectionRecordInfo> findByUserId(Integer userId) {
         log.info("根据用户id 查询收藏记录 请求参数：{}",userId);
         return collectionRecordInfoMapper.findByUserId(userId);
+    }
+
+    /**
+     * 用户取消收藏
+     * @param recordInfoState
+     * @return
+     */
+    @Override
+    public Result cancelCollectionRecordInfo(ReqCollectionRecordInfoState recordInfoState) {
+        log.info( "用户取消收藏 请求参数:{}",JSON.toJSONString( recordInfoState ) );
+        recordInfoState.setUserId( 25 );
+        recordInfoState.setCollectionState( 2 );
+        return Result.success(collectionRecordInfoMapper.cancelCollectionRecordInfo(recordInfoState));
     }
 }

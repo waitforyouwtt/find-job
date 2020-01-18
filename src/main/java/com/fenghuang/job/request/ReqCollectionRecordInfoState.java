@@ -15,6 +15,9 @@ public class ReqCollectionRecordInfoState implements Serializable{
 
     private Integer id;
 
+    @ApiModelProperty("前台用户token")
+    private String token;
+
     @ApiModelProperty("项目id")
     private Integer projectId;
 

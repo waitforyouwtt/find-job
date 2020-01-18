@@ -326,4 +326,8 @@
     from collection_record_info where user_id = #{userId}
   </select>
 
+  <update id="cancelCollectionRecordInfo" parameterType="com.fenghuang.job.request.ReqCollectionRecordInfoState">
+    update collection_record_info set is_collection = #{collectionState},update_date = now() where user_id = #{userId} and id = #{id}
+  </update>
+
 </mapper>
