@@ -2,6 +2,7 @@ package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqSignUpInfo;
+import com.fenghuang.job.request.ReqSignUpInfoByUserQuery;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
 import com.fenghuang.job.request.ReqSignUpInfoUpdate;
 import com.fenghuang.job.service.SignUpInfoService;
@@ -25,7 +26,7 @@ public class SignUpInfoController {
 
     @ApiOperation(value = "前端用户点击报名保存兼职报名信息")
     @PostMapping("/insertSignUpInfo")
-    public Result insertSignUpInfo(ReqSignUpInfo reqSignUpInfo){
+    public Result insertSignUpInfo(@RequestBody ReqSignUpInfo reqSignUpInfo){
         return signUpInfoService.insertSignUpInfo(reqSignUpInfo);
     }
 
@@ -39,6 +40,12 @@ public class SignUpInfoController {
     @PostMapping("/findSignUpInfoPage")
     public Result findSignUpInfoPage(@RequestBody ReqSignUpInfoQuery reqSignUpInfoQuery){
         return Result.success( signUpInfoService.findSignUpInfoPage(reqSignUpInfoQuery) );
+    }
+
+    @ApiOperation(value = "根据条件查询用户兼职报名记录且分页[我的申请]")
+    @PostMapping("/findUserInfoSignUpInfoPage")
+    public Result findUserInfoSignUpInfoPage(@RequestBody ReqSignUpInfoByUserQuery reqSignUpInfoQuery){
+        return Result.success( signUpInfoService.findUserInfoSignUpInfoPage(reqSignUpInfoQuery) );
     }
 
     @ApiOperation(value = "根据id查询用户兼职报名记录详情")

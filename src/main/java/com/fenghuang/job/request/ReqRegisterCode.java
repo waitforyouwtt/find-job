@@ -24,6 +24,4 @@ public class ReqRegisterCode implements Serializable{
     @ApiModelProperty("设置密码")
     private String password;
 
-    @ApiModelProperty("再次设置密码")
-    private String repeatPassword;
 }

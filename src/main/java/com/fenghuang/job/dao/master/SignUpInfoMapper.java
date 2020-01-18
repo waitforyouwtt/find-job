@@ -1,7 +1,9 @@
 package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.SignUpInfo;
+import com.fenghuang.job.request.ReqSignUpInfoByUserQuery;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
+import com.fenghuang.job.view.SignUpInfoUserIdView;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +31,6 @@ public interface SignUpInfoMapper {
 
     //根据项目id查询项目已申请人数
     Integer findhadApplyNum(@Param( "projectId" ) Integer projectId);
+
+    List<SignUpInfoUserIdView> findUserInfoSignUpInfoPage(ReqSignUpInfoByUserQuery reqSignUpInfoQuery);
 }

@@ -9,9 +9,12 @@ import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.enums.SignUpInfoEnum;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqSignUpInfo;
+import com.fenghuang.job.request.ReqSignUpInfoByUserQuery;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
 import com.fenghuang.job.request.ReqSignUpInfoUpdate;
 import com.fenghuang.job.service.SignUpInfoService;
+import com.fenghuang.job.view.ProjectInfoView;
+import com.fenghuang.job.view.SignUpInfoUserIdView;
 import com.fenghuang.job.view.SignUpInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -22,10 +25,8 @@ import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -50,7 +51,7 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
         log.info( "保存用户兼职报名信息 请求参数：{}", JSON.toJSONString(reqSignUpInfo) );
         ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
         query.setProjectId(reqSignUpInfo.getProjectId());
-        query.setUserId(reqSignUpInfo.getUserId());
+        query.setUserId(25);
         query.setUserMobile(reqSignUpInfo.getUserMobile());
         query.setStates(Arrays.asList(SignUpInfoEnum.WAIT_ADMISSION.getCode(),SignUpInfoEnum.HAD_ADMISSION.getCode()));
         //同一兼职项目同一用户处于待录用和已录用的状态不可以再次报名
@@ -62,6 +63,7 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
         SignUpInfo signUpInfoParams = new SignUpInfo();
         BeanCopier beanCopier = BeanCopier.create( ReqSignUpInfo.class, SignUpInfo.class,false );
         beanCopier.copy( reqSignUpInfo,signUpInfoParams,null );
+        signUpInfoParams.setUserId( 25 );
         signUpInfoParams.setCreateDate( new Date(  ) );
         signUpInfoParams.setUpdateDate( new Date(  ) );
         signUpInfoParams.setIsDelete( DeleteEnum.NO.getCode() );
@@ -158,5 +160,33 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
         BeanCopier beanCopier = BeanCopier.create(SignUpInfo.class,SignUpInfoView.class,false);
         beanCopier.copy(querySignUpInfo,view,null);
         return view;
+    }
+
+    /**
+     * 获取我的申请
+     * @param reqSignUpInfoQuery
+     * @return
+     */
+    @Override
+    public PageInfo<SignUpInfoUserIdView> findUserInfoSignUpInfoPage(ReqSignUpInfoByUserQuery reqSignUpInfoQuery) {
+        log.info( "获取我的申请 请求参数：{}",JSON.toJSONString( reqSignUpInfoQuery ) );
+        Integer userId = 25;
+        PageInfo<SignUpInfoUserIdView> pageInfo = null;
+        try{
+            Page<Object> page = PageHelper.startPage( reqSignUpInfoQuery.getPageNum(), reqSignUpInfoQuery.getPageSize() );
+            reqSignUpInfoQuery.setUserId( 25 );
+            List<SignUpInfoUserIdView> querySignUpInfoUserIdView =  signUpInfoMapper.findUserInfoSignUpInfoPage(reqSignUpInfoQuery);
+            if (CollectionUtils.isEmpty( querySignUpInfoUserIdView )){
+                pageInfo = new PageInfo<>(new ArrayList<>());
+            }else{
+                querySignUpInfoUserIdView.sort( Comparator.comparing(SignUpInfoUserIdView::getCreateDate).reversed());
+                pageInfo = new PageInfo<>(querySignUpInfoUserIdView);
+            }
+            pageInfo.setPages(page.getPages());
+            pageInfo.setTotal(page.getTotal());
+        }catch (Exception e){
+            log.info( "获取我的申请 查询异常：{}",e.getMessage() );
+        }
+        return pageInfo;
     }
 }

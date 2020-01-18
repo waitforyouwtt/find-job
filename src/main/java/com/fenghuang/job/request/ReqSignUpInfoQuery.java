@@ -18,6 +18,8 @@ public class ReqSignUpInfoQuery extends PageHelps implements Serializable {
 
     private Integer id;
 
+    private String token;
+
     private Integer projectId;
 
     private Integer userId;

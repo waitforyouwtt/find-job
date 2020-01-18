@@ -261,25 +261,18 @@ public class UserInfoServiceImpl implements UserInfoService {
     public Result checkRegisterCode(ReqRegisterCode registerCode) {
         if (StringUtils.isEmpty(registerCode.getMobile())
                 || StringUtils.isEmpty(registerCode.getPassword())
-                || StringUtils.isEmpty(registerCode.getRepeatPassword())
                 || StringUtils.isEmpty(registerCode.getRegisterCode())){
             return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
-        }
-        if (!StringCustomizedUtils.stringTrim(registerCode.getPassword()).equals(StringCustomizedUtils.stringTrim(registerCode.getRepeatPassword()))){
-            return Result.error(BusinessEnum.PASSWORDS_INCONSISTENT.getCode(),BusinessEnum.PASSWORDS_INCONSISTENT.getMsg(),null);
         }
 
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
 
-        String mobile = (String) request.getSession(true).getAttribute("mobile");
-        String VerificationCode = (String) request.getSession(true).getAttribute("messageVerificationCode");
+        String VerificationCode = (String) request.getSession(true).getServletContext().getAttribute(registerCode.getMobile());
 
         //如果发送验证码的手机号和当前手机号不同，则抛出异常;
         //如果验证码错误，则抛出异常
-        if (!registerCode.getMobile().equals(mobile)){
-            return Result.error(BusinessEnum.REGISTER_VERIFICATION_MOBILE_DIFFERENT.getCode(),BusinessEnum.REGISTER_VERIFICATION_MOBILE_DIFFERENT.getMsg(),null);
-        }else if (!registerCode.getRegisterCode().equals(VerificationCode)){
+        if (!registerCode.getRegisterCode().equals(VerificationCode)){
             return Result.error(BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getCode(),BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getMsg(),null);
         }
         UserInfo userInfo = new UserInfo();

@@ -11,6 +11,7 @@ import com.fenghuang.job.utils.VerifyCodeUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +31,12 @@ import java.util.Map;
 @Api(value = "用户信息表相关接口",description = "用户信息表相关接口")
 @RestController
 public class UserInfoController {
+
+    @Value( "${message.messageId}" )
+    private String messageId;
+
+    @Value( "${message.signId}" )
+    private String signId;
 
     @Autowired
     UserInfoService userInfoService;
@@ -78,10 +85,9 @@ public class UserInfoController {
 
     @PostMapping("/messageRegister")
     @ApiOperation(value = "用户短信注册，发送验证码")
-    public Result messageRegister(@RequestParam("messageId")String messageId,@RequestParam("signId")String signId,
-                                  @RequestParam("mobile")String mobile,HttpServletRequest request){
+    public Result messageRegister(@RequestBody ReqRegisterCode reqRegisterCode ,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
-        return userInfoService.messageRegister(messageId,signId,mobile,ip);
+        return userInfoService.messageRegister(messageId,signId,reqRegisterCode.getMobile(),ip);
     }
 
     @PostMapping("/checkRegisterCode")

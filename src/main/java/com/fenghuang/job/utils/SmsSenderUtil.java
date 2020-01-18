@@ -45,8 +45,8 @@ public class SmsSenderUtil {
             JSONObject jsonObject = JSON.parseObject(result);
             Integer code = jsonObject.getInteger("code");
             if (code.equals(200)) {
-                request.getSession(true).setAttribute("mobile", phoneNumber);
-                request.getSession(true).setAttribute("messageVerificationCode", String.valueOf(random));
+                request.getSession(true).getServletContext().setAttribute(phoneNumber,random);
+//                request.getSession(true).setAttribute("messageVerificationCode", String.valueOf(random));
                 log.info("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
                 log.info("短信注册，注册手机号是：{}，验证码是：{}",phoneNumber,random);
                 return result;

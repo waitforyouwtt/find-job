@@ -298,6 +298,20 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         }
         List<ProjectInfoView>  views = new ArrayList<>(  );
         convertView(queryProject, views);
+
+        //todo  根据token 获取userId
+        Integer frontUserId = 25;
+        ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
+        query.setProjectId(queryParams.getId());
+        query.setUserId(25);
+        query.setStates(Arrays.asList(SignUpInfoEnum.WAIT_ADMISSION.getCode(),SignUpInfoEnum.HAD_ADMISSION.getCode()));
+        List<SignUpInfo> querySignUpInfo = signUpInfoMapper.findSignUpInfo(query);
+        if (CollectionUtils.isEmpty( queryProject )){
+            views.get( 0 ).setIsSignUp( 0 );
+        }else{
+            views.get( 0 ).setIsSignUp( 1 );
+        }
+
         log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
         return views.get(0);
     }

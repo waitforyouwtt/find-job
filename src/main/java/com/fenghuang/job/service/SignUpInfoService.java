@@ -2,8 +2,10 @@ package com.fenghuang.job.service;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqSignUpInfo;
+import com.fenghuang.job.request.ReqSignUpInfoByUserQuery;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
 import com.fenghuang.job.request.ReqSignUpInfoUpdate;
+import com.fenghuang.job.view.SignUpInfoUserIdView;
 import com.fenghuang.job.view.SignUpInfoView;
 import com.github.pagehelper.PageInfo;
 
@@ -50,4 +52,11 @@ public interface SignUpInfoService {
      * @return
      */
     SignUpInfoView findSignUpInfoById(Integer id);
+
+    /**
+     * 获取我的申请
+     * @param reqSignUpInfoQuery
+     * @return
+     */
+    PageInfo<SignUpInfoUserIdView> findUserInfoSignUpInfoPage(ReqSignUpInfoByUserQuery reqSignUpInfoQuery);
 }

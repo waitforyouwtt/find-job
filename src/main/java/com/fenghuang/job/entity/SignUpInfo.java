@@ -24,7 +24,8 @@ public class SignUpInfo implements Serializable{
 
     private Integer state;
 
-    private String founder;
+    private String remarks;
+  private String founder;
 
     private String modifier;
 

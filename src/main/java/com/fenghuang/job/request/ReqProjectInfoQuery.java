@@ -19,6 +19,9 @@ public class ReqProjectInfoQuery implements Serializable {
 
     private Integer id;
 
+    @ApiModelProperty("前端用户token")
+    private String token;
+
     @ApiModelProperty("商家用户id")
     private Integer userId;
 

@@ -9,13 +9,14 @@
     <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, project_id, user_id, user_name, user_mobile, is_delete, state, founder, modifier, 
+    id, project_id, user_id, user_name, user_mobile, is_delete, state, remarks,founder, modifier,
     create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -62,6 +63,9 @@
       <if test="state != null">
         state,
       </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
       <if test="founder != null">
         founder,
       </if>
@@ -96,6 +100,9 @@
       </if>
       <if test="state != null">
         #{state,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="founder != null">
         #{founder,jdbcType=VARCHAR},
@@ -202,4 +209,25 @@
     <select id="findhadApplyNum" resultType="java.lang.Integer">
       select count(id) from sign_up_info where project_id = #{projectId}
     </select>
+  <select id="findUserInfoSignUpInfoPage" resultType="com.fenghuang.job.view.SignUpInfoUserIdView" parameterType="com.fenghuang.job.request.ReqSignUpInfoByUserQuery">
+     select
+      a.id as id,
+      a.project_id as projectId,
+      a.state      as signUpState,
+      b.project_title as projectTitle,
+      b.area_id as areaId,
+      b.area_title as areaTitle,
+      a.create_date as createDate
+      from sign_up_info as a
+      left join project_info as b
+      on a.project_id = b.id
+    <where>
+      <if test="userId != null">
+        a.user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="signUpState != null">
+        a.state = #{signUpState,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
 </mapper>

@@ -150,6 +150,12 @@ public class ProjectInfoView implements Serializable {
     private Integer isDelete;
     private String  isDeleteDesc;
 
+    @ApiModelProperty("是否已报名：1 是 2 否")
+    private Integer isSignUp;
+
+    @ApiModelProperty("是否已报名：1 是 2 否")
+    private String isSignUpDesc;
+
     @ApiModelProperty("创建人")
     private String founder;
 
