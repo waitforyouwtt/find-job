@@ -33,4 +33,7 @@ public interface SignUpInfoMapper {
     Integer findhadApplyNum(@Param( "projectId" ) Integer projectId);
 
     List<SignUpInfoUserIdView> findUserInfoSignUpInfoPage(ReqSignUpInfoByUserQuery reqSignUpInfoQuery);
+
+    //前端用户取消申请
+    int cancelSignUpInfo(SignUpInfo signUpInfo);
 }

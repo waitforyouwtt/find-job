@@ -36,6 +36,12 @@ public class SignUpInfoController {
         return signUpInfoService.updateSignUpInfoState(reqSignUpInfoUpdate);
     }
 
+    @ApiOperation(value = "前端用户取消报名")
+    @PostMapping("/cancelSignUpInfo")
+    public Result cancelSignUpInfo(@RequestBody ReqSignUpInfoUpdate reqSignUpInfoUpdate){
+        return signUpInfoService.cancelSignUpInfo(reqSignUpInfoUpdate);
+    }
+
     @ApiOperation(value = "根据条件查询用户兼职报名记录且分页")
     @PostMapping("/findSignUpInfoPage")
     public Result findSignUpInfoPage(@RequestBody ReqSignUpInfoQuery reqSignUpInfoQuery){

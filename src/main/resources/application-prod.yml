@@ -58,6 +58,9 @@ spring:
         max-wait: -1
         max-idle: 500
 
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 #spring boot mybatis 打印sql及参数：level 下面是dao 层的包路径哦
 logging:
   level:

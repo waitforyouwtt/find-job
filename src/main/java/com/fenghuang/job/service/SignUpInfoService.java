@@ -59,4 +59,11 @@ public interface SignUpInfoService {
      * @return
      */
     PageInfo<SignUpInfoUserIdView> findUserInfoSignUpInfoPage(ReqSignUpInfoByUserQuery reqSignUpInfoQuery);
+
+    /**
+     * 前端用户取消报名
+     * @param reqSignUpInfoUpdate
+     * @return
+     */
+    Result cancelSignUpInfo(ReqSignUpInfoUpdate reqSignUpInfoUpdate);
 }

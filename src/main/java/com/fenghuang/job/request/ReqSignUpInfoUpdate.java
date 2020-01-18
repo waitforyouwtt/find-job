@@ -17,7 +17,11 @@ public class ReqSignUpInfoUpdate implements Serializable {
 
     private Integer id;
 
+    private Integer signUpId;
+
     private Integer projectId;
+
+    private String token;
 
     private Integer userId;
 

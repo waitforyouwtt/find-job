@@ -189,4 +189,44 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
         }
         return pageInfo;
     }
+
+    /**
+     * 前端用户取消报名
+     * @param reqSignUpInfoUpdate
+     * @return
+     */
+    @Override
+    public Result cancelSignUpInfo(ReqSignUpInfoUpdate reqSignUpInfoUpdate) {
+        log.info( "前端用户取消报名 请求参数：{}",JSON.toJSONString( reqSignUpInfoUpdate ) );
+
+        Integer userId = 25;
+        ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
+        query.setUserId( userId );
+        query.setId(reqSignUpInfoUpdate.getSignUpId() );
+        query.setProjectId( reqSignUpInfoUpdate.getProjectId() );
+        query.setIsDelete(DeleteEnum.NO.getCode() );
+        List<SignUpInfo> querySignUpInfo = signUpInfoMapper.findSignUpInfo(query);
+        querySignUpInfo.sort(Comparator.comparing(SignUpInfo::getCreateDate).reversed());
+        if (CollectionUtils.isEmpty( querySignUpInfo )){
+           return Result.error( BusinessEnum.RECORD_NOT_EXIST.getCode(), BusinessEnum.RECORD_NOT_EXIST.getMsg(),null);
+        }
+        SignUpInfo signUpInfoOne =  querySignUpInfo.get( 0 );
+        if (signUpInfoOne.getState().equals( SignUpInfoEnum.HAD_ADMISSION.getCode() ) || signUpInfoOne.getState().equals( SignUpInfoEnum.HAD_SETTLEMENT.getCode() )
+          || signUpInfoOne.getState().equals( SignUpInfoEnum.WAIT_EVALUATE.getCode() ) || signUpInfoOne.getState().equals( SignUpInfoEnum.CANCEL.getCode() )){
+            return Result.error( BusinessEnum.SIGNUPINFOENUM_CANCEL.getCode(),BusinessEnum.SIGNUPINFOENUM_CANCEL.getMsg(),null );
+        }
+
+        SignUpInfo signUpInfo = new SignUpInfo();
+        signUpInfo.setState( 5 );
+        signUpInfo.setId( reqSignUpInfoUpdate.getSignUpId() );
+        signUpInfo.setProjectId( reqSignUpInfoUpdate.getProjectId() );
+        signUpInfo.setUserId( userId );
+        signUpInfo.setUpdateDate( new Date(  ) );
+        int i = signUpInfoMapper.cancelSignUpInfo( signUpInfo );
+        if (i > 0){
+            return Result.success();
+        }else{
+            return Result.error( BusinessEnum.UPDATE_ERROR.getCode(),BusinessEnum.UPDATE_ERROR.getMsg(),null);
+        }
+    }
 }

@@ -17,9 +17,15 @@ public class SignUpInfoUserIdView implements Serializable {
 
     private Integer id;
 
+    private Integer signUpId;
+
     private Integer projectId;
 
     private String projectTitle;
+
+    private String projectContactsName;
+
+    private String projectContactsMobile;
 
     @ApiModelProperty("报名状态：1 待录用 2 已录用 3已结算 4 待评价 5 已取消")
     private Integer signUpState;

@@ -15,7 +15,7 @@ public enum SignUpInfoEnum {
     WAIT_ADMISSION(1,"待录用"),
     HAD_ADMISSION(2,"已录用"),
     HAD_SETTLEMENT(3,"已结算"),
-    WAIT_EVALUATE(4,"待评价"),
+    WAIT_EVALUATE(4,"已评价"),
     CANCEL(5,"已取消")
 
     ;

@@ -212,22 +212,30 @@
   <select id="findUserInfoSignUpInfoPage" resultType="com.fenghuang.job.view.SignUpInfoUserIdView" parameterType="com.fenghuang.job.request.ReqSignUpInfoByUserQuery">
      select
       a.id as id,
+      a.id as signUpId,
       a.project_id as projectId,
       a.state      as signUpState,
       b.project_title as projectTitle,
       b.area_id as areaId,
       b.area_title as areaTitle,
+      b.project_contacts_name  as projectContactsName,
+      b.project_contacts_mobile  as projectContactsMobile,
       a.create_date as createDate
       from sign_up_info as a
       left join project_info as b
       on a.project_id = b.id
     <where>
       <if test="userId != null">
-        a.user_id = #{userId,jdbcType=INTEGER}
+        and a.user_id = #{userId,jdbcType=INTEGER}
       </if>
       <if test="signUpState != null">
-        a.state = #{signUpState,jdbcType=INTEGER}
+       and a.state = #{signUpState,jdbcType=INTEGER}
       </if>
     </where>
   </select>
+
+  <update id="cancelSignUpInfo" parameterType="com.fenghuang.job.entity.SignUpInfo">
+     update sign_up_info set state = #{state},update_date = now() where user_id = #{userId} and id = #{id} and project_id = #{projectId}
+  </update>
+
 </mapper>
