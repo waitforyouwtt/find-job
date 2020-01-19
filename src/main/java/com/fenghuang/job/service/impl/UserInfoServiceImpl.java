@@ -105,11 +105,11 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public Result insertUser(ReqUserInfo reqUserInfo) {
-        log.info("注册新用户，请求参数：{}", JSON.toJSONString(reqUserInfo));
+        log.info("常规方式注册新用户且不允许昵称重复请求参数：{}", JSON.toJSONString(reqUserInfo));
         ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
         reqUserInfoQuery.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
         reqUserInfoQuery.setUserNickname(reqUserInfo.getUserNickname());
-        reqUserInfo.setIdCard(reqUserInfo.getIdCard());
+        reqUserInfoQuery.setIdCard(reqUserInfo.getIdCard());
         reqUserInfoQuery.setMobile(reqUserInfo.getMobile());
         reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
         //注册新用户，根据注册填充数据[昵称|手机号|身份证]去查询数据库(因为姓名可以重复)，如果存在则不允许注册新用户
@@ -143,6 +143,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo queryUserInfo = userInfoMapper.selectByPrimaryKey(reqUserInfoUpdate.getId());
         if (queryUserInfo == null){
             return Result.error(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg(),null);
+        }
+        //
+        ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
+        reqUserInfoQuery.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
+        reqUserInfoQuery.setUserNickname(reqUserInfoUpdate.getUserNickname());
+        reqUserInfoQuery.setMobile(reqUserInfoUpdate.getMobile());
+        reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
+        //注册新用户，根据注册填充数据[昵称|手机号|身份证]去查询数据库(因为姓名可以重复)，如果存在则不允许注册新用户
+        UserInfo updateBeforeQueryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
+        if (updateBeforeQueryUserInfo != null){
+            return Result.error(BusinessEnum.USERINFO_MESSAGE_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_MESSAGE_ALREADY_EXISTS.getMsg(),null);
         }
 
         UserInfo userInfo = new UserInfo();
@@ -271,10 +282,17 @@ public class UserInfoServiceImpl implements UserInfoService {
                 || StringUtils.isEmpty(registerCode.getRegisterCode())){
             return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
         }
+        ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
+        reqUserInfoQuery.setMobile(registerCode.getMobile());
+        reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
+        //如果当前手机号已在系统中存在，则进行提示：该手机号用户已存在，不能重复注册
+        UserInfo userInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
+        if (userInfo != null){
+            return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
+        }
 
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
-
         String VerificationCode = (String) request.getSession(true).getServletContext().getAttribute(registerCode.getMobile());
 
         //如果发送验证码的手机号和当前手机号不同，则抛出异常;
@@ -282,12 +300,12 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (!registerCode.getRegisterCode().equals(VerificationCode)){
             return Result.error(BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getCode(),BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getMsg(),null);
         }
-        UserInfo userInfo = new UserInfo();
-        userInfo.setMobile(registerCode.getMobile());
+        UserInfo userInfoParams = new UserInfo();
+        userInfoParams.setMobile(registerCode.getMobile());
         //密码加密，默认正常用户
-        userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,registerCode.getPassword()));
-        userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
-        int registerNum = userInfoMapper.insertSelective(userInfo);
+        userInfoParams.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,registerCode.getPassword()));
+        userInfoParams.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
+        int registerNum = userInfoMapper.insertSelective(userInfoParams);
 
         if (registerNum > 0){
             //注册成功
@@ -320,7 +338,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         // 2.存在，但状态为冻结，则抛出异常
         if (queryUserInfo == null){
             insertLoginLog(reqLoginUserInfo);
-            return Result.error(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg(),null);
+            return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
         }else if(queryUserInfo != null & queryUserInfo.getUserStatus().equals(UserInfoStatusEnum.FROZEN.getCode())){
             ReqLoginLog loginLog = new ReqLoginLog();
             loginLog.setLoginDate(new Date());
@@ -466,7 +484,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqUserInfo);
         if (queryUserInfo == null){
             insertLoginLog(reqLoginUserInfo);
-            return Result.error(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg(),null);
+            return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
         }else{
             RequestAttributes ra = RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
@@ -525,7 +543,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
         loginLog.setUserId(0);
         loginLog.setLoginStatus(LoginStatusEnum.FAIL.getCode());
-        loginLog.setFailRemark(BusinessEnum.USERINFO_EXIST.getMsg());
+        loginLog.setFailRemark(BusinessEnum.USERINFO_NOT_EXIST.getMsg());
         log.info("记录登录日志请求参数：{}");
         loginLogService.insertLoginLog(loginLog);
     }
