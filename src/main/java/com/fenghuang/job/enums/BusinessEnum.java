@@ -24,8 +24,9 @@ public enum BusinessEnum {
     FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER(1015,"对不起，您操作频繁，请稍后重试"),
     LOGIN_VERIFICATION_MOBILE_DIFFERENT(1016,"输入验证码手机号和登录手机号请保持一致"),
     SIGNUPINFOENUM_CANCEL(1017,"亲，状态为已录用|已结算|待评价|已取消不能取消哦"),
+    UPDATE_ERROR(1018,"修改失败"),
+    USERINFO_ALREADY_EXISTS(1019,"该用户已存在,不能重复注册"),
 
-    UPDATE_ERROR(1018,"修改失败")
     ;
 
     BusinessEnum(Integer code, String msg) {

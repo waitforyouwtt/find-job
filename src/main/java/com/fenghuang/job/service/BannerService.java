@@ -15,7 +15,7 @@ import java.util.List;
 public interface BannerService {
 
     /**
-     * 添加轮播图banner
+     * 管理员后台添加轮播图banner
      * @param reqBanner
      * @return
      */

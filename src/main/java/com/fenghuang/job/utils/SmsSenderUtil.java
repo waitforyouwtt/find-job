@@ -46,7 +46,6 @@ public class SmsSenderUtil {
             Integer code = jsonObject.getInteger("code");
             if (code.equals(200)) {
                 request.getSession(true).getServletContext().setAttribute(phoneNumber,random);
-//                request.getSession(true).setAttribute("messageVerificationCode", String.valueOf(random));
                 log.info("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
                 log.info("短信注册，注册手机号是：{}，验证码是：{}",phoneNumber,random);
                 return result;
@@ -54,8 +53,7 @@ public class SmsSenderUtil {
                 log.info("发送短信失败，返回参数：{}", result);
             }
         } catch (Exception e) {
-            // JSON 解析错误
-            log.error("发送验证码失败", e);
+            log.error("发送验证码失败,JSON 解析错误:{}", e.getMessage());
         }
         throw new RuntimeException("短信发送失败");
     }

@@ -41,7 +41,7 @@ public class UserInfoController {
     @Autowired
     UserInfoService userInfoService;
 
-    @ApiOperation(value = "常规方式注册新用户")
+    @ApiOperation(value = "常规方式注册新用户且不允许昵称重复")
     @PostMapping("/userRegister")
     public Result userRegister(@RequestBody ReqUserInfo reqUserInfo){
         return userInfoService.insertUser(reqUserInfo);
@@ -108,8 +108,7 @@ public class UserInfoController {
     @PostMapping("/loginByMessage")
     @ApiOperation(value = "使用短信进行登录，发送验证码")
     @LoginToken
-    public Result loginByMessage(@RequestBody HttpServletRequest request,@RequestParam("messageId")String messageId,
-                                 @RequestParam("signId")String signId,@RequestParam("mobile")String mobile){
+    public Result loginByMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
         String ip = BusinessUtils.getIpAddress(request);
         return userInfoService.loginByMessage(messageId,signId,mobile,ip);
     }

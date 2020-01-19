@@ -14,7 +14,7 @@ import com.github.pagehelper.PageInfo;
  */
 public interface ActivityService {
     /**
-     * 新增活动
+     * 后台商家新建活动
      * @param reqActivity
      * @return
      */

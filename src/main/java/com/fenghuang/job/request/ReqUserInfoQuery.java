@@ -81,6 +81,9 @@ public class ReqUserInfoQuery extends PageHelps implements Serializable{
     @ApiModelProperty("紧急联系人手机号")
     private String emergencyContactMobile;
 
+    @ApiModelProperty("是否删除：1删除，2未删除")
+    private Integer isDelete;
+
     @ApiModelProperty("创建人")
     private String founder;
 

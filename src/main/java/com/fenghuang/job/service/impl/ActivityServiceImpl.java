@@ -39,14 +39,14 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     ActivityMapper activityMapper;
     /**
-     * 新增活动
+     * 后台商家新建活动
      *
      * @param reqActivity
      * @return
      */
     @Override
     public Result insertActivity(ReqActivity reqActivity) {
-        log.info("新增活动请求参数：{}", JSON.toJSONString(reqActivity));
+        log.info("后台商家新建活动：{}", JSON.toJSONString(reqActivity));
         //新增活动时：相同名字且状态为待审核| 进行中的活动不能创建
         Activity queryActivity = activityMapper.queryActivityByTitle(reqActivity.getActivityTitle());
         if (queryActivity != null){

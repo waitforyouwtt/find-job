@@ -24,7 +24,7 @@ public interface UserInfoService {
      */
     List<UserInfoView> findUserInfoByUserName(String userName);
     /**
-     * 常规注册新用户
+     * 常规方式注册新用户且不允许昵称重复
      * @param reqUserInfo
      * @return
      */

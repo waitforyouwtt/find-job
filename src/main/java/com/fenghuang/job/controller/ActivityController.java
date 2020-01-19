@@ -22,7 +22,7 @@ public class ActivityController {
     @Autowired
     ActivityService activityService;
 
-    @ApiOperation(value = "新增活动")
+    @ApiOperation(value = "后台商家新建活动")
     @PostMapping(value = "/insertActivity")
     public Result insertActivity(@RequestBody ReqActivity reqActivity){
         return activityService.insertActivity(reqActivity);

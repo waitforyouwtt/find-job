@@ -1,5 +1,7 @@
 package com.fenghuang.job.view;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -8,5 +10,6 @@ import java.io.Serializable;
  * @Version: 1.0
  * @Email: 15290810931@163.com
  */
+@Data
 public class BrowseRecordInfoView implements Serializable {
 }

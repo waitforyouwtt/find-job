@@ -37,14 +37,14 @@ public class BannerServiceImpl implements BannerService {
     @Autowired
     BannerMapper bannerMapper;
     /**
-     * 添加轮播图banner
+     * 管理员后台添加轮播图banner
      *
      * @param reqBanner
      * @return
      */
     @Override
     public Result insertBanner(ReqBanner reqBanner) {
-        log.info("添加轮播图banner 请求参数：{}", JSON.toJSONString(reqBanner));
+        log.info("管理员后台添加轮播图banner 请求参数：{}", JSON.toJSONString(reqBanner));
         if (StringUtils.isEmpty(reqBanner.getActivityId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }

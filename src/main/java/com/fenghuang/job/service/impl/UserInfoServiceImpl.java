@@ -6,6 +6,7 @@ import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.cluster.UserInfoClusterMapper;
 import com.fenghuang.job.dao.master.UserInfoMapper;
 import com.fenghuang.job.entity.BrowseRecordInfo;
+import com.fenghuang.job.entity.CollectionRecordInfo;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.entity.UserInfo;
 import com.fenghuang.job.enums.*;
@@ -26,6 +27,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -38,10 +41,10 @@ import java.util.*;
 @Slf4j
 public class UserInfoServiceImpl implements UserInfoService {
 
-    @Autowired
+    @Resource
     UserInfoMapper userInfoMapper;
 
-    @Autowired
+    @Resource
     UserInfoClusterMapper userInfoClusterMapper;
 
     @Autowired
@@ -95,7 +98,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
-     * 常规注册新用户
+     * 常规方式注册新用户且不允许昵称重复
      *
      * @param reqUserInfo
      * @return
@@ -108,10 +111,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         reqUserInfoQuery.setUserNickname(reqUserInfo.getUserNickname());
         reqUserInfo.setIdCard(reqUserInfo.getIdCard());
         reqUserInfoQuery.setMobile(reqUserInfo.getMobile());
+        reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
         //注册新用户，根据注册填充数据[昵称|手机号|身份证]去查询数据库(因为姓名可以重复)，如果存在则不允许注册新用户
         UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (queryUserInfo != null){
-            return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),null);
+            return Result.error(BusinessEnum.USERINFO_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_ALREADY_EXISTS.getMsg(),null);
         }
         UserInfo userInfo = new UserInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqUserInfo.class, UserInfo.class, false);
@@ -135,10 +139,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Result modifyUserInfo(ReqUserInfoUpdate reqUserInfoUpdate) {
         log.info("更新用户信息请求参数：{}", JSON.toJSONString(reqUserInfoUpdate));
+        //更新用户信息先去检索数据库是否有该用户，查询结果为空则提示用户不存在
         UserInfo queryUserInfo = userInfoMapper.selectByPrimaryKey(reqUserInfoUpdate.getId());
         if (queryUserInfo == null){
             return Result.error(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg(),null);
         }
+
         UserInfo userInfo = new UserInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqUserInfoUpdate.class, UserInfo.class, false);
         beanCopier.copy(reqUserInfoUpdate,userInfo,null);
@@ -157,6 +163,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfoView findUserInfo(ReqUserInfoQuery reqUserInfoQuery) {
         log.info("根据用户id|用户昵称|用户手机号|身份证 获取唯一一条记录 请求参数：{}",JSON.toJSON(reqUserInfoQuery));
         reqUserInfoQuery.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
+        reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
         UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (queryUserInfo == null){
             return null;
@@ -223,6 +230,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
         reqUserInfoQuery.setMobile(mobile);
+        reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
         //如果当前手机号已在系统中存在，则进行提示：该手机号用户已存在，不能重复注册
         UserInfo userInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (userInfo != null){
@@ -500,7 +508,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public UserInfoManagerView findWalletAndCollectionAndBrowse(String token) {
-        Integer userId = 1;
+        Integer userId = 25;
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         List<CollectionRecordInfo> byUserIdCollection = recordInfoService.findByUserId(userId);
         List<BrowseRecordInfo> byUserIdBrowse = browseRecordInfoService.findByUserId(userId);

@@ -392,6 +392,9 @@
       <if test="userStatus != null">
         and user_status = #{userStatus}
       </if>
+      <if test="isDelete != null">
+        and is_delete = #{isDelete}
+      </if>
     </where>
   </select>
 

@@ -23,11 +23,7 @@ public interface UserInfoMapper {
 
     //根据用户名查询列表信息
     List<UserInfo> findUserInfoByUserName(String userName);
-    /**
-     * 根据id|用户名|昵称|身份证|手机号|状态查询用户记录
-     * @param reqUserInfoQuery
-     * @return
-     */
+    //注册新用户，根据注册填充数据[昵称|手机号|身份证]去查询数据库(因为姓名可以重复)，如果存在则不允许注册新用户
     UserInfo findUserInfo(ReqUserInfoQuery reqUserInfoQuery);
     //分页查询
     List<UserInfo> findUserInfoPage(ReqUserInfoQuery reqUserInfoQuery);

@@ -29,7 +29,7 @@ public class BannerController {
     @Autowired
     BannerService bannerService;
 
-    @ApiOperation(value = "添加轮播图banner")
+    @ApiOperation(value = "管理员后台添加轮播图banner")
     @PostMapping("/insertBanner")
     @ResponseBody
     public Result insertBanner(@RequestBody ReqBanner reqBanner){
