@@ -92,8 +92,6 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
         }else{
             return Result.error("修改失败");
         }
-
-       // return i > 0 ? Result.error("修改成功") : Result.success("修改失败");
     }
 
     /**
@@ -107,6 +105,7 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
       PageInfo<CollectionRecordInfoView> pageInfo = null;
       try{
           Page<?> page = PageHelper.startPage(recordInfoQuery.getPageNum(),recordInfoQuery.getPageSize());
+          recordInfoQuery.setUserId( 25 );
           List<CollectionRecordInfoView> queryCollectionRecordInfo = collectionRecordInfoMapper.findCollectionRecordInfoPage(recordInfoQuery);
           if (CollectionUtils.isEmpty(queryCollectionRecordInfo)){
               pageInfo = new PageInfo<>(new ArrayList<>());
@@ -117,7 +116,6 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
                   BeanCopier beanCopier = BeanCopier.create(CollectionRecordInfo.class,CollectionRecordInfoView.class,false);
                   beanCopier.copy(recordInfo,view,null);
                   view.setSalaryUnitDesc(SalaryUnitEnum.fromValue(recordInfo.getSalaryUnit()).getMsg());
-                  view.setIsDeleteDesc(DeleteEnum.fromValue(recordInfo.getIsDelete()).getMsg() );
                   //标签转换：
                   List<String> projectLabels = Splitter.on(",").trimResults().splitToList(recordInfo.getProjectLabel());
                   List<String> labels = new ArrayList<>();

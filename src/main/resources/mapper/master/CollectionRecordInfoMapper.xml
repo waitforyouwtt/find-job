@@ -194,10 +194,12 @@
       a.id as collectionRecordInfoId,
       a.user_id as userId,
       a.is_collection as isCollection,
-      b.id as projectId,
+      a.create_date as createDate,
+      a.update_date as updateDate,
       b.user_name as userName,
       b.project_type_id as projectTypeId,
       b.project_type_name as projectTypeName,
+      b.id as projectId,
       b.project_title as projectTitle,
       b.project_content as projectContent,
       b.project_ascription_company as projectAscriptionCompany,
@@ -230,7 +232,15 @@
       from collection_record_info as a
       left join project_info as b
       on a.project_id = b.id
-      where a.user_id = 1 and a.is_delete = 2
+      <where>
+        <if test="id != null">
+          and id = #{id}
+        </if>
+        <if test="userId != null">
+          and user_id = #{userId}
+        </if>
+        and a.is_delete = 2
+      </where>
   </select>
 
 
