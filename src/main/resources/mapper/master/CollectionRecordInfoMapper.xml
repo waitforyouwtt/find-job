@@ -186,7 +186,7 @@
   </select>
 
   <update id="cancelCollectionRecordInfo" parameterType="com.fenghuang.job.request.ReqCollectionRecordInfoState">
-    update collection_record_info set is_collection = #{collectionState},update_date = now() where user_id = #{userId} and id = #{id}
+    update collection_record_info set is_collection = #{collectionState},update_date = now(),is_delete = 1 where user_id = #{userId} and project_id = #{projectId} and is_delete = 2
   </update>
 
   <select id="findCollectionRecordInfoPage" resultType="com.fenghuang.job.view.CollectionRecordInfoView" parameterType="com.fenghuang.job.request.ReqCollectionRecordInfoQuery">
@@ -234,12 +234,13 @@
       on a.project_id = b.id
       <where>
         <if test="id != null">
-          and id = #{id}
+          and a.id = #{collectionRecordInfoId}
         </if>
         <if test="userId != null">
-          and user_id = #{userId}
+          and a.user_id = #{userId}
         </if>
         and a.is_delete = 2
+        and a.is_collection = 1
       </where>
   </select>
 

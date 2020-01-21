@@ -8,6 +8,7 @@ import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.UserInfoView;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -58,7 +59,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 // 获取 token 中的 user id
                 String userId;
                 try {
-                    userId = JWT.decode(token).getClaim("id").asString();
+
+                   userId = JwtUtil.parseJWT( token ).get( "userId" ).toString();
                 } catch (JWTDecodeException j) {
                     throw new BusinessException("访问异常！");
                 }

@@ -104,9 +104,9 @@ public interface UserInfoService {
     Result checkLoginCode(ReqLoginUserInfo reqLoginUserInfo);
 
     /**
-     * 根据登录token获取登录用户的钱包余额，收藏数，浏览数
+     * 根据登录token获取登录用户的昵称，头像，钱包余额，收藏数，浏览数，我的兼职等信息
      * @param token
      * @return
      */
-    UserInfoManagerView findWalletAndCollectionAndBrowse(String token);
+    UserInfoManagerView findMoWaByToken(String token);
 }

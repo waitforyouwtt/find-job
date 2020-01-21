@@ -68,7 +68,9 @@ public class CollectionRecordInfoView implements Serializable{
 
     private String salaryUnitDesc;
 
-    private String settlementCycle;
+    private Integer  settlementCycle;
+
+    private String   settlementCycleDesc;
 
     private String workWelfaresId;
 

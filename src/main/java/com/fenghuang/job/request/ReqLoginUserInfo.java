@@ -13,6 +13,8 @@ import java.io.Serializable;
 @Data
 public class ReqLoginUserInfo implements Serializable {
 
+    private String token;
+
     private String userName;
 
     private String userNickname;

@@ -23,6 +23,9 @@ public class UserInfoManagerView implements Serializable{
     @ApiModelProperty("用户昵称")
     private String userNickName;
 
+    @ApiModelProperty("用户头像")
+    private String headImg;
+
     @ApiModelProperty("用户手机号")
     private String mobile;
 
@@ -40,4 +43,17 @@ public class UserInfoManagerView implements Serializable{
 
     @ApiModelProperty("用户浏览记录数量")
     private Integer browseNum;
+
+    @ApiModelProperty("用户已报名记录数量")
+    private Integer hadApplyNum;
+
+    @ApiModelProperty("用户已录用记录数量")
+    private Integer hadAdmissionNum;
+
+    @ApiModelProperty("用户已结算记录数量")
+    private Integer hadSettlementNum;
+
+    @ApiModelProperty("用户待评价记录数量")
+    private Integer waitEvaluateNum;
+
 }

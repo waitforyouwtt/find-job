@@ -32,6 +32,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * @Author: 凤凰[小哥哥]
  * @Date: 2019/12/17 11:13
@@ -61,6 +63,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     
     @Autowired
     BrowseRecordInfoService browseRecordInfoService;
+
+    @Autowired
+    SignUpInfoService signUpInfoService;
 
     /**
      * 根据用户名字获取记录[可能有重名的人]
@@ -519,21 +524,40 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
-     * 根据登录token获取登录用户的钱包余额，收藏数，浏览数
+     * 根据登录token获取登录用户的昵称，头像，钱包余额，收藏数，浏览数，我的兼职等信息
      *
      * @param token
      * @return
      */
     @Override
-    public UserInfoManagerView findWalletAndCollectionAndBrowse(String token) {
+    public UserInfoManagerView findMoWaByToken(String token) {
         Integer userId = 25;
+        //用户信息
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        //用户收藏数量
         List<CollectionRecordInfo> byUserIdCollection = recordInfoService.findByUserId(userId);
+        //用户浏览数量
         List<BrowseRecordInfo> byUserIdBrowse = browseRecordInfoService.findByUserId(userId);
+        //用户已报名数量
+        ReqSignUpInfoQuery signUpInfoQuery = new ReqSignUpInfoQuery();
+        signUpInfoQuery.setUserId( userId );
+        signUpInfoQuery.setIsDelete( DeleteEnum.NO.getCode() );
+        List<SignUpInfoView> signUpInfoViews = signUpInfoService.findSignUpInfo( signUpInfoQuery );
+        Integer hadApplyNum = signUpInfoViews.stream().filter(sign -> sign.getState().equals(SignUpInfoEnum.WAIT_ADMISSION.getCode())).collect(toList()).size();
+        Integer hadAdmissionNum = signUpInfoViews.stream().filter(sign -> sign.getState().equals(SignUpInfoEnum.HAD_ADMISSION.getCode())).collect(toList()).size();
+        Integer hadSettlementNum = signUpInfoViews.stream().filter(sign -> sign.getState().equals(SignUpInfoEnum.HAD_SETTLEMENT.getCode())).collect(toList()).size();
+        Integer waitEvaluateNum = signUpInfoViews.stream().filter(sign -> sign.getState().equals(SignUpInfoEnum.WAIT_EVALUATE.getCode())).collect(toList()).size();
+
         UserInfoManagerView view = new UserInfoManagerView();
+        view.setUserNickName( userInfo.getUserNickname() );
+        view.setHeadImg( userInfo.getUserHead() );
         view.setAmount(userInfo.getAmount() == null? null: userInfo.getAmount());
         view.setCollectionNum(byUserIdCollection.size());
         view.setBrowseNum(byUserIdBrowse.size());
+        view.setHadApplyNum(hadApplyNum );
+        view.setHadAdmissionNum( hadAdmissionNum );
+        view.setHadSettlementNum( hadSettlementNum );
+        view.setWaitEvaluateNum( waitEvaluateNum );
         return view;
     }
 
