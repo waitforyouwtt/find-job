@@ -1,8 +1,11 @@
 package com.fenghuang.job.service;
 
 import com.fenghuang.job.request.ReqProjectType;
+import com.fenghuang.job.view.ProjectTypeSearchView;
 import com.fenghuang.job.view.ProjectTypeView;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -38,4 +41,10 @@ public interface ProjectTypeService {
      * @return
      */
     PageInfo<ProjectTypeView> findProjectTypePage(ReqProjectType reqProjectType);
+
+    /**
+     * 根据条件查询项目类型
+     * @return
+     */
+    List<ProjectTypeSearchView> findProjectTypes();
 }
