@@ -148,6 +148,15 @@ public class ReqProjectInfoQuery2 extends PageHelps implements Serializable {
     @ApiModelProperty("查询：项目状态：1 项目发布 2 用户报名 3 开始工作 4交易完成")
     private Integer projectState;
 
+    //😂😂😂😂😂😂😂😂😂前端用户筛选😂😂😂😂😂😂😂😂😂😂😂😂😂😂
+    @ApiModelProperty("根据类型查询")
+    private List<Integer> projectTypeIds;
+    @ApiModelProperty("根据城市查询")
+    private List<Integer> cityIds;
+    @ApiModelProperty("根据区域查询")
+    private List<Integer> areaIds;
+
+
 
 
 
