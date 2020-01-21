@@ -182,7 +182,7 @@
   <select id="findByUserId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from collection_record_info where user_id = #{userId}
+    from collection_record_info where user_id = #{userId} and is_collection = 1 and is_delete = 2
   </select>
 
   <update id="cancelCollectionRecordInfo" parameterType="com.fenghuang.job.request.ReqCollectionRecordInfoState">
