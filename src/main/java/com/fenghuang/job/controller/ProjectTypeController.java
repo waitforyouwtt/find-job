@@ -42,6 +42,12 @@ public class ProjectTypeController {
         return Result.success( projectTypeService.findProjectTypePage(reqProjectType) );
     }
 
+    @ApiOperation( value = "根据条件查询项目类型")
+    @PostMapping("/findProjectTypes")
+    public Result findProjectTypes(){
+        return Result.success( projectTypeService.findProjectTypes() );
+    }
+
 
 
 }

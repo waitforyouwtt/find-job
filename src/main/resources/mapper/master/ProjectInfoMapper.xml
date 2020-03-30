@@ -846,8 +846,11 @@
       <if test="userName != null">
         and a.user_name like CONCAT('%',#{userName},'%')
       </if>
-      <if test="projectTypeId != null">
-        and a.project_type_id = #{projectTypeId}
+      <if test="projectTypeIds != null">
+        and a.project_type_id in
+        <foreach item="projectTypeIds" index="index" collection="projectTypeIds" open="(" separator="," close=")">
+          #{projectTypeIds}
+        </foreach>
       </if>
       <if test="projectTypeName != null">
         and a.project_type_name = #{projectTypeName}
@@ -864,8 +867,11 @@
       <if test="cityId != null">
         and a.city_id = #{cityId}
       </if>
-      <if test="areaId != null">
-        and a.area_id = #{areaId}
+      <if test="areaIds != null">
+        and a.area_id in
+        <foreach item="areaIds" index="index" collection="areaIds" open="(" separator="," close=")">
+          #{areaIds}
+        </foreach>
       </if>
       <if test="genderRequirement != null">
         and a.gender_requirement = #{genderRequirement}

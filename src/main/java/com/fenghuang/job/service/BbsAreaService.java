@@ -1,7 +1,7 @@
 package com.fenghuang.job.service;
 
-import com.fenghuang.job.entity.BbsArea;
 import com.fenghuang.job.request.ReqBbsArea;
+import com.fenghuang.job.view.BbsAreaSearchView;
 import com.fenghuang.job.view.BbsAreaView;
 import com.fenghuang.job.view.BbsAreaView2;
 
@@ -26,4 +26,6 @@ public interface BbsAreaService {
      * @return
      */
     List<BbsAreaView2> findBbsAreaByPid(Integer pid);
+
+    List<BbsAreaSearchView> findBbsAreaList();
 }

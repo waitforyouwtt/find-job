@@ -92,8 +92,6 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
         }else{
             return Result.error("修改失败");
         }
-
-       // return i > 0 ? Result.error("修改成功") : Result.success("修改失败");
     }
 
     /**
@@ -107,6 +105,7 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
       PageInfo<CollectionRecordInfoView> pageInfo = null;
       try{
           Page<?> page = PageHelper.startPage(recordInfoQuery.getPageNum(),recordInfoQuery.getPageSize());
+          recordInfoQuery.setUserId( 25 );
           List<CollectionRecordInfoView> queryCollectionRecordInfo = collectionRecordInfoMapper.findCollectionRecordInfoPage(recordInfoQuery);
           if (CollectionUtils.isEmpty(queryCollectionRecordInfo)){
               pageInfo = new PageInfo<>(new ArrayList<>());
@@ -114,10 +113,18 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
               List<CollectionRecordInfoView> views = new ArrayList<>();
               queryCollectionRecordInfo.stream().forEach(recordInfo->{
                   CollectionRecordInfoView view = new CollectionRecordInfoView();
-                  BeanCopier beanCopier = BeanCopier.create(CollectionRecordInfo.class,CollectionRecordInfoView.class,false);
+                  BeanCopier beanCopier = BeanCopier.create(CollectionRecordInfoView.class,CollectionRecordInfoView.class,false);
                   beanCopier.copy(recordInfo,view,null);
+                  //性别限制转换
+                  view.setGenderRequirementDesc(GenderRequirementEnum.fromValue(recordInfo.getGenderRequirement()).getMsg());
+                  //工资单位转换：1 天 2 小时 3 月 4 次 5 单
                   view.setSalaryUnitDesc(SalaryUnitEnum.fromValue(recordInfo.getSalaryUnit()).getMsg());
-                  view.setIsDeleteDesc(DeleteEnum.fromValue(recordInfo.getIsDelete()).getMsg() );
+                  //结算周期转换：1 完工结 2 日结 3 周结 4 月结
+                  view.setSettlementCycleDesc(SettlementCycleEnum.fromValue(recordInfo.getSettlementCycle()).getMsg());
+                  //工作周期转换：工作时间单位：1.小时 2.天 3.月 4年
+                 // view.setWorkTimeUnitDesc(WorkTimeUnitEnum.fromValue(recordInfo.getWorkTimeUnit()).getMsg());
+                  //项目状态转换：
+                  view.setProjectStateDesc(ProjectStateEnum.fromValue(recordInfo.getProjectState()).getMsg());
                   //标签转换：
                   List<String> projectLabels = Splitter.on(",").trimResults().splitToList(recordInfo.getProjectLabel());
                   List<String> labels = new ArrayList<>();

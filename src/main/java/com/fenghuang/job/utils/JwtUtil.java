@@ -68,10 +68,9 @@ public class JwtUtil {
     /**
      * Token的解密
      * @param token 加密后的token
-     * @param user  用户的对象
      * @return
      */
-    public static Claims parseJWT(String token, UserInfo user) {
+    public static Claims parseJWT(String token) {
         //签名秘钥，和生成的签名的秘钥一模一样
         //String key = user.getPassword();
         String key = Constants.MOWA_MIYAO;

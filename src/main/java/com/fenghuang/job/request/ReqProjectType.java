@@ -29,6 +29,9 @@ public class ReqProjectType extends PageHelps implements Serializable {
     @ApiModelProperty("项目类型状态：1 正常 2.禁用")
     private Integer projectTypeStatus;
 
+    @ApiModelProperty("是否删除：1 删除 2 未删除")
+    private Integer isDelete;
+
     @ApiModelProperty("查询收费百分比min")
     private Double chargeRateMin;
 

@@ -37,4 +37,10 @@ public class BbsAreaController {
     public Result findBbsAreaByPid(@RequestParam("pid") Integer pid){
        return Result.success(bbsAreaService.findBbsAreaByPid(pid));
     }
+
+    @ApiOperation("根据条件查询地址相关信息")
+    @PostMapping("/findBbsAreas")
+    public Result findBbsAreas(){
+        return Result.success(bbsAreaService.findBbsAreaList());
+    }
 }

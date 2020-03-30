@@ -3,10 +3,14 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.BbsAreaMapper;
 import com.fenghuang.job.entity.BbsArea;
+import com.fenghuang.job.entity.ProjectType;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.service.BbsAreaService;
+import com.fenghuang.job.view.BbsAreaSearchView;
 import com.fenghuang.job.view.BbsAreaView;
 import com.fenghuang.job.view.BbsAreaView2;
+import com.fenghuang.job.view.ProjectTypeSearchView;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
@@ -15,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -65,5 +70,30 @@ public class BbsAreaServiceImpl implements BbsAreaService {
             return new ArrayList<>();
         }
         return queryBbsAreas;
+    }
+
+    @Override
+    public List<BbsAreaSearchView> findBbsAreaList() {
+        ReqBbsArea reqBbsArea = new ReqBbsArea();
+        reqBbsArea.setAreaId( 803 );
+        List<BbsArea> queryBbsAreas = bbsAreaMapper.findBbsArea(reqBbsArea  );
+        List<BbsAreaSearchView> result = Lists.newArrayList();
+        queryBbsAreas.stream().forEach( bbsArea -> {
+            BbsAreaSearchView bbsAreaSearchView = new BbsAreaSearchView();
+            bbsAreaSearchView.setText( bbsArea.getTitle() );
+            bbsAreaSearchView.setId( bbsArea.getAreaId() );
+            reqBbsArea.setPid( bbsArea.getAreaId());
+            reqBbsArea.setAreaId( null );
+            List<BbsArea> list = bbsAreaMapper.findBbsArea( reqBbsArea );
+            List<BbsAreaSearchView> collect = list.stream().map( item -> {
+                BbsAreaSearchView bbsAreaSearchView1 = new BbsAreaSearchView();
+                bbsAreaSearchView1.setText( item.getTitle() );
+                bbsAreaSearchView1.setId( item.getAreaId() );
+                return bbsAreaSearchView1;
+            } ).collect( Collectors.toList() );
+            bbsAreaSearchView.setChildren( collect );
+            result.add( bbsAreaSearchView );
+        } );
+        return result;
     }
 }

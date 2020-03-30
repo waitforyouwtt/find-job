@@ -182,11 +182,11 @@
   <select id="findByUserId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from collection_record_info where user_id = #{userId}
+    from collection_record_info where user_id = #{userId} and is_collection = 1 and is_delete = 2
   </select>
 
   <update id="cancelCollectionRecordInfo" parameterType="com.fenghuang.job.request.ReqCollectionRecordInfoState">
-    update collection_record_info set is_collection = #{collectionState},update_date = now() where user_id = #{userId} and id = #{id}
+    update collection_record_info set is_collection = #{collectionState},update_date = now(),is_delete = 1 where user_id = #{userId} and project_id = #{projectId} and is_delete = 2
   </update>
 
   <select id="findCollectionRecordInfoPage" resultType="com.fenghuang.job.view.CollectionRecordInfoView" parameterType="com.fenghuang.job.request.ReqCollectionRecordInfoQuery">
@@ -194,10 +194,12 @@
       a.id as collectionRecordInfoId,
       a.user_id as userId,
       a.is_collection as isCollection,
-      b.id as projectId,
+      a.create_date as createDate,
+      a.update_date as updateDate,
       b.user_name as userName,
       b.project_type_id as projectTypeId,
       b.project_type_name as projectTypeName,
+      b.id as projectId,
       b.project_title as projectTitle,
       b.project_content as projectContent,
       b.project_ascription_company as projectAscriptionCompany,
@@ -230,7 +232,16 @@
       from collection_record_info as a
       left join project_info as b
       on a.project_id = b.id
-      where a.user_id = 1 and a.is_delete = 2
+      <where>
+        <if test="id != null">
+          and a.id = #{collectionRecordInfoId}
+        </if>
+        <if test="userId != null">
+          and a.user_id = #{userId}
+        </if>
+        and a.is_delete = 2
+        and a.is_collection = 1
+      </where>
   </select>
 
 

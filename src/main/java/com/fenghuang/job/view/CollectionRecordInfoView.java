@@ -16,71 +16,94 @@ import java.util.List;
 @Data
 public class CollectionRecordInfoView implements Serializable{
 
-    private Integer id;
+    private String collectionRecordInfoId;
 
-    @ApiModelProperty("用户id")
     private Integer userId;
 
-    @ApiModelProperty("商家[公司]id")
-    private Integer companyId;
-
-    @ApiModelProperty("公司名称")
-    private String companyName;
-
-    @ApiModelProperty("兼职项目id")
-    private Integer projectId;
-
-    @ApiModelProperty("兼职项目标题")
-    private String projectTitle;
-
-    @ApiModelProperty("薪水")
-    private BigDecimal salary;
-
-    @ApiModelProperty("薪水单位：1 天 2 小时 3 月 4 次 5 单")
-    private Integer salaryUnit;
-    private String  salaryUnitDesc;
-
-    @ApiModelProperty("项目标签：1长期工 2 短期工 3寒假工 4暑假工 5钟点工 ")
-    private String projectLabel;
-    private List<String> projectLabelsDesc;
-
-    @ApiModelProperty("省份id")
-    private Integer provinceId;
-
-    @ApiModelProperty("省份名称")
-    private String provinceTitle;
-
-    @ApiModelProperty("城市id")
-    private Integer cityId;
-
-    @ApiModelProperty("城市名称")
-    private String cityTitle;
-
-    @ApiModelProperty("区域id")
-    private Integer areaId;
-
-    @ApiModelProperty("区域名称")
-    private String areaTitle;
-
-    @ApiModelProperty("上班详细地址")
-    private String workAddress;
-
-    @ApiModelProperty("是否收藏：1 已收藏 2 取消收藏")
     private Integer isCollection;
 
-    @ApiModelProperty("是否删除：1 删除 2 未删除")
-    private Integer isDelete;
-    private String  isDeleteDesc;
-
-    @ApiModelProperty("创建人")
-    private String founder;
-
-    @ApiModelProperty("修改人")
-    private String modifier;
-
-    @ApiModelProperty("创建时间")
     private Date createDate;
 
-    @ApiModelProperty("修改时间")
     private Date updateDate;
+
+    private String userName;
+
+    private Integer projectTypeId;
+
+    private String projectTypeName;
+
+    private Integer projectId;
+
+    private String projectTitle;
+
+    private String projectContent;
+
+    private String projectAscriptionCompany;
+
+    private Integer provinceId;
+
+    private String provinceTitle;
+
+    private Integer cityId;
+
+    private String cityTitle;
+
+    private Integer areaId;
+
+    private String areaTitle;
+
+    private String workAddress;
+
+    private Integer genderRequirement;
+
+    private String genderRequirementDesc;
+
+    private String projectLabel;
+
+    private List<String> projectLabelsDesc;
+
+    private BigDecimal salary;
+
+    private Integer salaryUnit;
+
+    private String salaryUnitDesc;
+
+    private Integer  settlementCycle;
+
+    private String   settlementCycleDesc;
+
+    private String workWelfaresId;
+
+    private List<String> workWelfaresIdDesc;
+
+    private Integer projectNeedNum;
+
+    private String projectContactsName;
+
+    private String projectContactsMobile;
+
+    private String projectContactsEmail;
+
+    private String projectSkill;
+
+    private String workTimeNum;
+
+    private String workTimeUnit;
+
+    private String workTimeRequirement;
+
+    private Date projectBeginTime;
+
+    private Date projectEndTime;
+
+    private String projectRemark;
+
+    private Integer projectState;
+
+    private String projectStateDesc;
+
+    private Integer examineStatus;
+
+    private String examineStatusDesc;
+
 }
