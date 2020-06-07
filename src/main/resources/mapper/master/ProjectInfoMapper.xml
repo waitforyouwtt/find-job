@@ -65,6 +65,13 @@
     from project_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from project_info
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from project_info
     where id = #{id,jdbcType=INTEGER}

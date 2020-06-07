@@ -65,4 +65,10 @@ public class ProjectInfoController {
     public Result findhadApplyNum(@RequestBody ReqProjectInfoQuery queryParams){
         return Result.success(projectService.findhadApplyNum(queryParams));
     }
+
+    @ApiOperation( value = "根据id查询项目信息详情")
+    @PostMapping("/findAll")
+    public Result findAll(){
+        return projectService.findAll();
+    }
 }

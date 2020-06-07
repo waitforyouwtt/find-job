@@ -1,16 +1,16 @@
 #数据源采取主从配置[小光头的ip]
 master:
   datasource:
-    url: jdbc:mysql://cdb-9dv88oee.bj.tencentcdb.com:10145/mowa_db?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://47.100.4.47:3307/mowa_db?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
     username: luoxian
-    password: luoxian123
+    password: luoZxian@123.Cc
     driverClassName: com.mysql.jdbc.Driver
 #从库配置
 cluster:
   datasource:
     url: jdbc:mysql://cdb-9dv88oee.bj.tencentcdb.com:10145/mowa_db?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
-    username: root
-    password: root
+    username: luoxian
+    password: luoxian123
     driverClassName: com.mysql.jdbc.Driver
 
 spring:
@@ -80,4 +80,4 @@ message:
   signId: 103
 
 server:
-  port: 7009
+  port: 10004

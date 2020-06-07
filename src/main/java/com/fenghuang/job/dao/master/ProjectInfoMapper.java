@@ -16,6 +16,8 @@ public interface ProjectInfoMapper {
 
     ProjectInfo selectByPrimaryKey(Integer id);
 
+    List<ProjectInfo> findAll();
+
     int updateByPrimaryKeySelective(ProjectInfo record);
 
     int updateByPrimaryKey(ProjectInfo record);

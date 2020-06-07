@@ -343,6 +343,18 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         return applyNum;
     }
 
+    /**
+     * 根据id 查询
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Result findAll() {
+       List<ProjectInfo> projectInfo = projectMapper.findAll( );
+        return Result.success(projectInfo);
+    }
+
     private void convertView(List<ProjectInfoView> queryProject, List<ProjectInfoView> views) {
         queryProject.stream().forEach(projectInfo -> {
             ProjectInfoView view  = new ProjectInfoView();

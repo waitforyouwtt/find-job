@@ -65,4 +65,11 @@ public interface ProjectInfoService {
      * @return
      */
     Integer findhadApplyNum(ReqProjectInfoQuery queryParams);
+
+    /**
+     * 根据id 查询
+     * @param id
+     * @return
+     */
+    Result findAll();
 }
