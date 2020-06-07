@@ -1,10 +1,7 @@
 package com.fenghuang.job.controller;
 
 import com.fenghuang.job.entity.Result;
-import com.fenghuang.job.request.ReqProjectInfo;
-import com.fenghuang.job.request.ReqProjectInfoQuery;
-import com.fenghuang.job.request.ReqProjectInfoQuery2;
-import com.fenghuang.job.request.ReqProjectStatus;
+import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,4 +68,16 @@ public class ProjectInfoController {
     public Result findAll(){
         return projectService.findAll();
     }
+
+    /**
+     * 根据类型名称 | 项目标签 | 项目名字模糊匹配
+     * @param reqProjectInfoQuery
+     * @return
+     */
+    @ApiOperation( value = "根据条件查询项目信息")
+    @PostMapping("/findProjectByParams")
+    public Result findProjectByParams(@RequestBody ReqProjectInfoQuery3 reqProjectInfoQuery){
+        return Result.success(projectService.findProjectByParams(reqProjectInfoQuery));
+    }
+
 }

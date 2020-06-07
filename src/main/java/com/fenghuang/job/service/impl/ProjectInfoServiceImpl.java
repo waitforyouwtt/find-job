@@ -256,6 +256,26 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     /**
+     * 根据条件查询项目limit 20条：
+     *
+     * @param reqProjectInfoQuery
+     * @return
+     */
+    @Override
+    public List<ProjectInfoView> findProjectByParams(ReqProjectInfoQuery3 reqProjectInfoQuery) {
+        log.info( "根据条件查询项目limit 20条 请求参数：{}",JSON.toJSONString( reqProjectInfoQuery ) );
+        List<ProjectInfoView> queryProject  =  projectMapper.findProjectByParams(reqProjectInfoQuery);
+        if (CollectionUtils.isEmpty( queryProject )){
+            return new ArrayList<>(  );
+        }
+        List<ProjectInfoView>  views = new ArrayList<>(  );
+        convertView(queryProject, views);
+        views.sort(Comparator.comparing(ProjectInfoView::getCreateDate).reversed());
+        log.info( "根据条件查询项目信息 返回结果：{}",JSON.toJSONString( views ) );
+        return views;
+    }
+
+    /**
      * 根据条件进行查询项目相关信息且分页
      *
      * @param reqProjectInfoQuery2

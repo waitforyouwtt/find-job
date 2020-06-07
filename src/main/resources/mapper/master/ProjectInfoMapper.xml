@@ -719,6 +719,76 @@
     </where>
   </select>
 
+  <select id="findProjectByParams" resultType="com.fenghuang.job.view.ProjectInfoView" parameterType="com.fenghuang.job.request.ReqProjectInfoQuery3">
+    select
+    a.id,
+    a.user_id userId,
+    a.user_name userName,
+    a.project_type_id projectTypeId,
+    a.project_type_name projectTypeName,
+    a.project_title projectTitle,
+    a.project_content projectContent,
+    a.project_ascription_company projectAscriptionCompany,
+    a.province_id provinceId,
+    a.province_title provinceTitle,
+    a.city_id cityId,
+    a.city_title cityTitle,
+    a.area_id areaId,
+    a.area_title areaTitle,
+    a.work_address workAddress,
+    a.gender_requirement genderRequirement,
+    a.project_label projectLabel,
+    a.salary,
+    a.salary_unit salaryUnit,
+    a.settlement_cycle settlementCycle,
+    a.work_welfares_id workWelfaresId,
+    a.project_need_num projectNeedNum,
+    a.project_contacts_name projectContactsName,
+    a.project_contacts_mobile projectContactsMobile,
+    a.project_contacts_email projectContactsEmail,
+    a.project_skill projectSkill,
+    a.work_time_num workTimeNum,
+    a.work_time_unit workTimeUnit,
+    a.work_time_interval_min workTimeIntervalMin,
+    a.work_time_interval_max workTimeIntervalMax,
+    a.work_time_requirement workTimeRequirement,
+    a.project_begin_time projectBeginTime,
+    a.project_end_time projectEndTime,
+    a.project_remark projectRemark,
+    a.order_id orderId ,
+    a.totalPay_amount totalPayAmount,
+    a.service_charge serviceCharge,
+    a.service_charge_rate serviceChargeRate,
+    a.order_state orderState,
+    a.project_state projectState,
+    a.examine_status examineStatus,
+    a.is_delete isDelete,
+    a.founder,
+    a.modifier,
+    a.create_date createDate,
+    a.update_date updateDate,
+    b.work_date_begin workDateBegin,
+    b.work_date_end workDateEnd,
+    c.work_time_begin workTimeBegin,
+    c.work_time_end workTimeEnd
+    from project_info as a left join project_work_date_info as b
+    on a.id = b.project_id
+    left join project_work_time_info as c
+    on a.id = c.project_id
+    <where>
+      <if test="id != null">
+        and a.id = #{id}
+      </if>
+      <if test="userId != null">
+        and a.user_id = #{userId}
+      </if>
+      <if test="queryKey != null">
+        and concat(a.project_type_name,a.project_title,a.project_label) LIKE CONCAT ('%', #{queryKey},'%')
+      </if>
+
+    </where>
+  </select>
+
   <select id="findProjectPage" resultType="com.fenghuang.job.view.ProjectInfoView" parameterType="com.fenghuang.job.request.ReqProjectInfoQuery2">
     select
     a.id,
