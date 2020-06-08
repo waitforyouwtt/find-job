@@ -300,4 +300,10 @@
     from browse_record_info where user_id = #{userId}
   </select>
 
+  <select id="findBrowseRecordInfoByUserIdAndProjectId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from browse_record_info where user_id = #{userId} and project_id =#{projectId} and is_delete = '2'
+  </select>
+
 </mapper>

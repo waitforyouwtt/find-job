@@ -785,6 +785,7 @@
       <if test="queryKey != null">
         and concat(a.project_type_name,a.project_title,a.project_label) LIKE CONCAT ('%', #{queryKey},'%')
       </if>
+      and is_delete = '2'
 
     </where>
   </select>
@@ -906,6 +907,12 @@
         and TO_DATE(#{createDateEnd},'yyyy-mm-dd') >= a.create_date
       </if>
     </where>
+  </select>
+
+  <select id="findProjectInfoById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from project_info where id = #{id}
   </select>
 
 </mapper>

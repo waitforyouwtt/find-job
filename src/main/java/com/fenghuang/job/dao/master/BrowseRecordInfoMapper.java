@@ -23,4 +23,6 @@ public interface BrowseRecordInfoMapper {
     List<BrowseRecordInfo> findBrowseRecordInfo(ReqBrowseRecordInfoQuery recordInfoQuery);
 
     List <BrowseRecordInfo> findByUserId(@Param("userId") Integer userId);
+
+    BrowseRecordInfo findBrowseRecordInfoByUserIdAndProjectId(@Param("userId") Integer userId,@Param("projectId") Integer projectId);
 }

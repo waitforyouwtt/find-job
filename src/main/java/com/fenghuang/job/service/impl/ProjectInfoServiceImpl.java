@@ -1,17 +1,20 @@
 package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.fenghuang.job.aspect.ProjectInfoAnnotation;
 import com.fenghuang.job.dao.master.*;
 import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
+import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.ProjectInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -311,6 +314,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
+    @ProjectInfoAnnotation
     public Result findProjectDetailsById(ReqProjectInfoQuery queryParams) {
         log.info("根据id查询项目信息详情 请求参数：{}",queryParams.getId());
         List<ProjectInfoView> queryProject  =  projectMapper.findProject(queryParams);
@@ -320,11 +324,12 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         List<ProjectInfoView>  views = new ArrayList<>(  );
         convertView(queryProject, views);
 
-        //todo  根据token 获取userId
-        Integer frontUserId = 25;
+        Claims claims = JwtUtil.parseJWT(queryParams.getToken());
+        Integer userId = Integer.valueOf(claims.get("userId").toString());
+
         ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
         query.setProjectId(queryParams.getId());
-        query.setUserId(25);
+        query.setUserId(userId);
         query.setStates(Arrays.asList(SignUpInfoEnum.WAIT_ADMISSION.getCode(),SignUpInfoEnum.HAD_ADMISSION.getCode()));
         //判断用户是否已申请报名
         List<SignUpInfo> querySignUpInfo = signUpInfoMapper.findSignUpInfo(query);
@@ -336,7 +341,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         //同一用户同一兼职项目未删除状态下不能重复收藏
         ReqCollectionRecordInfoQuery recordInfoQuery = new ReqCollectionRecordInfoQuery();
         recordInfoQuery.setIsDelete(  DeleteEnum.NO.getCode());
-        recordInfoQuery.setUserId( frontUserId );
+        recordInfoQuery.setUserId( userId );
         recordInfoQuery.setProjectId( queryParams.getId());
         recordInfoQuery.setIsCollection( CollectionEnum.YES.getCode() );
         List<CollectionRecordInfo> queryCollectionRecordInfo = collectionRecordInfoMapper.findCollectionRecordInfo( recordInfoQuery );

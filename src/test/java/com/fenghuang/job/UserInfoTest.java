@@ -7,6 +7,7 @@ import com.fenghuang.job.request.ReqLoginUserInfo;
 import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.JwtUtil;
+import com.fenghuang.job.view.UserInfoManagerView;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -75,6 +76,13 @@ public class UserInfoTest extends FindJobApplicationTests {
         userMap.put("userId",claims.get("userId").toString());
         userMap.put("userName",claims.get("userName").toString());
         log.info("claims:{}",JSON.toJSONString(userMap));
+    }
+
+    @Test
+    public void userInfoManagerTest() {
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLlvKDmtIEiLCJtb2JpbGUiOiIxODIwMDAwMDAwIiwidXNlck5pY2tuYW1lIjoi5bCP6IOW5a2Q5Ye55Ye45pu8IiwidXNlck5hbWUiOiLlvKDmtIEiLCJleHAiOjE1OTE2MDEwNTEsInVzZXJJZCI6MywiaWF0IjoxNTkxNTk1MDUxLCJqdGkiOiI4M2I3NzZiZi0yZWQ5LTQ2OWEtYWVmMS04YzY0ZjgwMzEwZWQifQ.rdMGyTTlFsf6rh7ma6KAaT356rdV3IHnpGYAhsq-1QA";
+        UserInfoManagerView userInfoManager = userInfoService.findMoWaByToken(token);
+        log.info("根据登录token获取登录用户的昵称，头像，钱包余额，收藏数，浏览数，我的兼职等信息:{}", JSON.toJSONString(userInfoManager));
     }
 
     @Test

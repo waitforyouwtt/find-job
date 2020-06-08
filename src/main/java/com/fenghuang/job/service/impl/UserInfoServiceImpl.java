@@ -18,6 +18,7 @@ import com.fenghuang.job.view.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
@@ -471,7 +472,9 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public UserInfoManagerView findMoWaByToken(String token) {
-        Integer userId = 25;
+        Claims claims = JwtUtil.parseJWT(token);
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
         //用户信息
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         //用户收藏数量

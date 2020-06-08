@@ -2,7 +2,10 @@ package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.BrowseRecordInfoMapper;
+import com.fenghuang.job.dao.master.ProjectInfoMapper;
 import com.fenghuang.job.entity.BrowseRecordInfo;
+import com.fenghuang.job.entity.ProjectInfo;
+import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
 import com.fenghuang.job.service.BrowseRecordInfoService;
 import com.fenghuang.job.view.BrowseRecordInfoView;
@@ -10,11 +13,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,8 +31,49 @@ import java.util.List;
 @Service
 public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
 
-    @Autowired
+    @Resource
     BrowseRecordInfoMapper browseRecordInfoMapper;
+
+    @Resource
+    ProjectInfoMapper projectInfoMapper;
+
+    /**
+     * 添加用户浏览记录信息
+     * @param userId
+     * @param projectId
+     */
+    @Override
+    public void insertBrowseRecordInfo(Integer userId,String userName,Integer projectId) {
+        log.info("添加用户浏览记录信息请求参数：{},{}",userId,projectId);
+        BrowseRecordInfo queryBrowseRecordInfo = browseRecordInfoMapper.findBrowseRecordInfoByUserIdAndProjectId(userId, projectId);
+        if (queryBrowseRecordInfo != null){
+            return;
+        }
+        ProjectInfo projectInfoById = projectInfoMapper.findProjectInfoById(projectId);
+        if (projectInfoById == null){
+            return;
+        }
+        BrowseRecordInfo record = new BrowseRecordInfo();
+        record.setUserId(userId);
+        record.setCompanyId(projectInfoById.getUserId());
+        record.setCompanyName(projectInfoById.getProjectAscriptionCompany());
+        record.setProjectId(projectId);
+        record.setProjectTitle(projectInfoById.getProjectTitle());
+        record.setSalary(projectInfoById.getSalary());
+        record.setSalaryUnit(projectInfoById.getSalaryUnit());
+        record.setProjectLabel(projectInfoById.getProjectLabel());
+        record.setProvinceId(projectInfoById.getProvinceId());
+        record.setCityId(projectInfoById.getCityId());
+        record.setAreaId(projectInfoById.getAreaId());
+        record.setWorkAddress(projectInfoById.getWorkAddress());
+        record.setIsDelete(DeleteEnum.NO.getCode());
+        record.setFounder(userName);
+        record.setModifier(userName);
+        record.setCreateDate(new Date());
+        record.setUpdateDate(new Date());
+        browseRecordInfoMapper.insert(record);
+    }
+
     /**
      * 根据条件查询浏览记录相关信息且分页
      *
