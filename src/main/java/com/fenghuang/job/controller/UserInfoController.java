@@ -1,6 +1,5 @@
 package com.fenghuang.job.controller;
 
-import com.fenghuang.job.config.CheckToken;
 import com.fenghuang.job.config.LoginToken;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;

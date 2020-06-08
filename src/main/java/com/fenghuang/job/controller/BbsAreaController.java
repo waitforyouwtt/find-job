@@ -1,6 +1,5 @@
 package com.fenghuang.job.controller;
 
-import com.fenghuang.job.entity.BbsArea;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.service.BbsAreaService;

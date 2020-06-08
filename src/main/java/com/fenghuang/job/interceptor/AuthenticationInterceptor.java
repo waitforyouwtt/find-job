@@ -1,6 +1,5 @@
 package com.fenghuang.job.interceptor;
 
-import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.fenghuang.job.config.CheckToken;
 import com.fenghuang.job.config.LoginToken;
@@ -8,12 +7,10 @@ import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.service.UserInfoService;
 import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.UserInfoView;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
