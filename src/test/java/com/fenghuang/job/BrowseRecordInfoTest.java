@@ -23,12 +23,11 @@ public class BrowseRecordInfoTest extends FindJobApplicationTests {
 
     @Test
     public void insertBrowseRecordInfo(){
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLlvKDmtIEiLCJtb2JpbGUiOiIxODIwMDAwMDAwIiwidXNlck5pY2tuYW1lIjoi5bCP6IOW5a2Q5Ye55Ye45pu8IiwidXNlck5hbWUiOiLlvKDmtIEiLCJleHAiOjE1OTE2MDkxMDksInVzZXJJZCI6MywiaWF0IjoxNTkxNjAzMTA5LCJqdGkiOiI2ZTQ1NGU5OS03NmUzLTQ2NmYtOTM1Ni0wNTk2NTAyZTA3NWQifQ.hyXM7St9mzrt_NiGquJWGlXP0hHTTBzncQZJAYdxOPc";
-
+/*        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLlvKDmtIEiLCJtb2JpbGUiOiIxODIwMDAwMDAwIiwidXNlck5pY2tuYW1lIjoi5bCP6IOW5a2Q5Ye55Ye45pu8IiwidXNlck5hbWUiOiLlvKDmtIEiLCJleHAiOjE1OTE2MDkxMDksInVzZXJJZCI6MywiaWF0IjoxNTkxNjAzMTA5LCJqdGkiOiI2ZTQ1NGU5OS03NmUzLTQ2NmYtOTM1Ni0wNTk2NTAyZTA3NWQifQ.hyXM7St9mzrt_NiGquJWGlXP0hHTTBzncQZJAYdxOPc";
         ReqProjectInfoQuery queryParams = new ReqProjectInfoQuery ();
         queryParams.setId(1);
         queryParams.setToken(token);
         Result projectDetailsById = projectInfoService.findProjectDetailsById(queryParams);
-        log.info("通过aop切面添加用户浏览记录：{}", JSON.toJSONString(projectDetailsById));
+        log.info("通过aop切面添加用户浏览记录：{}", JSON.toJSONString(projectDetailsById));*/
     }
 }
