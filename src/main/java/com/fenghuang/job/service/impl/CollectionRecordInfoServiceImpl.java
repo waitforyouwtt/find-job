@@ -22,6 +22,7 @@ import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -36,7 +37,7 @@ import java.util.List;
 @Service
 public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoService {
 
-    @Autowired
+    @Resource
     CollectionRecordInfoMapper collectionRecordInfoMapper;
 
     @Autowired

@@ -16,12 +16,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +36,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProjectTypeServiceImpl implements ProjectTypeService {
 
-    @Autowired
+    @Resource
     private ProjectTypeMapper projectTypeMapper;
 
     /**

@@ -13,11 +13,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.List;
 @Slf4j
 public class RechargeServiceImpl implements RechargeService {
 
-    @Autowired
+    @Resource
     RechargeMapper rechargeMapper;
     /**
      * 新增用户充值订单信息

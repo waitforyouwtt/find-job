@@ -6,19 +6,17 @@ import com.fenghuang.job.entity.Banner;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.BannerImgStatusEnum;
 import com.fenghuang.job.enums.BusinessEnum;
-import com.fenghuang.job.exception.BizException;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqBanner;
 import com.fenghuang.job.request.ReqBannerStatus;
 import com.fenghuang.job.service.BannerService;
 import com.fenghuang.job.view.BannerView;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +32,7 @@ import java.util.stream.Collectors;
 @Service
 public class BannerServiceImpl implements BannerService {
 
-    @Autowired
+    @Resource
     BannerMapper bannerMapper;
     /**
      * 管理员后台添加轮播图banner
@@ -73,6 +71,7 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public List<BannerView> findBanner(ReqBanner reqBanner) {
         log.info("根据条件查找banner 请求参数：{}",JSON.toJSONString(reqBanner));
+
         if (!StringUtils.isEmpty(reqBanner.getCreateDateBegin())){
             reqBanner.setCreateDateBegin(reqBanner.getCreateDateBegin()+" "+"00:00:00");
         }

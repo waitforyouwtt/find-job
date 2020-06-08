@@ -7,13 +7,11 @@ import com.fenghuang.job.entity.SignUpInfo;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.enums.SignUpInfoEnum;
-import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqSignUpInfo;
 import com.fenghuang.job.request.ReqSignUpInfoByUserQuery;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
 import com.fenghuang.job.request.ReqSignUpInfoUpdate;
 import com.fenghuang.job.service.SignUpInfoService;
-import com.fenghuang.job.view.ProjectInfoView;
 import com.fenghuang.job.view.SignUpInfoUserIdView;
 import com.fenghuang.job.view.SignUpInfoView;
 import com.github.pagehelper.Page;
@@ -24,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -38,7 +36,7 @@ import java.util.*;
 @Slf4j
 public class SignUpInfoServiceImpl implements SignUpInfoService {
 
-    @Autowired
+    @Resource
     SignUpInfoMapper signUpInfoMapper;
     /**
      * 保存用户兼职报名信息

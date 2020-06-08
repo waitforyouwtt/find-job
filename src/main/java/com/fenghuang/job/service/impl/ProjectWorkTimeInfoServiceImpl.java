@@ -6,9 +6,9 @@ import com.fenghuang.job.entity.ProjectWorkTimeInfo;
 import com.fenghuang.job.request.ReqProjectWorkTimeInfo;
 import com.fenghuang.job.service.ProjectWorkTimeInfoService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ProjectWorkTimeInfoServiceImpl implements ProjectWorkTimeInfoService {
 
-    @Autowired
+    @Resource
     ProjectWorkTimeInfoMapper projectWorkTimeInfoMapper;
     /**
      * 添加上班时段

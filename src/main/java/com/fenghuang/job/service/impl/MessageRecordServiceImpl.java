@@ -17,11 +17,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +36,7 @@ import java.util.List;
 @Service
 public class MessageRecordServiceImpl implements MessageRecordService {
 
-    @Autowired
+    @Resource
     MessageRecordMapper messageCountMapper;
 
     /**

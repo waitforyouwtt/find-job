@@ -17,12 +17,12 @@ import com.google.common.base.Splitter;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -35,19 +35,19 @@ import java.util.*;
 @Slf4j
 public class ProjectInfoServiceImpl implements ProjectInfoService {
 
-    @Autowired
+    @Resource
     ProjectInfoMapper projectMapper;
 
-    @Autowired
+    @Resource
     ProjectWorkDateInfoMapper projectWorkDateInfoMapper;
 
-    @Autowired
+    @Resource
     ProjectWorkTimeInfoMapper projectWorkTimeInfoMapper;
 
-    @Autowired
+    @Resource
     SignUpInfoMapper signUpInfoMapper;
 
-    @Autowired
+    @Resource
     CollectionRecordInfoMapper collectionRecordInfoMapper;
 
     /**
@@ -163,11 +163,6 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         project.setProjectTitle(reqProject.getProjectTitle());
         project.setProjectContent(reqProject.getProjectContent());
         //所属公司|上班区域地址应该不可以修改
-        /*project.setProjectAscriptionCompany(reqProject.getProjectAscriptionCompany());
-        project.setProvinceId(reqProject.getProvinceId());
-        project.setCityId(reqProject.getCityId());
-        project.setAreaId(reqProject.getAreaId());
-        project.setWorkAddress(reqProject.getWorkAddress());*/
         project.setGenderRequirement(reqProject.getGenderRequirement());
         //当标签不为空时处理成int 存到数据库
         if (!CollectionUtils.isEmpty(reqProject.getProjectLabels())){

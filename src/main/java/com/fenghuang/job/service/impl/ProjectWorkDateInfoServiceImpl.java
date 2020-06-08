@@ -6,9 +6,9 @@ import com.fenghuang.job.entity.ProjectWorkDateInfo;
 import com.fenghuang.job.request.ReqProjectWorkDateInfo;
 import com.fenghuang.job.service.ProjectWorkDateInfoService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectWorkDateInfoServiceImpl implements ProjectWorkDateInfoService {
 
-    @Autowired
+    @Resource
     ProjectWorkDateInfoMapper projectWorkDateInfoMapper;
     /**
      * 新增上班日期

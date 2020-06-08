@@ -3,20 +3,17 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.BbsAreaMapper;
 import com.fenghuang.job.entity.BbsArea;
-import com.fenghuang.job.entity.ProjectType;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.service.BbsAreaService;
 import com.fenghuang.job.view.BbsAreaSearchView;
 import com.fenghuang.job.view.BbsAreaView;
 import com.fenghuang.job.view.BbsAreaView2;
-import com.fenghuang.job.view.ProjectTypeSearchView;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class BbsAreaServiceImpl implements BbsAreaService {
 
-    @Autowired
+    @Resource
     BbsAreaMapper bbsAreaMapper;
     /**
      * 根据条件查询地址相关信息

@@ -10,6 +10,7 @@
 |mybatis generator 自动生成策略|
 |定义全局异常|
 |密码采用AES加密方式|
+|aop 切面编程|
 
 project 访问地址: http://127.0.0.1:8081/ <br/>
 swagger 访问地址: http://127.0.0.1:8081/swagger-ui.html <br/>
