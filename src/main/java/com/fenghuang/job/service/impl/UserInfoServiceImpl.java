@@ -246,7 +246,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         //如果当前手机号已在系统中存在，则进行提示：该手机号用户已存在，不能重复注册
         UserInfo userInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
         if (userInfo != null){
-            return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
+            return Result.error(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg(),null);
         }
         //发送短信为注册时,如果当前手机号| ip 30分钟内频繁的发送短信超过5条，则视为用户进行恶意攻击
         ReqMessageRecordQuery2 messageCountQuery2 = new ReqMessageRecordQuery2();

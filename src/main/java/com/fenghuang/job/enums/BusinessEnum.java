@@ -26,7 +26,7 @@ public enum BusinessEnum {
     SIGNUPINFOENUM_CANCEL(1017,"亲，状态为已录用|已结算|待评价|已取消不能取消哦"),
     UPDATE_ERROR(1018,"修改失败"),
     USERINFO_MESSAGE_ALREADY_EXISTS(1019,"该昵称在系统中已存在，请更换其他昵称"),
-
+    USERINFO_EXIST(1020,"当前申请的账号已存在，请勿重复操作"),
     ;
 
     BusinessEnum(Integer code, String msg) {
