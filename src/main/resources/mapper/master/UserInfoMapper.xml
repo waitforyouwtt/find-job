@@ -441,24 +441,8 @@
   <select id="loginQueryUserInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
     select
     <include refid="Base_Column_List"/>
-    from userinfo
-    <where>
-      <if test="id != null">
-        and id = #{id}
-      </if>
-      <if test="userName != null">
-        and user_name = #{userName}
-      </if>
-      <if test="userNickname != null">
-        and user_nickName = #{userNickname}
-      </if>
-      <if test="idCard != null">
-        and id_card = #{idCard}
-      </if>
-      <if test="mobile != null">
-        and mobile = #{mobile}
-      </if>
-    </where>
+    from userinfo where is_delete = '2'
+    and concat(user_name,user_nickName,id_card,mobile) LIKE CONCAT ('%',#{loginUser},'%')
   </select>
 
   <select id="findUserByUserNameAndPassword" resultType="com.fenghuang.job.entity.UserInfo">

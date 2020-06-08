@@ -3,9 +3,7 @@ package com.fenghuang.job.service;
 import com.fenghuang.job.request.ReqMessageRecord;
 import com.fenghuang.job.request.ReqMessageRecordQuery;
 import com.fenghuang.job.request.ReqMessageRecordQuery2;
-import com.fenghuang.job.view.JSONMessage;
 import com.fenghuang.job.view.MessageRecordView;
-import com.fenghuang.job.view.MessageView;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -21,10 +19,9 @@ public interface MessageRecordService {
      * 插入短信统计表
      * @param ip
      * @param mobile
-     * @param jsonMessage
      * @param messageType
      */
-    MessageView insertMessageCountRecordByType(String ip, String mobile, JSONMessage jsonMessage, Integer messageType);
+    void insertMessageCountRecordByType(String ip, String mobile, Integer messageType);
 
     /**
      *插入短信统计表

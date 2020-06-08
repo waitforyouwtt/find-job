@@ -1,6 +1,5 @@
 package com.fenghuang.job.request;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,13 +12,8 @@ import java.io.Serializable;
 @Data
 public class ReqLoginUserInfo implements Serializable {
 
-    private String token;
-
-    private String userName;
-
-    private String userNickname;
-
-    private String idCard;
+    //可以是：[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录
+    private String loginUser;
 
     private String mobile;
 
@@ -29,6 +23,4 @@ public class ReqLoginUserInfo implements Serializable {
 
     private String LoginIp;
 
-    @ApiModelProperty(value = "登录方式：1.[用户名&密码] 2.[用户昵称&密码]3.[手机号&密码]4.[身份证号&密码] 5.[手机号&短信]")
-    private Integer loginType;
 }

@@ -6,15 +6,12 @@ import com.fenghuang.job.dao.master.MessageRecordMapper;
 import com.fenghuang.job.entity.MessageRecord;
 import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.enums.MessageTypeEnum;
-import com.fenghuang.job.enums.SystemCodeEnum;
 import com.fenghuang.job.request.ReqMessageRecord;
 import com.fenghuang.job.request.ReqMessageRecordQuery;
 import com.fenghuang.job.request.ReqMessageRecordQuery2;
 import com.fenghuang.job.service.MessageRecordService;
 import com.fenghuang.job.utils.DateUtil;
-import com.fenghuang.job.view.JSONMessage;
 import com.fenghuang.job.view.MessageRecordView;
-import com.fenghuang.job.view.MessageView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -46,43 +43,30 @@ public class MessageRecordServiceImpl implements MessageRecordService {
      * 插入短信统计表
      * @param ip
      * @param mobile
-     * @param jsonMessage
      * @param messageType
      */
     @Override
     @Async
-    public MessageView insertMessageCountRecordByType(String ip, String mobile, JSONMessage jsonMessage, Integer messageType) {
-        MessageView messageView = new MessageView();
-        if (jsonMessage.getCode().equals(SystemCodeEnum.SUCCESS.getCode())){
-            messageView.setCode(SystemCodeEnum.SUCCESS.getCode());
-            messageView.setDesc("短信发送成功");
-            //发送短信成功，则往短信统计记录表中插入相关数据
-            MessageRecord messageRecord = new MessageRecord();
-            messageRecord.setSendIp(ip);
-            messageRecord.setCreateDate(new Date());
-            messageRecord.setUpdateDate(new Date());
-            messageRecord.setFounder(mobile);
-            messageRecord.setModifier(mobile);
-            messageRecord.setMobile(mobile);
-            messageRecord.setSendDate(new Date());
-            messageRecord.setIsDelete(DeleteEnum.NO.getCode());
-            if (messageType.equals(MessageTypeEnum.REGISTER.getCode())){
-                messageRecord.setMessageType(MessageTypeEnum.REGISTER.getCode());
-                messageRecord.setSendContent("您正在进行使用短信注册新账号");
-            }else if(messageType.equals(MessageTypeEnum.LOGIN.getCode())){
-                messageRecord.setMessageType(MessageTypeEnum.LOGIN.getCode());
-                messageRecord.setSendContent("您正在进行使用短信登录账号");
-            }
-            messageCountMapper.insertSelective(messageRecord);
-        }else if (jsonMessage.getCode().equals(SystemCodeEnum.EXCEPTION.getCode()) ){
-            messageView.setCode(SystemCodeEnum.ERROR.getCode());
-            messageView.setDesc("短信发送异常");
-        }else{
-            messageView.setCode(SystemCodeEnum.ERROR.getCode());
-            messageView.setDesc("网络问题，请稍后重试");
+    public void insertMessageCountRecordByType(String ip, String mobile, Integer messageType) {
+
+        //发送短信成功，则往短信统计记录表中插入相关数据
+        MessageRecord messageRecord = new MessageRecord();
+        messageRecord.setSendIp(ip);
+        messageRecord.setCreateDate(new Date());
+        messageRecord.setUpdateDate(new Date());
+        messageRecord.setFounder(mobile);
+        messageRecord.setModifier(mobile);
+        messageRecord.setMobile(mobile);
+        messageRecord.setSendDate(new Date());
+        messageRecord.setIsDelete(DeleteEnum.NO.getCode());
+        if (messageType.equals(MessageTypeEnum.REGISTER.getCode())) {
+            messageRecord.setMessageType(MessageTypeEnum.REGISTER.getCode());
+            messageRecord.setSendContent("您正在进行使用短信注册新账号");
+        } else if (messageType.equals(MessageTypeEnum.LOGIN.getCode())) {
+            messageRecord.setMessageType(MessageTypeEnum.LOGIN.getCode());
+            messageRecord.setSendContent("您正在进行使用短信登录账号");
         }
-        log.info("返回信息是：{}",JSON.toJSONString(messageView));
-        return messageView;
+        messageCountMapper.insertSelective(messageRecord);
     }
     /**
      * 插入短信统计表

@@ -1,7 +1,6 @@
 package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.UserInfo;
-import com.fenghuang.job.request.ReqUserInfo;
 import com.fenghuang.job.request.ReqUserInfoQuery;
 import com.fenghuang.job.request.ReqUserInfoUpdate;
 import org.apache.ibatis.annotations.Param;
@@ -32,7 +31,7 @@ public interface UserInfoMapper {
     //修改密码
     int changePassword(ReqUserInfoUpdate reqUserInfoUpdate);
     //登录前根据[用户名 or 昵称 or 身份证id or 手机号]查询数据库，判断数据库有没有该用户 & 检查登录者的账号是否是正常账号
-    UserInfo loginQueryUserInfo(ReqUserInfo reqUserInfo);
+    UserInfo loginQueryUserInfo(@Param("loginUser") String loginUser);
     //根据用户名 & 密码进行登录
     UserInfo findUserByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
     //根据用户昵称 & 密码进行登录

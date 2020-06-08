@@ -96,12 +96,11 @@ public class UserInfoController {
     }
 
     @PostMapping("/login")
-    @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录;" +
-            "type分别为: 1，2,3,4,5")
+    @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
     public Result login(@RequestBody ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
         String ip = BusinessUtils.getIpAddress(request);
         reqLoginUserInfo.setLoginIp(ip);
-        return userInfoService.login(reqLoginUserInfo);
+        return userInfoService.ordinaryLogin(reqLoginUserInfo);
     }
 
     @PostMapping("/loginByMessage")
@@ -164,7 +163,7 @@ public class UserInfoController {
         LocalDateTime localDateTime = (LocalDateTime)session.getAttribute("codeTime");
         long past = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        Result login = userInfoService.login(userInfo);
+        Result login = userInfoService.ordinaryLogin(userInfo);
 
         if(verCodeStr == null || code == null || code.isEmpty() || !verCodeStr.equalsIgnoreCase(code)){
             request.setAttribute("errmsg", "验证码错误");

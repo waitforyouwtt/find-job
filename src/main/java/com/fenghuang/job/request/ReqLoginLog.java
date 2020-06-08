@@ -3,7 +3,6 @@ package com.fenghuang.job.request;
 import com.fenghuang.job.utils.PageHelps;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +18,9 @@ public class ReqLoginLog extends PageHelps implements Serializable{
 
     @ApiModelProperty("用户ID")
     private Integer userId;
+
+    @ApiModelProperty("用户名字")
+    private String userName;
 
     @ApiModelProperty("登陆状态：1成功 2 失败")
     private Integer loginStatus;

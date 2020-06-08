@@ -2,8 +2,8 @@ package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fenghuang.job.aspect.LoginLogAnnotation;
 import com.fenghuang.job.constant.Constants;
-import com.fenghuang.job.dao.cluster.UserInfoClusterMapper;
 import com.fenghuang.job.dao.master.UserInfoMapper;
 import com.fenghuang.job.entity.BrowseRecordInfo;
 import com.fenghuang.job.entity.CollectionRecordInfo;
@@ -27,11 +27,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -45,12 +43,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Resource
     UserInfoMapper userInfoMapper;
-
-    @Resource
-    UserInfoClusterMapper userInfoClusterMapper;
-
-    @Autowired
-    LoginLogService loginLogService;
 
     @Autowired
     SmsSenderUtil smsSenderUtil;
@@ -128,8 +120,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         //新用户默认正常用户且进行密码加密
         userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfo.getPassword()));
         userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
-        userInfo.setFounder(reqUserInfo.getMobile());
-        userInfo.setModifier(reqUserInfo.getMobile());
+        userInfo.setFounder(reqUserInfo.getUserName());
+        userInfo.setModifier(reqUserInfo.getUserName());
+        userInfo.setIsDelete(DeleteEnum.NO.getCode());
+        userInfo.setUserLevel(0);
         userInfo.setCreateDate(new Date());
         userInfo.setUpdateDate(new Date());
         return Result.success(userInfoMapper.insertSelective(userInfo));
@@ -149,7 +143,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (queryUserInfo == null){
             return Result.error(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg(),null);
         }
-        //
+
         ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
         reqUserInfoQuery.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
         reqUserInfoQuery.setUserNickname(reqUserInfoUpdate.getUserNickname());
@@ -239,6 +233,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
+    @LoginLogAnnotation
     public Result messageRegister(String messageId,String signId,String mobile,String ip) {
         log.info("用户短信注册，发送验证码 请求参数：{},{},{},{}",messageId,signId,mobile,ip);
         if (StringUtils.isEmpty(mobile)){
@@ -270,7 +265,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         JSONObject json = JSON.parseObject(sendMsm);
         JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
-        messageCountService.insertMessageCountRecordByType(ip, mobile, jsonMessage,MessageTypeEnum.REGISTER.getCode());
+        log.info("用户短信注册，发送验证码:{}",JSON.toJSONString(jsonMessage));
         return Result.success("短信发送成功");
     }
 
@@ -328,82 +323,28 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public Result login(ReqLoginUserInfo reqLoginUserInfo) {
-        if (StringUtils.isEmpty(reqLoginUserInfo.getLoginType())){
-           return Result.error(BusinessEnum.LOGIN_TYPE_NULL.getCode(),BusinessEnum.LOGIN_TYPE_NULL.getMsg(),null);
-        }
-        Integer loginType = reqLoginUserInfo.getLoginType();
-        ReqUserInfo reqUserInfo = new ReqUserInfo();
-        BeanCopier copier = BeanCopier.create(ReqLoginUserInfo.class, ReqUserInfo.class, false);
-        copier.copy(reqLoginUserInfo,reqUserInfo,null);
+    @LoginLogAnnotation
+    public Result ordinaryLogin(ReqLoginUserInfo reqLoginUserInfo) {
+        log.info(" 根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录请求参数：{}",JSON.toJSONString(reqLoginUserInfo));
+
         //登录前根据[用户名 or 昵称 or 身份证id or 手机号]查询数据库，判断数据库有没有该用户 & 检查登录者的账号是否是正常账号
-        UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqUserInfo);
+        UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqLoginUserInfo.getLoginUser());
         //根据条件查询数据库:
         // 1.不存在则抛出异常;
         // 2.存在，但状态为冻结，则抛出异常
         if (queryUserInfo == null){
-            insertLoginLog(reqLoginUserInfo);
             return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
-        }else if(queryUserInfo != null & queryUserInfo.getUserStatus().equals(UserInfoStatusEnum.FROZEN.getCode())){
-            ReqLoginLog loginLog = new ReqLoginLog();
-            loginLog.setLoginDate(new Date());
-            loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
-            loginLog.setUserId(queryUserInfo.getId());
-            loginLog.setLoginStatus(LoginStatusEnum.FAIL.getCode());
-            loginLog.setFailRemark(BusinessEnum.USERINFO_FROZEN.getMsg());
-            log.info("记录登录日志请求参数：{}");
-            loginLogService.insertLoginLog(loginLog);
+        }else if(queryUserInfo != null && queryUserInfo.getUserStatus().equals(UserInfoStatusEnum.FROZEN.getCode())){
             return Result.error(BusinessEnum.USERINFO_FROZEN.getCode(),BusinessEnum.USERINFO_FROZEN.getMsg(),null);
-        }
-
-        UserInfo userInfo = null;
-        UserInfoView userInfoView = new UserInfoView();
-        switch (loginType){
-            case 1:
-                userInfo = userInfoMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
-                break;
-            case 2:
-                userInfo = userInfoMapper.findUserByUserNicknameAndPassword(reqLoginUserInfo.getUserNickname(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
-                break;
-            case 3:
-                userInfo = userInfoMapper.findMobileAndPassword(reqLoginUserInfo.getMobile(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
-                break;
-            case 4:
-                userInfo = userInfoMapper.findIdCardAndPassword(reqLoginUserInfo.getIdCard(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
-                break;
-            default:
-                userInfo = userInfoMapper.findUserByUserNameAndPassword(reqLoginUserInfo.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()));
-                break;
-        }
-        //根据[用户名or 手机号 or 身份证id or 昵称] & 密码进行login
-        if (userInfo == null){
-            ReqLoginLog loginLog = new ReqLoginLog();
-            loginLog.setLoginDate(new Date());
-            loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
-            loginLog.setUserId(queryUserInfo.getId());
-            loginLog.setLoginStatus(LoginStatusEnum.FAIL.getCode());
-            loginLog.setFailRemark(BusinessEnum.LOGIN_ERROR.getMsg());
-            log.info("记录登录日志请求参数：{}");
-            loginLogService.insertLoginLog(loginLog);
+        }else if(!queryUserInfo.getPassword().equals(AesUtil.encrypt(Constants.SECRET_KEY,reqLoginUserInfo.getPassword()))){
             return Result.error(BusinessEnum.LOGIN_ERROR.getCode(),BusinessEnum.LOGIN_ERROR.getMsg(),null);
-        }else{
-            ReqLoginLog loginLog = new ReqLoginLog();
-            loginLog.setLoginDate(new Date());
-            loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
-            loginLog.setUserId(queryUserInfo.getId());
-            loginLog.setLoginStatus(LoginStatusEnum.SUCCESS.getCode());
-            loginLog.setFailRemark("登录成功");
-            log.info("记录登录日志请求参数：{}",JSON.toJSONString(loginLog));
-            loginLogService.insertLoginLog(loginLog);
         }
-        BeanCopier beanCopier = BeanCopier.create(UserInfo.class, UserInfoView.class, false);
-        beanCopier.copy(userInfo,userInfoView,null);
 
         Map<String,Object> objectMap = new HashMap<>();
 
-        String token = JwtUtil.createJWT(6000000, userInfo);
+        String token = JwtUtil.createJWT(6000000, queryUserInfo);
         objectMap.put("token",token);
-        objectMap.put("userInfo",userInfo);
+        objectMap.put("userInfo",queryUserInfo);
         return Result.success(objectMap);
     }
 
@@ -453,6 +394,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
+    @LoginLogAnnotation
     public Result loginByMessage(String messageId,String signId,String mobile,String ip) {
         log.info("使用短信进行登录，发送验证码 请求参数：{},{},{},{}",messageId,signId,mobile,ip);
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);
@@ -462,7 +404,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         JSONObject json = JSON.parseObject(sendMsm);
         JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
-        messageCountService.insertMessageCountRecordByType(ip, mobile, jsonMessage,MessageTypeEnum.LOGIN.getCode());
+        log.info("使用短信进行登录，发送验证码:{}",JSON.toJSONString(jsonMessage));
         return Result.success("短信发送成功");
     }
 
@@ -486,9 +428,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         copier.copy(reqLoginUserInfo,reqUserInfo,null);
         //首先去判断数据库有没有该用户 & 登录者的账号是否是正常账号
         // 1.为空则记录日志，抛出异常；2 不为空判断验证码
-        UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqUserInfo);
+        UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqLoginUserInfo.getMobile());
         if (queryUserInfo == null){
-            insertLoginLog(reqLoginUserInfo);
             return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
         }else{
             RequestAttributes ra = RequestContextHolder.getRequestAttributes();
@@ -512,7 +453,6 @@ public class UserInfoServiceImpl implements UserInfoService {
                 loginLog.setLoginStatus(LoginStatusEnum.SUCCESS.getCode());
                 loginLog.setFailRemark("短信登录成功");
                 log.info("记录登录日志请求参数：{}");
-                loginLogService.insertLoginLog(loginLog);
 
                 String token = JwtUtil.createJWT(6000000, queryUserInfo);
                 Map<String,Object> objectMap = new HashMap<>();
@@ -560,17 +500,5 @@ public class UserInfoServiceImpl implements UserInfoService {
         view.setWaitEvaluateNum( waitEvaluateNum );
         return view;
     }
-
-    private void insertLoginLog(ReqLoginUserInfo reqLoginUserInfo) {
-        ReqLoginLog loginLog = new ReqLoginLog();
-        loginLog.setLoginDate(new Date());
-        loginLog.setLoginIp(reqLoginUserInfo.getLoginIp());
-        loginLog.setUserId(0);
-        loginLog.setLoginStatus(LoginStatusEnum.FAIL.getCode());
-        loginLog.setFailRemark(BusinessEnum.USERINFO_NOT_EXIST.getMsg());
-        log.info("记录登录日志请求参数：{}");
-        loginLogService.insertLoginLog(loginLog);
-    }
-
 
 }

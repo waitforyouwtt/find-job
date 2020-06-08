@@ -11,12 +11,11 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.List;
 @Slf4j
 public class LoginLogServiceImpl implements LoginLogService {
 
-    @Autowired
+    @Resource
     LoginLogMapper loginLogMapper;
 
     /**
@@ -102,8 +101,8 @@ public class LoginLogServiceImpl implements LoginLogService {
         beanCopier.copy(reqLoginLog,loginLog,null);
         loginLog.setCreateDate(new Date());
         loginLog.setUpdateDate(new Date());
-        loginLog.setFounder(reqLoginLog.getUserId().toString());
-        loginLog.setModifier(reqLoginLog.getUserId().toString());
+        loginLog.setFounder(reqLoginLog.getUserName().toString());
+        loginLog.setModifier(reqLoginLog.getUserName().toString());
         return loginLogMapper.insertSelective(loginLog);
     }
 }
