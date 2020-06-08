@@ -55,8 +55,8 @@ public class UserInfoTest extends FindJobApplicationTests {
 
     @Test
     public void messageRegisterTest(){
-        Result result = userInfoService.messageRegister(messageId, signId, "17621007255", "127.0.0.1");
-        log.info("短信注册返回信息：{}",JSON.toJSONString(result));
+      /*  Result result = userInfoService.messageRegister(messageId, signId, "17621007255", "127.0.0.1");
+        log.info("短信注册返回信息：{}",JSON.toJSONString(result));*/
     }
 
     @Test
