@@ -251,7 +251,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         //发送短信为注册时,如果当前手机号| ip 30分钟内频繁的发送短信超过5条，则视为用户进行恶意攻击
         ReqMessageRecordQuery2 messageCountQuery2 = new ReqMessageRecordQuery2();
         messageCountQuery2.setMessageType(MessageTypeEnum.REGISTER.getCode());
-        messageCountQuery2.setSendIp(ip);
+        //messageCountQuery2.setSendIp(ip);
         messageCountQuery2.setMobile(mobile);
         messageCountQuery2.setCurrentSendDate(DateUtil.dateToString(new Date()));
         List<MessageRecordView> messageCount = messageCountService.findMessageCount(messageCountQuery2);
@@ -306,6 +306,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         //密码加密，默认正常用户
         userInfoParams.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,registerCode.getPassword()));
         userInfoParams.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
+        userInfoParams.setIsDelete(DeleteEnum.NO.getCode());
         int registerNum = userInfoMapper.insertSelective(userInfoParams);
 
         if (registerNum > 0){

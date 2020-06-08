@@ -785,7 +785,7 @@
       <if test="queryKey != null">
         and concat(a.project_type_name,a.project_title,a.project_label) LIKE CONCAT ('%', #{queryKey},'%')
       </if>
-      and is_delete = '2'
+      and a.is_delete = '2'
 
     </where>
   </select>
