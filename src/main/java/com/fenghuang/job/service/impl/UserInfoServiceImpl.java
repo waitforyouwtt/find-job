@@ -294,7 +294,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
-        String VerificationCode = (String) request.getSession(true).getServletContext().getAttribute(registerCode.getMobile());
+        String VerificationCode =  request.getSession(true).getServletContext().getAttribute(registerCode.getMobile()).toString();
 
         //如果发送验证码的手机号和当前手机号不同，则抛出异常;
         //如果验证码错误，则抛出异常
