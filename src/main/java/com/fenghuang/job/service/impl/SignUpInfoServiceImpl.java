@@ -12,11 +12,15 @@ import com.fenghuang.job.request.ReqSignUpInfoByUserQuery;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
 import com.fenghuang.job.request.ReqSignUpInfoUpdate;
 import com.fenghuang.job.service.SignUpInfoService;
+import com.fenghuang.job.service.UserInfoService;
+import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.SignUpInfoUserIdView;
 import com.fenghuang.job.view.SignUpInfoView;
+import com.fenghuang.job.view.UserInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
@@ -38,6 +42,9 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
 
     @Resource
     SignUpInfoMapper signUpInfoMapper;
+
+    @Autowired
+    UserInfoService userInfoService;
     /**
      * 保存用户兼职报名信息
      *
@@ -47,10 +54,15 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
     @Override
     public Result insertSignUpInfo(ReqSignUpInfo reqSignUpInfo) {
         log.info( "保存用户兼职报名信息 请求参数：{}", JSON.toJSONString(reqSignUpInfo) );
+
+        Claims claims = JwtUtil.parseJWT(reqSignUpInfo.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
         ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
         query.setProjectId(reqSignUpInfo.getProjectId());
-        query.setUserId(25);
+        query.setUserId(userId);
         query.setUserMobile(reqSignUpInfo.getUserMobile());
+        query.setIsDelete( DeleteEnum.NO.getCode() );
         query.setStates(Arrays.asList(SignUpInfoEnum.WAIT_ADMISSION.getCode(),SignUpInfoEnum.HAD_ADMISSION.getCode()));
         //同一兼职项目同一用户处于待录用和已录用的状态不可以再次报名
         List<SignUpInfo> querySignUpInfo = signUpInfoMapper.findSignUpInfo(query);
@@ -58,14 +70,21 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
         if (!CollectionUtils.isEmpty(querySignUpInfo)){
             return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),null);
         }
+
+        UserInfoView userInfo = userInfoService.findUserInfoById(userId);
+
         SignUpInfo signUpInfoParams = new SignUpInfo();
         BeanCopier beanCopier = BeanCopier.create( ReqSignUpInfo.class, SignUpInfo.class,false );
         beanCopier.copy( reqSignUpInfo,signUpInfoParams,null );
-        signUpInfoParams.setUserId( 25 );
+        signUpInfoParams.setUserName(userInfo.getUserName());
+        signUpInfoParams.setUserMobile(userInfo.getMobile());
+        signUpInfoParams.setUserId( userId );
         signUpInfoParams.setCreateDate( new Date(  ) );
         signUpInfoParams.setUpdateDate( new Date(  ) );
         signUpInfoParams.setIsDelete( DeleteEnum.NO.getCode() );
         signUpInfoParams.setState( SignUpInfoEnum.WAIT_ADMISSION.getCode() );
+        signUpInfoParams.setFounder(userInfo.getUserName());
+        signUpInfoParams.setModifier(userInfo.getUserName());
         return Result.success(signUpInfoMapper.insertSelective( signUpInfoParams ));
     }
 
@@ -168,11 +187,14 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
     @Override
     public PageInfo<SignUpInfoUserIdView> findUserInfoSignUpInfoPage(ReqSignUpInfoByUserQuery reqSignUpInfoQuery) {
         log.info( "获取我的申请 请求参数：{}",JSON.toJSONString( reqSignUpInfoQuery ) );
-        Integer userId = 25;
+
+        Claims claims = JwtUtil.parseJWT(reqSignUpInfoQuery.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
         PageInfo<SignUpInfoUserIdView> pageInfo = null;
         try{
             Page<Object> page = PageHelper.startPage( reqSignUpInfoQuery.getPageNum(), reqSignUpInfoQuery.getPageSize() );
-            reqSignUpInfoQuery.setUserId( 25 );
+            reqSignUpInfoQuery.setUserId(userId);
             List<SignUpInfoUserIdView> querySignUpInfoUserIdView =  signUpInfoMapper.findUserInfoSignUpInfoPage(reqSignUpInfoQuery);
             if (CollectionUtils.isEmpty( querySignUpInfoUserIdView )){
                 pageInfo = new PageInfo<>(new ArrayList<>());
@@ -197,7 +219,9 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
     public Result cancelSignUpInfo(ReqSignUpInfoUpdate reqSignUpInfoUpdate) {
         log.info( "前端用户取消报名 请求参数：{}",JSON.toJSONString( reqSignUpInfoUpdate ) );
 
-        Integer userId = 25;
+        Claims claims = JwtUtil.parseJWT(reqSignUpInfoUpdate.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
         ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
         query.setUserId( userId );
         query.setId(reqSignUpInfoUpdate.getSignUpId() );

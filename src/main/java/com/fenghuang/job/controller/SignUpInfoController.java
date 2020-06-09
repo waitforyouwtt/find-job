@@ -26,7 +26,8 @@ public class SignUpInfoController {
 
     @ApiOperation(value = "前端用户点击报名保存兼职报名信息")
     @PostMapping("/insertSignUpInfo")
-    public Result insertSignUpInfo(@RequestBody ReqSignUpInfo reqSignUpInfo){
+    public Result insertSignUpInfo(@RequestBody ReqSignUpInfo reqSignUpInfo,@RequestHeader("token") String token){
+        reqSignUpInfo.setToken(token);
         return signUpInfoService.insertSignUpInfo(reqSignUpInfo);
     }
 
@@ -38,7 +39,8 @@ public class SignUpInfoController {
 
     @ApiOperation(value = "前端用户取消报名")
     @PostMapping("/cancelSignUpInfo")
-    public Result cancelSignUpInfo(@RequestBody ReqSignUpInfoUpdate reqSignUpInfoUpdate){
+    public Result cancelSignUpInfo(@RequestBody ReqSignUpInfoUpdate reqSignUpInfoUpdate,@RequestHeader("token") String token){
+        reqSignUpInfoUpdate.setToken(token);
         return signUpInfoService.cancelSignUpInfo(reqSignUpInfoUpdate);
     }
 
@@ -50,13 +52,14 @@ public class SignUpInfoController {
 
     @ApiOperation(value = "根据条件查询用户兼职报名记录且分页[我的申请]")
     @PostMapping("/findUserInfoSignUpInfoPage")
-    public Result findUserInfoSignUpInfoPage(@RequestBody ReqSignUpInfoByUserQuery reqSignUpInfoQuery){
+    public Result findUserInfoSignUpInfoPage(@RequestBody ReqSignUpInfoByUserQuery reqSignUpInfoQuery,@RequestHeader("token") String token){
+        reqSignUpInfoQuery.setToken(token);
         return Result.success( signUpInfoService.findUserInfoSignUpInfoPage(reqSignUpInfoQuery) );
     }
 
     @ApiOperation(value = "根据id查询用户兼职报名记录详情")
     @GetMapping("/findSignUpInfoById")
-    public Result findSignUpInfoById(@RequestParam("id") Integer id){
+    public Result findSignUpInfoById(@RequestParam("id") Integer id,@RequestHeader("token") String token){
         return Result.success(signUpInfoService.findSignUpInfoById(id));
     }
 
