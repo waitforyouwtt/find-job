@@ -312,15 +312,21 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @ProjectInfoAnnotation
     public Result findProjectDetailsById(ReqProjectInfoQuery queryParams) {
         log.info("根据id查询项目信息详情 请求参数：{}",queryParams.getId());
+        Integer userId = 0;
+        try {
+            Claims claims = JwtUtil.parseJWT(queryParams.getToken());
+            userId = Integer.valueOf(claims.get("userId").toString());
+        } catch (Exception e) {
+            log.info("当前用户未登录，请前往登录页面");
+            return Result.error(SystemCodeEnum.ACCESS_ERROR.getCode(),SystemCodeEnum.ACCESS_ERROR.getMsg(),"您好，查看兼职详情请先登录");
+        }
+
         List<ProjectInfoView> queryProject  =  projectMapper.findProject(queryParams);
         if (CollectionUtils.isEmpty( queryProject )){
             return null;
         }
         List<ProjectInfoView>  views = new ArrayList<>(  );
         convertView(queryProject, views);
-
-        Claims claims = JwtUtil.parseJWT(queryParams.getToken());
-        Integer userId = Integer.valueOf(claims.get("userId").toString());
 
         ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
         query.setProjectId(queryParams.getId());

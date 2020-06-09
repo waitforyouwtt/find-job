@@ -31,7 +31,7 @@ public class UserInfoTest extends FindJobApplicationTests {
     @Autowired
     private UserInfoService userInfoService;
 
-    @Test
+   /* @Test
     public void ordinaryRegisterTest(){
         ReqUserInfo reqUserInfo = new ReqUserInfo();
         reqUserInfo.setUserName("张洁");
@@ -55,8 +55,8 @@ public class UserInfoTest extends FindJobApplicationTests {
 
     @Test
     public void messageRegisterTest(){
-      /*  Result result = userInfoService.messageRegister(messageId, signId, "17621007255", "127.0.0.1");
-        log.info("短信注册返回信息：{}",JSON.toJSONString(result));*/
+        Result result = userInfoService.messageRegister(messageId, signId, "17621007255", "127.0.0.1");
+        log.info("短信注册返回信息：{}",JSON.toJSONString(result));
     }
 
     @Test
@@ -70,26 +70,26 @@ public class UserInfoTest extends FindJobApplicationTests {
 
     @Test
     public void messageLoginTest(){
-       /* Result result = userInfoService.loginByMessage(messageId, signId, "17621007255", "127.0.0.1");
-        log.info("短信登录发送验证码：{}",JSON.toJSONString(result));*/
+        Result result = userInfoService.loginByMessage(messageId, signId, "17621007255", "127.0.0.1");
+        log.info("短信登录发送验证码：{}",JSON.toJSONString(result));
     }
 
     @Test
     public void parseToken(){
-      /*  String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLlvKDmtIEiLCJtb2JpbGUiOiIxODIwMDAwMDAwIiwidXNlck5pY2tuYW1lIjoi5bCP6IOW5a2Q5Ye55Ye45pu8IiwidXNlck5hbWUiOiLlvKDmtIEiLCJleHAiOjE1OTE2MDEwNTEsInVzZXJJZCI6MywiaWF0IjoxNTkxNTk1MDUxLCJqdGkiOiI4M2I3NzZiZi0yZWQ5LTQ2OWEtYWVmMS04YzY0ZjgwMzEwZWQifQ.rdMGyTTlFsf6rh7ma6KAaT356rdV3IHnpGYAhsq-1QA";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLlvKDmtIEiLCJtb2JpbGUiOiIxODIwMDAwMDAwIiwidXNlck5pY2tuYW1lIjoi5bCP6IOW5a2Q5Ye55Ye45pu8IiwidXNlck5hbWUiOiLlvKDmtIEiLCJleHAiOjE1OTE2MDEwNTEsInVzZXJJZCI6MywiaWF0IjoxNTkxNTk1MDUxLCJqdGkiOiI4M2I3NzZiZi0yZWQ5LTQ2OWEtYWVmMS04YzY0ZjgwMzEwZWQifQ.rdMGyTTlFsf6rh7ma6KAaT356rdV3IHnpGYAhsq-1QA";
         Claims claims = JwtUtil.parseJWT(token);
         Map<String ,String> userMap = new HashMap<>();
         userMap.put("userId",claims.get("userId").toString());
         userMap.put("userName",claims.get("userName").toString());
-        log.info("claims:{}",JSON.toJSONString(userMap));*/
+        log.info("claims:{}",JSON.toJSONString(userMap));
     }
 
     @Test
     public void userInfoManagerTest() {
-       /* String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLlvKDmtIEiLCJtb2JpbGUiOiIxODIwMDAwMDAwIiwidXNlck5pY2tuYW1lIjoi5bCP6IOW5a2Q5Ye55Ye45pu8IiwidXNlck5hbWUiOiLlvKDmtIEiLCJleHAiOjE1OTE2MDEwNTEsInVzZXJJZCI6MywiaWF0IjoxNTkxNTk1MDUxLCJqdGkiOiI4M2I3NzZiZi0yZWQ5LTQ2OWEtYWVmMS04YzY0ZjgwMzEwZWQifQ.rdMGyTTlFsf6rh7ma6KAaT356rdV3IHnpGYAhsq-1QA";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLlvKDmtIEiLCJtb2JpbGUiOiIxODIwMDAwMDAwIiwidXNlck5pY2tuYW1lIjoi5bCP6IOW5a2Q5Ye55Ye45pu8IiwidXNlck5hbWUiOiLlvKDmtIEiLCJleHAiOjE1OTE2MDEwNTEsInVzZXJJZCI6MywiaWF0IjoxNTkxNTk1MDUxLCJqdGkiOiI4M2I3NzZiZi0yZWQ5LTQ2OWEtYWVmMS04YzY0ZjgwMzEwZWQifQ.rdMGyTTlFsf6rh7ma6KAaT356rdV3IHnpGYAhsq-1QA";
         UserInfoManagerView userInfoManager = userInfoService.findMoWaByToken(token);
         log.info("根据登录token获取登录用户的昵称，头像，钱包余额，收藏数，浏览数，我的兼职等信息:{}",
-                JSON.toJSONString(userInfoManager));*/
+                JSON.toJSONString(userInfoManager));
 
     }
 
@@ -97,7 +97,7 @@ public class UserInfoTest extends FindJobApplicationTests {
     public void findUserByIdTest() {
         Object data = userInfoService.findUserById(1).getData();
         log.info("根据用户ID查询的数据：{}", JSON.toJSONString(data));
-    }
+    }*/
 
 
 }

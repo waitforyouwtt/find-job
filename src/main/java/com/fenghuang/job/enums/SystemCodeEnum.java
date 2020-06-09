@@ -8,7 +8,7 @@ public enum SystemCodeEnum {
 
     SUCCESS(200,"成功"),
     ERROR(201,"失败"),
-    ACCESS_ERROR(2003,"权限不足"),
+    ACCESS_ERROR(401,"权限不足"),
     EXCEPTION(500,"系统异常"),
 
     ;

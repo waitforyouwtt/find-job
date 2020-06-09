@@ -3,6 +3,8 @@ package com.fenghuang.job;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.ProjectInfoMapper;
 import com.fenghuang.job.entity.ProjectInfo;
+import com.fenghuang.job.entity.Result;
+import com.fenghuang.job.request.ReqProjectInfoQuery;
 import com.fenghuang.job.request.ReqProjectInfoQuery3;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.view.ProjectInfoView;
@@ -31,7 +33,7 @@ public class ProjectInfoTest extends FindJobApplicationTests {
     ProjectInfoMapper projectInfoMapper;
 
 
-    @Test
+/*    @Test
     public void queryKeyTest() {
         ReqProjectInfoQuery3 query = new ReqProjectInfoQuery3();
         query.setQueryKey( "厨师" );
@@ -46,4 +48,13 @@ public class ProjectInfoTest extends FindJobApplicationTests {
         List<Integer> ids = chose.stream().map( c -> c.getId() ).collect( Collectors.toList());
         log.info( "得到的结果：{}", JSON.toJSONString(ids) );
     }
+
+    @Test
+    public void findProjectDetailsById(){
+        ReqProjectInfoQuery queryParams = new ReqProjectInfoQuery();
+        queryParams.setId(1);
+        queryParams.setToken("abcd");
+        Result projectDetails = projectInfoService.findProjectDetailsById(queryParams);
+        log.info("查看兼职信息详情：{}",JSON.toJSONString(projectDetails));
+    }*/
 }

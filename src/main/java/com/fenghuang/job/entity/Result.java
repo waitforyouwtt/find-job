@@ -62,7 +62,7 @@ public class Result<T> {
         Result<T> response = new Result();
         response.setCode(code);
         response.setMessage(message);
-        response.setData(null);
+        response.setData(data);
         return response;
     }
 
