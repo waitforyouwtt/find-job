@@ -42,7 +42,8 @@ public class CollectionRecordInfoController {
 
     @ApiOperation(value = "根据条件查询收藏记录且分页")
     @PostMapping("/findCollectionRecordInfoPage")
-    public Result findCollectionRecordInfoPage(@RequestBody ReqCollectionRecordInfoQuery recordInfoQuery){
+    public Result findCollectionRecordInfoPage(@RequestBody ReqCollectionRecordInfoQuery recordInfoQuery,@RequestHeader("token") String token){
+        recordInfoQuery.setToken( token );
         return Result.success(collectionRecordInfoService.findCollectionRecordInfoPage(recordInfoQuery));
     }
 

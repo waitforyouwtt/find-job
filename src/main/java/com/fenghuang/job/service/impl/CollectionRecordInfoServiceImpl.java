@@ -11,11 +11,13 @@ import com.fenghuang.job.request.ReqCollectionRecordInfoState;
 import com.fenghuang.job.request.ReqProjectInfoQuery;
 import com.fenghuang.job.service.CollectionRecordInfoService;
 import com.fenghuang.job.service.ProjectInfoService;
+import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.CollectionRecordInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Splitter;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
@@ -104,9 +106,13 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
     public PageInfo<CollectionRecordInfoView> findCollectionRecordInfoPage(ReqCollectionRecordInfoQuery recordInfoQuery) {
       log.info("根据条件查询收藏记录且分页 请求参数：{}",JSON.toJSONString(recordInfoQuery));
       PageInfo<CollectionRecordInfoView> pageInfo = null;
-      try{
+
+        Claims claims = JwtUtil.parseJWT(recordInfoQuery.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
+        try{
           Page<?> page = PageHelper.startPage(recordInfoQuery.getPageNum(),recordInfoQuery.getPageSize());
-          recordInfoQuery.setUserId( 25 );
+          recordInfoQuery.setUserId( userId );
           List<CollectionRecordInfoView> queryCollectionRecordInfo = collectionRecordInfoMapper.findCollectionRecordInfoPage(recordInfoQuery);
           if (CollectionUtils.isEmpty(queryCollectionRecordInfo)){
               pageInfo = new PageInfo<>(new ArrayList<>());

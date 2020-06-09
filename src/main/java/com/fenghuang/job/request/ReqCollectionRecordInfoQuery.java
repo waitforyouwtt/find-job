@@ -18,6 +18,9 @@ public class ReqCollectionRecordInfoQuery extends PageHelps implements Serializa
 
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("用户id")
     private Integer userId;
 
