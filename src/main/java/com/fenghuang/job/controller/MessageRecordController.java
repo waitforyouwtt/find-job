@@ -31,8 +31,7 @@ public class MessageRecordController {
     @ApiOperation(value = "插入短信统计表")
     @PostMapping("/insertMessageCount")
     public Result insertMessageCount(@RequestBody ReqMessageRecord reqMessageCount, HttpServletRequest request){
-        String ip = BusinessUtils.getIpAddress(request);
-        reqMessageCount.setSendIp(ip);
+        reqMessageCount.setSendIp(BusinessUtils.getIp(request));
         return Result.success(messageCountService.insertMessageCount(reqMessageCount));
     }
 

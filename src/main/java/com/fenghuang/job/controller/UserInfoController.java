@@ -85,8 +85,7 @@ public class UserInfoController {
     @PostMapping("/messageRegister")
     @ApiOperation(value = "用户短信注册，发送验证码")
     public Result messageRegister(@RequestBody ReqRegisterCode reqRegisterCode ,HttpServletRequest request){
-        String ip = BusinessUtils.getIpAddress(request);
-        return userInfoService.messageRegister(messageId,signId,reqRegisterCode.getMobile(),ip);
+        return userInfoService.messageRegister(messageId,signId,reqRegisterCode.getMobile(),BusinessUtils.getIp(request));
     }
 
     @PostMapping("/checkRegisterCode")
@@ -98,8 +97,7 @@ public class UserInfoController {
     @PostMapping("/login")
     @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
     public Result login(@RequestBody ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
-        String ip = BusinessUtils.getIpAddress(request);
-        reqLoginUserInfo.setLoginIp(ip);
+        reqLoginUserInfo.setLoginIp(BusinessUtils.getIp(request));
         return userInfoService.ordinaryLogin(reqLoginUserInfo);
     }
 
@@ -107,8 +105,7 @@ public class UserInfoController {
     @ApiOperation(value = "使用短信进行登录，发送验证码")
     @LoginToken
     public Result loginByMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
-        String ip = BusinessUtils.getIpAddress(request);
-        return userInfoService.loginByMessage(messageId,signId,mobile,ip);
+        return userInfoService.loginByMessage(messageId,signId,mobile,BusinessUtils.getIp(request));
     }
 
     @PostMapping("/checkLoginCode")
@@ -198,6 +195,5 @@ public class UserInfoController {
     public Result findMoWaByToken(@RequestHeader("token") String token){
       return Result.success(userInfoService.findMoWaByToken(token));
     }
-
 
 }
