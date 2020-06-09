@@ -105,15 +105,26 @@ public class UserInfoServiceImpl implements UserInfoService {
     public Result insertUser(ReqUserInfo reqUserInfo) {
         log.info("常规方式注册新用户且不允许昵称重复请求参数：{}", JSON.toJSONString(reqUserInfo));
         ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
-        reqUserInfoQuery.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
         reqUserInfoQuery.setUserNickname(reqUserInfo.getUserNickname());
         reqUserInfoQuery.setIdCard(reqUserInfo.getIdCard());
         reqUserInfoQuery.setMobile(reqUserInfo.getMobile());
         reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
         //注册新用户，根据注册填充数据[昵称|手机号|身份证]去查询数据库(因为姓名可以重复)，如果存在则不允许注册新用户
         UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
-        if (queryUserInfo != null){
+        if (!StringUtils.isEmpty(reqUserInfo.getUserName()) && queryUserInfo != null && reqUserInfo.getUserName().equals(queryUserInfo.getUserName())){
             return Result.error(BusinessEnum.USERINFO_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_ALREADY_EXISTS.getMsg(),null);
+        }
+        if (!StringUtils.isEmpty(reqUserInfo.getUserNickname()) && queryUserInfo != null && reqUserInfo.getUserNickname().equals(queryUserInfo.getUserNickname())){
+            return Result.error(BusinessEnum.USERINFO_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_ALREADY_EXISTS.getMsg(),null);
+        }
+        if (!StringUtils.isEmpty(reqUserInfo.getIdCard()) && queryUserInfo != null && reqUserInfo.getIdCard().equals(queryUserInfo.getIdCard())){
+            return Result.error(BusinessEnum.USERINFO_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_ALREADY_EXISTS.getMsg(),null);
+        }
+        if (!StringUtils.isEmpty(reqUserInfo.getMobile()) && queryUserInfo != null && reqUserInfo.getMobile().equals(queryUserInfo.getMobile())){
+            return Result.error(BusinessEnum.USERINFO_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_ALREADY_EXISTS.getMsg(),null);
+        }
+        if (queryUserInfo != null && queryUserInfo.getUserStatus().equals(UserInfoStatusEnum.FROZEN.getCode())){
+            return Result.error(BusinessEnum.USERINFO_STATUS_FROZENT.getCode(),BusinessEnum.USERINFO_STATUS_FROZENT.getMsg(),null);
         }
         UserInfo userInfo = new UserInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqUserInfo.class, UserInfo.class, false);

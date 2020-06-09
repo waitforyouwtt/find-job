@@ -27,6 +27,8 @@ public enum BusinessEnum {
     UPDATE_ERROR(1018,"修改失败"),
     USERINFO_MESSAGE_ALREADY_EXISTS(1019,"该昵称在系统中已存在，请更换其他昵称"),
     USERINFO_EXIST(1020,"当前申请的账号已存在，请勿重复操作"),
+    USERINFO_STATUS_FROZENT(1021,"当前申请的账号已存在但处于冻结状态，请联系客服人员进行解冻操作"),
+
     ;
 
     BusinessEnum(Integer code, String msg) {
