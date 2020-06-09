@@ -79,6 +79,12 @@ public class ReqUserInfo implements Serializable{
     @ApiModelProperty("用户等级")
     private Integer userLevel;
 
+    @ApiModelProperty("教育状态")
+    private Integer educationStatus;
+
+    @ApiModelProperty("持有学历")
+    private String education;
+
     @ApiModelProperty("紧急联系人")
     private String emergencyContactName;
 

@@ -53,7 +53,8 @@ public class ProjectInfoController {
 
     @ApiOperation( value = "根据id查询项目信息详情")
     @PostMapping("/findProjectDetailsById")
-    public Result findProjectDetailsById(@RequestBody ReqProjectInfoQuery queryParams){
+    public Result findProjectDetailsById(@RequestBody ReqProjectInfoQuery queryParams,@RequestHeader("token") String token){
+        queryParams.setToken(token);
         return projectService.findProjectDetailsById(queryParams);
     }
 

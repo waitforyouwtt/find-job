@@ -12,6 +12,8 @@
     <result column="qq" jdbcType="VARCHAR" property="qq" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="age" jdbcType="INTEGER" property="age" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="province_id" jdbcType="INTEGER" property="provinceId" />
     <result column="city_id" jdbcType="INTEGER" property="cityId" />
@@ -24,6 +26,8 @@
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="user_type" jdbcType="INTEGER" property="userType" />
     <result column="user_level" jdbcType="INTEGER" property="userLevel" />
+    <result column="education_status" jdbcType="INTEGER" property="educationStatus" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
     <result column="emergency_contact_name" jdbcType="VARCHAR" property="emergencyContactName" />
     <result column="emergency_contact_mobile" jdbcType="VARCHAR" property="emergencyContactMobile" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
@@ -32,9 +36,9 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_name, user_nickName, id_card, user_head, password, wechat, qq, email, gender, 
+    id, user_name, user_nickName, id_card, user_head, password, wechat, qq, email, gender,birthday,age,
     mobile, province_id, city_id, county_Area_id, address, id_card_x, id_card_y, user_status, 
-    is_delete, amount, user_type, user_level, emergency_contact_name, emergency_contact_mobile, 
+    is_delete, amount, user_type, user_level,education_status,education, emergency_contact_name, emergency_contact_mobile,
     founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -102,6 +106,12 @@
       <if test="gender != null">
         gender,
       </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
       <if test="mobile != null">
         mobile,
       </if>
@@ -137,6 +147,12 @@
       </if>
       <if test="userLevel != null">
         user_level,
+      </if>
+      <if test="educationStatus != null">
+        education_status,
+      </if>
+      <if test="education != null">
+        education,
       </if>
       <if test="emergencyContactName != null">
         emergency_contact_name,
@@ -188,6 +204,12 @@
       <if test="gender != null">
         #{gender,jdbcType=INTEGER},
       </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
       <if test="mobile != null">
         #{mobile,jdbcType=VARCHAR},
       </if>
@@ -223,6 +245,12 @@
       </if>
       <if test="userLevel != null">
         #{userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="educationStatus != null">
+        #{educationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
       </if>
       <if test="emergencyContactName != null">
         #{emergencyContactName,jdbcType=VARCHAR},
@@ -438,7 +466,7 @@
     update userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
   </update>
 
-  <select id="loginQueryUserInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqUserInfo">
+  <select id="loginQueryUserInfo" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List"/>
     from userinfo where is_delete = '2'

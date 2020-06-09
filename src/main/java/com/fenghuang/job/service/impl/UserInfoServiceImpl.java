@@ -129,6 +129,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = new UserInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqUserInfo.class, UserInfo.class, false);
         beanCopier.copy(reqUserInfo,userInfo,null);
+        if (!StringUtils.isEmpty(reqUserInfo.getIdCard())){
+            userInfo.setBirthday(IdCardUtil.getCarInfo(reqUserInfo.getIdCard()).get("birthday"));
+            userInfo.setAge(Integer.parseInt(IdCardUtil.getCarInfo(reqUserInfo.getIdCard()).get("age")));
+            userInfo.setGender(Integer.parseInt(IdCardUtil.getCarInfo(reqUserInfo.getIdCard()).get("gender")));
+        }
+        if (StringUtils.isEmpty(reqUserInfo.getUserType())){
+            userInfo.setUserType(1);
+        }
         //新用户默认正常用户且进行密码加密
         userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfo.getPassword()));
         userInfo.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
@@ -514,6 +522,32 @@ public class UserInfoServiceImpl implements UserInfoService {
         view.setHadSettlementNum( hadSettlementNum );
         view.setWaitEvaluateNum( waitEvaluateNum );
         return view;
+    }
+
+    /**
+     * 根据登录token获取个人信息
+     *
+     * @param token
+     * @return
+     */
+    @Override
+    public Result findPersonalInformationByToken(String token) {
+        if(StringUtils.isEmpty(token)){
+            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),"token不能为空");
+        }
+        Claims claims = JwtUtil.parseJWT(token);
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        //用户信息
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        UserInfoView userInfoView = new UserInfoView();
+        BeanCopier beanCopier = BeanCopier.create(UserInfo.class,UserInfoView.class,false);
+        beanCopier.copy(userInfo,userInfoView,null);
+        userInfoView.setGenderDesc(GenderEnum.fromValue(userInfo.getGender()).getMsg());
+        userInfoView.setUserStatusDesc(UserInfoStatusEnum.fromValue(userInfo.getUserStatus()).getMsg());
+        userInfoView.setEducationStatusDesc(EducationStatusEnum.fromValue(userInfo.getEducationStatus()).getMsg());
+        userInfoView.setUserTypeDesc(UserTypeEnum.fromValue(userInfo.getUserType()).getMsg());
+        userInfoView.setPassword("");
+        return Result.success(userInfoView);
     }
 
 }

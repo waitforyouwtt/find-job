@@ -196,4 +196,10 @@ public class UserInfoController {
       return Result.success(userInfoService.findMoWaByToken(token));
     }
 
+    @ApiOperation(value = "根据登录token获取个人信息")
+    @PostMapping("/findPersonalInformationByToken")
+    public Result findPersonalInformationByToken(@RequestHeader("token") String token){
+        return Result.success(userInfoService.findPersonalInformationByToken(token));
+    }
+
 }

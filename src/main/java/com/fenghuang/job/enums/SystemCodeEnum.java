@@ -10,7 +10,6 @@ public enum SystemCodeEnum {
     ERROR(201,"失败"),
     ACCESS_ERROR(401,"权限不足"),
     EXCEPTION(500,"系统异常"),
-
     ;
 
     SystemCodeEnum(Integer code, String msg) {

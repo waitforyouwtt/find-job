@@ -32,6 +32,10 @@ public class UserInfo implements Serializable {
 
     private Integer gender;
 
+    private String birthday;
+
+    private Integer age;
+
     private String mobile;
 
     private Integer provinceId;
@@ -55,6 +59,10 @@ public class UserInfo implements Serializable {
     private Integer userType;
 
     private Integer userLevel;
+
+    private Integer educationStatus;
+
+    private String education;
 
     private String emergencyContactName;
 

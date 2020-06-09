@@ -35,6 +35,12 @@ public class UserInfoView implements Serializable{
     @ApiModelProperty("用户密码")
     private String password;
 
+    @ApiModelProperty("用户qq")
+    private String qq;
+
+    @ApiModelProperty("用户邮箱")
+    private String email;
+
     @ApiModelProperty("微信")
     private String wechat;
 
@@ -45,8 +51,17 @@ public class UserInfoView implements Serializable{
     @ApiModelProperty("用户手机号")
     private String mobile;
 
+    @ApiModelProperty("用户所在省市")
+    private String provinceCity;
+
     @ApiModelProperty("用户地址")
     private String address;
+
+    @ApiModelProperty("用户生日")
+    private String birthday;
+
+    @ApiModelProperty("用户年龄")
+    private Integer age;
 
     @ApiModelProperty("身份证正面")
     private String idCardX;
@@ -67,6 +82,13 @@ public class UserInfoView implements Serializable{
 
     @ApiModelProperty("用户等级")
     private Integer userLevel;
+
+    @ApiModelProperty("教育状态")
+    private Integer educationStatus;
+    private String educationStatusDesc;
+
+    @ApiModelProperty("学历")
+    private String education;
 
     @ApiModelProperty("紧急联系人")
     private String emergencyContactName;

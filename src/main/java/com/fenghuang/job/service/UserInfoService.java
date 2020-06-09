@@ -107,4 +107,11 @@ public interface UserInfoService {
      * @return
      */
     UserInfoManagerView findMoWaByToken(String token);
+
+    /**
+     * 根据登录token获取个人信息
+      * @param token
+     * @return
+     */
+    Result findPersonalInformationByToken(String token);
 }
