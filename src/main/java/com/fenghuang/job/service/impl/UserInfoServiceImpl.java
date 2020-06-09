@@ -159,18 +159,24 @@ public class UserInfoServiceImpl implements UserInfoService {
     public Result modifyUserInfo(ReqUserInfoUpdate reqUserInfoUpdate) {
         log.info("更新用户信息请求参数：{}", JSON.toJSONString(reqUserInfoUpdate));
         //更新用户信息先去检索数据库是否有该用户，查询结果为空则提示用户不存在
-        UserInfo queryUserInfo = userInfoMapper.selectByPrimaryKey(reqUserInfoUpdate.getId());
+
+        Claims claims = JwtUtil.parseJWT(reqUserInfoUpdate.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
+        UserInfo queryUserInfo = userInfoMapper.selectByPrimaryKey(userId);
         if (queryUserInfo == null){
             return Result.error(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg(),null);
         }
 
-        ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
-        reqUserInfoQuery.setUserStatus( UserInfoStatusEnum.NORMAL.getCode() );
-        reqUserInfoQuery.setUserNickname(reqUserInfoUpdate.getUserNickname());
-        reqUserInfoQuery.setMobile(reqUserInfoUpdate.getMobile());
-        reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
         //注册新用户，根据注册填充数据[昵称|手机号|身份证]去查询数据库(因为姓名可以重复)，如果存在则不允许注册新用户
-        UserInfo updateBeforeQueryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
+        String loginUser = null;
+        if (!StringUtils.isEmpty(reqUserInfoUpdate.getUserNickname())){
+            loginUser = reqUserInfoUpdate.getUserNickname();
+        }
+        if (!StringUtils.isEmpty(reqUserInfoUpdate.getMobile())){
+            loginUser = reqUserInfoUpdate.getMobile();
+        }
+        UserInfo updateBeforeQueryUserInfo = userInfoMapper.updateQueryUserInfo(loginUser);
         if (updateBeforeQueryUserInfo != null){
             return Result.error(BusinessEnum.USERINFO_MESSAGE_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_MESSAGE_ALREADY_EXISTS.getMsg(),null);
         }
@@ -181,6 +187,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (!StringUtils.isEmpty(reqUserInfoUpdate.getPassword())){
             userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getPassword()));
         }
+        userInfo.setUserHead(reqUserInfoUpdate.getUserHead());
         return Result.success(userInfoMapper.updateByPrimaryKeySelective(userInfo));
     }
 

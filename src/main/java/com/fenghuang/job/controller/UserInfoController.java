@@ -48,13 +48,15 @@ public class UserInfoController {
 
     @ApiOperation(value = "更新用户状态信息")
     @PostMapping("/modifyUserStatus")
-    public Result modifyUserStatus(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
+    public Result modifyUserStatus(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate,@RequestHeader("token") String token){
+        reqUserInfoUpdate.setToken(token);
         return userInfoService.modifyUserInfo(reqUserInfoUpdate);
     }
 
     @ApiOperation(value = "更新用户信息")
     @PostMapping("/modifyUserInfo")
-    public Result modifyUserInfo(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
+    public Result modifyUserInfo(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate,@RequestHeader("token") String token){
+        reqUserInfoUpdate.setToken(token);
         return userInfoService.modifyUserInfo(reqUserInfoUpdate);
     }
 
@@ -78,7 +80,8 @@ public class UserInfoController {
 
     @PostMapping("/changePassword")
     @ApiOperation(value = "用户进行修改密码")
-    public Result changePassword(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate){
+    public Result changePassword(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate,@RequestHeader("token") String token){
+        reqUserInfoUpdate.setToken(token);
         return userInfoService.changePassword(reqUserInfoUpdate);
     }
 
