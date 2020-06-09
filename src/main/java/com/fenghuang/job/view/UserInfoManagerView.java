@@ -24,7 +24,7 @@ public class UserInfoManagerView implements Serializable{
     private String userNickName;
 
     @ApiModelProperty("用户头像")
-    private String headImg;
+    private String userHead;
 
     @ApiModelProperty("用户手机号")
     private String mobile;

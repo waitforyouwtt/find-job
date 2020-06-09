@@ -526,7 +526,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         UserInfoManagerView view = new UserInfoManagerView();
         view.setUserNickName( userInfo.getUserNickname() );
-        view.setHeadImg( userInfo.getUserHead() );
+        view.setUserHead( userInfo.getUserHead() );
         view.setAmount(userInfo.getAmount() == null? null: userInfo.getAmount());
         view.setCollectionNum(byUserIdCollection.size());
         view.setBrowseNum(byUserIdBrowse.size());
