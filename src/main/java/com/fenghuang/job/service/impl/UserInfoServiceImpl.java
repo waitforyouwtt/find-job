@@ -187,6 +187,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (!StringUtils.isEmpty(reqUserInfoUpdate.getPassword())){
             userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getPassword()));
         }
+        userInfo.setId(userId);
         userInfo.setUserHead(reqUserInfoUpdate.getUserHead());
         return Result.success(userInfoMapper.updateByPrimaryKeySelective(userInfo));
     }
