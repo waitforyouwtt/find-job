@@ -326,6 +326,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoParams.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,registerCode.getPassword()));
         userInfoParams.setUserStatus(UserInfoStatusEnum.NORMAL.getCode());
         userInfoParams.setIsDelete(DeleteEnum.NO.getCode());
+        userInfoParams.setCreateDate(new Date());
+        userInfoParams.setUpdateDate(new Date());
+        userInfoParams.setGender(GenderEnum.MAN.getCode());
+        userInfoParams.setEducationStatus(EducationStatusEnum.GRADUATION.getCode());
+
         int registerNum = userInfoMapper.insertSelective(userInfoParams);
 
         if (registerNum > 0){
