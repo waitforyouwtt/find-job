@@ -258,12 +258,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Result changePassword(ReqUserInfoUpdate reqUserInfoUpdate) {
         log.info("用户进行修改密码 请求参数：{}",JSON.toJSON(reqUserInfoUpdate));
-        UserInfo queryUserInfo = userInfoMapper.findUserInfoByUserNameAndPassword(reqUserInfoUpdate.getUserName(),AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getPassword()));
-        if (queryUserInfo == null){
-            return Result.error(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg(),null);
-        }
+
+        Claims claims = JwtUtil.parseJWT(reqUserInfoUpdate.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
         reqUserInfoUpdate.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getNewPassword()));
-        reqUserInfoUpdate.setUserName( reqUserInfoUpdate.getUserName() );
+        reqUserInfoUpdate.setUserId( userId );
         return Result.success(userInfoMapper.changePassword(reqUserInfoUpdate));
     }
 

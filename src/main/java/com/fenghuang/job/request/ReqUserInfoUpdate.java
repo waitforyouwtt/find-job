@@ -17,6 +17,9 @@ public class ReqUserInfoUpdate implements Serializable {
 
     private Integer id;
 
+    @ApiModelProperty("用户Id")
+    private Integer userId;
+
     @ApiModelProperty("用户名token")
     private String token;
 

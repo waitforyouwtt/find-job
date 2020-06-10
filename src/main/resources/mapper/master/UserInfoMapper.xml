@@ -463,7 +463,7 @@
   </select>
 
   <update id="changePassword" parameterType="com.fenghuang.job.request.ReqUserInfoUpdate">
-    update userinfo set password = #{newPassword} where 1 = 1 and user_name = #{userName} and password = #{password}
+    update userinfo set password = #{newPassword} where id = #{userId}
   </update>
 
   <select id="loginQueryUserInfo" resultMap="BaseResultMap" >
