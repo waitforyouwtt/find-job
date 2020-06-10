@@ -263,6 +263,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Result.error(BusinessEnum.RECORD_NOT_EXIST.getCode(),BusinessEnum.RECORD_NOT_EXIST.getMsg(),null);
         }
         reqUserInfoUpdate.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getNewPassword()));
+        reqUserInfoUpdate.setUserName( reqUserInfoUpdate.getUserName() );
         return Result.success(userInfoMapper.changePassword(reqUserInfoUpdate));
     }
 
