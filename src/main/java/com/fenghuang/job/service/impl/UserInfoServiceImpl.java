@@ -344,6 +344,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoParams.setUpdateDate(new Date());
         userInfoParams.setGender(GenderEnum.MAN.getCode());
         userInfoParams.setEducationStatus(EducationStatusEnum.GRADUATION.getCode());
+        userInfoParams.setUserName(Constants.MOWA+registerCode.getMobile());
+        userInfoParams.setUserNickname(Constants.MOWA+registerCode.getMobile());
 
         int registerNum = userInfoMapper.insertSelective(userInfoParams);
 
@@ -383,6 +385,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         Map<String,Object> objectMap = new HashMap<>();
 
         String token = JwtUtil.createJWT(6000000, queryUserInfo);
+        queryUserInfo.setPassword("******");
         objectMap.put("token",token);
         objectMap.put("userInfo",queryUserInfo);
         return Result.success(objectMap);

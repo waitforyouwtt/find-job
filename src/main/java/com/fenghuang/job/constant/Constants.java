@@ -13,6 +13,10 @@ public class Constants {
     public static final Integer MESSAGE_MINUTE = -30;
     //发送短信时,如果当前手机号| ip 30分钟内频繁的发送短信超过5条，则视为用户进行恶意攻击
     public static final Integer MESSAGE_COUNT  = 2;
+    //魔蛙默认用户
+    public static final String MOWA = "mowa_";
+
+
     //七牛云地址
     public static final String QINIUURL = "http://rs.qiniu.com/mkbucketv2/";
     //秘钥

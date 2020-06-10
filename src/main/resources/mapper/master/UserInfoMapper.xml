@@ -470,7 +470,7 @@
     select
     <include refid="Base_Column_List"/>
     from userinfo where is_delete = '2'
-    and concat(user_name,user_nickName,id_card,mobile) LIKE CONCAT ('%',#{loginUser},'%')
+    and concat(user_name,user_nickName,mobile) LIKE CONCAT ('%',#{loginUser},'%') or id_card = #{loginUser}
   </select>
 
   <select id="updateQueryUserInfo" resultMap="BaseResultMap" >
