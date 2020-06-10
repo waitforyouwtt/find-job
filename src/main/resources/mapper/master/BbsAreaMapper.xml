@@ -116,4 +116,18 @@
       #parent.pid = '1533'
       son.pid = '1533'-->
 
+  <select id="findBbsAreaByParams" resultType="com.fenghuang.job.view.BbsAreaView3">
+      select
+      a.area_id as provinceId,
+      a.title as   provinceDesc,
+      b.area_id as cityId,
+      b.title as   cityDesc,
+      c.area_id as countyAreaId,
+      c.title as   countyAreaDesc
+      from bbs_area as a
+      inner join bbs_area as b
+      inner join bbs_area as c
+      where  a.area_id = #{provinceId} and b.area_id = #{cityId} and c.area_id = #{areaId}
+  </select>
+
 </mapper>

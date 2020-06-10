@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fenghuang.job.aspect.LoginLogAnnotation;
 import com.fenghuang.job.constant.Constants;
+import com.fenghuang.job.dao.master.BbsAreaMapper;
 import com.fenghuang.job.dao.master.UserInfoMapper;
 import com.fenghuang.job.entity.BrowseRecordInfo;
 import com.fenghuang.job.entity.CollectionRecordInfo;
@@ -59,6 +60,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     SignUpInfoService signUpInfoService;
+
+    @Resource
+    BbsAreaMapper bbsAreaMapper;
 
     /**
      * 根据用户名字获取记录[可能有重名的人]
@@ -561,6 +565,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
         //用户信息
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        BbsAreaView3 bbsArea = null;
+        if (userInfo !=null
+                && !StringUtils.isEmpty( userInfo.getProvinceId() )
+                && !StringUtils.isEmpty( userInfo.getCityId() )
+                && !StringUtils.isEmpty( userInfo.getCountyAreaId() )){
+            bbsArea = bbsAreaMapper.findBbsAreaByParams( userInfo.getProvinceId(), userInfo.getCityId(), userInfo.getCountyAreaId() );
+        }
+
         UserInfoView userInfoView = new UserInfoView();
         BeanCopier beanCopier = BeanCopier.create(UserInfo.class,UserInfoView.class,false);
         beanCopier.copy(userInfo,userInfoView,null);
@@ -568,6 +580,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoView.setUserStatusDesc(UserInfoStatusEnum.fromValue(userInfo.getUserStatus()).getMsg());
         userInfoView.setEducationStatusDesc(EducationStatusEnum.fromValue(userInfo.getEducationStatus()).getMsg());
         userInfoView.setUserTypeDesc(UserTypeEnum.fromValue(userInfo.getUserType()).getMsg());
+        if (bbsArea != null){
+            userInfoView.setProvinceId( bbsArea.getProvinceId() );
+            userInfoView.setProvinceDesc( bbsArea.getProvinceDesc() );
+            userInfoView.setCityId( bbsArea.getCityId() );
+            userInfoView.setCityDesc( bbsArea.getCityDesc() );
+            userInfoView.setCountyAreaId( bbsArea.getCountyAreaId() );
+            userInfoView.setCountyAreaDesc( bbsArea.getCountyAreaDesc() );
+        }
         userInfoView.setPassword("");
         return Result.success(userInfoView);
     }

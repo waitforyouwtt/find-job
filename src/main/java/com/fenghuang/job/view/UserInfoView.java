@@ -96,6 +96,24 @@ public class UserInfoView implements Serializable{
     @ApiModelProperty("紧急联系人手机号")
     private String emergencyContactMobile;
 
+    @ApiModelProperty("省份Id")
+    private Integer provinceId;
+
+    @ApiModelProperty("省份描述")
+    private String  provinceDesc;
+
+    @ApiModelProperty("城市Id")
+    private Integer cityId;
+
+    @ApiModelProperty("城市描述")
+    private String  cityDesc;
+
+    @ApiModelProperty("区域Id")
+    private Integer countyAreaId;
+
+    @ApiModelProperty("区域描述")
+    private String  countyAreaDesc;
+
     @ApiModelProperty("创建人")
     private String founder;
 
