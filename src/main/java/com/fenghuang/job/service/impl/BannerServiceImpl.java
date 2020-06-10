@@ -10,7 +10,9 @@ import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqBanner;
 import com.fenghuang.job.request.ReqBannerStatus;
 import com.fenghuang.job.service.BannerService;
+import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.BannerView;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,11 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public Result insertBanner(ReqBanner reqBanner) {
         log.info("管理员后台添加轮播图banner 请求参数：{}", JSON.toJSONString(reqBanner));
+
+        Claims claims = JwtUtil.parseJWT(reqBanner.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         if (StringUtils.isEmpty(reqBanner.getActivityId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
@@ -57,6 +64,9 @@ public class BannerServiceImpl implements BannerService {
         if (StringUtils.isEmpty(reqBanner.getBannerImgStatus().toString())){
             banner.setBannerImgStatus(BannerImgStatusEnum.NORMAL.getCode());
         }
+        banner.setBannerImgStatus(BannerImgStatusEnum.NORMAL.getCode());
+        banner.setFounder(userName);
+        banner.setModifier(userName);
         banner.setCreateDate(new Date());
         banner.setUpdateDate(new Date());
         return Result.success(bannerMapper.insertSelective(banner));
@@ -142,7 +152,6 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public int deleteTest(String userName) {
         ReqBanner reqBanner = new ReqBanner();
-        reqBanner.setFounder(userName);
         List<Banner> list = bannerMapper.findBanner(reqBanner);
         if (CollectionUtils.isEmpty(list)){
             log.info("没有要删除的数据");

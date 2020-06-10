@@ -1,4 +1,4 @@
-package com.fenghuang.job.controller;
+package com.fenghuang.job.controller.business;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqActivity;
@@ -24,13 +24,15 @@ public class ActivityController {
 
     @ApiOperation(value = "后台商家新建活动")
     @PostMapping(value = "/insertActivity")
-    public Result insertActivity(@RequestBody ReqActivity reqActivity){
+    public Result insertActivity(@RequestBody ReqActivity reqActivity,@RequestHeader("token") String token){
+        reqActivity.setToken(token);
         return activityService.insertActivity(reqActivity);
     }
 
     @ApiOperation(value = "根据ID修改活动相关信息")
     @PostMapping("/modifyActivity")
-    public Result modifyActivity(@RequestBody ReqActivityUpdate reqActivityUpdate){
+    public Result modifyActivity(@RequestBody ReqActivityUpdate reqActivityUpdate,@RequestHeader("token") String token){
+        reqActivityUpdate.setToken(token);
         return Result.success(activityService.modifyActivity(reqActivityUpdate));
     }
 

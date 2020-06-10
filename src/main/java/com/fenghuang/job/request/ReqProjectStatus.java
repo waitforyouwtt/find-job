@@ -15,6 +15,9 @@ public class ReqProjectStatus implements Serializable {
 
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("项目状态：1 项目发布 2 用户报名 3 开始工作 4交易完成")
     private Integer projectState;
 

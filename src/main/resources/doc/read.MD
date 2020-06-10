@@ -3,7 +3,6 @@
 | :-----:| 
 | spring boot | 
 | mybatis | 
-|spring data jpa|
 |swagger文档自动生成技术|
 |druid 监控|
 |mysql数据库：主从复制策略|

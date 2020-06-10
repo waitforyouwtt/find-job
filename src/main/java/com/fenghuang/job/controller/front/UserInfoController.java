@@ -1,4 +1,4 @@
-package com.fenghuang.job.controller;
+package com.fenghuang.job.controller.front;
 
 import com.fenghuang.job.config.LoginToken;
 import com.fenghuang.job.entity.Result;

@@ -1,4 +1,4 @@
-package com.fenghuang.job.controller;
+package com.fenghuang.job.controller.companybackstage;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqBanner;
@@ -32,9 +32,9 @@ public class BannerController {
     @ApiOperation(value = "管理员后台添加轮播图banner")
     @PostMapping("/insertBanner")
     @ResponseBody
-    public Result insertBanner(@RequestBody ReqBanner reqBanner){
-        Result result = bannerService.insertBanner(reqBanner);
-        return result;
+    public Result insertBanner(@RequestBody ReqBanner reqBanner,@RequestHeader("token") String token){
+        reqBanner.setToken(token);
+        return bannerService.insertBanner(reqBanner);
     }
 
     @ApiOperation(value = "根据条件查找banner")

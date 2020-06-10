@@ -1,4 +1,4 @@
-package com.fenghuang.job.controller;
+package com.fenghuang.job.controller.pay;
 
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.entity.Result;

@@ -51,7 +51,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     CollectionRecordInfoMapper collectionRecordInfoMapper;
 
     /**
-     * 创建项目
+     * 商家管理后台创建兼职项目
      *
      * @param reqProject
      * @return
@@ -59,9 +59,14 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result insertProject(ReqProjectInfo reqProject) {
-        log.info( "创建项目 请求参数：{}", JSON.toJSONString(reqProject) );
+        log.info( "商家管理后台创建兼职项目请求参数：{}", JSON.toJSONString(reqProject) );
+
+        Claims claims = JwtUtil.parseJWT(reqProject.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         ReqProjectInfoQuery query = new ReqProjectInfoQuery();
-        query.setUserId(reqProject.getUserId());
+        query.setUserId(userId);
         query.setProjectTypeId(reqProject.getProjectTypeId());
         query.setProjectTitle(reqProject.getProjectTitle());
         query.setIsDelete(DeleteEnum.NO.getCode());
@@ -72,7 +77,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         }
         ProjectInfo project = new ProjectInfo();
 
-        project.setUserId(reqProject.getUserId());
+        project.setUserId(userId);
         project.setProjectTypeId(reqProject.getProjectTypeId());
         project.setProjectTypeName(reqProject.getProjectTypeName());
         project.setProjectTitle(reqProject.getProjectTitle());
@@ -133,8 +138,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         projectWorkTimeInfo.setWorkTimeBegin(reqProject.getWorkTimeBegin());
         projectWorkTimeInfo.setWorkTimeEnd(reqProject.getWorkTimeEnd());
         projectWorkTimeInfo.setIsDelete(DeleteEnum.NO.getCode());
-        projectWorkTimeInfo.setFounder(reqProject.getUserId().toString());
-        projectWorkTimeInfo.setModifier(reqProject.getUserId().toString());
+        projectWorkTimeInfo.setFounder(userName);
+        projectWorkTimeInfo.setModifier(userName);
         projectWorkTimeInfo.setCreateDate(new Date());
         projectWorkTimeInfo.setUpdateDate(new Date());
         projectWorkTimeInfoMapper.insertSelective(projectWorkTimeInfo);
@@ -155,9 +160,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
         }
 
+        Claims claims = JwtUtil.parseJWT(reqProject.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         ProjectInfo project = new ProjectInfo();
 
-        project.setUserId(reqProject.getUserId());
+        project.setUserId(userId);
         project.setProjectTypeId(reqProject.getProjectTypeId());
         project.setProjectTypeName(reqProject.getProjectTypeName());
         project.setProjectTitle(reqProject.getProjectTitle());
@@ -190,9 +199,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         project.setProjectState(ProjectStateEnum.PUBLISH.getCode());
         project.setExamineStatus(ExamineStatusEnum.PASSED.getCode());
         project.setIsDelete(DeleteEnum.NO.getCode());
-        project.setCreateDate(new Date());
         project.setUpdateDate(new Date());
-        project.setModifier(reqProject.getUserId().toString());
+        project.setModifier(userName);
         projectMapper.updateByPrimaryKeySelective( project );
         return Result.success("修改成功");
     }
@@ -206,6 +214,11 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public Result modifyProjectStatus(ReqProjectStatus reqProjectStatus) {
         log.info( "根据id更新项目状态 请求参数：{}",JSON.toJSONString( reqProjectStatus ) );
+
+        Claims claims = JwtUtil.parseJWT(reqProjectStatus.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         if (StringUtils.isEmpty(reqProjectStatus.getId().toString())){
             return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
         }
@@ -226,6 +239,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 projectParam.setExamineStatus(ExamineStatusEnum.REJECTED.getCode());
             }
         }
+        projectParam.setUserId(userId);
+        projectParam.setModifier(userName);
         int i = projectMapper.updateByPrimaryKeySelective(projectParam);
         if (i == 0){
             return Result.error("修改失败");

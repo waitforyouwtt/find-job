@@ -17,6 +17,9 @@ public class ReqActivityUpdate implements Serializable{
     @ApiModelProperty("id")
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("活动标题")
     private String activityTitle;
 

@@ -1,4 +1,4 @@
-package com.fenghuang.job.controller;
+package com.fenghuang.job.controller.companybackstage;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqLoginLog;

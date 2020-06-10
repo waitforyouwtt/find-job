@@ -15,11 +15,11 @@ public class ReqBanner implements Serializable {
 
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("活动ID")
     private Integer activityId;
-
-    @ApiModelProperty("创建人")
-    private String  founder;
 
     @ApiModelProperty("活动图片地址url")
     private String activityImg;

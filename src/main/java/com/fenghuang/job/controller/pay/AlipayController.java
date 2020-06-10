@@ -1,4 +1,4 @@
-package com.fenghuang.job.controller;
+package com.fenghuang.job.controller.pay;
 
 /*import com.alipay.api.AlipayApiException;*/
 import com.fenghuang.job.alipay.AlipayBean;

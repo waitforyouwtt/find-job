@@ -17,6 +17,9 @@ public class ReqActivity implements Serializable{
     @ApiModelProperty("id")
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("活动标题")
     private String activityTitle;
 
@@ -35,15 +38,4 @@ public class ReqActivity implements Serializable{
     @ApiModelProperty("审核状态：1 待审核 2 已通过 3已驳回")
     private Integer examineStatus;
 
-    @ApiModelProperty("创建人")
-    private String founder;
-
-    @ApiModelProperty("修改人")
-    private String modifier;
-
-    @ApiModelProperty("创建时间")
-    private Date createDate;
-
-    @ApiModelProperty("修改时间")
-    private Date updateDate;
 }

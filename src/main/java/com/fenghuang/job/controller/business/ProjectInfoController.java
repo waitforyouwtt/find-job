@@ -1,4 +1,4 @@
-package com.fenghuang.job.controller;
+package com.fenghuang.job.controller.business;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;
@@ -21,21 +21,23 @@ public class ProjectInfoController {
     @Autowired
     ProjectInfoService projectService;
 
-    @ApiOperation( value = "创建项目")
+    @ApiOperation( value = "商家管理后台创建兼职项目")
     @PostMapping("/insertProject")
-    public Result insertProject(@RequestBody ReqProjectInfo reqProject){
+    public Result insertProject(@RequestBody ReqProjectInfo reqProject,@RequestHeader("token") String token){
+        reqProject.setToken(token);
         return projectService.insertProject(reqProject);
     }
 
     @ApiOperation( value = "根据id更新项目相关字段")
     @PostMapping("/modifyProject")
-    public Result modifyProject(@RequestBody ReqProjectInfo reqProject){
-      return projectService.modifyProject(reqProject);
+    public Result modifyProject(@RequestBody ReqProjectInfo reqProject, @RequestHeader("token") String token) {
+        reqProject.setToken(token);
+        return projectService.modifyProject(reqProject);
     }
 
     @ApiOperation( value = "根据id更新项目状态")
     @PostMapping("/modifyProjectStatus")
-    public Result modifyProjectStatus(@RequestBody ReqProjectStatus reqProjectStatus){
+    public Result modifyProjectStatus(@RequestBody ReqProjectStatus reqProjectStatus,@RequestHeader("token") String token){
         return Result.success( projectService.modifyProjectStatus(reqProjectStatus) );
     }
 

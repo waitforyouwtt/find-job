@@ -12,10 +12,12 @@ import com.fenghuang.job.request.ReqActivity;
 import com.fenghuang.job.request.ReqActivityQuery;
 import com.fenghuang.job.request.ReqActivityUpdate;
 import com.fenghuang.job.service.ActivityService;
+import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.ActivityView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,11 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Result insertActivity(ReqActivity reqActivity) {
         log.info("后台商家新建活动请求参数：{}", JSON.toJSONString(reqActivity));
+
+        Claims claims = JwtUtil.parseJWT(reqActivity.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         //新增活动时：相同名字且状态为待审核| 进行中的活动不能创建
         Activity queryActivity = activityMapper.queryActivityByTitle(reqActivity.getActivityTitle());
         if (queryActivity != null){
@@ -56,6 +63,8 @@ public class ActivityServiceImpl implements ActivityService {
         beanCopier.copy(reqActivity,activity,null);
         activity.setActivityStatus(ActivityStatusEnum.INIT.getCode());
         activity.setExamineStatus(ExamineStatusEnum.AUDITED.getCode());
+        activity.setFounder(userName);
+        activity.setModifier(userName);
         activity.setCreateDate(new Date());
         activity.setUpdateDate(new Date());
         return Result.success(activityMapper.insertSelective(activity));
@@ -70,12 +79,18 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public int modifyActivity(ReqActivityUpdate reqActivityUpdate) {
         log.info("根据ID修改活动相关信息 请求参数：{}",JSON.toJSONString(reqActivityUpdate));
+
+        Claims claims = JwtUtil.parseJWT(reqActivityUpdate.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         if (StringUtils.isEmpty(reqActivityUpdate.getId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
         Activity activity = new Activity();
         BeanCopier beanCopier = BeanCopier.create(ReqActivity.class,Activity.class,false);
         beanCopier.copy(reqActivityUpdate,activity,null);
+        activity.setModifier(userName);
         activity.setUpdateDate(new Date());
         return activityMapper.updateByPrimaryKeySelective(activity);
     }

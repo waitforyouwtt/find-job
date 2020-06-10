@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface ProjectInfoService {
     /**
-     * 创建项目
+     * 商家管理后台创建兼职项目
      * @param reqProject
      * @return
      */
