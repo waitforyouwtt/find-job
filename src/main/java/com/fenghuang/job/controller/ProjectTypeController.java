@@ -23,7 +23,8 @@ public class ProjectTypeController {
 
     @ApiOperation( value = "新增项目类型")
     @PostMapping("/insertProjectType")
-    public Result insertProjectType(@RequestBody ReqProjectType reqProjectType){
+    public Result insertProjectType(@RequestBody ReqProjectType reqProjectType,@RequestHeader("token") String token){
+        reqProjectType.setToken(token);
         return Result.success( projectTypeService.insertProjectType(reqProjectType) );
     }
     @ApiOperation( value = "更新项目类型字段")

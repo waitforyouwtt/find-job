@@ -17,6 +17,9 @@ public class ReqProjectType extends PageHelps implements Serializable {
 
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("父级id")
     private Integer parentId;
 

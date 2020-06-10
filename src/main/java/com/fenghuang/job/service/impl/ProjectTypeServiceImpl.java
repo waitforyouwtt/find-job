@@ -9,12 +9,14 @@ import com.fenghuang.job.enums.ProjectTypeStatusEnum;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqProjectType;
 import com.fenghuang.job.service.ProjectTypeService;
+import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.ProjectTypeSearchView;
 import com.fenghuang.job.view.ProjectTypeView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,11 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
     @Override
     public int insertProjectType(ReqProjectType reqProjectType) {
         log.info( "新增项目类型 请求参数：{}", JSON.toJSONString( reqProjectType ) );
+
+        Claims claims = JwtUtil.parseJWT(reqProjectType.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         reqProjectType.setProjectTypeStatus( ProjectTypeStatusEnum.NORMAL.getCode() );
         //若存在相同名字的项目类型且为正常的状态则不允许创建
         List<ProjectType> queryProjectTypes = projectTypeMapper.findProjectType(reqProjectType);
@@ -57,8 +64,8 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
         ProjectType projectType = new ProjectType();
         BeanCopier beanCopier = BeanCopier.create( ReqProjectType.class,ProjectType.class,false );
         beanCopier.copy( reqProjectType,projectType,null );
-        projectType.setFounder(reqProjectType.getFounder());
-        projectType.setModifier(reqProjectType.getModifier());
+        projectType.setFounder(userName);
+        projectType.setModifier(userName);
         projectType.setCreateDate(new Date());
         projectType.setUpdateDate(new Date());
         return projectTypeMapper.insertSelective( projectType );

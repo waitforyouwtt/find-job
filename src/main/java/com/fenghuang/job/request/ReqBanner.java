@@ -32,6 +32,7 @@ public class ReqBanner implements Serializable {
 
     @ApiModelProperty("查询创建开始日期")
     private String createDateBegin;
+
     @ApiModelProperty("查询创建结束日期")
     private String createDateEnd;
 }
