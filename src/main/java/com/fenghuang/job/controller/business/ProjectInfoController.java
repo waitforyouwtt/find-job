@@ -80,7 +80,7 @@ public class ProjectInfoController {
 
     @ApiOperation( value = "商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表")
     @PostMapping("/partTimeJobList")
-    public Result partTimeJobList(@RequestBody ReqProjectInfoQuery4 reqProjectInfoQuery,@RequestHeader("token") String token){
+    public Result partTimeJobList(@RequestBody(required = false) ReqProjectInfoQuery4 reqProjectInfoQuery,@RequestHeader("token") String token){
         reqProjectInfoQuery.setToken(token);
         return Result.success(projectService.partTimeJobList(reqProjectInfoQuery));
     }
