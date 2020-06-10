@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface RechargeMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Recharge record);

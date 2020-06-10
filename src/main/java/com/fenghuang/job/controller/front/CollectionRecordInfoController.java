@@ -24,7 +24,8 @@ public class CollectionRecordInfoController {
 
     @ApiOperation(value = "用户新增收藏记录")
     @PostMapping("/insertCollectionRecordInfo")
-    public Result insertCollectionRecordInfo(@RequestBody ReqCollectionRecordInfo recordInfo){
+    public Result insertCollectionRecordInfo(@RequestBody ReqCollectionRecordInfo recordInfo,@RequestHeader("token") String token){
+        recordInfo.setToken(token);
        return collectionRecordInfoService.insertCollectionRecordInfo(recordInfo);
     }
 
@@ -36,7 +37,8 @@ public class CollectionRecordInfoController {
 
     @ApiOperation(value = "用户取消收藏")
     @PostMapping("/cancelCollectionRecordInfo")
-    public Result cancelCollectionRecordInfo(@RequestBody ReqCollectionRecordInfoState recordInfoState){
+    public Result cancelCollectionRecordInfo(@RequestBody ReqCollectionRecordInfoState recordInfoState,@RequestHeader("token") String token){
+        recordInfoState.setToken(token);
         return collectionRecordInfoService.cancelCollectionRecordInfo(recordInfoState);
     }
 

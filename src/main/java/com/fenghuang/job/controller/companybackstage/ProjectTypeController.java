@@ -29,7 +29,8 @@ public class ProjectTypeController {
     }
     @ApiOperation( value = "更新项目类型字段")
     @PostMapping("/modifyProjectType")
-    public Result modifyProjectType(@RequestBody ReqProjectType reqProjectType){
+    public Result modifyProjectType(@RequestBody ReqProjectType reqProjectType,@RequestHeader("token") String token){
+        reqProjectType.setToken(token);
         return Result.success( projectTypeService.modifyProjectType(reqProjectType) );
     }
     @ApiOperation( value = "根据id 查询项目类型相关信息")

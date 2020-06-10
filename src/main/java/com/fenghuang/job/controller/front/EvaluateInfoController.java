@@ -8,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -27,7 +24,8 @@ public class EvaluateInfoController {
 
     @ApiOperation(value = "新增评价记录")
     @PostMapping("/insertEvaluateInfo")
-    public Result insertEvaluateInfo(@RequestBody ReqEvaluateInfo reqEvaluateInfo){
+    public Result insertEvaluateInfo(@RequestBody ReqEvaluateInfo reqEvaluateInfo,@RequestHeader("token") String token){
+        reqEvaluateInfo.setToken(token);
         return evaluateInfoService.insertEvaluateInfo(reqEvaluateInfo);
     }
 

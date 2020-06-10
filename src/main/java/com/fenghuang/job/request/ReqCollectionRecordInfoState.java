@@ -24,6 +24,9 @@ public class ReqCollectionRecordInfoState implements Serializable{
     @ApiModelProperty("用户id")
     private Integer userId;
 
+    @ApiModelProperty("用户姓名")
+    private String userName;
+
     @ApiModelProperty("是否收藏：1 已收藏 2 取消收藏")
     private Integer collectionState;
 }

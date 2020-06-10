@@ -45,7 +45,8 @@ public class BannerController {
     }
     @ApiOperation(value = "根据ID更新轮播图状态")
     @PostMapping("/modifyBannerStatus")
-    public Result modifyBannerStatus(ReqBannerStatus reqBannerStatus){
+    public Result modifyBannerStatus(@RequestBody ReqBannerStatus reqBannerStatus,@RequestHeader("token") String token){
+        reqBannerStatus.setToken(token);
         return Result.success(bannerService.modifyBannerStatus(reqBannerStatus));
     }
 

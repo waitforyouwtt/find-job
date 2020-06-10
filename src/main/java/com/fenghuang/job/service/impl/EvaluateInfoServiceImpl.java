@@ -9,10 +9,12 @@ import com.fenghuang.job.enums.EvaluateSourceEnum;
 import com.fenghuang.job.request.ReqEvaluateInfo;
 import com.fenghuang.job.request.ReqEvaluateInfoQuery;
 import com.fenghuang.job.service.EvaluateInfoService;
+import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.EvaluateInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
@@ -45,14 +47,20 @@ public class EvaluateInfoServiceImpl implements EvaluateInfoService {
     @Override
     public Result insertEvaluateInfo(ReqEvaluateInfo reqEvaluateInfo) {
         log.info("新增评价记录 请求参数：{}", JSON.toJSONString(reqEvaluateInfo));
+
+        Claims claims = JwtUtil.parseJWT(reqEvaluateInfo.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         EvaluateInfo evaluateInfo = new EvaluateInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqEvaluateInfo.class,EvaluateInfo.class,false);
         beanCopier.copy(reqEvaluateInfo,evaluateInfo,null);
         evaluateInfo.setIsDelete(DeleteEnum.NO.getCode());
         evaluateInfo.setCreateDate(new Date());
         evaluateInfo.setUpdateDate(new Date());
-        evaluateInfo.setFounder(reqEvaluateInfo.getUserId().toString());
-        evaluateInfo.setModifier(reqEvaluateInfo.getUserId().toString());
+        evaluateInfo.setUserId(userId);
+        evaluateInfo.setFounder(userName);
+        evaluateInfo.setModifier(userName);
         return Result.success(evaluateInfoMapper.insertSelective(evaluateInfo));
     }
 

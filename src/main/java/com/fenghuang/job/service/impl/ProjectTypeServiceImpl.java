@@ -83,9 +83,15 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
         if(StringUtils.isEmpty(reqProjectType.getId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
+        Claims claims = JwtUtil.parseJWT(reqProjectType.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         ProjectType projectType = new ProjectType();
         BeanCopier beanCopier = BeanCopier.create( ReqProjectType.class,ProjectType.class,false );
         beanCopier.copy( reqProjectType,projectType,null );
+        projectType.setModifier(userName);
+        projectType.setUpdateDate(new Date());
         return projectTypeMapper.updateByPrimaryKeySelective( projectType );
     }
 

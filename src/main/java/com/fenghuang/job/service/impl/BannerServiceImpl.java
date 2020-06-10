@@ -113,6 +113,11 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public int modifyBannerStatus(ReqBannerStatus reqBannerStatus) {
         log.info("根据ID更新轮播图状态 请求参数：{}",JSON.toJSONString(reqBannerStatus));
+
+        Claims claims = JwtUtil.parseJWT(reqBannerStatus.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
         if (StringUtils.isEmpty(reqBannerStatus.getId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
@@ -120,6 +125,7 @@ public class BannerServiceImpl implements BannerService {
         BeanCopier beanCopier = BeanCopier.create(ReqBannerStatus.class,Banner.class,false);
         beanCopier.copy(reqBannerStatus,banner,null);
         banner.setUpdateDate(new Date());
+        banner.setModifier(userName);
         return bannerMapper.updateByPrimaryKeySelective(banner);
     }
 

@@ -16,6 +16,9 @@ public class ReqBannerStatus implements Serializable{
 
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("活动ID")
     private Integer activityId;
 
@@ -28,15 +31,4 @@ public class ReqBannerStatus implements Serializable{
     @ApiModelProperty("轮播图图片状态：1 正常 2失效")
     private Integer bannerImgStatus;
 
-    @ApiModelProperty("创建人")
-    private String founder;
-
-    @ApiModelProperty("修改人")
-    private String modifier;
-
-    @ApiModelProperty("创建时间")
-    private Date createDate;
-
-    @ApiModelProperty("创建时间")
-    private Date updateDate;
 }

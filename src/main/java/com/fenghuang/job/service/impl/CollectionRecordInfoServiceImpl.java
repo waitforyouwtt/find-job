@@ -53,7 +53,10 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
     @Override
     public Result insertCollectionRecordInfo(ReqCollectionRecordInfo recordInfo) {
         log.info("用户新增收藏记录 请求参数{}", JSON.toJSONString(recordInfo));
-        Integer userId = 25;
+
+        Claims claims = JwtUtil.parseJWT(recordInfo.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
 
         //同一用户同一兼职项目未删除状态下不能重复收藏
         ReqCollectionRecordInfoQuery query = new ReqCollectionRecordInfoQuery();
@@ -72,8 +75,8 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
         collectionRecordInfo.setUserId( userId );
         collectionRecordInfo.setIsDelete(DeleteEnum.NO.getCode());
         collectionRecordInfo.setIsCollection(CollectionEnum.YES.getCode());
-        collectionRecordInfo.setFounder(userId.toString());
-        collectionRecordInfo.setModifier(userId.toString());
+        collectionRecordInfo.setFounder(userName);
+        collectionRecordInfo.setModifier(userName);
         collectionRecordInfo.setCreateDate(new Date());
         collectionRecordInfo.setUpdateDate(new Date());
         return Result.success(collectionRecordInfoMapper.insertSelective(collectionRecordInfo));
@@ -202,8 +205,14 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
     @Override
     public Result cancelCollectionRecordInfo(ReqCollectionRecordInfoState recordInfoState) {
         log.info( "用户取消收藏 请求参数:{}",JSON.toJSONString( recordInfoState ) );
-        recordInfoState.setUserId( 25 );
-        recordInfoState.setCollectionState( 2 );
+
+        Claims claims = JwtUtil.parseJWT(recordInfoState.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        String  userName = claims.get("userName").toString();
+
+        recordInfoState.setUserId( userId );
+        recordInfoState.setCollectionState( CollectionStateEnum.NO.getCode() );
+        recordInfoState.setUserName(userName);
         return Result.success(collectionRecordInfoMapper.cancelCollectionRecordInfo(recordInfoState));
     }
 }

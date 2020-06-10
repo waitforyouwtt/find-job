@@ -33,6 +33,7 @@ public interface CollectionRecordInfoMapper {
 
     //用户取消收藏
     int cancelCollectionRecordInfo(ReqCollectionRecordInfoState recordInfoState);
+
     //收藏分页查询
     List<CollectionRecordInfoView> findCollectionRecordInfoPage(ReqCollectionRecordInfoQuery recordInfoQuery);
 }

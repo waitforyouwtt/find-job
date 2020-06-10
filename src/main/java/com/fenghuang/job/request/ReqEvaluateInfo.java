@@ -16,6 +16,9 @@ public class ReqEvaluateInfo implements Serializable{
 
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("项目id")
     private Integer projectId;
 
