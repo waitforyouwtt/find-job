@@ -23,10 +23,17 @@ public interface BannerService {
 
     /**
      * 根据条件查找banner
+     * @param
+     * @return
+     */
+    List<BannerView> findBanner();
+
+    /**
+     * 根据条件查找banner
      * @param reqBanner
      * @return
      */
-    List<BannerView> findBanner(ReqBanner reqBanner);
+    List<BannerView> findBannerByParams(ReqBanner reqBanner);
 
     /**
      * 根据ID更新轮播图状态

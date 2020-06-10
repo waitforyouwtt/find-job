@@ -30,6 +30,9 @@ public class ReqBanner implements Serializable {
     @ApiModelProperty("轮播图图片状态：1 正常 2失效")
     private Integer bannerImgStatus;
 
+    @ApiModelProperty("是否删除：1 删除 2 未删除")
+    private Integer isDelete;
+
     @ApiModelProperty("查询创建开始日期")
     private String createDateBegin;
 

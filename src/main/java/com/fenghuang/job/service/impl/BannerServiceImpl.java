@@ -6,6 +6,7 @@ import com.fenghuang.job.entity.Banner;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.BannerImgStatusEnum;
 import com.fenghuang.job.enums.BusinessEnum;
+import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqBanner;
 import com.fenghuang.job.request.ReqBannerStatus;
@@ -61,10 +62,9 @@ public class BannerServiceImpl implements BannerService {
         Banner banner = new Banner();
         BeanCopier beanCopier = BeanCopier.create(ReqBanner.class,Banner.class,false);
         beanCopier.copy(reqBanner,banner,null);
-        if (StringUtils.isEmpty(reqBanner.getBannerImgStatus().toString())){
-            banner.setBannerImgStatus(BannerImgStatusEnum.NORMAL.getCode());
-        }
+
         banner.setBannerImgStatus(BannerImgStatusEnum.NORMAL.getCode());
+        banner.setIsDelete(DeleteEnum.NO.getCode());
         banner.setFounder(userName);
         banner.setModifier(userName);
         banner.setCreateDate(new Date());
@@ -73,13 +73,35 @@ public class BannerServiceImpl implements BannerService {
     }
 
     /**
-     * 根据条件查找banner
-     *
-     * @param reqBanner
+     * banner 轮播图列表信息
      * @return
      */
     @Override
-    public List<BannerView> findBanner(ReqBanner reqBanner) {
+    public List<BannerView> findBanner() {
+        log.info("查找banner 轮播图列表信息");
+
+        ReqBanner reqBanner = new ReqBanner();
+        reqBanner.setBannerImgStatus(BannerImgStatusEnum.NORMAL.getCode());
+        reqBanner.setIsDelete(DeleteEnum.NO.getCode());
+
+        List<Banner> queryBanner = bannerMapper.findBanner(reqBanner);
+        if (CollectionUtils.isEmpty(queryBanner)){
+            return new ArrayList<>(16);
+        }
+        List<BannerView> views = new ArrayList<>();
+        queryBanner.stream().forEach(banner -> {
+            BannerView view = new BannerView();
+            BeanCopier beanCopier = BeanCopier.create(Banner.class, BannerView.class, false);
+            beanCopier.copy(banner,view,null);
+            view.setBannerImgStatusDesc(BannerImgStatusEnum.fromValue(banner.getBannerImgStatus()).getMsg());
+            views.add(view);
+        });
+        log.info("根据条件查找banner 返回结果：{}",JSON.toJSONString(views));
+        return views;
+    }
+
+    @Override
+    public List<BannerView> findBannerByParams(ReqBanner reqBanner) {
         log.info("根据条件查找banner 请求参数：{}",JSON.toJSONString(reqBanner));
 
         if (!StringUtils.isEmpty(reqBanner.getCreateDateBegin())){

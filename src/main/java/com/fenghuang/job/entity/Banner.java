@@ -17,6 +17,8 @@ public class Banner implements Serializable{
 
     private Integer rankField;
 
+    private Integer isDelete;
+
     private Integer bannerImgStatus;
 
     private String founder;

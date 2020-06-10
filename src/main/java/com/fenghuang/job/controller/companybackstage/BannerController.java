@@ -37,12 +37,20 @@ public class BannerController {
         return bannerService.insertBanner(reqBanner);
     }
 
-    @ApiOperation(value = "根据条件查找banner")
+    @ApiOperation(value = "banner 轮播图列表信息")
     @PostMapping("/findBanner")
     @ResponseBody
-    public Result findBanner(@RequestBody ReqBanner reqBanner){
-        return Result.success(bannerService.findBanner(reqBanner));
+    public Result findBanner(){
+        return Result.success(bannerService.findBanner());
     }
+
+    @ApiOperation(value = "根据条件查找banner")
+    @PostMapping("/findBannerByParams")
+    @ResponseBody
+    public Result findBannerByParams(@RequestBody ReqBanner reqBanner){
+        return Result.success(bannerService.findBannerByParams(reqBanner));
+    }
+
     @ApiOperation(value = "根据ID更新轮播图状态")
     @PostMapping("/modifyBannerStatus")
     public Result modifyBannerStatus(@RequestBody ReqBannerStatus reqBannerStatus,@RequestHeader("token") String token){
