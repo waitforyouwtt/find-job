@@ -4,6 +4,8 @@ import com.fenghuang.job.entity.ProjectInfo;
 import com.fenghuang.job.request.ReqProjectInfoQuery;
 import com.fenghuang.job.request.ReqProjectInfoQuery2;
 import com.fenghuang.job.request.ReqProjectInfoQuery3;
+import com.fenghuang.job.request.ReqProjectInfoQuery4;
+import com.fenghuang.job.view.PartTimeJobListView;
 import com.fenghuang.job.view.ProjectInfoView;
 import org.apache.ibatis.annotations.Param;
 
@@ -38,4 +40,7 @@ public interface ProjectInfoMapper {
 
     //根据id查询项目信息
     ProjectInfo findProjectInfoById(@Param("id") Integer id);
+
+    //商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表
+    List<PartTimeJobListView> partTimeJobList(ReqProjectInfoQuery4 reqProjectInfoQuery);
 }

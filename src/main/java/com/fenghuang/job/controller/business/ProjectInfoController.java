@@ -72,15 +72,17 @@ public class ProjectInfoController {
         return projectService.findAll();
     }
 
-    /**
-     * 根据类型名称 | 项目标签 | 项目名字模糊匹配
-     * @param reqProjectInfoQuery
-     * @return
-     */
-    @ApiOperation( value = "根据条件查询项目信息")
+    @ApiOperation( value = " 根据类型名称 | 项目标签 | 项目名字模糊匹配查询项目信息")
     @PostMapping("/findProjectByParams")
     public Result findProjectByParams(@RequestBody ReqProjectInfoQuery3 reqProjectInfoQuery){
         return Result.success(projectService.findProjectByParams(reqProjectInfoQuery));
+    }
+
+    @ApiOperation( value = "商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表")
+    @PostMapping("/partTimeJobList")
+    public Result partTimeJobList(@RequestBody ReqProjectInfoQuery4 reqProjectInfoQuery,@RequestHeader("token") String token){
+        reqProjectInfoQuery.setToken(token);
+        return Result.success(projectService.partTimeJobList(reqProjectInfoQuery));
     }
 
 }

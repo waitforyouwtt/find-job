@@ -76,4 +76,11 @@ public interface ProjectInfoService {
      * @return
      */
     Result findAll();
+
+    /**
+     * 商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表
+     * @param reqProjectInfoQuery
+     * @return
+     */
+    Result partTimeJobList(ReqProjectInfoQuery4 reqProjectInfoQuery);
 }

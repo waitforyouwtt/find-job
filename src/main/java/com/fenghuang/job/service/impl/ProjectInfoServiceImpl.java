@@ -8,6 +8,7 @@ import com.fenghuang.job.enums.*;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
 import com.fenghuang.job.utils.JwtUtil;
+import com.fenghuang.job.view.PartTimeJobListView;
 import com.fenghuang.job.view.ProjectInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -394,6 +395,24 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result findAll() {
        List<ProjectInfo> projectInfo = projectMapper.findAll( );
         return Result.success(projectInfo);
+    }
+
+    /**
+     * 商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表
+     *
+     * @param reqProjectInfoQuery
+     * @return
+     */
+    @Override
+    public Result partTimeJobList(ReqProjectInfoQuery4 reqProjectInfoQuery) {
+        log.info("商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表请求参数：{}",JSON.toJSONString(reqProjectInfoQuery));
+
+        Claims claims = JwtUtil.parseJWT(reqProjectInfoQuery.getToken());
+        Integer userId = Integer.valueOf(claims.get("userId").toString());
+        reqProjectInfoQuery.setBusinessId(userId);
+
+        List<PartTimeJobListView> partTimeJobList = projectMapper.partTimeJobList(reqProjectInfoQuery);
+        return Result.success(partTimeJobList);
     }
 
     private void convertView(List<ProjectInfoView> queryProject, List<ProjectInfoView> views) {

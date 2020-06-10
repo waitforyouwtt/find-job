@@ -915,4 +915,35 @@
     from project_info where id = #{id}
   </select>
 
+  <select id="partTimeJobList" resultType="com.fenghuang.job.view.PartTimeJobListView">
+    select
+    a.id as projectId,
+    a.project_title as projectTitle,
+    a.project_type_name as projectTypeName,
+    a.user_id as businessId,
+    a.user_name as businessName,
+    b.user_id as applyUserId,
+    b.user_name as applyUserName,
+    b.state as state,
+    b.create_date as applyTime,
+    b.update_date as approveTime
+    from project_info as a left join sign_up_info b
+    on a.id = b.project_id
+    <where>
+      and 1 = 1
+      <if test="projectTitle != null">
+        and a.project_title = #{projectTitle}
+      </if>
+      <if test="projectTypeName != null">
+        and a.project_type_name = #{projectTypeName}
+      </if>
+      <if test="state != null">
+        and b.state = #{state}
+      </if>
+      and b.is_delete = '2'
+      and a.user_id = #{businessId}
+    </where>
+
+  </select>
+
 </mapper>
