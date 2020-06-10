@@ -19,6 +19,9 @@ public class ReqBrowseRecordInfoQuery extends PageHelps implements Serializable 
 
     private Integer id;
 
+    @ApiModelProperty("用户token")
+    private String token;
+
     @ApiModelProperty("用户id")
     private Integer userId;
 

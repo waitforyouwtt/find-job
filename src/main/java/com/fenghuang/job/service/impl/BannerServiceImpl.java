@@ -160,7 +160,6 @@ public class BannerServiceImpl implements BannerService {
                 log.info("删除的结果是：{}",i);
             }
         });
-
         return 0;
     }
 }

@@ -8,10 +8,12 @@ import com.fenghuang.job.entity.ProjectInfo;
 import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
 import com.fenghuang.job.service.BrowseRecordInfoService;
+import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.BrowseRecordInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
@@ -83,9 +85,14 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
     @Override
     public PageInfo<BrowseRecordInfoView> findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery) {
         log.info( "根据条件查询浏览记录相关信息且分页 请求参数：{}", JSON.toJSONString( recordInfoQuery ) );
+
+        Claims claims = JwtUtil.parseJWT(recordInfoQuery.getToken());
+        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
         PageInfo<BrowseRecordInfoView> pageInfo = null;
         try{
             Page<?> page = PageHelper.startPage(recordInfoQuery.getPageNum(),recordInfoQuery.getPageSize());
+            recordInfoQuery.setUserId(userId);
             List<BrowseRecordInfo> queryBrowseRecordInfo = browseRecordInfoMapper.findBrowseRecordInfo(recordInfoQuery);
             if (CollectionUtils.isEmpty( queryBrowseRecordInfo )){
                 pageInfo = new PageInfo<>(new ArrayList<>(16));

@@ -101,7 +101,12 @@ public class UserInfoController {
     @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
     public Result login(@RequestBody ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
         reqLoginUserInfo.setLoginIp(BusinessUtils.getIp(request));
-        return userInfoService.ordinaryLogin(reqLoginUserInfo);
+
+        Result result = userInfoService.ordinaryLogin(reqLoginUserInfo);
+        if (result.getCode() == 200){
+            request.getSession().setAttribute("userSession", result.getData());
+        }
+        return result;
     }
 
     @PostMapping("/loginByMessage")
@@ -203,6 +208,14 @@ public class UserInfoController {
     @PostMapping("/findPersonalInformationByToken")
     public Result findPersonalInformationByToken(@RequestHeader("token") String token){
         return Result.success(userInfoService.findPersonalInformationByToken(token));
+    }
+
+    @ApiOperation(value = "退出登录")
+    @PostMapping("/loginOut")
+    public Result loginOut(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return Result.success();
     }
 
 }

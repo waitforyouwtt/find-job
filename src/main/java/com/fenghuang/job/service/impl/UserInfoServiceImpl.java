@@ -104,13 +104,19 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Result insertUser(ReqUserInfo reqUserInfo) {
         log.info("常规方式注册新用户且不允许昵称重复请求参数：{}", JSON.toJSONString(reqUserInfo));
-        ReqUserInfoQuery reqUserInfoQuery = new ReqUserInfoQuery();
-        reqUserInfoQuery.setUserNickname(reqUserInfo.getUserNickname());
-        reqUserInfoQuery.setIdCard(reqUserInfo.getIdCard());
-        reqUserInfoQuery.setMobile(reqUserInfo.getMobile());
-        reqUserInfoQuery.setIsDelete(DeleteEnum.NO.getCode());
+        UserInfo queryUserInfo = null;
+
         //注册新用户，根据注册填充数据[昵称|手机号|身份证]去查询数据库(因为姓名可以重复)，如果存在则不允许注册新用户
-        UserInfo queryUserInfo = userInfoMapper.findUserInfo(reqUserInfoQuery);
+        if (!StringUtils.isEmpty(reqUserInfo.getUserNickname())){
+            queryUserInfo = userInfoMapper.updateQueryUserInfo(reqUserInfo.getUserNickname());
+        }
+        if (!StringUtils.isEmpty(reqUserInfo.getMobile())){
+            queryUserInfo = userInfoMapper.updateQueryUserInfo(reqUserInfo.getMobile());
+        }
+        if (!StringUtils.isEmpty(reqUserInfo.getIdCard())){
+            queryUserInfo = userInfoMapper.updateQueryUserInfo(reqUserInfo.getIdCard());
+        }
+
         if (!StringUtils.isEmpty(reqUserInfo.getUserName()) && queryUserInfo != null && reqUserInfo.getUserName().equals(queryUserInfo.getUserName())){
             return Result.error(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg(),null);
         }

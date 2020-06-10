@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,7 +25,8 @@ public class BrowseRecordInfoController {
 
     @ApiOperation( "根据条件查询浏览记录相关信息且分页" )
     @PostMapping("/findBrowseRecordInfoPage")
-    public Result findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery){
+    public Result findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery,@RequestHeader("token") String token){
+        recordInfoQuery.setToken(token);
         return Result.success(  browseRecordInfoService.findBrowseRecordInfoPage(recordInfoQuery));
     }
 }
