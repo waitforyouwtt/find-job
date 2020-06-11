@@ -8,6 +8,7 @@ import com.fenghuang.job.entity.ProjectInfo;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.DeleteEnum;
+import com.fenghuang.job.request.ReqBrowseRecordInfoFrontQuery;
 import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
 import com.fenghuang.job.service.BrowseRecordInfoService;
 import com.fenghuang.job.utils.JwtUtil;
@@ -85,7 +86,7 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
      * @return
      */
     @Override
-    public Result findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery) {
+    public Result findBrowseRecordInfoPage(ReqBrowseRecordInfoFrontQuery recordInfoQuery) {
         log.info( "根据条件查询浏览记录相关信息且分页 请求参数：{}", JSON.toJSONString( recordInfoQuery ) );
 
         Integer userId = 0;

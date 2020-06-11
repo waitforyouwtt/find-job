@@ -1,14 +1,15 @@
 package com.fenghuang.job.controller.front;
 
 import com.fenghuang.job.entity.Result;
+import com.fenghuang.job.request.ReqBrowseRecordInfoFrontQuery;
 import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
 import com.fenghuang.job.service.BrowseRecordInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -25,8 +26,17 @@ public class BrowseRecordInfoController {
 
     @ApiOperation( "根据条件查询浏览记录相关信息且分页" )
     @PostMapping("/findBrowseRecordInfoPage")
-    public Result findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery,@RequestHeader("token") String token){
+    public Result findBrowseRecordInfoPage(@RequestBody ReqBrowseRecordInfoFrontQuery recordInfoQuery, @RequestHeader("token") String token){
         recordInfoQuery.setToken(token);
         return Result.success(  browseRecordInfoService.findBrowseRecordInfoPage(recordInfoQuery));
     }
+
+    @ApiOperation( "删除浏览记录" )
+    @PostMapping("/batchDelete")
+    public Result batchDeleteBrowseRecordInfo(@RequestParam("id") Integer id){
+      return  Result.success();
+    }
+
+
+
 }

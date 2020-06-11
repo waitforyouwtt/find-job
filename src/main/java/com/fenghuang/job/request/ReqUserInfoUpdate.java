@@ -78,7 +78,7 @@ public class ReqUserInfoUpdate implements Serializable {
     private Integer educationStatus;
 
     @ApiModelProperty("学历")
-    private String education;
+    private Integer education;
 
     @ApiModelProperty("紧急联系人")
     private String emergencyContactName;

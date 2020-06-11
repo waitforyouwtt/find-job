@@ -281,7 +281,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="findBrowseRecordInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqBrowseRecordInfoQuery">
+  <select id="findBrowseRecordInfo" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqBrowseRecordInfoFrontQuery">
     select
     <include refid="Base_Column_List" />
     from browse_record_info
@@ -292,7 +292,9 @@
       <if test="userId != null">
         and user_id = #{userId}
       </if>
+      and is_delete = '2'
     </where>
+
   </select>
   <select id="findByUserId" resultMap="BaseResultMap">
     select

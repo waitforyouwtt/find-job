@@ -2,6 +2,7 @@ package com.fenghuang.job.service;
 
 import com.fenghuang.job.entity.BrowseRecordInfo;
 import com.fenghuang.job.entity.Result;
+import com.fenghuang.job.request.ReqBrowseRecordInfoFrontQuery;
 import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface BrowseRecordInfoService {
      * @param recordInfoQuery
      * @return
      */
-    Result findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery);
+    Result findBrowseRecordInfoPage(ReqBrowseRecordInfoFrontQuery recordInfoQuery);
 
     /**
      * 根据用户id 查询浏览记录

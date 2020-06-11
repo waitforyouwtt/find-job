@@ -27,7 +27,7 @@
     <result column="user_type" jdbcType="INTEGER" property="userType" />
     <result column="user_level" jdbcType="INTEGER" property="userLevel" />
     <result column="education_status" jdbcType="INTEGER" property="educationStatus" />
-    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="education" jdbcType="INTEGER" property="education" />
     <result column="emergency_contact_name" jdbcType="VARCHAR" property="emergencyContactName" />
     <result column="emergency_contact_mobile" jdbcType="VARCHAR" property="emergencyContactMobile" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
@@ -250,7 +250,7 @@
         #{educationStatus,jdbcType=INTEGER},
       </if>
       <if test="education != null">
-        #{education,jdbcType=VARCHAR},
+        #{education,jdbcType=INTEGER},
       </if>
       <if test="emergencyContactName != null">
         #{emergencyContactName,jdbcType=VARCHAR},
@@ -338,6 +338,13 @@
       <if test="userLevel != null">
         user_level = #{userLevel,jdbcType=INTEGER},
       </if>
+      <if test="educationStatus != null">
+        education_status = #{educationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=INTEGER},
+      </if>
+
       <if test="emergencyContactName != null">
         emergency_contact_name = #{emergencyContactName,jdbcType=VARCHAR},
       </if>

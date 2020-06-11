@@ -62,7 +62,7 @@ public class UserInfo implements Serializable {
 
     private Integer educationStatus;
 
-    private String education;
+    private Integer education;
 
     private String emergencyContactName;
 

@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -101,7 +103,8 @@ public class BbsAreaServiceImpl implements BbsAreaService {
     public Result findBbsAreaByUPid(Integer upid) {
         List<BbsAreaView> bbsAreaViewList = new ArrayList<>();
         List<BbsAreaView> unionList = new ArrayList<>();
-        if (upid == 0) {
+        if (StringUtils.isEmpty( upid )) {
+            upid = 0;
             bbsAreaViewList = bbsAreaMapper.findBbsAreaByUPid( upid );
             List<BbsAreaView> citys = bbsAreaMapper.findBbsAreaByUPid2();
 
