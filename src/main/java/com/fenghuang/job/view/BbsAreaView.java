@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Data
 public class BbsAreaView implements Serializable{
 
-    @ApiModelProperty("id")
+    @ApiModelProperty("area_id")
     private Integer areaId;
 
     @ApiModelProperty("城市名称")
@@ -22,6 +22,6 @@ public class BbsAreaView implements Serializable{
     @ApiModelProperty("父级id")
     private Integer pid;
 
-    @ApiModelProperty("排序")
+    @ApiModelProperty("等级")
     private Integer sort;
 }

@@ -625,6 +625,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoView.setCountyAreaDesc( bbsArea.getCountyAreaDesc() );
         }
         userInfoView.setPassword("");
+        userInfoView.setEducationStatusList(EducationStatusEnum.typeEnumList());
+        userInfoView.setEducationList(EducationEnum.typeEnumList());
         return Result.success(userInfoView);
     }
 

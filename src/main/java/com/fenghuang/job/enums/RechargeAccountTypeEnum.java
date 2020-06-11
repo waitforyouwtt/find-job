@@ -1,8 +1,11 @@
 package com.fenghuang.job.enums;
 
+import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,6 +37,19 @@ public enum RechargeAccountTypeEnum {
             throw new IllegalArgumentException("参数[" + code + "]不正确，没有找到对应的 Enum");
         }
         return data;
+    }
+
+    //将枚举转换成list格式，这样前台遍历的时候比较容易，列如 下拉框 后台调用toList方法，便可以得到code 和name
+    public static List<Map> typeEnumList() {
+        //javac通过自动推导尖括号里的数据类型.
+        List list = Lists.newArrayList();
+        for (RechargeAccountTypeEnum enumClass : RechargeAccountTypeEnum.values()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put( "code", enumClass.getCode() );
+            map.put( "message", enumClass.getMsg() );
+            list.add( map );
+        }
+        return list;
     }
 
     RechargeAccountTypeEnum(Integer code, String msg) {

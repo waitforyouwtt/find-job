@@ -30,7 +30,6 @@ public class BbsAreaController {
         return Result.success(bbsAreaService.findBbsArea(reqBbsArea));
     }
 
-    @Deprecated
     @ApiOperation("根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0")
     @PostMapping("/findBbsAreaByPid")
     public Result findBbsAreaByPid(@RequestParam("pid") Integer pid){
@@ -41,5 +40,11 @@ public class BbsAreaController {
     @PostMapping("/findBbsAreas")
     public Result findBbsAreas(){
         return Result.success(bbsAreaService.findBbsAreaList());
+    }
+
+    @ApiOperation("根据父级节点查询地址信息")
+    @PostMapping("/findBbsAreaByUPid")
+    public Result findBbsAreaByUPid(@RequestParam("pid") Integer pid){
+        return Result.success(bbsAreaService.findBbsAreaByUPid(pid));
     }
 }

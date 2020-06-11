@@ -7,6 +7,8 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -125,4 +127,7 @@ public class UserInfoView implements Serializable{
 
     @ApiModelProperty("修改时间")
     private Date updateDate;
+
+    private List<Map>  educationStatusList;
+    private List<Map>  educationList;
 }

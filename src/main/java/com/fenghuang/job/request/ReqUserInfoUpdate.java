@@ -23,14 +23,26 @@ public class ReqUserInfoUpdate implements Serializable {
     @ApiModelProperty("用户名token")
     private String token;
 
-    @ApiModelProperty("用户名[用户名一但注册不可修改]")
+    @ApiModelProperty("用户名")
     private String userName;
+
+    @ApiModelProperty("生日")
+    private String birthday;
+
+    @ApiModelProperty("用户性别")
+    private Integer gender;
 
     @ApiModelProperty("用户昵称")
     private String userNickname;
 
     @ApiModelProperty("用户头像")
     private String userHead;
+
+    @ApiModelProperty("用户qq")
+    private String qq;
+
+    @ApiModelProperty("用户微信")
+    private String wechat;
 
     @ApiModelProperty("用户密码")
     private String password;
@@ -61,6 +73,12 @@ public class ReqUserInfoUpdate implements Serializable {
 
     @ApiModelProperty("修改人")
     private String modifier;
+
+    @ApiModelProperty("教育状态")
+    private Integer educationStatus;
+
+    @ApiModelProperty("学历")
+    private String education;
 
     @ApiModelProperty("紧急联系人")
     private String emergencyContactName;

@@ -9,25 +9,26 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @Author: 凤凰[小哥哥]
- * @Date: 2020/1/9 15:17
+ * @Author: luoxian
+ * @Date: 2020/6/9 14:52
  * @Email: 15290810931@163.com
  */
-public enum EvaluateSourceEnum {
+public enum EducationEnum {
 
-    USER_COMPANY(1,"用户对公司评价"),
-    COMPANY_USERNO(2,"公司对用户评价")
-    ;
+    PRIMARY_SCHOOL(1,"小学"),
+    MIDDLE_SCHOOL(2,"初中"),
+    HIGH_SCHOOL(3,"高中"),
+    UNIVERSITY(4,"大学");
 
     //根据code 找到desc 描述
-    private static final Map<Integer,EvaluateSourceEnum> valueLookup = new ConcurrentHashMap<>(values().length);
+    private static final Map<Integer,EducationEnum> valueLookup = new ConcurrentHashMap<>(values().length);
     static {
-        for (EvaluateSourceEnum type: EnumSet.allOf(EvaluateSourceEnum.class)){
+        for (EducationEnum type: EnumSet.allOf(EducationEnum.class)){
             valueLookup.put(type.code, type);
         }
     }
-    public static EvaluateSourceEnum fromValue(Integer code) {
-        EvaluateSourceEnum data = valueLookup.get(code);
+    public static EducationEnum fromValue(Integer code) {
+        EducationEnum data = valueLookup.get(code);
         if (data == null) {
             throw new IllegalArgumentException("参数[" + code + "]不正确，没有找到对应的 Enum");
         }
@@ -38,7 +39,7 @@ public enum EvaluateSourceEnum {
     public static List<Map> typeEnumList() {
         //javac通过自动推导尖括号里的数据类型.
         List list = Lists.newArrayList();
-        for (EvaluateSourceEnum enumClass : EvaluateSourceEnum.values()) {
+        for (EducationEnum enumClass : EducationEnum.values()) {
             Map<String, Object> map = new HashMap<>();
             map.put( "code", enumClass.getCode() );
             map.put( "message", enumClass.getMsg() );
@@ -47,7 +48,7 @@ public enum EvaluateSourceEnum {
         return list;
     }
 
-    EvaluateSourceEnum(Integer code, String msg) {
+    EducationEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }

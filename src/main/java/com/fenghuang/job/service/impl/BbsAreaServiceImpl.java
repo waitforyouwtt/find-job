@@ -3,19 +3,23 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.BbsAreaMapper;
 import com.fenghuang.job.entity.BbsArea;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.service.BbsAreaService;
 import com.fenghuang.job.view.BbsAreaSearchView;
 import com.fenghuang.job.view.BbsAreaView;
 import com.fenghuang.job.view.BbsAreaView2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +76,6 @@ public class BbsAreaServiceImpl implements BbsAreaService {
     @Override
     public List<BbsAreaSearchView> findBbsAreaList() {
         ReqBbsArea reqBbsArea = new ReqBbsArea();
-        reqBbsArea.setAreaId( 803 );
         List<BbsArea> queryBbsAreas = bbsAreaMapper.findBbsArea(reqBbsArea  );
         List<BbsAreaSearchView> result = Lists.newArrayList();
         queryBbsAreas.stream().forEach( bbsArea -> {
@@ -92,5 +95,21 @@ public class BbsAreaServiceImpl implements BbsAreaService {
             result.add( bbsAreaSearchView );
         } );
         return result;
+    }
+
+    @Override
+    public Result findBbsAreaByUPid(Integer upid) {
+        List<BbsAreaView> bbsAreaViewList = new ArrayList<>();
+        List<BbsAreaView> unionList = new ArrayList<>();
+        if (upid ==0){
+            bbsAreaViewList = bbsAreaMapper.findBbsAreaByUPid(upid);
+            List<BbsAreaView> citys = bbsAreaMapper.findBbsAreaByUPid2();
+
+            Set<BbsAreaView> setOne = new HashSet<>(bbsAreaViewList);
+            Set<BbsAreaView> setTwo = new HashSet<>(citys);
+            Sets.SetView<BbsAreaView> union = Sets.union(setOne, setTwo);
+            unionList = union.parallelStream().collect(Collectors.toList());
+        }
+        return Result.success(unionList);
     }
 }

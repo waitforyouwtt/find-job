@@ -130,4 +130,24 @@
       where  a.area_id = #{provinceId} and b.area_id = #{cityId} and c.area_id = #{areaId}
   </select>
 
+  <select id="findBbsAreaByUPid" resultType="com.fenghuang.job.view.BbsAreaView">
+    select
+    area_id as areaId,
+    title as title,
+    pid as pid,
+    sort as sort
+    from bbs_area
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+
+  <select id="findBbsAreaByUPid2" resultType="com.fenghuang.job.view.BbsAreaView">
+    select
+    area_id as areaId,
+    title as title,
+    pid as pid,
+    sort as sort
+    from bbs_area
+    where pid in('110000','120000','310000','500000')
+  </select>
+
 </mapper>
