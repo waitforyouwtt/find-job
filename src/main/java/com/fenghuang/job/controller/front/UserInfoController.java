@@ -201,13 +201,13 @@ public class UserInfoController {
     @ApiOperation(value = "根据登录token获取登录用户的昵称，头像，钱包余额，收藏数，浏览数，我的兼职等信息")
     @PostMapping("/findMoWaByToken")
     public Result findMoWaByToken(@RequestHeader("token") String token){
-      return Result.success(userInfoService.findMoWaByToken(token));
+      return userInfoService.findMoWaByToken(token);
     }
 
     @ApiOperation(value = "根据登录token获取个人信息")
     @PostMapping("/findPersonalInformationByToken")
     public Result findPersonalInformationByToken(@RequestHeader("token") String token){
-        return Result.success(userInfoService.findPersonalInformationByToken(token));
+        return userInfoService.findPersonalInformationByToken(token);
     }
 
     @ApiOperation(value = "退出登录")
