@@ -23,5 +23,5 @@ public class BbsAreaView implements Serializable{
     private Integer pid;
 
     @ApiModelProperty("等级")
-    private Integer sort;
+    private Integer level;
 }

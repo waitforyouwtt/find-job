@@ -101,15 +101,17 @@ public class BbsAreaServiceImpl implements BbsAreaService {
     public Result findBbsAreaByUPid(Integer upid) {
         List<BbsAreaView> bbsAreaViewList = new ArrayList<>();
         List<BbsAreaView> unionList = new ArrayList<>();
-        if (upid ==0){
-            bbsAreaViewList = bbsAreaMapper.findBbsAreaByUPid(upid);
+        if (upid == 0) {
+            bbsAreaViewList = bbsAreaMapper.findBbsAreaByUPid( upid );
             List<BbsAreaView> citys = bbsAreaMapper.findBbsAreaByUPid2();
 
-            Set<BbsAreaView> setOne = new HashSet<>(bbsAreaViewList);
-            Set<BbsAreaView> setTwo = new HashSet<>(citys);
-            Sets.SetView<BbsAreaView> union = Sets.union(setOne, setTwo);
-            unionList = union.parallelStream().collect(Collectors.toList());
+            Set<BbsAreaView> setOne = new HashSet<>( bbsAreaViewList );
+            Set<BbsAreaView> setTwo = new HashSet<>( citys );
+            Sets.SetView<BbsAreaView> union = Sets.union( setOne, setTwo );
+            unionList = union.parallelStream().collect( Collectors.toList() );
+            return Result.success( unionList );
         }
-        return Result.success(unionList);
+        bbsAreaViewList = bbsAreaMapper.findBbsAreaByUPid( upid );
+        return Result.success( bbsAreaViewList );
     }
 }

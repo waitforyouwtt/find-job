@@ -14,6 +14,6 @@ public class BbsArea implements Serializable{
 
     private Integer pid;
 
-    private Integer sort;
+    private Integer level;
 
 }

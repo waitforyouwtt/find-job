@@ -25,5 +25,5 @@ public class ReqBbsArea implements Serializable{
     private Integer pid;
 
     @ApiModelProperty("排序")
-    private Integer sort;
+    private Integer level;
 }
