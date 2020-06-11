@@ -39,7 +39,8 @@
     delete from browse_record_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.fenghuang.job.entity.BrowseRecordInfo">
+
+    <insert id="insert" parameterType="com.fenghuang.job.entity.BrowseRecordInfo">
     insert into browse_record_info (id, user_id, company_id, 
       company_name, project_id, project_title, 
       salary, salary_unit, project_label, 
@@ -307,5 +308,18 @@
     <include refid="Base_Column_List" />
     from browse_record_info where user_id = #{userId} and project_id =#{projectId} and is_delete = '2'
   </select>
+
+  <delete id="deleteByUserId">
+     delete from browse_record_info where user_id = #{userId}
+  </delete>
+
+  <delete id="deleteByUserIdAndIdList" parameterType="java.util.List">
+     delete from browse_record_info
+     where user_id = #{userId} and id in
+    <foreach collection="ids" item="item" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+
+  </delete>
 
 </mapper>

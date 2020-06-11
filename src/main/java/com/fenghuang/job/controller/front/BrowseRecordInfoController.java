@@ -31,10 +31,10 @@ public class BrowseRecordInfoController {
         return Result.success(  browseRecordInfoService.findBrowseRecordInfoPage(recordInfoQuery));
     }
 
-    @ApiOperation( "删除浏览记录" )
+    @ApiOperation( "用户删除浏览记录" )
     @PostMapping("/batchDelete")
-    public Result batchDeleteBrowseRecordInfo(@RequestParam("id") Integer id){
-      return  Result.success();
+    public Result batchDeleteBrowseRecordInfo(@RequestParam(value = "ids",required = false) String ids, @RequestHeader("token") String token){
+      return  browseRecordInfoService.batchDeleteBrowseRecordInfo(ids,token);
     }
 
 

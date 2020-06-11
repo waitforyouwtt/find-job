@@ -35,4 +35,12 @@ public interface BrowseRecordInfoService {
      * @return
      */
     List<BrowseRecordInfo> findByUserId(Integer userId);
+
+    /**
+     * 删除浏览记录
+     * @param ids
+     * @param token
+     * @return
+     */
+    Result batchDeleteBrowseRecordInfo(String ids,String token);
 }

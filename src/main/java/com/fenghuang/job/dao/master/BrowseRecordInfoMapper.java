@@ -26,4 +26,8 @@ public interface BrowseRecordInfoMapper {
     List <BrowseRecordInfo> findByUserId(@Param("userId") Integer userId);
 
     BrowseRecordInfo findBrowseRecordInfoByUserIdAndProjectId(@Param("userId") Integer userId,@Param("projectId") Integer projectId);
+
+    int deleteByUserId(@Param("userId") Integer userId);
+
+    int deleteByUserIdAndIdList(@Param("userId") Integer userId,@Param("ids") List<String> ids);
 }

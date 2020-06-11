@@ -16,11 +16,14 @@ import com.fenghuang.job.view.BrowseRecordInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Splitter;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
@@ -133,5 +136,34 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
     public List<BrowseRecordInfo> findByUserId(Integer userId) {
         log.info("根据用户id 查询收藏记录 请求参数：{}",userId);
         return browseRecordInfoMapper.findByUserId(userId);
+    }
+
+    /**
+     * 删除浏览记录
+     *
+     * @param ids
+     * @param token
+     * @return
+     */
+    @Override
+    public Result batchDeleteBrowseRecordInfo(String ids, String token) {
+        log.info( "删除浏览记录请求参数：{}",ids );
+        Integer userId = 0;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(token);
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
+        if (StringUtils.isEmpty( ids )){
+            browseRecordInfoMapper.deleteByUserId(userId);
+        }else{
+            List<String> idList = Splitter.on(",").trimResults().splitToList(ids);
+            browseRecordInfoMapper.deleteByUserIdAndIdList(userId,idList);
+        }
+        return Result.success();
     }
 }
