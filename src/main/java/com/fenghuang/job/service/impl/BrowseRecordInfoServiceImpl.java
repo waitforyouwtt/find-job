@@ -85,7 +85,7 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
      * @return
      */
     @Override
-    public PageInfo<BrowseRecordInfoView> findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery) {
+    public Result findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery) {
         log.info( "根据条件查询浏览记录相关信息且分页 请求参数：{}", JSON.toJSONString( recordInfoQuery ) );
 
         Integer userId = 0;
@@ -96,7 +96,7 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
             userName = claims.get("userName").toString();
             log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
         }catch (Exception e){
-           e.getMessage();
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
 
         PageInfo<BrowseRecordInfoView> pageInfo = null;
@@ -120,7 +120,7 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
         }catch (Exception e){
             log.info( "根据条件查询浏览记录相关信息且分页 查询异常：{}",e.getMessage() );
         }
-        return pageInfo;
+        return Result.success(pageInfo);
     }
 
     /**
