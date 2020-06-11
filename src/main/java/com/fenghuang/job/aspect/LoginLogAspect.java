@@ -45,6 +45,8 @@ public class LoginLogAspect {
 
     private final static String MESSAGE_REGISTER_METHOD = "messageRegister";
 
+    private final static String MESSAGE_FIND_PWD_METHOD = "messageFindPwd";
+
     @Around(value = "@annotation(LoginLogAnnotation)")
     public Object interceptUpdatePrice(ProceedingJoinPoint pjp) {
         Object result = new Object();
@@ -79,6 +81,12 @@ public class LoginLogAspect {
                 String registerIp = args[3].toString();
                 Integer registerMessageType = 1;
                 saveSendMessage(registerIp,registerPhone,registerMessageType);
+                break;
+            case MESSAGE_FIND_PWD_METHOD:
+                String  messageFindPwdPhone = args[2].toString();
+                String  messageFindPwdIp = args[3].toString();
+                Integer messageFindPwdType = 2;
+                saveSendMessage(messageFindPwdIp,messageFindPwdPhone,messageFindPwdType);
                 break;
             default:
                 break;

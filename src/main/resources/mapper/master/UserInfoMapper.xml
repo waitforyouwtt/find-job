@@ -466,6 +466,10 @@
     update userinfo set password = #{newPassword} where id = #{userId}
   </update>
 
+  <update id="retrievePassword" >
+    update userinfo set password = #{password} where mobile = #{mobile}
+  </update>
+
   <select id="loginQueryUserInfo" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List"/>
@@ -512,6 +516,5 @@
     and id_card = #{userName}
     and password = #{idCard}
   </select>
-
 
 </mapper>

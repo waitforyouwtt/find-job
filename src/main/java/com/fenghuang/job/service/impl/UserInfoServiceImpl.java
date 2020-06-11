@@ -593,4 +593,56 @@ public class UserInfoServiceImpl implements UserInfoService {
         return Result.success(userInfoView);
     }
 
+    /**
+     *通过短信找回密码-发送短信
+     * @return
+     */
+    @Override
+    @LoginLogAnnotation
+    public Result messageFindPwd(String messageId,String signId,String mobile,String ip) {
+        log.info("通过短信找回密码，发送验证码 请求参数：{},{},{},{}",messageId,signId,mobile,ip);
+        String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);
+        //如果调用发送短信返回信息为空，则抛出错误信息
+        if (StringUtils.isEmpty(sendMsm)){
+            return Result.error(BusinessEnum.CALL_SEND_MSM_NULL.getCode(),BusinessEnum.CALL_SEND_MSM_NULL.getMsg(),null);
+        }
+        JSONObject json = JSON.parseObject(sendMsm);
+        JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
+        log.info("通过短信找回密码，发送验证码:{}",JSON.toJSONString(jsonMessage));
+        return Result.success("短信发送成功");
+    }
+
+    /**
+     *通过短信找回密码-输入验证码，验证通过则修改密码成功，验证失败则修改密码失败
+     * @return
+     */
+    @Override
+    public Result retrievePassword(ReqLoginUserInfo userInfo) {
+        log.info("通过短信找回密码-输入验证码，验证通过则修改密码成功，验证失败则修改密码失败请求参数：{},{},{},{}",JSON.toJSONString(userInfo));
+
+        if (StringUtils.isEmpty(userInfo.getMobile())
+                || StringUtils.isEmpty(userInfo.getVerificationCode())){
+            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
+        }
+        //判断账号是否存在
+        UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(userInfo.getMobile());
+        if (queryUserInfo == null){
+            return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
+        }else{
+
+            RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
+            String VerificationCode =  request.getSession(true).getServletContext().getAttribute(userInfo.getMobile()).toString();
+
+            //判断手机号 & 验证码是否正确
+            if (!userInfo.getVerificationCode().equals(VerificationCode)){
+                return Result.error(BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getCode(),BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getMsg(),null);
+            }else{
+                String password = AesUtil.encrypt(Constants.SECRET_KEY,userInfo.getPassword());
+                userInfoMapper.retrievePassword(userInfo.getMobile(),password);
+            }
+        }
+        return Result.success("找回密码成功");
+    }
+
 }

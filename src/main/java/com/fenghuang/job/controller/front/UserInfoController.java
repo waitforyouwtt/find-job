@@ -218,4 +218,16 @@ public class UserInfoController {
         return Result.success();
     }
 
+    @ApiOperation(value = "通过短信找回密码-发送短信")
+    @PostMapping("/messageFindPwd")
+    public Result messageFindPwd(HttpServletRequest request,@RequestParam("mobile")String mobile){
+        return userInfoService.messageFindPwd(messageId,signId,mobile,BusinessUtils.getIp(request));
+    }
+
+    @ApiOperation(value = "通过短信找回密码-输入验证码，验证通过则修改密码成功，验证失败则修改密码失败")
+    @PostMapping("/retrievePassword")
+    public Result  retrievePassword(@RequestBody ReqLoginUserInfo userInfo ,HttpServletRequest request){
+       return userInfoService.retrievePassword(userInfo);
+    }
+
 }

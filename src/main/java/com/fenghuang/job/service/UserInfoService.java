@@ -114,4 +114,21 @@ public interface UserInfoService {
      * @return
      */
     Result findPersonalInformationByToken(String token);
+
+    /**
+     * 通过短信找回密码-发送短信
+     * @param messageId
+     * @param signId
+     * @param mobile
+     * @param ip
+     * @return
+     */
+    Result messageFindPwd(String messageId,String signId,String mobile,String ip);
+
+    /**
+     * 通过短信找回密码-输入验证码，验证通过则修改密码成功，验证失败则修改密码失败
+     * @param userInfo
+     * @return
+     */
+    Result retrievePassword(ReqLoginUserInfo userInfo);
 }

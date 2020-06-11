@@ -65,6 +65,9 @@ public class MessageRecordServiceImpl implements MessageRecordService {
         } else if (messageType.equals(MessageTypeEnum.LOGIN.getCode())) {
             messageRecord.setMessageType(MessageTypeEnum.LOGIN.getCode());
             messageRecord.setSendContent("您正在进行使用短信登录账号");
+        } else if(messageType.equals(MessageTypeEnum.FIND_BANK_PASSWORD.getCode())){
+            messageRecord.setMessageType(MessageTypeEnum.FIND_BANK_PASSWORD.getCode());
+            messageRecord.setSendContent("您正在进行使用短信找回密码");
         }
         messageCountMapper.insertSelective(messageRecord);
     }
