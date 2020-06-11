@@ -46,7 +46,7 @@ public class CollectionRecordInfoController {
     @PostMapping("/findCollectionRecordInfoPage")
     public Result findCollectionRecordInfoPage(@RequestBody ReqCollectionRecordInfoQuery recordInfoQuery,@RequestHeader("token") String token){
         recordInfoQuery.setToken( token );
-        return Result.success(collectionRecordInfoService.findCollectionRecordInfoPage(recordInfoQuery));
+        return collectionRecordInfoService.findCollectionRecordInfoPage(recordInfoQuery);
     }
 
     @ApiOperation(value = "根据项目id查询收藏记录详情")

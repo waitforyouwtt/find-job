@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.EvaluateInfoMapper;
 import com.fenghuang.job.entity.EvaluateInfo;
 import com.fenghuang.job.entity.Result;
+import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.enums.EvaluateSourceEnum;
 import com.fenghuang.job.request.ReqEvaluateInfo;
@@ -48,9 +49,16 @@ public class EvaluateInfoServiceImpl implements EvaluateInfoService {
     public Result insertEvaluateInfo(ReqEvaluateInfo reqEvaluateInfo) {
         log.info("新增评价记录 请求参数：{}", JSON.toJSONString(reqEvaluateInfo));
 
-        Claims claims = JwtUtil.parseJWT(reqEvaluateInfo.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId = 0;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqEvaluateInfo.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         EvaluateInfo evaluateInfo = new EvaluateInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqEvaluateInfo.class,EvaluateInfo.class,false);

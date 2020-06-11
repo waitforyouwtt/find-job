@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqProjectType;
 import com.fenghuang.job.view.ProjectTypeSearchView;
 import com.fenghuang.job.view.ProjectTypeView;
@@ -19,14 +20,14 @@ public interface ProjectTypeService {
      * @param reqProjectType
      * @return
      */
-    int insertProjectType(ReqProjectType reqProjectType);
+    Result insertProjectType(ReqProjectType reqProjectType);
 
     /**
      *更新项目类型字段
      * @param reqProjectType
      * @return
      */
-    int modifyProjectType(ReqProjectType reqProjectType);
+    Result modifyProjectType(ReqProjectType reqProjectType);
 
     /**
      *根据id 查询项目类型相关信息

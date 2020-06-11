@@ -55,8 +55,16 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
     public Result insertSignUpInfo(ReqSignUpInfo reqSignUpInfo) {
         log.info( "保存用户兼职报名信息 请求参数：{}", JSON.toJSONString(reqSignUpInfo) );
 
-        Claims claims = JwtUtil.parseJWT(reqSignUpInfo.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        Integer userId = 0;
+        String  userName ;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqSignUpInfo.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
         query.setProjectId(reqSignUpInfo.getProjectId());
@@ -185,11 +193,19 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
      * @return
      */
     @Override
-    public PageInfo<SignUpInfoUserIdView> findUserInfoSignUpInfoPage(ReqSignUpInfoByUserQuery reqSignUpInfoQuery) {
+    public Result findUserInfoSignUpInfoPage(ReqSignUpInfoByUserQuery reqSignUpInfoQuery) {
         log.info( "获取我的申请 请求参数：{}",JSON.toJSONString( reqSignUpInfoQuery ) );
 
-        Claims claims = JwtUtil.parseJWT(reqSignUpInfoQuery.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        Integer userId = 0;
+        String  userName ;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqSignUpInfoQuery.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         PageInfo<SignUpInfoUserIdView> pageInfo = null;
         try{
@@ -207,7 +223,7 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
         }catch (Exception e){
             log.info( "获取我的申请 查询异常：{}",e.getMessage() );
         }
-        return pageInfo;
+        return Result.success(pageInfo);
     }
 
     /**
@@ -219,8 +235,16 @@ public class SignUpInfoServiceImpl implements SignUpInfoService {
     public Result cancelSignUpInfo(ReqSignUpInfoUpdate reqSignUpInfoUpdate) {
         log.info( "前端用户取消报名 请求参数：{}",JSON.toJSONString( reqSignUpInfoUpdate ) );
 
-        Claims claims = JwtUtil.parseJWT(reqSignUpInfoUpdate.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        Integer userId = 0;
+        String  userName ;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqSignUpInfoUpdate.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         ReqSignUpInfoQuery query = new ReqSignUpInfoQuery();
         query.setUserId( userId );

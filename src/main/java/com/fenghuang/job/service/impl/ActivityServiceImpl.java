@@ -49,9 +49,16 @@ public class ActivityServiceImpl implements ActivityService {
     public Result insertActivity(ReqActivity reqActivity) {
         log.info("后台商家新建活动请求参数：{}", JSON.toJSONString(reqActivity));
 
-        Claims claims = JwtUtil.parseJWT(reqActivity.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqActivity.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         //新增活动时：相同名字且状态为待审核| 进行中的活动不能创建
         Activity queryActivity = activityMapper.queryActivityByTitle(reqActivity.getActivityTitle());
@@ -77,12 +84,19 @@ public class ActivityServiceImpl implements ActivityService {
      * @return
      */
     @Override
-    public int modifyActivity(ReqActivityUpdate reqActivityUpdate) {
+    public Result modifyActivity(ReqActivityUpdate reqActivityUpdate) {
         log.info("根据ID修改活动相关信息 请求参数：{}",JSON.toJSONString(reqActivityUpdate));
 
-        Claims claims = JwtUtil.parseJWT(reqActivityUpdate.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqActivityUpdate.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         if (StringUtils.isEmpty(reqActivityUpdate.getId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
@@ -92,7 +106,7 @@ public class ActivityServiceImpl implements ActivityService {
         beanCopier.copy(reqActivityUpdate,activity,null);
         activity.setModifier(userName);
         activity.setUpdateDate(new Date());
-        return activityMapper.updateByPrimaryKeySelective(activity);
+        return Result.success(activityMapper.updateByPrimaryKeySelective(activity));
     }
 
     /**

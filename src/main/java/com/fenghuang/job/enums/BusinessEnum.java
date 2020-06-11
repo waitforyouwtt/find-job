@@ -29,6 +29,8 @@ public enum BusinessEnum {
     USERINFO_EXIST(1020,"当前申请的账号已存在，不能重复注册"),
     USERINFO_STATUS_FROZENT(1021,"当前申请的账号已存在但处于冻结状态，请联系客服人员进行解冻操作"),
 
+    TOKEN_TIMEOUT_EXPRESS(2001,"登录超时，请重新登录")
+
 
     ;
 

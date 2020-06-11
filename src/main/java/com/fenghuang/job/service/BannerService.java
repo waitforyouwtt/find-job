@@ -40,7 +40,7 @@ public interface BannerService {
       * @param reqBannerStatus
      * @return
      */
-    int modifyBannerStatus(ReqBannerStatus reqBannerStatus);
+    Result modifyBannerStatus(ReqBannerStatus reqBannerStatus);
 
     /**
      * 根据id 查询banner 详情

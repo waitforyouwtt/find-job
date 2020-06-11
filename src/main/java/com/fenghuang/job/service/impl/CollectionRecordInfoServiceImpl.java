@@ -106,12 +106,20 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
      * @return
      */
     @Override
-    public PageInfo<CollectionRecordInfoView> findCollectionRecordInfoPage(ReqCollectionRecordInfoQuery recordInfoQuery) {
+    public Result findCollectionRecordInfoPage(ReqCollectionRecordInfoQuery recordInfoQuery) {
       log.info("根据条件查询收藏记录且分页 请求参数：{}",JSON.toJSONString(recordInfoQuery));
       PageInfo<CollectionRecordInfoView> pageInfo = null;
 
-        Claims claims = JwtUtil.parseJWT(recordInfoQuery.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        Integer userId = 0;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(recordInfoQuery.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         try{
           Page<?> page = PageHelper.startPage(recordInfoQuery.getPageNum(),recordInfoQuery.getPageSize());
@@ -168,9 +176,8 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
           log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
       }catch (Exception e){
           log.info("根据条件查询收藏记录且分页查询异常：{}",e.getMessage());
-          e.printStackTrace();
       }
-        return pageInfo;
+        return Result.success(pageInfo);
     }
 
     /**
@@ -206,9 +213,16 @@ public class CollectionRecordInfoServiceImpl implements CollectionRecordInfoServ
     public Result cancelCollectionRecordInfo(ReqCollectionRecordInfoState recordInfoState) {
         log.info( "用户取消收藏 请求参数:{}",JSON.toJSONString( recordInfoState ) );
 
-        Claims claims = JwtUtil.parseJWT(recordInfoState.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId = 0;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(recordInfoState.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         recordInfoState.setUserId( userId );
         recordInfoState.setCollectionState( CollectionStateEnum.NO.getCode() );

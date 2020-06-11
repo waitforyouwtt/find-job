@@ -3,6 +3,7 @@ package com.fenghuang.job.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fenghuang.job.dao.master.ProjectTypeMapper;
 import com.fenghuang.job.entity.ProjectType;
+import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.enums.ProjectTypeStatusEnum;
@@ -48,12 +49,19 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
      * @return
      */
     @Override
-    public int insertProjectType(ReqProjectType reqProjectType) {
+    public Result insertProjectType(ReqProjectType reqProjectType) {
         log.info( "新增项目类型 请求参数：{}", JSON.toJSONString( reqProjectType ) );
 
-        Claims claims = JwtUtil.parseJWT(reqProjectType.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId = 0;
+        String  userName ;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqProjectType.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         reqProjectType.setProjectTypeStatus( ProjectTypeStatusEnum.NORMAL.getCode() );
         //若存在相同名字的项目类型且为正常的状态则不允许创建
@@ -68,7 +76,7 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
         projectType.setModifier(userName);
         projectType.setCreateDate(new Date());
         projectType.setUpdateDate(new Date());
-        return projectTypeMapper.insertSelective( projectType );
+        return Result.success(projectTypeMapper.insertSelective( projectType ));
     }
 
     /**
@@ -78,21 +86,29 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
      * @return
      */
     @Override
-    public int modifyProjectType(ReqProjectType reqProjectType) {
+    public Result modifyProjectType(ReqProjectType reqProjectType) {
         log.info( "更新项目类型字段 请求参数：{}",JSON.toJSONString( reqProjectType ) );
         if(StringUtils.isEmpty(reqProjectType.getId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
-        Claims claims = JwtUtil.parseJWT(reqProjectType.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+
+        Integer userId = 0;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqProjectType.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         ProjectType projectType = new ProjectType();
         BeanCopier beanCopier = BeanCopier.create( ReqProjectType.class,ProjectType.class,false );
         beanCopier.copy( reqProjectType,projectType,null );
         projectType.setModifier(userName);
         projectType.setUpdateDate(new Date());
-        return projectTypeMapper.updateByPrimaryKeySelective( projectType );
+        return Result.success(projectTypeMapper.updateByPrimaryKeySelective( projectType ));
     }
 
     /**

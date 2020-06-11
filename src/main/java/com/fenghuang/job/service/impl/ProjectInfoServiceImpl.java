@@ -62,9 +62,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result insertProject(ReqProjectInfo reqProject) {
         log.info( "商家管理后台创建兼职项目请求参数：{}", JSON.toJSONString(reqProject) );
 
-        Claims claims = JwtUtil.parseJWT(reqProject.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId = 0;
+        String  userName = "";
+        try{
+            Claims claims = JwtUtil.parseJWT(reqProject.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         ReqProjectInfoQuery query = new ReqProjectInfoQuery();
         query.setUserId(userId);
@@ -161,9 +168,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
         }
 
-        Claims claims = JwtUtil.parseJWT(reqProject.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId = 0;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqProject.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         ProjectInfo project = new ProjectInfo();
 
@@ -216,9 +230,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result modifyProjectStatus(ReqProjectStatus reqProjectStatus) {
         log.info( "根据id更新项目状态 请求参数：{}",JSON.toJSONString( reqProjectStatus ) );
 
-        Claims claims = JwtUtil.parseJWT(reqProjectStatus.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId = 0;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqProjectStatus.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         if (StringUtils.isEmpty(reqProjectStatus.getId().toString())){
             return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
@@ -328,13 +349,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @ProjectInfoAnnotation
     public Result findProjectDetailsById(ReqProjectInfoQuery queryParams) {
         log.info("根据id查询项目信息详情 请求参数：{}",queryParams.getId());
+
         Integer userId = 0;
-        try {
+        String  userName;
+        try{
             Claims claims = JwtUtil.parseJWT(queryParams.getToken());
-            userId = Integer.valueOf(claims.get("userId").toString());
-        } catch (Exception e) {
-            log.info("当前用户未登录，请前往登录页面");
-            return Result.error(SystemCodeEnum.ACCESS_ERROR.getCode(),SystemCodeEnum.ACCESS_ERROR.getMsg(),"您好，查看兼职详情请先登录");
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
 
         List<ProjectInfoView> queryProject  =  projectMapper.findProject(queryParams);
@@ -407,8 +431,17 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result partTimeJobList(ReqProjectInfoQuery4 reqProjectInfoQuery) {
         log.info("商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表请求参数：{}",JSON.toJSONString(reqProjectInfoQuery));
 
-        Claims claims = JwtUtil.parseJWT(reqProjectInfoQuery.getToken());
-        Integer userId = Integer.valueOf(claims.get("userId").toString());
+        Integer userId = 0;
+        String  userName = "";
+        try{
+            Claims claims = JwtUtil.parseJWT(reqProjectInfoQuery.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
+
         reqProjectInfoQuery.setBusinessId(userId);
 
         List<PartTimeJobListView> partTimeJobList = projectMapper.partTimeJobList(reqProjectInfoQuery);

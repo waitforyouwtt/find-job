@@ -36,7 +36,7 @@ public interface CollectionRecordInfoService {
      * @param recordInfoQuery
      * @return
      */
-    PageInfo<CollectionRecordInfoView> findCollectionRecordInfoPage(ReqCollectionRecordInfoQuery recordInfoQuery);
+    Result findCollectionRecordInfoPage(ReqCollectionRecordInfoQuery recordInfoQuery);
 
     /**
      *根据项目id查询收藏记录详情

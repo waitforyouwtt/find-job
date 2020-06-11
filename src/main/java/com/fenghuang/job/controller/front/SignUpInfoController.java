@@ -54,7 +54,7 @@ public class SignUpInfoController {
     @PostMapping("/findUserInfoSignUpInfoPage")
     public Result findUserInfoSignUpInfoPage(@RequestBody ReqSignUpInfoByUserQuery reqSignUpInfoQuery,@RequestHeader("token") String token){
         reqSignUpInfoQuery.setToken(token);
-        return Result.success( signUpInfoService.findUserInfoSignUpInfoPage(reqSignUpInfoQuery) );
+        return signUpInfoService.findUserInfoSignUpInfoPage(reqSignUpInfoQuery);
     }
 
     @ApiOperation(value = "根据id查询用户兼职报名记录详情")

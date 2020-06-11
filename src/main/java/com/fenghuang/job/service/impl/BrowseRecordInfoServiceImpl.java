@@ -5,6 +5,8 @@ import com.fenghuang.job.dao.master.BrowseRecordInfoMapper;
 import com.fenghuang.job.dao.master.ProjectInfoMapper;
 import com.fenghuang.job.entity.BrowseRecordInfo;
 import com.fenghuang.job.entity.ProjectInfo;
+import com.fenghuang.job.entity.Result;
+import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
 import com.fenghuang.job.service.BrowseRecordInfoService;
@@ -86,8 +88,16 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
     public PageInfo<BrowseRecordInfoView> findBrowseRecordInfoPage(ReqBrowseRecordInfoQuery recordInfoQuery) {
         log.info( "根据条件查询浏览记录相关信息且分页 请求参数：{}", JSON.toJSONString( recordInfoQuery ) );
 
-        Claims claims = JwtUtil.parseJWT(recordInfoQuery.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        Integer userId = 0;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(recordInfoQuery.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+           e.getMessage();
+        }
 
         PageInfo<BrowseRecordInfoView> pageInfo = null;
         try{

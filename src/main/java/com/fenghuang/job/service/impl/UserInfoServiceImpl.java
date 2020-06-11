@@ -170,8 +170,16 @@ public class UserInfoServiceImpl implements UserInfoService {
         log.info("更新用户信息请求参数：{}", JSON.toJSONString(reqUserInfoUpdate));
         //更新用户信息先去检索数据库是否有该用户，查询结果为空则提示用户不存在
 
-        Claims claims = JwtUtil.parseJWT(reqUserInfoUpdate.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        Integer userId = 0;
+        String  userName ;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqUserInfoUpdate.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         UserInfo queryUserInfo = userInfoMapper.selectByPrimaryKey(userId);
         if (queryUserInfo == null){
@@ -259,8 +267,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     public Result changePassword(ReqUserInfoUpdate reqUserInfoUpdate) {
         log.info("用户进行修改密码 请求参数：{}",JSON.toJSON(reqUserInfoUpdate));
 
-        Claims claims = JwtUtil.parseJWT(reqUserInfoUpdate.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+        Integer userId = 0;
+        String  userName ;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqUserInfoUpdate.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         reqUserInfoUpdate.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getNewPassword()));
         reqUserInfoUpdate.setUserId( userId );
@@ -518,9 +534,18 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public UserInfoManagerView findMoWaByToken(String token) {
-        Claims claims = JwtUtil.parseJWT(token);
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+    public Result findMoWaByToken(String token) {
+
+        Integer userId = 0;
+        String  userName ;
+        try{
+            Claims claims = JwtUtil.parseJWT(token);
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         //用户信息
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
@@ -548,7 +573,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         view.setHadAdmissionNum( hadAdmissionNum );
         view.setHadSettlementNum( hadSettlementNum );
         view.setWaitEvaluateNum( waitEvaluateNum );
-        return view;
+        return Result.success(view);
     }
 
     /**
@@ -562,8 +587,18 @@ public class UserInfoServiceImpl implements UserInfoService {
         if(StringUtils.isEmpty(token)){
             return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),"token不能为空");
         }
-        Claims claims = JwtUtil.parseJWT(token);
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
+
+        Integer userId = 0;
+        String  userName ;
+        try{
+            Claims claims = JwtUtil.parseJWT(token);
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
+
         //用户信息
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         BbsAreaView3 bbsArea = null;

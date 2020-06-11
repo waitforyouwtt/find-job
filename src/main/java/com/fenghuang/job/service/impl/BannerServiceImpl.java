@@ -47,9 +47,16 @@ public class BannerServiceImpl implements BannerService {
     public Result insertBanner(ReqBanner reqBanner) {
         log.info("管理员后台添加轮播图banner 请求参数：{}", JSON.toJSONString(reqBanner));
 
-        Claims claims = JwtUtil.parseJWT(reqBanner.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqBanner.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         if (StringUtils.isEmpty(reqBanner.getActivityId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
@@ -133,12 +140,19 @@ public class BannerServiceImpl implements BannerService {
      * @return
      */
     @Override
-    public int modifyBannerStatus(ReqBannerStatus reqBannerStatus) {
+    public Result modifyBannerStatus(ReqBannerStatus reqBannerStatus) {
         log.info("根据ID更新轮播图状态 请求参数：{}",JSON.toJSONString(reqBannerStatus));
 
-        Claims claims = JwtUtil.parseJWT(reqBannerStatus.getToken());
-        Integer userId = Integer.parseInt(claims.get("userId").toString()) ;
-        String  userName = claims.get("userName").toString();
+        Integer userId;
+        String  userName;
+        try{
+            Claims claims = JwtUtil.parseJWT(reqBannerStatus.getToken());
+            userId = Integer.parseInt(claims.get("userId").toString()) ;
+            userName = claims.get("userName").toString();
+            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
 
         if (StringUtils.isEmpty(reqBannerStatus.getId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
@@ -148,7 +162,7 @@ public class BannerServiceImpl implements BannerService {
         beanCopier.copy(reqBannerStatus,banner,null);
         banner.setUpdateDate(new Date());
         banner.setModifier(userName);
-        return bannerMapper.updateByPrimaryKeySelective(banner);
+        return Result.success(bannerMapper.updateByPrimaryKeySelective(banner));
     }
 
     /**

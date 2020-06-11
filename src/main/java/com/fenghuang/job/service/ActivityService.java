@@ -25,7 +25,7 @@ public interface ActivityService {
      * @param reqActivityUpdate
      * @return
      */
-    int modifyActivity(ReqActivityUpdate reqActivityUpdate);
+    Result modifyActivity(ReqActivityUpdate reqActivityUpdate);
 
     /**
      * 根据id 查询活动详情

@@ -106,7 +106,7 @@ public interface UserInfoService {
      * @param token
      * @return
      */
-    UserInfoManagerView findMoWaByToken(String token);
+    Result findMoWaByToken(String token);
 
     /**
      * 根据登录token获取个人信息
