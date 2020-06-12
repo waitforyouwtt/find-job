@@ -280,6 +280,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         userName = user.get("userName").toString();
         log.info("解析token获取的结果{},{}",userId,userName);
 
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        //判断输入的旧密码是否正确
+        if (!AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getPassword()).equals(userInfo.getPassword())){
+          return Result.error(BusinessEnum.VALIDATE_OLD_PASSWORD_ERROR.getCode(),BusinessEnum.VALIDATE_OLD_PASSWORD_ERROR.getMsg(),null);
+        }
         reqUserInfoUpdate.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getNewPassword()));
         reqUserInfoUpdate.setUserId( userId );
         return Result.success(userInfoMapper.changePassword(reqUserInfoUpdate));

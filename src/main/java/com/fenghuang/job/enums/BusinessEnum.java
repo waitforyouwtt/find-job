@@ -28,6 +28,8 @@ public enum BusinessEnum {
     USERINFO_MESSAGE_ALREADY_EXISTS(1019,"该昵称在系统中已存在，请更换其他昵称"),
     USERINFO_EXIST(1020,"当前申请的账号已存在，不能重复注册"),
     USERINFO_STATUS_FROZENT(1021,"当前申请的账号已存在但处于冻结状态，请联系客服人员进行解冻操作"),
+    VALIDATE_OLD_PASSWORD_ERROR(1022,"对不起，您输入的旧密码错误，请重新输入"),
+
 
     TOKEN_TIMEOUT_EXPRESS(2001,"登录超时，请重新登录")
 
