@@ -25,7 +25,7 @@ public class BbsAreaController {
     BbsAreaService bbsAreaService;
 
     @ApiOperation("根据area_id or title or pid 查询地址相关信息")
-    @PostMapping("/findBbsArea")
+    @PostMapping("/findBbsAreaList")
     public Result findBbsArea(@RequestBody ReqBbsArea reqBbsArea){
         return Result.success(bbsAreaService.findBbsArea(reqBbsArea));
     }
@@ -37,7 +37,7 @@ public class BbsAreaController {
     }
 
     @ApiOperation("根据父级节点查询地址信息")
-    @PostMapping("/findBbsAreaByUPid")
+    @PostMapping("//findBbsAreas")
     public Result findBbsAreaByUPid(@RequestParam(value = "pid",required = false) Integer pid){
         return Result.success(bbsAreaService.findBbsAreaByUPid(pid));
     }
