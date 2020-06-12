@@ -53,9 +53,6 @@ public class UserInfoView implements Serializable{
     @ApiModelProperty("用户手机号")
     private String mobile;
 
-    @ApiModelProperty("用户所在省市")
-    private String provinceCity;
-
     @ApiModelProperty("用户地址")
     private String address;
 
@@ -90,7 +87,8 @@ public class UserInfoView implements Serializable{
     private String educationStatusDesc;
 
     @ApiModelProperty("学历")
-    private String education;
+    private Integer education;
+    private String educationDesc;
 
     @ApiModelProperty("紧急联系人")
     private String emergencyContactName;

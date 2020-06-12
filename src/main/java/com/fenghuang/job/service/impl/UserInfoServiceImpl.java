@@ -566,8 +566,13 @@ public class UserInfoServiceImpl implements UserInfoService {
         Integer waitEvaluateNum = signUpInfoViews.stream().filter(sign -> sign.getState().equals(SignUpInfoEnum.WAIT_EVALUATE.getCode())).collect(toList()).size();
 
         UserInfoManagerView view = new UserInfoManagerView();
+        view.setUserId(userId);
+        view.setUserName(userName);
         view.setUserNickName( userInfo.getUserNickname() );
         view.setUserHead( userInfo.getUserHead() );
+        view.setMobile(user.get("mobile").toString());
+        view.setGender(Integer.valueOf(user.get("gender").toString()));
+        view.setGenderDesc(GenderEnum.fromValue(Integer.valueOf(user.get("gender").toString())).getMsg());
         view.setAmount(userInfo.getAmount() == null? null: userInfo.getAmount());
         view.setCollectionNum(byUserIdCollection.size());
         view.setBrowseNum(byUserIdBrowse.size());
@@ -618,6 +623,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoView.setUserStatusDesc(UserInfoStatusEnum.fromValue(userInfo.getUserStatus()).getMsg());
         userInfoView.setEducationStatusDesc(EducationStatusEnum.fromValue(userInfo.getEducationStatus()).getMsg());
         userInfoView.setUserTypeDesc(UserTypeEnum.fromValue(userInfo.getUserType()).getMsg());
+        userInfoView.setEducationDesc(EducationEnum.fromValue(userInfo.getEducation()).getMsg());
         if (bbsArea != null){
             userInfoView.setProvinceId( bbsArea.getProvinceId() );
             userInfoView.setProvinceDesc( bbsArea.getProvinceDesc() );
@@ -626,7 +632,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoView.setCountyAreaId( bbsArea.getCountyAreaId() );
             userInfoView.setCountyAreaDesc( bbsArea.getCountyAreaDesc() );
         }
-        userInfoView.setPassword("");
+        userInfoView.setPassword("******");
         userInfoView.setEducationStatusList(EducationStatusEnum.typeEnumList());
         userInfoView.setEducationList(EducationEnum.typeEnumList());
         return Result.success(userInfoView);

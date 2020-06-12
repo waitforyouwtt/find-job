@@ -26,13 +26,19 @@ public class UserInfoByTokenSerivce {
     public Result getUserInfoByToken(String token){
         String userId;
         String  userName;
+        String mobile;
+        String gender;
         Map<String,String> map = new HashMap<>();
         try{
             Claims claims = JwtUtil.parseJWT(token);
             userId = claims.get("userId").toString() ;
             userName = claims.get("userName").toString();
+            mobile = claims.get("mobile").toString();
+            gender = claims.get("gender").toString();
             map.put("userId",userId);
             map.put("userName",userName);
+            map.put("mobile",mobile);
+            map.put("gender",gender);
             log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
         }catch (Exception e){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
