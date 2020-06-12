@@ -24,9 +24,6 @@ public interface BbsAreaMapper {
 
     List<BbsArea> findBbsArea(ReqBbsArea reqBbsArea);
 
-    //根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0
-    List<BbsAreaView2> findBbsAreaByPid(@Param("pid") Integer pid);
-
     BbsAreaView3 findBbsAreaByParams(@Param( "provinceId" )Integer provinceId,
                                      @Param( "cityId" )Integer cityId,@Param( "areaId" )Integer areaId);
 

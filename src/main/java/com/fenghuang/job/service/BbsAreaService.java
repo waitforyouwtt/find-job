@@ -18,19 +18,16 @@ import java.util.List;
 @Mapper
 public interface BbsAreaService {
     /**
-     * 根据条件查询地址相关信息
+     * 根据area_id or title or pid 查询地址相关信息
      * @param reqBbsArea
      * @return
      */
     List<BbsAreaView> findBbsArea(ReqBbsArea reqBbsArea);
 
     /**
-     * 根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0
-     * @param pid
+     * 初始化地理位置信息：递归方法
      * @return
      */
-    List<BbsAreaView2> findBbsAreaByPid(Integer pid);
-
     List<BbsAreaSearchView> findBbsAreaList();
 
     /**

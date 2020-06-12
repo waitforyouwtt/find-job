@@ -24,21 +24,15 @@ public class BbsAreaController {
     @Autowired
     BbsAreaService bbsAreaService;
 
-    @ApiOperation("根据条件查询地址相关信息")
+    @ApiOperation("根据area_id or title or pid 查询地址相关信息")
     @PostMapping("/findBbsArea")
     public Result findBbsArea(@RequestBody ReqBbsArea reqBbsArea){
         return Result.success(bbsAreaService.findBbsArea(reqBbsArea));
     }
 
-    @ApiOperation("根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0")
-    @PostMapping("/findBbsAreaByPid")
-    public Result findBbsAreaByPid(@RequestParam("pid") Integer pid){
-       return Result.success(bbsAreaService.findBbsAreaByPid(pid));
-    }
-
-    @ApiOperation("根据条件查询地址相关信息")
-    @PostMapping("/findBbsAreas")
-    public Result findBbsAreas(){
+    @ApiOperation("初始化地理位置信息：递归方法")
+    @PostMapping("/initBbsAreas")
+    public Result initBbsAreas(){
         return Result.success(bbsAreaService.findBbsAreaList());
     }
 

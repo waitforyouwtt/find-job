@@ -36,14 +36,14 @@ public class BbsAreaServiceImpl implements BbsAreaService {
     @Resource
     BbsAreaMapper bbsAreaMapper;
     /**
-     * 根据条件查询地址相关信息
+     * 根据area_id or title or pid 查询地址相关信息
      *
      * @param reqBbsArea
      * @return
      */
     @Override
     public List<BbsAreaView> findBbsArea(ReqBbsArea reqBbsArea) {
-        log.info("根据条件查询地址相关信息 请求参数：{}", JSON.toJSONString(reqBbsArea));
+        log.info("根据area_id or title or pid 查询地址相关信息请求参数：{}", JSON.toJSONString(reqBbsArea));
         List<BbsArea> queryBbsAreas = bbsAreaMapper.findBbsArea(reqBbsArea);
         List<BbsAreaView> views  = new ArrayList<>();
         if (CollectionUtils.isEmpty(queryBbsAreas)){
@@ -60,21 +60,9 @@ public class BbsAreaServiceImpl implements BbsAreaService {
     }
 
     /**
-     * 根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0
-     *
-     * @param pid
+     * 初始化地理位置信息：递归方法
      * @return
      */
-    @Override
-    public List<BbsAreaView2> findBbsAreaByPid(Integer pid) {
-        log.info("根据父级节点查询子节点相关信息:只查询省级直辖市参数传：0 请求参数：{}",pid);
-        List<BbsAreaView2> queryBbsAreas = bbsAreaMapper.findBbsAreaByPid(pid);
-        if (CollectionUtils.isEmpty(queryBbsAreas)){
-            return new ArrayList<>();
-        }
-        return queryBbsAreas;
-    }
-
     @Override
     public List<BbsAreaSearchView> findBbsAreaList() {
         ReqBbsArea reqBbsArea = new ReqBbsArea();

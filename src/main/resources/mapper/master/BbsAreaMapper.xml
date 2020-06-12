@@ -96,25 +96,7 @@
       </if>
     </where>
   </select>
-    <select id="findBbsAreaByPid" resultType="com.fenghuang.job.view.BbsAreaView2">
-      select
-      parent.area_id as parentId,
-      parent.title   as parentTitle,
-      parent.pid     as parentPid,
-      son.area_id  as sonId,
-      son.title    as sonTitle,
-      son.pid      as sonPid,
-      area.area_id as areaId,
-      area.title   as areaTitle,
-      area.pid     as areaPid
-      from bbs_area as son
-      inner join bbs_area as parent on parent.area_id=son.pid
-      left join bbs_area as area on son.area_id=area.pid
-    </select>
-  <!--   where
-     /* #parent.title='河南';*/
-      #parent.pid = '1533'
-      son.pid = '1533'-->
+
 
   <select id="findBbsAreaByParams" resultType="com.fenghuang.job.view.BbsAreaView3">
       select
