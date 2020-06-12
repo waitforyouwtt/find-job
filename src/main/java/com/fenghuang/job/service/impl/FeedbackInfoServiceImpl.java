@@ -55,6 +55,7 @@ public class FeedbackInfoServiceImpl implements FeedbackInfoService {
         FeedbackInfo feedbackInfo = new FeedbackInfo();
         feedbackInfo.setUserId( userId );
         feedbackInfo.setUserName( userName );
+        feedbackInfo.setFeedback( infoView.getFeedback() );
         feedbackInfo.setIsRead( ReadStatusEnum.NO.getCode() );
         feedbackInfo.setCreateTime( new Date(  ) );
         feedbackInfo.setUpdateTime( new Date(  ) );
