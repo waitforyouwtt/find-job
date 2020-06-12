@@ -11,10 +11,9 @@ import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqBanner;
 import com.fenghuang.job.request.ReqBannerStatus;
 import com.fenghuang.job.service.BannerService;
-import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.BannerView;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -37,6 +36,9 @@ public class BannerServiceImpl implements BannerService {
 
     @Resource
     BannerMapper bannerMapper;
+
+    @Autowired
+    UserInfoByTokenSerivce userInfoByTokenSerivce;
     /**
      * 管理员后台添加轮播图banner
      *
@@ -48,15 +50,15 @@ public class BannerServiceImpl implements BannerService {
         log.info("管理员后台添加轮播图banner 请求参数：{}", JSON.toJSONString(reqBanner));
 
         Integer userId;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqBanner.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqBanner.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         if (StringUtils.isEmpty(reqBanner.getActivityId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
@@ -144,15 +146,15 @@ public class BannerServiceImpl implements BannerService {
         log.info("根据ID更新轮播图状态 请求参数：{}",JSON.toJSONString(reqBannerStatus));
 
         Integer userId;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqBannerStatus.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqBannerStatus.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         if (StringUtils.isEmpty(reqBannerStatus.getId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());

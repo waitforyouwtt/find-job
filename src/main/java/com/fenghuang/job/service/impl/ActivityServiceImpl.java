@@ -12,13 +12,12 @@ import com.fenghuang.job.request.ReqActivity;
 import com.fenghuang.job.request.ReqActivityQuery;
 import com.fenghuang.job.request.ReqActivityUpdate;
 import com.fenghuang.job.service.ActivityService;
-import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.ActivityView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -27,6 +26,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -39,6 +39,10 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Resource
     ActivityMapper activityMapper;
+
+    @Autowired
+    UserInfoByTokenSerivce userInfoByTokenSerivce;
+
     /**
      * 后台商家新建活动
      *
@@ -50,15 +54,15 @@ public class ActivityServiceImpl implements ActivityService {
         log.info("后台商家新建活动请求参数：{}", JSON.toJSONString(reqActivity));
 
         Integer userId;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqActivity.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqActivity.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         //新增活动时：相同名字且状态为待审核| 进行中的活动不能创建
         Activity queryActivity = activityMapper.queryActivityByTitle(reqActivity.getActivityTitle());
@@ -88,15 +92,15 @@ public class ActivityServiceImpl implements ActivityService {
         log.info("根据ID修改活动相关信息 请求参数：{}",JSON.toJSONString(reqActivityUpdate));
 
         Integer userId;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqActivityUpdate.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqActivityUpdate.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         if (StringUtils.isEmpty(reqActivityUpdate.getId())){
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());

@@ -10,15 +10,14 @@ import com.fenghuang.job.enums.ProjectTypeStatusEnum;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.ReqProjectType;
 import com.fenghuang.job.service.ProjectTypeService;
-import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.ProjectTypeSearchView;
 import com.fenghuang.job.view.ProjectTypeView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -27,6 +26,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +42,9 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
     @Resource
     private ProjectTypeMapper projectTypeMapper;
 
+    @Autowired
+    UserInfoByTokenSerivce userInfoByTokenSerivce;
+
     /**
      * 新增项目类型
      *
@@ -52,16 +55,16 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
     public Result insertProjectType(ReqProjectType reqProjectType) {
         log.info( "新增项目类型 请求参数：{}", JSON.toJSONString( reqProjectType ) );
 
-        Integer userId = 0;
+        Integer userId;
         String  userName ;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqProjectType.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqProjectType.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         reqProjectType.setProjectTypeStatus( ProjectTypeStatusEnum.NORMAL.getCode() );
         //若存在相同名字的项目类型且为正常的状态则不允许创建
@@ -92,16 +95,16 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
             throw new BusinessException(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg());
         }
 
-        Integer userId = 0;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqProjectType.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqProjectType.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         ProjectType projectType = new ProjectType();
         BeanCopier beanCopier = BeanCopier.create( ReqProjectType.class,ProjectType.class,false );

@@ -7,7 +7,6 @@ import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.ProjectInfoService;
-import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.PartTimeJobListView;
 import com.fenghuang.job.view.ProjectInfoView;
 import com.github.pagehelper.Page;
@@ -15,9 +14,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +49,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Resource
     CollectionRecordInfoMapper collectionRecordInfoMapper;
 
+    @Autowired
+    UserInfoByTokenSerivce userInfoByTokenSerivce;
+
     /**
      * 商家管理后台创建兼职项目
      *
@@ -61,16 +63,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result insertProject(ReqProjectInfo reqProject) {
         log.info( "商家管理后台创建兼职项目请求参数：{}", JSON.toJSONString(reqProject) );
 
-        Integer userId = 0;
-        String  userName = "";
-        try{
-            Claims claims = JwtUtil.parseJWT(reqProject.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqProject.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         ReqProjectInfoQuery query = new ReqProjectInfoQuery();
         query.setUserId(userId);
@@ -167,16 +169,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
         }
 
-        Integer userId = 0;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqProject.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqProject.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         ProjectInfo project = new ProjectInfo();
 
@@ -229,16 +231,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result modifyProjectStatus(ReqProjectStatus reqProjectStatus) {
         log.info( "根据id更新项目状态 请求参数：{}",JSON.toJSONString( reqProjectStatus ) );
 
-        Integer userId = 0;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqProjectStatus.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqProjectStatus.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         if (StringUtils.isEmpty(reqProjectStatus.getId().toString())){
             return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
@@ -349,16 +351,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result findProjectDetailsById(ReqProjectInfoQuery queryParams) {
         log.info("根据id查询项目信息详情 请求参数：{}",queryParams.getId());
 
-        Integer userId = 0;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(queryParams.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(queryParams.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         List<ProjectInfoView> queryProject  =  projectMapper.findProject(queryParams);
         if (CollectionUtils.isEmpty( queryProject )){
@@ -430,16 +432,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result partTimeJobList(ReqProjectInfoQuery4 reqProjectInfoQuery) {
         log.info("商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表请求参数：{}",JSON.toJSONString(reqProjectInfoQuery));
 
-        Integer userId = 0;
-        String  userName = "";
-        try{
-            Claims claims = JwtUtil.parseJWT(reqProjectInfoQuery.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqProjectInfoQuery.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         reqProjectInfoQuery.setBusinessId(userId);
 

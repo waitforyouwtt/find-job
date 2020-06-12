@@ -10,21 +10,17 @@ import com.fenghuang.job.enums.EvaluateSourceEnum;
 import com.fenghuang.job.request.ReqEvaluateInfo;
 import com.fenghuang.job.request.ReqEvaluateInfoQuery;
 import com.fenghuang.job.service.EvaluateInfoService;
-import com.fenghuang.job.utils.JwtUtil;
 import com.fenghuang.job.view.EvaluateInfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -39,6 +35,9 @@ public class EvaluateInfoServiceImpl implements EvaluateInfoService {
     @Resource
     EvaluateInfoMapper evaluateInfoMapper;
 
+    @Autowired
+    UserInfoByTokenSerivce userInfoByTokenSerivce;
+
     /**
      * 新增评价记录
      *
@@ -49,16 +48,16 @@ public class EvaluateInfoServiceImpl implements EvaluateInfoService {
     public Result insertEvaluateInfo(ReqEvaluateInfo reqEvaluateInfo) {
         log.info("新增评价记录 请求参数：{}", JSON.toJSONString(reqEvaluateInfo));
 
-        Integer userId = 0;
-        String  userName;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqEvaluateInfo.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqEvaluateInfo.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         EvaluateInfo evaluateInfo = new EvaluateInfo();
         BeanCopier beanCopier = BeanCopier.create(ReqEvaluateInfo.class,EvaluateInfo.class,false);

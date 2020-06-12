@@ -19,7 +19,6 @@ import com.fenghuang.job.view.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
@@ -63,6 +62,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Resource
     BbsAreaMapper bbsAreaMapper;
+
+    @Autowired
+    UserInfoByTokenSerivce userInfoByTokenSerivce;
 
     /**
      * 根据用户名字获取记录[可能有重名的人]
@@ -170,16 +172,16 @@ public class UserInfoServiceImpl implements UserInfoService {
         log.info("更新用户信息请求参数：{}", JSON.toJSONString(reqUserInfoUpdate));
         //更新用户信息先去检索数据库是否有该用户，查询结果为空则提示用户不存在
 
-        Integer userId = 0;
+        Integer userId;
         String  userName ;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqUserInfoUpdate.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Result userInfoByToken = this.userInfoByTokenSerivce.getUserInfoByToken(reqUserInfoUpdate.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         UserInfo queryUserInfo = userInfoMapper.selectByPrimaryKey(userId);
         if (queryUserInfo == null){
@@ -267,16 +269,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     public Result changePassword(ReqUserInfoUpdate reqUserInfoUpdate) {
         log.info("用户进行修改密码 请求参数：{}",JSON.toJSON(reqUserInfoUpdate));
 
-        Integer userId = 0;
+        Integer userId;
         String  userName ;
-        try{
-            Claims claims = JwtUtil.parseJWT(reqUserInfoUpdate.getToken());
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqUserInfoUpdate.getToken());
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         reqUserInfoUpdate.setNewPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getNewPassword()));
         reqUserInfoUpdate.setUserId( userId );
@@ -536,16 +538,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Result findMoWaByToken(String token) {
 
-        Integer userId = 0;
+        Integer userId;
         String  userName ;
-        try{
-            Claims claims = JwtUtil.parseJWT(token);
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(token);
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         //用户信息
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
@@ -588,16 +590,16 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),"token不能为空");
         }
 
-        Integer userId = 0;
+        Integer userId;
         String  userName ;
-        try{
-            Claims claims = JwtUtil.parseJWT(token);
-            userId = Integer.parseInt(claims.get("userId").toString()) ;
-            userName = claims.get("userName").toString();
-            log.info("通过token 解析的用户id：{},用户名：{}",userId,userName);
-        }catch (Exception e){
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(token);
+        if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
 
         //用户信息
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
