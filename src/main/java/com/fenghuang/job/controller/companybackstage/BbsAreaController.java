@@ -39,6 +39,6 @@ public class BbsAreaController {
     @ApiOperation("根据父级节点查询地址信息")
     @PostMapping("//findBbsAreas")
     public Result findBbsAreaByUPid(@RequestParam(value = "pid",required = false) Integer pid){
-        return Result.success(bbsAreaService.findBbsAreaByUPid(pid));
+        return bbsAreaService.findBbsAreaByUPid(pid);
     }
 }
