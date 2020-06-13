@@ -1,6 +1,7 @@
 package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.master.BbsAreaMapper;
 import com.fenghuang.job.entity.BbsArea;
 import com.fenghuang.job.entity.Result;
@@ -12,16 +13,15 @@ import com.fenghuang.job.view.BbsAreaView2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.comparators.FixedOrderComparator;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +91,7 @@ public class BbsAreaServiceImpl implements BbsAreaService {
     public Result findBbsAreaByUPid(Integer upid) {
         List<BbsAreaView> bbsAreaViewList = new ArrayList<>();
         List<BbsAreaView> unionList = new ArrayList<>();
-        if (StringUtils.isEmpty( upid )) {
+        if (StringUtils.isEmpty( upid ) || upid == 0) {
             upid = 0;
             bbsAreaViewList = bbsAreaMapper.findBbsAreaByUPid( upid );
             List<BbsAreaView> citys = bbsAreaMapper.findBbsAreaByUPid2();
@@ -100,9 +100,9 @@ public class BbsAreaServiceImpl implements BbsAreaService {
             Set<BbsAreaView> setTwo = new HashSet<>( citys );
             Sets.SetView<BbsAreaView> union = Sets.union( setOne, setTwo );
             unionList = union.parallelStream().collect( Collectors.toList() );
+            Collections.sort(unionList, new BeanComparator<BbsAreaView>("areaId", new FixedOrderComparator( Constants.sortList() )));
             return Result.success( unionList );
         }
-        bbsAreaViewList = bbsAreaMapper.findBbsAreaByUPid( upid );
-        return Result.success( bbsAreaViewList );
+        return Result.success( bbsAreaMapper.findBbsAreaByUPid( upid ) );
     }
 }
