@@ -637,11 +637,22 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfoView userInfoView = new UserInfoView();
         BeanCopier beanCopier = BeanCopier.create(UserInfo.class,UserInfoView.class,false);
         beanCopier.copy(userInfo,userInfoView,null);
-        userInfoView.setGenderDesc(GenderEnum.fromValue(userInfo.getGender()).getMsg());
-        userInfoView.setUserStatusDesc(UserInfoStatusEnum.fromValue(userInfo.getUserStatus()).getMsg());
-        userInfoView.setEducationStatusDesc(EducationStatusEnum.fromValue(userInfo.getEducationStatus()).getMsg());
-        userInfoView.setUserTypeDesc(UserTypeEnum.fromValue(userInfo.getUserType()).getMsg());
-        userInfoView.setEducationDesc(EducationEnum.fromValue(userInfo.getEducation()).getMsg());
+        if(!StringUtils.isEmpty( userInfo.getGender() )){
+            userInfoView.setGenderDesc(GenderEnum.fromValue(userInfo.getGender()).getMsg());
+        }
+        if (!StringUtils.isEmpty( userInfo.getUserStatus())){
+            userInfoView.setUserStatusDesc(UserInfoStatusEnum.fromValue(userInfo.getUserStatus()).getMsg());
+        }
+        if (!StringUtils.isEmpty( userInfo.getEducationStatus())){
+            userInfoView.setEducationStatusDesc(EducationStatusEnum.fromValue(userInfo.getEducationStatus()).getMsg());
+        }
+        if (!StringUtils.isEmpty( userInfo.getUserType() )){
+            userInfoView.setUserTypeDesc(UserTypeEnum.fromValue(userInfo.getUserType()).getMsg());
+        }
+        if (!StringUtils.isEmpty( userInfo.getEducation() )){
+            userInfoView.setEducationDesc(EducationEnum.fromValue(userInfo.getEducation()).getMsg());
+        }
+
         if (bbsArea != null){
             userInfoView.setProvinceId( bbsArea.getProvinceId() );
             userInfoView.setProvinceDesc( bbsArea.getProvinceDesc() );
