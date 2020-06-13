@@ -17,9 +17,9 @@ public class FeedbackInfo implements Serializable {
 
     private Integer isRead;
 
-    private Date createTime;
+    private Date createDate;
 
-    private Date updateTime;
+    private Date updateDate;
 
     private String founder;
 

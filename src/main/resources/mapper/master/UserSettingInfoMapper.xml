@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fenghuang.job.dao.master.UserSettingInfoMapper">
+  <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.UserSettingInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="employment_intention" jdbcType="INTEGER" property="employmentIntention" />
+    <result column="personal_signature" jdbcType="VARCHAR" property="personalSignature" />
+    <result column="send_like_job" jdbcType="INTEGER" property="sendLikeJob" />
+    <result column="send_email" jdbcType="INTEGER" property="sendEmail" />
+    <result column="send_message" jdbcType="INTEGER" property="sendMessage" />
+    <result column="send_wechant" jdbcType="INTEGER" property="sendWechant" />
+    <result column="send_public_account" jdbcType="INTEGER" property="sendPublicAccount" />
+    <result column="shield_companys" jdbcType="VARCHAR" property="shieldCompanys" />
+    <result column="is_personal_information_public" jdbcType="INTEGER" property="isPersonalInformationPublic" />
+    <result column="setting_state" jdbcType="INTEGER" property="settingState" />
+    <result column="founder" jdbcType="VARCHAR" property="founder" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, employment_intention,personal_signature, send_like_job, send_email,
+    send_message, send_wechant, send_public_account, shield_companys, is_personal_information_public, 
+    setting_state, founder, modifier, create_date, update_date
+  </sql>
+
+  <select id="selectByUerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_setting_info
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_setting_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insert" parameterType="com.fenghuang.job.entity.UserSettingInfo">
+    insert into user_setting_info (id, user_id, employment_intention,personal_signature, send_like_job, send_email,
+      send_message, send_wechant, send_public_account,shield_companys, is_personal_information_public,
+      setting_state, founder, modifier,create_date, update_date)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{employmentIntention,jdbcType=INTEGER}, 
+      #{personalSignature,jdbcType=VARCHAR}, #{sendLikeJob,jdbcType=INTEGER}, #{sendEmail,jdbcType=INTEGER},
+      #{sendMessage,jdbcType=INTEGER}, #{sendWechant,jdbcType=INTEGER}, #{sendPublicAccount,jdbcType=INTEGER}, 
+      #{shieldCompanys,jdbcType=VARCHAR}, #{isPersonalInformationPublic,jdbcType=INTEGER}, 
+      #{settingState,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.fenghuang.job.entity.UserSettingInfo">
+    insert into user_setting_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="employmentIntention != null">
+        employment_intention,
+      </if>
+      <if test="personalSignature != null">
+        personal_signature,
+      </if>
+      <if test="sendLikeJob != null">
+        send_like_job,
+      </if>
+      <if test="sendEmail != null">
+        send_email,
+      </if>
+      <if test="sendMessage != null">
+        send_message,
+      </if>
+      <if test="sendWechant != null">
+        send_wechant,
+      </if>
+      <if test="sendPublicAccount != null">
+        send_public_account,
+      </if>
+      <if test="shieldCompanys != null">
+        shield_companys,
+      </if>
+      <if test="isPersonalInformationPublic != null">
+        is_personal_information_public,
+      </if>
+      <if test="settingState != null">
+        setting_state,
+      </if>
+      <if test="founder != null">
+        founder,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="employmentIntention != null">
+        #{employmentIntention,jdbcType=INTEGER},
+      </if>
+      <if test="personalSignature != null">
+        #{personalSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="sendLikeJob != null">
+        #{sendLikeJob,jdbcType=INTEGER},
+      </if>
+      <if test="sendEmail != null">
+        #{sendEmail,jdbcType=INTEGER},
+      </if>
+      <if test="sendMessage != null">
+        #{sendMessage,jdbcType=INTEGER},
+      </if>
+      <if test="sendWechant != null">
+        #{sendWechant,jdbcType=INTEGER},
+      </if>
+      <if test="sendPublicAccount != null">
+        #{sendPublicAccount,jdbcType=INTEGER},
+      </if>
+      <if test="shieldCompanys != null">
+        #{shieldCompanys,jdbcType=VARCHAR},
+      </if>
+      <if test="isPersonalInformationPublic != null">
+        #{isPersonalInformationPublic,jdbcType=INTEGER},
+      </if>
+      <if test="settingState != null">
+        #{settingState,jdbcType=INTEGER},
+      </if>
+      <if test="founder != null">
+        #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByUserId" parameterType="com.fenghuang.job.entity.UserSettingInfo">
+    update user_setting_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="employmentIntention != null">
+        employment_intention = #{employmentIntention,jdbcType=INTEGER},
+      </if>
+      <if test="personalSignature != null">
+        personal_signature = #{personalSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="sendLikeJob != null">
+        send_like_job = #{sendLikeJob,jdbcType=INTEGER},
+      </if>
+      <if test="sendEmail != null">
+        send_email = #{sendEmail,jdbcType=INTEGER},
+      </if>
+      <if test="sendMessage != null">
+        send_message = #{sendMessage,jdbcType=INTEGER},
+      </if>
+      <if test="sendWechant != null">
+        send_wechant = #{sendWechant,jdbcType=INTEGER},
+      </if>
+      <if test="sendPublicAccount != null">
+        send_public_account = #{sendPublicAccount,jdbcType=INTEGER},
+      </if>
+      <if test="shieldCompanys != null">
+        shield_companys = #{shieldCompanys,jdbcType=VARCHAR},
+      </if>
+      <if test="isPersonalInformationPublic != null">
+        is_personal_information_public = #{isPersonalInformationPublic,jdbcType=INTEGER},
+      </if>
+      <if test="settingState != null">
+        setting_state = #{settingState,jdbcType=INTEGER},
+      </if>
+      <if test="founder != null">
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.UserSettingInfo">
+    update user_setting_info
+    set user_id = #{userId,jdbcType=INTEGER},
+      employment_intention = #{employmentIntention,jdbcType=INTEGER},personal_signature = #{personalSignature,jdbcType=VARCHAR},
+      send_like_job = #{sendLikeJob,jdbcType=INTEGER},
+      send_email = #{sendEmail,jdbcType=INTEGER},
+      send_message = #{sendMessage,jdbcType=INTEGER},
+      send_wechant = #{sendWechant,jdbcType=INTEGER},
+      send_public_account = #{sendPublicAccount,jdbcType=INTEGER},
+      shield_companys = #{shieldCompanys,jdbcType=VARCHAR},
+      is_personal_information_public = #{isPersonalInformationPublic,jdbcType=INTEGER},
+      setting_state = #{settingState,jdbcType=INTEGER},
+      founder = #{founder,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

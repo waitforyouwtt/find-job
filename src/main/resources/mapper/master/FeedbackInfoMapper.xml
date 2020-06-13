@@ -8,14 +8,14 @@
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="feedback" jdbcType="VARCHAR" property="feedback" />
     <result column="is_read" jdbcType="INTEGER" property="isRead" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, user_id, user_name, feedback, is_read, create_time, update_time, founder, modifier
+    id, user_id, user_name, feedback, is_read, create_date, update_date, founder, modifier
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,12 +29,12 @@
   </delete>
   <insert id="insert" parameterType="com.fenghuang.job.entity.FeedbackInfo">
     insert into feedback_info (id, user_id, user_name, 
-      feedback, is_read, create_time, 
-      update_time, founder, modifier
+      feedback, is_read, create_date,
+      update_date, founder, modifier
       )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
-      #{feedback,jdbcType=VARCHAR}, #{isRead,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}
+      #{feedback,jdbcType=VARCHAR}, #{isRead,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
+      #{updateDate,jdbcType=TIMESTAMP}, #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.fenghuang.job.entity.FeedbackInfo">
@@ -55,11 +55,11 @@
       <if test="isRead != null">
         is_read,
       </if>
-      <if test="createTime != null">
-        create_time,
+      <if test="createDate != null">
+        create_date,
       </if>
-      <if test="updateTime != null">
-        update_time,
+      <if test="updateDate != null">
+        update_date,
       </if>
       <if test="founder != null">
         founder,
@@ -84,11 +84,11 @@
       <if test="isRead != null">
         #{isRead,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
       <if test="founder != null">
         #{founder,jdbcType=VARCHAR},
@@ -113,11 +113,11 @@
       <if test="isRead != null">
         is_read = #{isRead,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
       <if test="founder != null">
         founder = #{founder,jdbcType=VARCHAR},
@@ -134,8 +134,8 @@
       user_name = #{userName,jdbcType=VARCHAR},
       feedback = #{feedback,jdbcType=VARCHAR},
       is_read = #{isRead,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

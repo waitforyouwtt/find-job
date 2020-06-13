@@ -57,8 +57,8 @@ public class FeedbackInfoServiceImpl implements FeedbackInfoService {
         feedbackInfo.setUserName( userName );
         feedbackInfo.setFeedback( infoView.getFeedback() );
         feedbackInfo.setIsRead( ReadStatusEnum.NO.getCode() );
-        feedbackInfo.setCreateTime( new Date(  ) );
-        feedbackInfo.setUpdateTime( new Date(  ) );
+        feedbackInfo.setCreateDate( new Date(  ) );
+        feedbackInfo.setUpdateDate( new Date(  ) );
         feedbackInfo.setFounder( userName );
         feedbackInfo.setModifier( userName );
         return Result.success(feedbackInfoMapper.insertSelective( feedbackInfo ));
