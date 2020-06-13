@@ -199,8 +199,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (!StringUtils.isEmpty(reqUserInfoUpdate.getMobile())){
             loginUser = reqUserInfoUpdate.getMobile();
         }
+        if (!StringUtils.isEmpty(reqUserInfoUpdate.getIdCard())){
+            loginUser = reqUserInfoUpdate.getIdCard();
+        }
         UserInfo updateBeforeQueryUserInfo = userInfoMapper.updateQueryUserInfo(loginUser);
-        if (updateBeforeQueryUserInfo != null){
+        if (updateBeforeQueryUserInfo != null ){
             return Result.error(BusinessEnum.USERINFO_MESSAGE_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_MESSAGE_ALREADY_EXISTS.getMsg(),null);
         }
 

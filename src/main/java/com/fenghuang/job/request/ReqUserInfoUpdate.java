@@ -53,6 +53,15 @@ public class ReqUserInfoUpdate implements Serializable {
     @ApiModelProperty("用户手机号")
     private String mobile;
 
+    @ApiModelProperty("用户身份证号")
+    private String idCard;
+
+    @ApiModelProperty("用户身份证正面")
+    private String idCardX;
+
+    @ApiModelProperty("用户身份证反面")
+    private String idCardY;
+
     @ApiModelProperty("省份ID")
     private Integer provinceId;
 
