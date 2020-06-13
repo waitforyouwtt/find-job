@@ -24,4 +24,11 @@ public interface UserSettingInfoService {
      * @return
      */
     Result findUserSettingInfo(String token);
+
+    /**
+     * 通过用户id 获取用户个性签名
+     * @param userId
+     * @return
+     */
+    String findpersonalSignatureByUserId(Integer userId);
 }

@@ -124,4 +124,13 @@ public class UserSettingInfoServiceImpl implements UserSettingInfoService {
         }
         return Result.success(view);
     }
+
+    @Override
+   public String findpersonalSignatureByUserId(Integer userId){
+        UserSettingInfo settingInfo = userSettingInfoMapper.selectByUerId( userId );
+        if (settingInfo == null || StringUtils.isEmpty( settingInfo.getPersonalSignature() )){
+            return null;
+        }
+        return settingInfo.getPersonalSignature();
+    }
 }

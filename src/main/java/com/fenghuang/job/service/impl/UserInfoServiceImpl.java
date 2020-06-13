@@ -66,6 +66,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     UserInfoByTokenSerivce userInfoByTokenSerivce;
 
+    @Autowired
+    UserSettingInfoService userSettingInfoService;
+
     /**
      * 根据用户名字获取记录[可能有重名的人]
      *
@@ -585,6 +588,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         view.setHadAdmissionNum( hadAdmissionNum );
         view.setHadSettlementNum( hadSettlementNum );
         view.setWaitEvaluateNum( waitEvaluateNum );
+        if (StringUtils.isEmpty( userSettingInfoService.findpersonalSignatureByUserId( userId ) )){
+            view.setPersonalSignature("******");
+        }else{
+            view.setPersonalSignature( userSettingInfoService.findpersonalSignatureByUserId( userId ));
+        }
         return Result.success(view);
     }
 
