@@ -119,7 +119,7 @@
     pid as pid,
     level as level
     from bbs_area
-    where pid = #{pid,jdbcType=INTEGER} and area_id not in('110000','120000','310000','500000');
+    where pid = #{pid,jdbcType=INTEGER};
   </select>
 
   <select id="findBbsAreaByUPid2" resultType="com.fenghuang.job.view.BbsAreaView">

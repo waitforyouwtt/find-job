@@ -28,10 +28,10 @@ public class Constants {
     public static List<Integer> sortList(){
         List<Integer> sortList = new ArrayList<>();
         //直辖市
-        sortList.add(110100);
-        sortList.add(310100);
-        sortList.add(120100);
-        sortList.add(500100);
+        sortList.add(110000);
+        sortList.add(120000);
+        sortList.add(310000);
+        sortList.add(500000);
         //省份
         sortList.add( 130000 ); //河北
         sortList.add( 140000 ); //山西
