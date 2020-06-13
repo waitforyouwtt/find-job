@@ -203,8 +203,10 @@ public class UserInfoServiceImpl implements UserInfoService {
             loginUser = reqUserInfoUpdate.getIdCard();
         }
         UserInfo updateBeforeQueryUserInfo = userInfoMapper.updateQueryUserInfo(loginUser);
-        if (updateBeforeQueryUserInfo != null ){
-            return Result.error(BusinessEnum.USERINFO_MESSAGE_ALREADY_EXISTS.getCode(),BusinessEnum.USERINFO_MESSAGE_ALREADY_EXISTS.getMsg(),null);
+        if (!StringUtils.isEmpty( reqUserInfoUpdate.getIdCard() )
+           && updateBeforeQueryUserInfo != null
+        ){
+            return Result.error(BusinessEnum.VALIDATE_ID_CARD_ERROR.getCode(),BusinessEnum.VALIDATE_ID_CARD_ERROR.getMsg(),null);
         }
 
         UserInfo userInfo = new UserInfo();
