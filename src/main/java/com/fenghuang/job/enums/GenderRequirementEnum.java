@@ -15,9 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public enum GenderRequirementEnum {
 
+    NO_RESTRICTION(0,"不限制"),
     MAN(1,"男"),
     WOMAN(2,"女"),
-    NO_RESTRICTION(3,"不限制")
+
     ;
 
     //根据code 找到desc 描述

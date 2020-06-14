@@ -55,4 +55,7 @@ public class UserSettingInfoView implements Serializable {
 
     @ApiModelProperty("设置的状态：1.正常 2.失效")
     private Integer settingState;
+
+    @ApiModelProperty("系统版本号")
+    private String version;
 }

@@ -890,7 +890,7 @@
           #{projectLabels}
         </foreach>
       </if>
-      <if test="settlementCycle != null">
+      <if test="settlementCycle != null and settlementCycle != 0">
         and a.settlement_cycle = #{settlementCycle}
       </if>
       <if test="projectContactsName != null">

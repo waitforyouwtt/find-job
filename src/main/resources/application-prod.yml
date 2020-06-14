@@ -85,3 +85,7 @@ message:
 
 server:
   port: 10004
+
+app:
+  version: 1.0.0
+

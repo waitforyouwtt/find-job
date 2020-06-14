@@ -9,7 +9,7 @@
     <result column="send_like_job" jdbcType="INTEGER" property="sendLikeJob" />
     <result column="send_email" jdbcType="INTEGER" property="sendEmail" />
     <result column="send_message" jdbcType="INTEGER" property="sendMessage" />
-    <result column="send_wechant" jdbcType="INTEGER" property="sendWechant" />
+    <result column="send_wechat" jdbcType="INTEGER" property="sendWechat" />
     <result column="send_public_account" jdbcType="INTEGER" property="sendPublicAccount" />
     <result column="shield_companys" jdbcType="VARCHAR" property="shieldCompanys" />
     <result column="is_personal_information_public" jdbcType="INTEGER" property="isPersonalInformationPublic" />
@@ -21,7 +21,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, employment_intention,personal_signature, send_like_job, send_email,
-    send_message, send_wechant, send_public_account, shield_companys, is_personal_information_public, 
+    send_message, send_wechat, send_public_account, shield_companys, is_personal_information_public,
     setting_state, founder, modifier, create_date, update_date
   </sql>
 
@@ -39,11 +39,11 @@
 
     <insert id="insert" parameterType="com.fenghuang.job.entity.UserSettingInfo">
     insert into user_setting_info (id, user_id, employment_intention,personal_signature, send_like_job, send_email,
-      send_message, send_wechant, send_public_account,shield_companys, is_personal_information_public,
+      send_message, send_wechat, send_public_account,shield_companys, is_personal_information_public,
       setting_state, founder, modifier,create_date, update_date)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{employmentIntention,jdbcType=INTEGER}, 
       #{personalSignature,jdbcType=VARCHAR}, #{sendLikeJob,jdbcType=INTEGER}, #{sendEmail,jdbcType=INTEGER},
-      #{sendMessage,jdbcType=INTEGER}, #{sendWechant,jdbcType=INTEGER}, #{sendPublicAccount,jdbcType=INTEGER}, 
+      #{sendMessage,jdbcType=INTEGER}, #{sendWechat,jdbcType=INTEGER}, #{sendPublicAccount,jdbcType=INTEGER},
       #{shieldCompanys,jdbcType=VARCHAR}, #{isPersonalInformationPublic,jdbcType=INTEGER}, 
       #{settingState,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
@@ -73,8 +73,8 @@
       <if test="sendMessage != null">
         send_message,
       </if>
-      <if test="sendWechant != null">
-        send_wechant,
+      <if test="sendWechat != null">
+        send_wechat,
       </if>
       <if test="sendPublicAccount != null">
         send_public_account,
@@ -123,8 +123,8 @@
       <if test="sendMessage != null">
         #{sendMessage,jdbcType=INTEGER},
       </if>
-      <if test="sendWechant != null">
-        #{sendWechant,jdbcType=INTEGER},
+      <if test="sendWechat != null">
+        #{sendWechat,jdbcType=INTEGER},
       </if>
       <if test="sendPublicAccount != null">
         #{sendPublicAccount,jdbcType=INTEGER},
@@ -173,8 +173,8 @@
       <if test="sendMessage != null">
         send_message = #{sendMessage,jdbcType=INTEGER},
       </if>
-      <if test="sendWechant != null">
-        send_wechant = #{sendWechant,jdbcType=INTEGER},
+      <if test="sendWechat != null">
+        send_wechat = #{sendWechat,jdbcType=INTEGER},
       </if>
       <if test="sendPublicAccount != null">
         send_public_account = #{sendPublicAccount,jdbcType=INTEGER},
@@ -210,7 +210,7 @@
       send_like_job = #{sendLikeJob,jdbcType=INTEGER},
       send_email = #{sendEmail,jdbcType=INTEGER},
       send_message = #{sendMessage,jdbcType=INTEGER},
-      send_wechant = #{sendWechant,jdbcType=INTEGER},
+      send_wechat = #{sendWechat,jdbcType=INTEGER},
       send_public_account = #{sendPublicAccount,jdbcType=INTEGER},
       shield_companys = #{shieldCompanys,jdbcType=VARCHAR},
       is_personal_information_public = #{isPersonalInformationPublic,jdbcType=INTEGER},

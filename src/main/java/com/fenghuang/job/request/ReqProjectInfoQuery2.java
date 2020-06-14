@@ -62,7 +62,7 @@ public class ReqProjectInfoQuery2 extends PageHelps implements Serializable {
     @ApiModelProperty("上班详细地址")
     private String workAddress;
 
-    @ApiModelProperty("性别要求：1 男 2 女 3 不限")
+    @ApiModelProperty("性别要求：0 不限 1 男 2 女 ")
     private Integer genderRequirement;
 
     @ApiModelProperty("项目标签：1长期工 2 短期工 3寒假工 4暑假工 5钟点工")
@@ -74,7 +74,7 @@ public class ReqProjectInfoQuery2 extends PageHelps implements Serializable {
     @ApiModelProperty("工资单位：1 天 2 小时 3 月 4 次 5 单")
     private Integer salaryUnit;
 
-    @ApiModelProperty("结算周期：1 完工结 2 日结 3 周结 4 月结")
+    @ApiModelProperty("结算周期：0 不限 1 完工结 2 日结 3 周结 4 月结")
     private Integer settlementCycle;
 
     @ApiModelProperty("工作福利")

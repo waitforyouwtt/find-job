@@ -29,7 +29,7 @@ public class ReqUserSettingInfo {
 
     private Integer sendMessage;
 
-    private Integer sendWechant;
+    private Integer sendWechat;
 
     private Integer sendPublicAccount;
 

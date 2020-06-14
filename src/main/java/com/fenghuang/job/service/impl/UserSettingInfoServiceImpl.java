@@ -12,6 +12,7 @@ import com.fenghuang.job.service.UserSettingInfoService;
 import com.fenghuang.job.view.UserSettingInfoView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,6 +36,9 @@ public class UserSettingInfoServiceImpl implements UserSettingInfoService {
 
     @Autowired
     UserInfoByTokenSerivce userInfoByTokenSerivce;
+
+    @Value( "${app.version}" )
+    private String version;
 
     /**
      * 保存用户个性化设置
@@ -114,14 +118,15 @@ public class UserSettingInfoServiceImpl implements UserSettingInfoService {
         if (!StringUtils.isEmpty( settingInfo.getSendMessage()  )){
             view.setSendMessageDesc( AllowStatusEnum.fromValue( settingInfo.getSendMessage() ).getMsg() );
         }
-        if (!StringUtils.isEmpty( settingInfo.getSendWechant() )){
-            view.setSendWechantDesc( AllowStatusEnum.fromValue( settingInfo.getSendWechant() ).getMsg() );
+        if (!StringUtils.isEmpty( settingInfo.getSendWechat() )){
+            view.setSendWechantDesc( AllowStatusEnum.fromValue( settingInfo.getSendWechat() ).getMsg() );
         }
         if (!StringUtils.isEmpty( settingInfo.getSendPublicAccount() )){
             view.setSendPublicAccountDesc( AllowStatusEnum.fromValue( settingInfo.getSendPublicAccount() ).getMsg() );        }
         if (!StringUtils.isEmpty(settingInfo.getIsPersonalInformationPublic()   )){
             view.setIsPersonalInformationPublicDesc( AllowStatusEnum.fromValue( settingInfo.getIsPersonalInformationPublic() ).getMsg() );
         }
+        view.setVersion(version);
         return Result.success(view);
     }
 
