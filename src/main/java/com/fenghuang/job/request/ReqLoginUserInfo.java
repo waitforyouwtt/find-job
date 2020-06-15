@@ -29,4 +29,7 @@ public class ReqLoginUserInfo implements Serializable {
     @ApiModelProperty("客户端ip")
     private String LoginIp;
 
+    @ApiModelProperty("客户token")
+    private String token;
+
 }

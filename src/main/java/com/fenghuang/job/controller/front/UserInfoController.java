@@ -236,5 +236,20 @@ public class UserInfoController {
         return userInfoService.findLocalMessageByToken(token);
     }
 
+    @ApiOperation(value = "用户修改手机号-发送验证码")
+    @PostMapping("/modifyMobileMessage")
+    public Result  modifyMobileMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
+        return userInfoService.modifyMobileMessage(messageId,signId,mobile,BusinessUtils.getIp(request));
+    }
+
+    @PostMapping("/modifyMobile")
+    @ApiOperation(value = "用户修改手机号-发送验证码，验证通过则登录成功，验证失败则登录失败")
+    @LoginToken
+    public Result modifyMobile(@RequestBody ReqLoginUserInfo reqLoginUserInfo,@RequestHeader("token") String token) {
+        reqLoginUserInfo.setToken(token);
+        return userInfoService.modifyMobile(reqLoginUserInfo);
+    }
+
+
 
 }

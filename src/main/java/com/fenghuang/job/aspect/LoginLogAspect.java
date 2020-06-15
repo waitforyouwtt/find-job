@@ -34,8 +34,10 @@ public class LoginLogAspect {
 
     @Autowired
     LoginLogService loginLogService;
+
     @Autowired
     MessageRecordService messageCountService;
+
     @Resource
     UserInfoMapper userInfoMapper;
 
@@ -46,6 +48,8 @@ public class LoginLogAspect {
     private final static String MESSAGE_REGISTER_METHOD = "messageRegister";
 
     private final static String MESSAGE_FIND_PWD_METHOD = "messageFindPwd";
+
+    private final static String MODIFY_MOBILE_MESSAGE_METHOD = "modifyMobileMessage";
 
     @Around(value = "@annotation(LoginLogAnnotation)")
     public Object interceptUpdatePrice(ProceedingJoinPoint pjp) {
@@ -87,6 +91,12 @@ public class LoginLogAspect {
                 String  messageFindPwdIp = args[3].toString();
                 Integer messageFindPwdType = 2;
                 saveSendMessage(messageFindPwdIp,messageFindPwdPhone,messageFindPwdType);
+                break;
+            case MODIFY_MOBILE_MESSAGE_METHOD:
+                String  modifyPhone = args[2].toString();
+                String  modifyIp = args[3].toString();
+                Integer modifyType = 4;
+                saveSendMessage(modifyIp,modifyPhone,modifyType);
                 break;
             default:
                 break;

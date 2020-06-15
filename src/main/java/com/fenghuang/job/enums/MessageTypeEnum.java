@@ -17,7 +17,10 @@ public enum MessageTypeEnum {
 
     REGISTER(1,"注册"),
     FIND_BANK_PASSWORD(2,"找回密码"),
-    LOGIN(3,"登录");
+    LOGIN(3,"登录"),
+    MODIFY_MOBILE(4,"用户修改手机号"),
+
+    ;
 
     //根据code 找到desc 描述
     private static final Map<Integer,MessageTypeEnum> valueLookup = new ConcurrentHashMap<>(values().length);

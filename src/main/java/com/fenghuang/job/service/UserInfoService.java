@@ -138,4 +138,21 @@ public interface UserInfoService {
      * @return
      */
     Result findLocalMessageByToken(String token);
+
+    /**
+     * 用户修改手机号-发送验证码
+     * @param messageId
+     * @param signId
+     * @param mobile
+     * @param ip
+     * @return
+     */
+    Result modifyMobileMessage(String messageId, String signId, String mobile, String ip);
+
+    /**
+     * 用户修改手机号-发送验证码，验证通过则登录成功，验证失败则登录失败
+     * @param reqLoginUserInfo
+     * @return
+     */
+    Result modifyMobile(ReqLoginUserInfo reqLoginUserInfo);
 }

@@ -756,4 +756,79 @@ public class UserInfoServiceImpl implements UserInfoService {
         return Result.success(map);
     }
 
+    /**
+     * 用户修改手机号-发送验证码
+     *
+     * @param messageId
+     * @param signId
+     * @param mobile
+     * @param ip
+     * @return
+     */
+    @Override
+    @LoginLogAnnotation
+    public Result modifyMobileMessage(String messageId, String signId, String mobile, String ip) {
+        log.info("用户修改手机号-发送验证码请求参数：{},{},{},{}",messageId,signId,mobile,ip);
+        String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);
+        //如果调用发送短信返回信息为空，则抛出错误信息
+        if (StringUtils.isEmpty(sendMsm)){
+            return Result.error(BusinessEnum.CALL_SEND_MSM_NULL.getCode(),BusinessEnum.CALL_SEND_MSM_NULL.getMsg(),null);
+        }
+        JSONObject json = JSON.parseObject(sendMsm);
+        JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
+        log.info("用户修改手机号-发送验证码:{}",JSON.toJSONString(jsonMessage));
+        return Result.success("短信发送成功");
+    }
+
+    /**
+     * 用户修改手机号-发送验证码，验证通过则登录成功，验证失败则登录失败
+     *
+     * @param reqLoginUserInfo
+     * @return
+     */
+    @Override
+    public Result modifyMobile(ReqLoginUserInfo reqLoginUserInfo) {
+        log.info("用户修改手机号-发送验证码，验证通过则修改密码成功，验证失败则修改密码失败请求参数：{}",JSON.toJSONString(reqLoginUserInfo));
+
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqLoginUserInfo.getToken());
+        if (userInfoByToken.getCode() == 2001){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
+
+        if (StringUtils.isEmpty(reqLoginUserInfo.getMobile())
+                || StringUtils.isEmpty(reqLoginUserInfo.getVerificationCode())){
+            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),null);
+        }
+
+        //判断账号是否存在:不等于空的时候，说明有绑定别的账号：不允许同一个手机号绑定多个账号
+        UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqLoginUserInfo.getMobile());
+        if (queryUserInfo != null){
+            return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
+        }else{
+
+            RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
+            String VerificationCode =  request.getSession(true).getServletContext().getAttribute(reqLoginUserInfo.getMobile()).toString();
+
+            //判断手机号 & 验证码是否正确
+            if (!reqLoginUserInfo.getVerificationCode().equals(VerificationCode)){
+                return Result.error(BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getCode(),BusinessEnum.VERIFICATION_CODE_ERROR_PLEASE_TRY_AGAIN.getMsg(),null);
+            }else{
+                UserInfo record = new UserInfo();
+                record.setId(userId);
+                record.setMobile(reqLoginUserInfo.getMobile());
+                record.setModifier(userName);
+                record.setUpdateDate(new Date());
+                userInfoMapper.updateByPrimaryKeySelective(record);
+            }
+        }
+        return Result.success("修改手机号成功");
+    }
+
 }
