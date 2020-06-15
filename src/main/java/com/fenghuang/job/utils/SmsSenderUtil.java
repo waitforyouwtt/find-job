@@ -66,7 +66,7 @@ public class SmsSenderUtil {
      * @param templateId
      * @return
      */
-    public String sendMsm2(String phoneNumber, String signId, String templateId) {
+    public String sendMsmxxx(String phoneNumber, String signId, String templateId) {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) ra).getRequest();
         try {
