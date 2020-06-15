@@ -7,10 +7,11 @@ import com.fenghuang.job.request.ReqProjectInfoQuery3;
 import com.fenghuang.job.request.ReqProjectInfoQuery4;
 import com.fenghuang.job.view.PartTimeJobListView;
 import com.fenghuang.job.view.ProjectInfoView;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-
+@Mapper
 public interface ProjectInfoMapper {
     int deleteByPrimaryKey(Integer id);
 

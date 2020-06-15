@@ -4,10 +4,12 @@ import com.fenghuang.job.entity.BbsArea;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.view.BbsAreaView;
 import com.fenghuang.job.view.BbsAreaView3;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface BbsAreaMapper {
     int deleteByPrimaryKey(Integer areaId);
 

@@ -3,9 +3,10 @@ package com.fenghuang.job.dao.master;
 import com.fenghuang.job.entity.MessageRecord;
 import com.fenghuang.job.request.ReqMessageRecordQuery;
 import com.fenghuang.job.request.ReqMessageRecordQuery2;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
+@Mapper
 public interface MessageRecordMapper {
     int deleteByPrimaryKey(Integer id);
 

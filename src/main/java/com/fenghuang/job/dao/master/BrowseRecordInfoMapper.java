@@ -2,10 +2,11 @@ package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.BrowseRecordInfo;
 import com.fenghuang.job.request.ReqBrowseRecordInfoFrontQuery;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
+@Mapper
 public interface BrowseRecordInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
