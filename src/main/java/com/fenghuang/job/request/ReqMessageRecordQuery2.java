@@ -24,10 +24,10 @@ public class ReqMessageRecordQuery2 implements Serializable{
     private Integer messageType;
 
     @ApiModelProperty("短信当前发送时间")
-    private String currentSendDate;
+    private Date currentSendDate;
 
     @ApiModelProperty("短信半小时发送时间")
-    private String oneHourAgoDate;
+    private Date oneHourAgoDate;
 
     @ApiModelProperty("短信发送IP")
     private String sendIp;

@@ -1,6 +1,7 @@
 package com.fenghuang.job.utils;
 
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +29,7 @@ public class DateUtil {
      * @param minute
      * @return
      */
-    public static String subMinute(Date date,int minute){
+    public static Date subMinute(Date date,int minute){
         //格式化对象
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //日历对象
@@ -37,9 +38,19 @@ public class DateUtil {
         calendar.setTime(date);
         //月份减一
         calendar.add(Calendar.MINUTE, minute);
-        return sdf.format(calendar.getTime());
+        String subStringDate = sdf.format(calendar.getTime());
+        return strToDateLong(subStringDate);
     }
 
+    /**
+     * string 转date
+     * @param strDate
+     * @return
+     */
+    public static Date strToDateLong(String strDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return formatter.parse(strDate, new ParsePosition(0));
+    }
     /**
      * data to string
      * @return

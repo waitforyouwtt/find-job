@@ -53,8 +53,7 @@ public class UserInfoController {
 
     @PostMapping("/loginByMessage")
     @ApiOperation(value = "使用短信进行登录，发送验证码")
-
-    public Result loginByMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
+    public Result loginByMessage(HttpServletRequest request,@RequestParam("mobile")String mobile){
         return userInfoService.loginByMessage(messageId,signId,mobile,BusinessUtils.getIp(request));
     }
 

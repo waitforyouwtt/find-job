@@ -19,8 +19,10 @@ public interface MessageRecordMapper {
 
     int updateByPrimaryKey(MessageRecord record);
 
+    //根据条件进行查询短信统计且分页
     List<MessageRecord> findMessageRecordPage(ReqMessageRecordQuery messageRecordQuery);
 
+    //根据条件统计一个人30分钟之内发送短信的条数
     List<MessageRecord> findMessageRecordSize(ReqMessageRecordQuery2 reqMessageRecordQuery2);
 
 }

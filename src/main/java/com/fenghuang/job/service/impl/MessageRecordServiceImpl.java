@@ -6,7 +6,6 @@ import com.fenghuang.job.dao.master.MessageRecordMapper;
 import com.fenghuang.job.entity.MessageRecord;
 import com.fenghuang.job.enums.DeleteEnum;
 import com.fenghuang.job.enums.MessageTypeEnum;
-import com.fenghuang.job.request.ReqMessageRecord;
 import com.fenghuang.job.request.ReqMessageRecordQuery;
 import com.fenghuang.job.request.ReqMessageRecordQuery2;
 import com.fenghuang.job.service.MessageRecordService;
@@ -16,13 +15,11 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +45,6 @@ public class MessageRecordServiceImpl implements MessageRecordService {
     @Override
     @Async
     public void insertMessageRecordByType(String ip, String mobile, Integer messageType) {
-
         //发送短信成功，则往短信统计记录表中插入相关数据
         MessageRecord messageRecord = new MessageRecord();
         messageRecord.setSendIp(ip);
@@ -109,15 +105,10 @@ public class MessageRecordServiceImpl implements MessageRecordService {
      * @param reqMessageRecordQuery2
      */
     @Override
-    public List<MessageRecordView> countMessageRecordSize(ReqMessageRecordQuery2 reqMessageRecordQuery2){
-        log.info(" 根据条件统计一个人30分钟之内发送短信的条数 请求参数：{}",JSON.toJSONString(reqMessageRecordQuery2));
-        try {
-            reqMessageRecordQuery2.setOneHourAgoDate(DateUtil.subMinute(DateUtils.parseDate(reqMessageRecordQuery2.getCurrentSendDate(),"yyyy-MM-dd hh:mm:ss"), Constants.MESSAGE_MINUTE));
-        } catch (ParseException e) {
-            log.info("根据条件统计一个人30分钟之内发送短信的条数 时间转换异常：{}",e.getMessage());
-        }
+    public List<MessageRecordView> countMessageRecordSize(ReqMessageRecordQuery2 reqMessageRecordQuery2) {
+        log.info(" 根据条件统计一个人30分钟之内发送短信的条数 请求参数：{}", JSON.toJSONString(reqMessageRecordQuery2));
+        reqMessageRecordQuery2.setOneHourAgoDate(DateUtil.subMinute(reqMessageRecordQuery2.getCurrentSendDate(), Constants.MESSAGE_MINUTE));
         List<MessageRecord> queryMessageRecord = messageRecordMapper.findMessageRecordSize(reqMessageRecordQuery2);
-        log.info("根据条件统计一个人30分钟之内发送短信的条数 返回记录：{}",JSON.toJSONString(queryMessageRecord));
         List<MessageRecordView> views = new ArrayList<>();
         convertView(queryMessageRecord, views);
         return views;

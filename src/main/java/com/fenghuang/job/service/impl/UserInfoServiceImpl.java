@@ -316,25 +316,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfo != null){
             return Result.error(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg(),null);
         }
+
         //发送短信为注册时,如果当前手机号| ip 30分钟内频繁的发送短信超过5条，则视为用户进行恶意攻击
-        ReqMessageRecordQuery2 messageRecordParams = new ReqMessageRecordQuery2();
-        messageRecordParams.setMessageType(MessageTypeEnum.REGISTER.getCode());
-        //messageRecordParams.setSendIp(ip);
-        messageRecordParams.setMobile(mobile);
-        messageRecordParams.setCurrentSendDate(DateUtil.dateToString(new Date()));
-        List<MessageRecordView> queryMessageRecordSize = messageRecordService.countMessageRecordSize(messageRecordParams);
-        if (queryMessageRecordSize.size() > Constants.MESSAGE_COUNT){
+        if(userInfoByTokenSerivce.maliciousAttack(mobile,ip,MessageTypeEnum.MODIFY_MOBILE.getCode()) == 1){
             return Result.error(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg(),null);
         }
-        log.info("当前手机号 | ip 30分钟之内发送的短信条数为：{}",queryMessageRecordSize.size());
+
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId,messageId);
         //如果调用发送短信返回信息为空，则抛出错误信息
         if (StringUtils.isEmpty(sendMsm)){
             return Result.error(BusinessEnum.CALL_SEND_MSM_NULL.getCode(),BusinessEnum.CALL_SEND_MSM_NULL.getMsg(),null);
         }
-        JSONObject json = JSON.parseObject(sendMsm);
-        JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
-        log.info("用户短信注册，发送验证码:{}",JSON.toJSONString(jsonMessage));
         return Result.success("短信发送成功");
     }
 
@@ -475,14 +467,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     @LogAndSendMessageAnnotation
     public Result loginByMessage(String messageId,String signId,String mobile,String ip) {
         log.info("使用短信进行登录，发送验证码 请求参数：{},{},{},{}",messageId,signId,mobile,ip);
+
+        //统计30分钟内操作短信的频率，判断是否恶意攻击
+        if(userInfoByTokenSerivce.maliciousAttack(mobile,ip,MessageTypeEnum.LOGIN.getCode()) ==1){
+            return Result.error(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg(),null);
+        }
+
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);
         //如果调用发送短信返回信息为空，则抛出错误信息
         if (StringUtils.isEmpty(sendMsm)){
             return Result.error(BusinessEnum.CALL_SEND_MSM_NULL.getCode(),BusinessEnum.CALL_SEND_MSM_NULL.getMsg(),null);
         }
-        JSONObject json = JSON.parseObject(sendMsm);
-        JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
-        log.info("使用短信进行登录，发送验证码:{}",JSON.toJSONString(jsonMessage));
         return Result.success("短信发送成功");
     }
 
@@ -674,14 +669,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     @LogAndSendMessageAnnotation
     public Result messageFindPwd(String messageId,String signId,String mobile,String ip) {
         log.info("通过短信找回密码，发送验证码 请求参数：{},{},{},{}",messageId,signId,mobile,ip);
+
+        //统计30分钟内操作短信的频率，判断是否恶意攻击
+        if(userInfoByTokenSerivce.maliciousAttack(mobile,ip,MessageTypeEnum.FIND_BANK_PASSWORD.getCode()) ==1){
+            return Result.error(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg(),null);
+        }
+
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);
         //如果调用发送短信返回信息为空，则抛出错误信息
         if (StringUtils.isEmpty(sendMsm)){
             return Result.error(BusinessEnum.CALL_SEND_MSM_NULL.getCode(),BusinessEnum.CALL_SEND_MSM_NULL.getMsg(),null);
         }
-        JSONObject json = JSON.parseObject(sendMsm);
-        JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
-        log.info("通过短信找回密码，发送验证码:{}",JSON.toJSONString(jsonMessage));
         return Result.success("短信发送成功");
     }
 
@@ -771,14 +769,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     @LogAndSendMessageAnnotation
     public Result modifyMobileMessage(String messageId, String signId, String mobile, String ip) {
         log.info("用户修改手机号-发送验证码请求参数：{},{},{},{}",messageId,signId,mobile,ip);
+
+        //统计30分钟内操作短信的频率，判断是否恶意攻击
+        if(userInfoByTokenSerivce.maliciousAttack(mobile,ip,MessageTypeEnum.MODIFY_MOBILE.getCode()) == 1){
+            return Result.error(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg(),null);
+        }
+
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);
         //如果调用发送短信返回信息为空，则抛出错误信息
         if (StringUtils.isEmpty(sendMsm)){
             return Result.error(BusinessEnum.CALL_SEND_MSM_NULL.getCode(),BusinessEnum.CALL_SEND_MSM_NULL.getMsg(),null);
         }
-        JSONObject json = JSON.parseObject(sendMsm);
-        JSONMessage jsonMessage = JSONObject.toJavaObject(json, JSONMessage.class);
-        log.info("用户修改手机号-发送验证码:{}",JSON.toJSONString(jsonMessage));
         return Result.success("短信发送成功");
     }
 

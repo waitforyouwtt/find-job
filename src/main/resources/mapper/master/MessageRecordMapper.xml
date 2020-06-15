@@ -175,10 +175,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+    <!--根据条件进行查询短信统计且分页-->
   <select id="findMessageRecordPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqMessageRecordQuery">
     select
     <include refid="Base_Column_List" />
-    from message_count
+    from message_record
     <where>
       <if test="id != null">
         and id = #{id}
@@ -194,10 +195,12 @@
       </if>
     </where>
   </select>
+
+    <!--根据条件统计一个人30分钟之内发送短信的条数-->
   <select id="findMessageRecordSize" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqMessageRecordQuery2">
     select
     <include refid="Base_Column_List" />
-    from message_count
+    from message_record
     <where>
       <if test="userId != null">
         and user_id = #{userId}
@@ -212,10 +215,10 @@
         and message_type = #{messageType}
       </if>
       <if test="oneHourAgoDate!=null">
-        and send_date &gt;= #{oneHourAgoDate}
+        and send_date &gt; #{oneHourAgoDate}
       </if>
       <if test="currentSendDate!=null">
-        and send_date &lt;= #{currentSendDate}
+        and send_date &lt; #{currentSendDate}
       </if>
 
     </where>

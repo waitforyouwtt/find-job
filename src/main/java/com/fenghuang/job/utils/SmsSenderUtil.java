@@ -47,11 +47,35 @@ public class SmsSenderUtil {
             if (code.equals(200)) {
                 request.getSession(true).getServletContext().setAttribute(phoneNumber,random);
                 log.info("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
-                log.info("短信注册，注册手机号是：{}，验证码是：{}",phoneNumber,random);
+                log.info("操作的手机号是：{}，验证码是：{}",phoneNumber,random);
                 return result;
             } else {
                 log.info("发送短信失败，返回参数：{}", result);
             }
+        } catch (Exception e) {
+            log.error("发送验证码失败,JSON 解析错误:{}", e.getMessage());
+        }
+        throw new RuntimeException("短信发送失败");
+    }
+
+
+    /**
+     * 发送短信
+     * @param phoneNumber
+     * @param signId
+     * @param templateId
+     * @return
+     */
+    public String sendMsm2(String phoneNumber, String signId, String templateId) {
+        RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes) ra).getRequest();
+        try {
+            int random = getRandom();
+            request.getSession(true).getServletContext().setAttribute(phoneNumber, random);
+            log.info("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
+            log.info("短信操作的手机号是：{}，验证码是：{}", phoneNumber, random);
+            return random +"";
+
         } catch (Exception e) {
             log.error("发送验证码失败,JSON 解析错误:{}", e.getMessage());
         }
