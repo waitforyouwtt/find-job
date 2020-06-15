@@ -1,6 +1,5 @@
 package com.fenghuang.job.controller.front;
 
-import com.fenghuang.job.config.LoginToken;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.service.UserInfoService;
@@ -40,17 +39,36 @@ public class UserInfoController {
     @Autowired
     UserInfoService userInfoService;
 
+    @PostMapping("/login")
+    @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
+    public Result login(@RequestBody ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
+        reqLoginUserInfo.setLoginIp(BusinessUtils.getIp(request));
+
+        Result result = userInfoService.ordinaryLogin(reqLoginUserInfo);
+        if (result.getCode() == 200){
+            request.getSession().setAttribute("userSession", result.getData());
+        }
+        return result;
+    }
+
+    @PostMapping("/loginByMessage")
+    @ApiOperation(value = "使用短信进行登录，发送验证码")
+
+    public Result loginByMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
+        return userInfoService.loginByMessage(messageId,signId,mobile,BusinessUtils.getIp(request));
+    }
+
+    @PostMapping("/checkLoginCode")
+    @ApiOperation(value = "用户短信登录，输入验证码，验证通过则登录成功，验证失败则登录失败")
+
+    public Result checkLoginCode(@RequestBody ReqLoginUserInfo reqLoginUserInfo) {
+        return userInfoService.checkLoginCode(reqLoginUserInfo);
+    }
+
     @ApiOperation(value = "常规方式注册新用户且不允许昵称重复")
     @PostMapping("/userRegister")
     public Result userRegister(@RequestBody ReqUserInfo reqUserInfo){
         return userInfoService.insertUser(reqUserInfo);
-    }
-
-    @ApiOperation(value = "更新用户状态信息")
-    @PostMapping("/modifyUserStatus")
-    public Result modifyUserStatus(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate,@RequestHeader("token") String token){
-        reqUserInfoUpdate.setToken(token);
-        return userInfoService.modifyUserInfo(reqUserInfoUpdate);
     }
 
     @ApiOperation(value = "更新用户信息")
@@ -58,24 +76,6 @@ public class UserInfoController {
     public Result modifyUserInfo(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate,@RequestHeader("token") String token){
         reqUserInfoUpdate.setToken(token);
         return userInfoService.modifyUserInfo(reqUserInfoUpdate);
-    }
-
-    @ApiOperation(value = "根据用户名获取用户信息记录[可能有重名的人]")
-    @GetMapping("/findUserInfoByUserName")
-    public Result findUserInfoByUserName(@RequestParam("userName") String userName){
-      return Result.success(userInfoService.findUserInfoByUserName(userName)) ;
-    }
-
-    @ApiOperation(value = "根据用户id|用户昵称|用户手机号|身份证 获取唯一一条用户信息记录")
-    @PostMapping("/findUserInfo")
-    public Result findUserInfo(@RequestBody ReqUserInfoQuery reqUserInfoQuery){
-      return Result.success(userInfoService.findUserInfo(reqUserInfoQuery));
-    }
-
-    @PostMapping("/findUserInfoPage")
-    @ApiOperation(value = "根据条件查询用户信息并进行分页")
-    public Result findUserInfoPage(@RequestBody ReqUserInfoQuery reqUserInfoQuery){
-       return Result.success(userInfoService.findUserInfoPage(reqUserInfoQuery));
     }
 
     @PostMapping("/changePassword")
@@ -97,30 +97,82 @@ public class UserInfoController {
         return userInfoService.checkRegisterCode(registerCode);
     }
 
-    @PostMapping("/login")
-    @ApiOperation(value = "前台：根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录")
-    public Result login(@RequestBody ReqLoginUserInfo reqLoginUserInfo,HttpServletRequest request){
-        reqLoginUserInfo.setLoginIp(BusinessUtils.getIp(request));
-
-        Result result = userInfoService.ordinaryLogin(reqLoginUserInfo);
-        if (result.getCode() == 200){
-            request.getSession().setAttribute("userSession", result.getData());
-        }
-        return result;
+    @ApiOperation(value = "通过短信找回密码-发送短信")
+    @PostMapping("/messageFindPwd")
+    public Result messageFindPwd(HttpServletRequest request,@RequestParam("mobile")String mobile){
+        return userInfoService.messageFindPwd(messageId,signId,mobile,BusinessUtils.getIp(request));
     }
 
-    @PostMapping("/loginByMessage")
-    @ApiOperation(value = "使用短信进行登录，发送验证码")
-    @LoginToken
-    public Result loginByMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
-        return userInfoService.loginByMessage(messageId,signId,mobile,BusinessUtils.getIp(request));
+    @ApiOperation(value = "通过短信找回密码-输入验证码，验证通过则修改密码成功，验证失败则修改密码失败")
+    @PostMapping("/retrievePassword")
+    public Result  retrievePassword(@RequestBody ReqLoginUserInfo userInfo ,HttpServletRequest request){
+        return userInfoService.retrievePassword(userInfo);
     }
 
-    @PostMapping("/checkLoginCode")
-    @ApiOperation(value = "用户短信登录，输入验证码，验证通过则登录成功，验证失败则登录失败")
-    @LoginToken
-    public Result checkLoginCode(@RequestBody ReqLoginUserInfo reqLoginUserInfo) {
-        return userInfoService.checkLoginCode(reqLoginUserInfo);
+    @ApiOperation(value = "用户修改手机号-发送验证码")
+    @PostMapping("/modifyMobileMessage")
+    public Result  modifyMobileMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
+        return userInfoService.modifyMobileMessage(messageId,signId,mobile,BusinessUtils.getIp(request));
+    }
+
+    @PostMapping("/modifyMobile")
+    @ApiOperation(value = "用户修改手机号-发送验证码，验证通过则登录成功，验证失败则登录失败")
+    public Result modifyMobile(@RequestBody ReqLoginUserInfo reqLoginUserInfo,@RequestHeader("token") String token) {
+        reqLoginUserInfo.setToken(token);
+        return userInfoService.modifyMobile(reqLoginUserInfo);
+    }
+
+    //😂
+    @ApiOperation(value = "根据登录token获取登录用户的昵称，头像，钱包余额，收藏数，浏览数，我的兼职等信息")
+    @PostMapping("/findMoWaByToken")
+    public Result findMoWaByToken(@RequestHeader("token") String token){
+        return userInfoService.findMoWaByToken(token);
+    }
+
+    @ApiOperation(value = "根据登录token获取个人信息")
+    @PostMapping("/findPersonalInformationByToken")
+    public Result findPersonalInformationByToken(@RequestHeader("token") String token){
+        return userInfoService.findPersonalInformationByToken(token);
+    }
+
+    @ApiOperation(value = "通过token查询个人信息&个人配置的最后更新时间")
+    @PostMapping("/findLocalMessageByToken")
+    public Result  findLocalMessageByToken(@RequestHeader("token") String token){
+        return userInfoService.findLocalMessageByToken(token);
+    }
+
+    @ApiOperation(value = "退出登录")
+    @PostMapping("/loginOut")
+    public Result loginOut(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return Result.success();
+    }
+
+
+    @ApiOperation(value = "更新用户状态信息")
+    @PostMapping("/modifyUserStatus")
+    public Result modifyUserStatus(@RequestBody ReqUserInfoUpdate reqUserInfoUpdate,@RequestHeader("token") String token){
+        reqUserInfoUpdate.setToken(token);
+        return userInfoService.modifyUserInfo(reqUserInfoUpdate);
+    }
+
+    @ApiOperation(value = "根据用户名获取用户信息记录[可能有重名的人]")
+    @GetMapping("/findUserInfoByUserName")
+    public Result findUserInfoByUserName(@RequestParam("userName") String userName){
+      return Result.success(userInfoService.findUserInfoByUserName(userName)) ;
+    }
+
+    @ApiOperation(value = "根据用户id|用户昵称|用户手机号|身份证 获取唯一一条用户信息记录")
+    @PostMapping("/findUserInfo")
+    public Result findUserInfo(@RequestBody ReqUserInfoQuery reqUserInfoQuery){
+      return Result.success(userInfoService.findUserInfo(reqUserInfoQuery));
+    }
+
+    @PostMapping("/findUserInfoPage")
+    @ApiOperation(value = "根据条件查询用户信息并进行分页")
+    public Result findUserInfoPage(@RequestBody ReqUserInfoQuery reqUserInfoQuery){
+       return Result.success(userInfoService.findUserInfoPage(reqUserInfoQuery));
     }
 
     @ApiOperation(value = "根据Id 获取用户记录详情")
@@ -196,60 +248,5 @@ public class UserInfoController {
             return result;
         }
     }
-
-    //😂
-    @ApiOperation(value = "根据登录token获取登录用户的昵称，头像，钱包余额，收藏数，浏览数，我的兼职等信息")
-    @PostMapping("/findMoWaByToken")
-    public Result findMoWaByToken(@RequestHeader("token") String token){
-      return userInfoService.findMoWaByToken(token);
-    }
-
-    @ApiOperation(value = "根据登录token获取个人信息")
-    @PostMapping("/findPersonalInformationByToken")
-    public Result findPersonalInformationByToken(@RequestHeader("token") String token){
-        return userInfoService.findPersonalInformationByToken(token);
-    }
-
-    @ApiOperation(value = "退出登录")
-    @PostMapping("/loginOut")
-    public Result loginOut(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        session.invalidate();
-        return Result.success();
-    }
-
-    @ApiOperation(value = "通过短信找回密码-发送短信")
-    @PostMapping("/messageFindPwd")
-    public Result messageFindPwd(HttpServletRequest request,@RequestParam("mobile")String mobile){
-        return userInfoService.messageFindPwd(messageId,signId,mobile,BusinessUtils.getIp(request));
-    }
-
-    @ApiOperation(value = "通过短信找回密码-输入验证码，验证通过则修改密码成功，验证失败则修改密码失败")
-    @PostMapping("/retrievePassword")
-    public Result  retrievePassword(@RequestBody ReqLoginUserInfo userInfo ,HttpServletRequest request){
-       return userInfoService.retrievePassword(userInfo);
-    }
-
-    @ApiOperation(value = "通过token查询个人信息&个人配置的最后更新时间")
-    @PostMapping("/findLocalMessageByToken")
-    public Result  findLocalMessageByToken(@RequestHeader("token") String token){
-        return userInfoService.findLocalMessageByToken(token);
-    }
-
-    @ApiOperation(value = "用户修改手机号-发送验证码")
-    @PostMapping("/modifyMobileMessage")
-    public Result  modifyMobileMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
-        return userInfoService.modifyMobileMessage(messageId,signId,mobile,BusinessUtils.getIp(request));
-    }
-
-    @PostMapping("/modifyMobile")
-    @ApiOperation(value = "用户修改手机号-发送验证码，验证通过则登录成功，验证失败则登录失败")
-    @LoginToken
-    public Result modifyMobile(@RequestBody ReqLoginUserInfo reqLoginUserInfo,@RequestHeader("token") String token) {
-        reqLoginUserInfo.setToken(token);
-        return userInfoService.modifyMobile(reqLoginUserInfo);
-    }
-
-
 
 }

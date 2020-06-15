@@ -16,7 +16,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -30,7 +29,7 @@ import java.util.Date;
 @Aspect
 @Order(2)
 @Slf4j
-public class LoginLogAspect {
+public class LogAndSendMessageAspect {
 
     @Autowired
     LoginLogService loginLogService;
@@ -41,17 +40,22 @@ public class LoginLogAspect {
     @Resource
     UserInfoMapper userInfoMapper;
 
+    //根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录
     private final static String SAVE_ORDINARY_LOGIN_METHOD = "ordinaryLogin";
 
+    //使用短信进行登录，发送验证码
     private final static String SAVE_LOGIN_MESSAGE_METHOD = "loginByMessage";
 
+    //用户短信注册，发送验证码
     private final static String MESSAGE_REGISTER_METHOD = "messageRegister";
 
+    //通过短信找回密码-发送短信
     private final static String MESSAGE_FIND_PWD_METHOD = "messageFindPwd";
 
+    //用户修改手机号-发送验证码
     private final static String MODIFY_MOBILE_MESSAGE_METHOD = "modifyMobileMessage";
 
-    @Around(value = "@annotation(LoginLogAnnotation)")
+    @Around(value = "@annotation(LogAndSendMessageAnnotation)")
     public Object interceptUpdatePrice(ProceedingJoinPoint pjp) {
         Object result = new Object();
         Method targetMethod = ((MethodSignature) (pjp.getSignature())).getMethod();

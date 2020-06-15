@@ -3,7 +3,6 @@ package com.fenghuang.job.service;
 import com.fenghuang.job.entity.BrowseRecordInfo;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqBrowseRecordInfoFrontQuery;
-import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
 
 import java.util.List;
 

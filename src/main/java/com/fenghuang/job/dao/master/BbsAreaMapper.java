@@ -3,7 +3,6 @@ package com.fenghuang.job.dao.master;
 import com.fenghuang.job.entity.BbsArea;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.view.BbsAreaView;
-import com.fenghuang.job.view.BbsAreaView2;
 import com.fenghuang.job.view.BbsAreaView3;
 import org.apache.ibatis.annotations.Param;
 

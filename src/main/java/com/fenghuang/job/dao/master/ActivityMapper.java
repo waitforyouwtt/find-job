@@ -1,7 +1,6 @@
 package com.fenghuang.job.dao.master;
 
 import com.fenghuang.job.entity.Activity;
-import com.fenghuang.job.request.ReqActivity;
 import com.fenghuang.job.request.ReqActivityQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

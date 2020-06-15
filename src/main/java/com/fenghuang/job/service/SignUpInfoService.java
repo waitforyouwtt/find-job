@@ -5,7 +5,6 @@ import com.fenghuang.job.request.ReqSignUpInfo;
 import com.fenghuang.job.request.ReqSignUpInfoByUserQuery;
 import com.fenghuang.job.request.ReqSignUpInfoQuery;
 import com.fenghuang.job.request.ReqSignUpInfoUpdate;
-import com.fenghuang.job.view.SignUpInfoUserIdView;
 import com.fenghuang.job.view.SignUpInfoView;
 import com.github.pagehelper.PageInfo;
 

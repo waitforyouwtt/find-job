@@ -2,14 +2,11 @@ package com.fenghuang.job.controller.front;
 
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqBrowseRecordInfoFrontQuery;
-import com.fenghuang.job.request.ReqBrowseRecordInfoQuery;
 import com.fenghuang.job.service.BrowseRecordInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]

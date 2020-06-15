@@ -4,9 +4,7 @@ import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.ReqBbsArea;
 import com.fenghuang.job.view.BbsAreaSearchView;
 import com.fenghuang.job.view.BbsAreaView;
-import com.fenghuang.job.view.BbsAreaView2;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

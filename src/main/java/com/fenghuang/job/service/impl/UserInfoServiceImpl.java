@@ -2,7 +2,7 @@ package com.fenghuang.job.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fenghuang.job.aspect.LoginLogAnnotation;
+import com.fenghuang.job.aspect.LogAndSendMessageAnnotation;
 import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.master.BbsAreaMapper;
 import com.fenghuang.job.dao.master.UserInfoMapper;
@@ -300,7 +300,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    @LoginLogAnnotation
+    @LogAndSendMessageAnnotation
     public Result messageRegister(String messageId,String signId,String mobile,String ip) {
         log.info("用户短信注册，发送验证码 请求参数：{},{},{},{}",messageId,signId,mobile,ip);
         if (StringUtils.isEmpty(mobile)){
@@ -398,7 +398,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    @LoginLogAnnotation
+    @LogAndSendMessageAnnotation
     public Result ordinaryLogin(ReqLoginUserInfo reqLoginUserInfo) {
         log.info(" 根据[用户名&密码]|[用户昵称&密码]|[手机号&密码]|[身份证号&密码]进行登录请求参数：{}",JSON.toJSONString(reqLoginUserInfo));
 
@@ -470,7 +470,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    @LoginLogAnnotation
+    @LogAndSendMessageAnnotation
     public Result loginByMessage(String messageId,String signId,String mobile,String ip) {
         log.info("使用短信进行登录，发送验证码 请求参数：{},{},{},{}",messageId,signId,mobile,ip);
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);
@@ -669,7 +669,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    @LoginLogAnnotation
+    @LogAndSendMessageAnnotation
     public Result messageFindPwd(String messageId,String signId,String mobile,String ip) {
         log.info("通过短信找回密码，发送验证码 请求参数：{},{},{},{}",messageId,signId,mobile,ip);
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);
@@ -766,7 +766,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    @LoginLogAnnotation
+    @LogAndSendMessageAnnotation
     public Result modifyMobileMessage(String messageId, String signId, String mobile, String ip) {
         log.info("用户修改手机号-发送验证码请求参数：{},{},{},{}",messageId,signId,mobile,ip);
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId, messageId);

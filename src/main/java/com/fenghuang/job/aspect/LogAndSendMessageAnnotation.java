@@ -2,7 +2,6 @@ package com.fenghuang.job.aspect;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-
 import java.lang.annotation.*;
 
 /**
@@ -17,5 +16,5 @@ import java.lang.annotation.*;
 @Documented
 //最高优先级
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public @interface LoginLogAnnotation {
+public @interface LogAndSendMessageAnnotation {
 }

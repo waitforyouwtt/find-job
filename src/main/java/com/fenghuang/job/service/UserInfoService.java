@@ -3,7 +3,6 @@ package com.fenghuang.job.service;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.request.ReqRegisterCode;
-import com.fenghuang.job.view.UserInfoManagerView;
 import com.fenghuang.job.view.UserInfoView;
 import com.github.pagehelper.PageInfo;
 import java.util.List;

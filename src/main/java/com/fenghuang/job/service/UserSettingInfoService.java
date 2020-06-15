@@ -4,7 +4,6 @@ import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.entity.UserSettingInfo;
 import com.fenghuang.job.request.ReqUserSettingInfo;
 
-import java.util.Date;
 
 /**
  * @Author: 凤凰[小哥哥]
