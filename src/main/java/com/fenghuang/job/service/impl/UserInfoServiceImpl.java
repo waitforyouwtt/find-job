@@ -213,7 +213,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfo.setPassword(AesUtil.encrypt(Constants.SECRET_KEY,reqUserInfoUpdate.getPassword()));
         }
         userInfo.setId(userId);
+        userInfo.setModifier(userName);
         userInfo.setUserHead(reqUserInfoUpdate.getUserHead());
+        userInfo.setUpdateDate(new Date());
         return Result.success(userInfoMapper.updateByPrimaryKeySelective(userInfo));
     }
 
