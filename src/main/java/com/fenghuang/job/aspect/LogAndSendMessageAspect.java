@@ -82,25 +82,25 @@ public class LogAndSendMessageAspect {
                 String mobile = args[2].toString();
                 String ip = args[3].toString();
                 Integer messageType = 3;
-                saveSendMessage(ip,mobile,messageType);
+                saveSendMessageRecord(ip,mobile,messageType);
                 break;
             case MESSAGE_REGISTER_METHOD:
                 String registerPhone = args[2].toString();
                 String registerIp = args[3].toString();
                 Integer registerMessageType = 1;
-                saveSendMessage(registerIp,registerPhone,registerMessageType);
+                saveSendMessageRecord(registerIp,registerPhone,registerMessageType);
                 break;
             case MESSAGE_FIND_PWD_METHOD:
                 String  messageFindPwdPhone = args[2].toString();
                 String  messageFindPwdIp = args[3].toString();
                 Integer messageFindPwdType = 2;
-                saveSendMessage(messageFindPwdIp,messageFindPwdPhone,messageFindPwdType);
+                saveSendMessageRecord(messageFindPwdIp,messageFindPwdPhone,messageFindPwdType);
                 break;
             case MODIFY_MOBILE_MESSAGE_METHOD:
                 String  modifyPhone = args[2].toString();
                 String  modifyIp = args[3].toString();
                 Integer modifyType = 4;
-                saveSendMessage(modifyIp,modifyPhone,modifyType);
+                saveSendMessageRecord(modifyIp,modifyPhone,modifyType);
                 break;
             default:
                 break;
@@ -137,7 +137,7 @@ public class LogAndSendMessageAspect {
     /**
      * 通过aop 切面保存短信发送统计日志记录
      */
-    public void saveSendMessage(String ip,String mobile,Integer messageType){
-        messageCountService.insertMessageCountRecordByType(ip, mobile, messageType);
+    public void saveSendMessageRecord(String ip,String mobile,Integer messageType){
+        messageCountService.insertMessageRecordByType(ip, mobile, messageType);
     }
 }

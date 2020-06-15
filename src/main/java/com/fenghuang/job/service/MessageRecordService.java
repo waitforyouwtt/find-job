@@ -1,6 +1,5 @@
 package com.fenghuang.job.service;
 
-import com.fenghuang.job.request.ReqMessageRecord;
 import com.fenghuang.job.request.ReqMessageRecordQuery;
 import com.fenghuang.job.request.ReqMessageRecordQuery2;
 import com.fenghuang.job.view.MessageRecordView;
@@ -21,14 +20,7 @@ public interface MessageRecordService {
      * @param mobile
      * @param messageType
      */
-    void insertMessageCountRecordByType(String ip, String mobile, Integer messageType);
-
-    /**
-     *插入短信统计表
-     * @param reqMessageCount
-     * @return
-     */
-    int insertMessageCount(ReqMessageRecord reqMessageCount);
+    void insertMessageRecordByType(String ip, String mobile, Integer messageType);
 
     /**
      * 根据条件进行查询短信统计且分页
@@ -39,5 +31,5 @@ public interface MessageRecordService {
     /**
      * 根据条件统计一个人30分钟发送短信的条数
      */
-    List<MessageRecordView> findMessageCount(ReqMessageRecordQuery2 reqMessageCountQuery2);
+    List<MessageRecordView> findMessageRecordSize(ReqMessageRecordQuery2 reqMessageCountQuery2);
 }

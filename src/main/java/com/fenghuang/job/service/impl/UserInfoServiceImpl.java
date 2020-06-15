@@ -46,7 +46,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     SmsSenderUtil smsSenderUtil;
 
     @Autowired
-    MessageRecordService messageCountService;
+    MessageRecordService messageRecordService;
 
     @Autowired
     CollectionRecordInfoService recordInfoService;
@@ -320,7 +320,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         //messageCountQuery2.setSendIp(ip);
         messageCountQuery2.setMobile(mobile);
         messageCountQuery2.setCurrentSendDate(DateUtil.dateToString(new Date()));
-        List<MessageRecordView> messageCount = messageCountService.findMessageCount(messageCountQuery2);
+        List<MessageRecordView> messageCount = messageRecordService.findMessageRecordSize(messageCountQuery2);
         if (messageCount.size() > Constants.MESSAGE_COUNT){
             return Result.error(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg(),null);
         }

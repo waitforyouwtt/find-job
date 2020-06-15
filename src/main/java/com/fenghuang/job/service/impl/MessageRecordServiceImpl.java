@@ -37,7 +37,7 @@ import java.util.List;
 public class MessageRecordServiceImpl implements MessageRecordService {
 
     @Resource
-    MessageRecordMapper messageCountMapper;
+    MessageRecordMapper messageRecordMapper;
 
     /**
      * 插入短信统计表
@@ -47,7 +47,7 @@ public class MessageRecordServiceImpl implements MessageRecordService {
      */
     @Override
     @Async
-    public void insertMessageCountRecordByType(String ip, String mobile, Integer messageType) {
+    public void insertMessageRecordByType(String ip, String mobile, Integer messageType) {
 
         //发送短信成功，则往短信统计记录表中插入相关数据
         MessageRecord messageRecord = new MessageRecord();
@@ -72,27 +72,9 @@ public class MessageRecordServiceImpl implements MessageRecordService {
             messageRecord.setMessageType(MessageTypeEnum.MODIFY_MOBILE.getCode());
             messageRecord.setSendContent("您正在进行使用短信修改绑定手机号");
         }
-        messageCountMapper.insertSelective(messageRecord);
+        messageRecordMapper.insertSelective(messageRecord);
     }
-    /**
-     * 插入短信统计表
-     *
-     * @param reqMessageCount
-     * @return
-     */
-    @Override
-    public int insertMessageCount(ReqMessageRecord reqMessageCount) {
-        log.info("插入短信统计表 请求参数：{}", JSON.toJSONString(reqMessageCount));
-        MessageRecord messageCount = new MessageRecord();
-        BeanCopier beanCopier = BeanCopier.create(ReqMessageRecord.class,MessageRecord.class,false);
-        beanCopier.copy(reqMessageCount,messageCount,null);
-        messageCount.setCreateDate(new Date());
-        messageCount.setUpdateDate(new Date());
-        messageCount.setSendDate(new Date());
-        messageCount.setFounder(reqMessageCount.getFounder());
-        messageCount.setModifier(reqMessageCount.getFounder());
-        return messageCountMapper.insertSelective(messageCount);
-    }
+
 
     /**
      * 根据条件进行查询短信统计且分页
@@ -106,7 +88,7 @@ public class MessageRecordServiceImpl implements MessageRecordService {
         PageInfo<MessageRecordView> pageInfo = null;
         try{
             Page<?> page = PageHelper.startPage(messageCountQuery.getPageNum(),messageCountQuery.getPageSize());
-            List<MessageRecord> queryMessageCount = messageCountMapper.findMessageCountPage(messageCountQuery);
+            List<MessageRecord> queryMessageCount = messageRecordMapper.findMessageCountPage(messageCountQuery);
             if (CollectionUtils.isEmpty( queryMessageCount )){
                 pageInfo = new PageInfo<>( new ArrayList<>(  ) );
             }else{
@@ -127,14 +109,14 @@ public class MessageRecordServiceImpl implements MessageRecordService {
      * @param reqMessageCountQuery2
      */
     @Override
-    public List<MessageRecordView> findMessageCount(ReqMessageRecordQuery2 reqMessageCountQuery2){
+    public List<MessageRecordView> findMessageRecordSize(ReqMessageRecordQuery2 reqMessageCountQuery2){
         log.info(" 根据条件统计一个人30分钟之内发送短信的条数 请求参数：{}",JSON.toJSONString(reqMessageCountQuery2));
         try {
             reqMessageCountQuery2.setOneHourAgoDate(DateUtil.subMinute(DateUtils.parseDate(reqMessageCountQuery2.getCurrentSendDate(),"yyyy-MM-dd hh:mm:ss"), Constants.MESSAGE_MINUTE));
         } catch (ParseException e) {
             log.info("根据条件统计一个人30分钟之内发送短信的条数 时间转换异常：{}",e.getMessage());
         }
-        List<MessageRecord> queryMessageCount = messageCountMapper.findMessageCount(reqMessageCountQuery2);
+        List<MessageRecord> queryMessageCount = messageRecordMapper.findMessageCount(reqMessageCountQuery2);
         log.info("根据条件统计一个人30分钟之内发送短信的条数 返回记录：{}",JSON.toJSONString(queryMessageCount));
         List<MessageRecordView> views = new ArrayList<>();
         convertView(queryMessageCount, views);
