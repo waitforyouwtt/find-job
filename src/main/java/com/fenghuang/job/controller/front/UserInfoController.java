@@ -230,4 +230,11 @@ public class UserInfoController {
        return userInfoService.retrievePassword(userInfo);
     }
 
+    @ApiOperation(value = "通过token查询个人信息&个人配置的最后更新时间")
+    @PostMapping("/findLocalMessageByToken")
+    public Result  findLocalMessageByToken(@RequestHeader("token") String token){
+        return userInfoService.findLocalMessageByToken(token);
+    }
+
+
 }

@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -131,11 +132,11 @@ public class UserSettingInfoServiceImpl implements UserSettingInfoService {
     }
 
     @Override
-   public String findpersonalSignatureByUserId(Integer userId){
+   public UserSettingInfo findUserSettingByUserId(Integer userId){
         UserSettingInfo settingInfo = userSettingInfoMapper.selectByUerId( userId );
-        if (settingInfo == null || StringUtils.isEmpty( settingInfo.getPersonalSignature() )){
+        if (Objects.isNull(settingInfo)){
             return null;
         }
-        return settingInfo.getPersonalSignature();
+        return settingInfo;
     }
 }

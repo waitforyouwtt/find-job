@@ -1,7 +1,10 @@
 package com.fenghuang.job.service;
 
 import com.fenghuang.job.entity.Result;
+import com.fenghuang.job.entity.UserSettingInfo;
 import com.fenghuang.job.request.ReqUserSettingInfo;
+
+import java.util.Date;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -26,9 +29,9 @@ public interface UserSettingInfoService {
     Result findUserSettingInfo(String token);
 
     /**
-     * 通过用户id 获取用户个性签名
+     * 通过用户id 获取用户设置相关信息
      * @param userId
      * @return
      */
-    String findpersonalSignatureByUserId(Integer userId);
+    UserSettingInfo findUserSettingByUserId(Integer userId);
 }

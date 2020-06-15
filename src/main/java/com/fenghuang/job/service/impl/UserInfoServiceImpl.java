@@ -6,10 +6,7 @@ import com.fenghuang.job.aspect.LoginLogAnnotation;
 import com.fenghuang.job.constant.Constants;
 import com.fenghuang.job.dao.master.BbsAreaMapper;
 import com.fenghuang.job.dao.master.UserInfoMapper;
-import com.fenghuang.job.entity.BrowseRecordInfo;
-import com.fenghuang.job.entity.CollectionRecordInfo;
-import com.fenghuang.job.entity.Result;
-import com.fenghuang.job.entity.UserInfo;
+import com.fenghuang.job.entity.*;
 import com.fenghuang.job.enums.*;
 import com.fenghuang.job.exception.BusinessException;
 import com.fenghuang.job.request.*;
@@ -593,10 +590,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         view.setHadAdmissionNum( hadAdmissionNum );
         view.setHadSettlementNum( hadSettlementNum );
         view.setWaitEvaluateNum( waitEvaluateNum );
-        if (StringUtils.isEmpty( userSettingInfoService.findpersonalSignatureByUserId( userId ) )){
+        if (StringUtils.isEmpty( userSettingInfoService.findUserSettingByUserId( userId ) )){
             view.setPersonalSignature("******");
         }else{
-            view.setPersonalSignature( userSettingInfoService.findpersonalSignatureByUserId( userId ));
+            view.setPersonalSignature( userSettingInfoService.findUserSettingByUserId( userId ).getPersonalSignature());
         }
         return Result.success(view);
     }
@@ -717,6 +714,46 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
         }
         return Result.success("找回密码成功");
+    }
+
+    /**
+     * 通过token查询个人信息&个人配置的最后更新时间
+     *
+     * @param token
+     * @return
+     */
+    @Override
+    public Result findLocalMessageByToken(String token) {
+        log.info("通过token查询个人信息&个人配置的最后更新时间");
+        if(StringUtils.isEmpty(token)){
+            return Result.error(BusinessEnum.MISSING_PARAMETERS.getCode(),BusinessEnum.MISSING_PARAMETERS.getMsg(),"token不能为空");
+        }
+
+        Integer userId;
+        String  userName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(token);
+        if (userInfoByToken.getCode() == 2001){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
+        Map user = (Map) userInfoByToken.getData();
+        userId = Integer.valueOf(user.get("userId").toString());
+        userName = user.get("userName").toString();
+        log.info("解析token获取的结果{},{}",userId,userName);
+
+        Map<String,Date> map = new HashMap<>();
+        //用户信息
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        UserSettingInfo userSettingInfo = userSettingInfoService.findUserSettingByUserId(userId);
+        if (Objects.isNull(userInfo)){
+            return Result.success("对不起，没有匹配到用户信息");
+        }
+        map.put("personalLastUpdateTime",userInfo.getUpdateDate());
+        if (Objects.isNull(userSettingInfo)){
+            map.put("settingLastUpdateTime",null);
+        }else{
+            map.put("settingLastUpdateTime",userSettingInfo.getUpdateDate());
+        }
+        return Result.success(map);
     }
 
 }

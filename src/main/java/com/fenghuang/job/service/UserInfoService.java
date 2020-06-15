@@ -131,4 +131,11 @@ public interface UserInfoService {
      * @return
      */
     Result retrievePassword(ReqLoginUserInfo userInfo);
+
+    /**
+     * 通过token查询个人信息&个人配置的最后更新时间
+     * @param token
+     * @return
+     */
+    Result findLocalMessageByToken(String token);
 }
