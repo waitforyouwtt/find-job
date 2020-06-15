@@ -35,7 +35,7 @@ public class LogAndSendMessageAspect {
     LoginLogService loginLogService;
 
     @Autowired
-    MessageRecordService messageCountService;
+    MessageRecordService messageRecordService;
 
     @Resource
     UserInfoMapper userInfoMapper;
@@ -138,6 +138,6 @@ public class LogAndSendMessageAspect {
      * 通过aop 切面保存短信发送统计日志记录
      */
     public void saveSendMessageRecord(String ip,String mobile,Integer messageType){
-        messageCountService.insertMessageRecordByType(ip, mobile, messageType);
+        messageRecordService.insertMessageRecordByType(ip, mobile, messageType);
     }
 }

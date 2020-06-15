@@ -317,16 +317,16 @@ public class UserInfoServiceImpl implements UserInfoService {
             return Result.error(BusinessEnum.USERINFO_EXIST.getCode(),BusinessEnum.USERINFO_EXIST.getMsg(),null);
         }
         //发送短信为注册时,如果当前手机号| ip 30分钟内频繁的发送短信超过5条，则视为用户进行恶意攻击
-        ReqMessageRecordQuery2 messageCountQuery2 = new ReqMessageRecordQuery2();
-        messageCountQuery2.setMessageType(MessageTypeEnum.REGISTER.getCode());
-        //messageCountQuery2.setSendIp(ip);
-        messageCountQuery2.setMobile(mobile);
-        messageCountQuery2.setCurrentSendDate(DateUtil.dateToString(new Date()));
-        List<MessageRecordView> messageCount = messageRecordService.findMessageRecordSize(messageCountQuery2);
-        if (messageCount.size() > Constants.MESSAGE_COUNT){
+        ReqMessageRecordQuery2 messageRecordParams = new ReqMessageRecordQuery2();
+        messageRecordParams.setMessageType(MessageTypeEnum.REGISTER.getCode());
+        //messageRecordParams.setSendIp(ip);
+        messageRecordParams.setMobile(mobile);
+        messageRecordParams.setCurrentSendDate(DateUtil.dateToString(new Date()));
+        List<MessageRecordView> queryMessageRecordSize = messageRecordService.countMessageRecordSize(messageRecordParams);
+        if (queryMessageRecordSize.size() > Constants.MESSAGE_COUNT){
             return Result.error(BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getCode(),BusinessEnum.FREQUENT_OPERATION_PLEASE_TRY_AGAIN_LATER.getMsg(),null);
         }
-        log.info("当前手机号 | ip 30分钟之内发送的短信条数为：{}",messageCount.size());
+        log.info("当前手机号 | ip 30分钟之内发送的短信条数为：{}",queryMessageRecordSize.size());
         String sendMsm = smsSenderUtil.sendMsm(mobile, signId,messageId);
         //如果调用发送短信返回信息为空，则抛出错误信息
         if (StringUtils.isEmpty(sendMsm)){

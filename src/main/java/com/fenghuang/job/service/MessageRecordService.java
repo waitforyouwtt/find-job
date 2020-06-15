@@ -24,12 +24,12 @@ public interface MessageRecordService {
 
     /**
      * 根据条件进行查询短信统计且分页
-     * @param messageCountQuery
+     * @param messageRecordQuery
      * @return
      */
-    PageInfo<MessageRecordView> findMessageCountPage(ReqMessageRecordQuery messageCountQuery);
+    PageInfo<MessageRecordView> findMessageRecordPage(ReqMessageRecordQuery messageRecordQuery);
     /**
      * 根据条件统计一个人30分钟发送短信的条数
      */
-    List<MessageRecordView> findMessageRecordSize(ReqMessageRecordQuery2 reqMessageCountQuery2);
+    List<MessageRecordView> countMessageRecordSize(ReqMessageRecordQuery2 reqMessageRecordQuery2);
 }

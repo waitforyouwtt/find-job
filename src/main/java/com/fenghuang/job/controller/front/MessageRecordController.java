@@ -24,15 +24,15 @@ public class MessageRecordController {
     MessageRecordService messageRecordService;
 
     @ApiOperation(value = "根据条件进行查询短信统计且分页")
-    @PostMapping("/findMessageCountPage")
-    public Result findMessageCountPage(@RequestBody ReqMessageRecordQuery messageCountQuery){
-        return Result.success(messageRecordService.findMessageCountPage(messageCountQuery));
+    @PostMapping("/findMessageRecordPage")
+    public Result findMessageRecordPage(@RequestBody ReqMessageRecordQuery messageRecordQuery){
+        return Result.success(messageRecordService.findMessageRecordPage(messageRecordQuery));
     }
 
-    @ApiOperation(value = "根据条件统计一个人一小时发送短信的条数")
-    @PostMapping("/findMessageCount")
-    public Result findMessageCount (@RequestBody ReqMessageRecordQuery2 messageCountQuery2){
-        return Result.success(messageRecordService.findMessageRecordSize(messageCountQuery2));
+    @ApiOperation(value = "根据条件统计一个人30分钟发送短信的条数")
+    @PostMapping("/findMessageRecordCount")
+    public Result findMessageRecordCount (@RequestBody ReqMessageRecordQuery2 messageRecordQuery2){
+        return Result.success(messageRecordService.countMessageRecordSize(messageRecordQuery2));
     }
 
 }

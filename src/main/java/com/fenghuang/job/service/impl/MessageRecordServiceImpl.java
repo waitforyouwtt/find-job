@@ -79,21 +79,21 @@ public class MessageRecordServiceImpl implements MessageRecordService {
     /**
      * 根据条件进行查询短信统计且分页
      *
-     * @param messageCountQuery
+     * @param messageRecordQuery
      * @return
      */
     @Override
-    public PageInfo<MessageRecordView> findMessageCountPage(ReqMessageRecordQuery messageCountQuery) {
-        log.info("根据条件进行查询短信统计且分页 请求参数：{}",JSON.toJSONString(messageCountQuery));
+    public PageInfo<MessageRecordView> findMessageRecordPage(ReqMessageRecordQuery messageRecordQuery) {
+        log.info("根据条件进行查询短信统计且分页 请求参数：{}",JSON.toJSONString(messageRecordQuery));
         PageInfo<MessageRecordView> pageInfo = null;
         try{
-            Page<?> page = PageHelper.startPage(messageCountQuery.getPageNum(),messageCountQuery.getPageSize());
-            List<MessageRecord> queryMessageCount = messageRecordMapper.findMessageCountPage(messageCountQuery);
-            if (CollectionUtils.isEmpty( queryMessageCount )){
+            Page<?> page = PageHelper.startPage(messageRecordQuery.getPageNum(),messageRecordQuery.getPageSize());
+            List<MessageRecord> queryMessageRecord = messageRecordMapper.findMessageRecordPage(messageRecordQuery);
+            if (CollectionUtils.isEmpty( queryMessageRecord )){
                 pageInfo = new PageInfo<>( new ArrayList<>(  ) );
             }else{
                 List<MessageRecordView> views = new ArrayList<>();
-                convertView(queryMessageCount, views);
+                convertView(queryMessageRecord, views);
                 pageInfo = new PageInfo<>( views );
             }
             log.info("总共有:{}",page.getTotal()+"条数据,实际返回{}:",page.size()+"两条数据!");
@@ -106,29 +106,29 @@ public class MessageRecordServiceImpl implements MessageRecordService {
     /**
      * 根据条件统计一个人一小时发送短信的条数
      *
-     * @param reqMessageCountQuery2
+     * @param reqMessageRecordQuery2
      */
     @Override
-    public List<MessageRecordView> findMessageRecordSize(ReqMessageRecordQuery2 reqMessageCountQuery2){
-        log.info(" 根据条件统计一个人30分钟之内发送短信的条数 请求参数：{}",JSON.toJSONString(reqMessageCountQuery2));
+    public List<MessageRecordView> countMessageRecordSize(ReqMessageRecordQuery2 reqMessageRecordQuery2){
+        log.info(" 根据条件统计一个人30分钟之内发送短信的条数 请求参数：{}",JSON.toJSONString(reqMessageRecordQuery2));
         try {
-            reqMessageCountQuery2.setOneHourAgoDate(DateUtil.subMinute(DateUtils.parseDate(reqMessageCountQuery2.getCurrentSendDate(),"yyyy-MM-dd hh:mm:ss"), Constants.MESSAGE_MINUTE));
+            reqMessageRecordQuery2.setOneHourAgoDate(DateUtil.subMinute(DateUtils.parseDate(reqMessageRecordQuery2.getCurrentSendDate(),"yyyy-MM-dd hh:mm:ss"), Constants.MESSAGE_MINUTE));
         } catch (ParseException e) {
             log.info("根据条件统计一个人30分钟之内发送短信的条数 时间转换异常：{}",e.getMessage());
         }
-        List<MessageRecord> queryMessageCount = messageRecordMapper.findMessageCount(reqMessageCountQuery2);
-        log.info("根据条件统计一个人30分钟之内发送短信的条数 返回记录：{}",JSON.toJSONString(queryMessageCount));
+        List<MessageRecord> queryMessageRecord = messageRecordMapper.findMessageRecordSize(reqMessageRecordQuery2);
+        log.info("根据条件统计一个人30分钟之内发送短信的条数 返回记录：{}",JSON.toJSONString(queryMessageRecord));
         List<MessageRecordView> views = new ArrayList<>();
-        convertView(queryMessageCount, views);
+        convertView(queryMessageRecord, views);
         return views;
     }
 
-    private void convertView(List<MessageRecord> queryMessageCount, List<MessageRecordView> views) {
-        queryMessageCount.stream().forEach(messageCount -> {
+    private void convertView(List<MessageRecord> queryMessageRecord, List<MessageRecordView> views) {
+        queryMessageRecord.stream().forEach(messageRecord -> {
             MessageRecordView view = new MessageRecordView();
             BeanCopier beanCopier = BeanCopier.create(MessageRecord.class, MessageRecordView.class, false);
-            beanCopier.copy(messageCount,view,null);
-            view.setMessageTypeDesc(MessageTypeEnum.fromValue(messageCount.getMessageType()).getMsg());
+            beanCopier.copy(messageRecord,view,null);
+            view.setMessageTypeDesc(MessageTypeEnum.fromValue(messageRecord.getMessageType()).getMsg());
             views.add(view);
         });
     }

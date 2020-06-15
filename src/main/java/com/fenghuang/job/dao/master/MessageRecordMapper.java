@@ -19,8 +19,8 @@ public interface MessageRecordMapper {
 
     int updateByPrimaryKey(MessageRecord record);
 
-    List<MessageRecord> findMessageCountPage(ReqMessageRecordQuery messageCountQuery);
+    List<MessageRecord> findMessageRecordPage(ReqMessageRecordQuery messageRecordQuery);
 
-    List<MessageRecord> findMessageCount(ReqMessageRecordQuery2 reqMessageCountQuery2);
+    List<MessageRecord> findMessageRecordSize(ReqMessageRecordQuery2 reqMessageRecordQuery2);
 
 }

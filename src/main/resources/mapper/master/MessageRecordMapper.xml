@@ -175,7 +175,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="findMessageCountPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqMessageRecordQuery">
+  <select id="findMessageRecordPage" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqMessageRecordQuery">
     select
     <include refid="Base_Column_List" />
     from message_count
@@ -194,7 +194,7 @@
       </if>
     </where>
   </select>
-  <select id="findMessageCount" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqMessageRecordQuery2">
+  <select id="findMessageRecordSize" resultMap="BaseResultMap" parameterType="com.fenghuang.job.request.ReqMessageRecordQuery2">
     select
     <include refid="Base_Column_List" />
     from message_count
