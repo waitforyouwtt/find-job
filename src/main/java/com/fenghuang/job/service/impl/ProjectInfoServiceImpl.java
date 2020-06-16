@@ -417,9 +417,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
      * @return
      */
     @Override
-    public Result findAll() {
+    public List<ProjectInfo> findAll() {
        List<ProjectInfo> projectInfo = projectMapper.findAll( );
-        return Result.success(projectInfo);
+        return projectInfo;
     }
 
     /**

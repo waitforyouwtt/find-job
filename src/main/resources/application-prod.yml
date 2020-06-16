@@ -75,6 +75,9 @@ logging:
          master: debug
          cluster: debug
 
+elasticsearch:
+    nodes: 127.0.0.1:9200,192.168.1.X2:9200,192.168.1.X3:9200
+
 
 #短信发送相关配置：
 message:

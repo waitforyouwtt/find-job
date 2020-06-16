@@ -36,3 +36,23 @@ mybatis generator 如何在idea 中使用：
   pageInfo.setPages(page.getPages());
   pageInfo.setTotal(page.getTotal());      
 
+
+
+----------------------------------------------------------
+redis 启动：
+
+解决方案：cmd-> cd c:\\tools\\redistool +enter    
+redis-server.exe redis.windows.conf +enter
+
+elasticsearch 启动：
+
+解决方案：cmd-> cd C:\tools\elasticsearch\elasticsearch-7.2.1\bin
+elasticsearch.bat +enter
+访问地址：http://127.0.0.1:9200/  
+
+elasticsearch-head 启动：
+
+解决方案：cmd-> cd C:\tools\es-head\elasticsearch-head-master
+npm run start +enter
+访问地址：http://127.0.0.1:9100/  
+

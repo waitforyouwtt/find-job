@@ -1,5 +1,6 @@
 package com.fenghuang.job.service;
 
+import com.fenghuang.job.entity.ProjectInfo;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.request.*;
 import com.fenghuang.job.view.ProjectInfoView;
@@ -71,11 +72,11 @@ public interface ProjectInfoService {
     Integer findhadApplyNum(ReqProjectInfoQuery queryParams);
 
     /**
-     * 根据id 查询
+     * 查询所有的project
      * @param id
      * @return
      */
-    Result findAll();
+    List<ProjectInfo> findAll();
 
     /**
      * 商家进入后台，查看待录用|已录用|已结算|已评价|已取消 兼职列表

@@ -69,7 +69,7 @@
   <select id="findAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from project_info
+    from project_info where is_delete = 2
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
