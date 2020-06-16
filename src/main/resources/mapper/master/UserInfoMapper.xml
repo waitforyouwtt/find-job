@@ -17,7 +17,7 @@
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="province_id" jdbcType="INTEGER" property="provinceId" />
     <result column="city_id" jdbcType="INTEGER" property="cityId" />
-    <result column="county_Area_id" jdbcType="INTEGER" property="countyAreaId" />
+    <result column="county_area_id" jdbcType="INTEGER" property="countyAreaId" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="id_card_x" jdbcType="VARCHAR" property="idCardX" />
     <result column="id_card_y" jdbcType="VARCHAR" property="idCardY" />
@@ -37,7 +37,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, user_name, user_nickName, id_card, user_head, password, wechat, qq, email, gender,birthday,age,
-    mobile, province_id, city_id, county_Area_id, address, id_card_x, id_card_y, user_status, 
+    mobile, province_id, city_id, county_area_id, address, id_card_x, id_card_y, user_status,
     is_delete, amount, user_type, user_level,education_status,education, emergency_contact_name, emergency_contact_mobile,
     founder, modifier, create_date, update_date
   </sql>
@@ -58,7 +58,7 @@
       id_card, user_head, password, 
       wechat, qq, email, 
       gender, mobile, province_id, 
-      city_id, county_Area_id, address, 
+      city_id, county_area_id, address,
       id_card_x, id_card_y, user_status, 
       is_delete, amount, user_type, 
       user_level, emergency_contact_name, emergency_contact_mobile, 
@@ -124,7 +124,7 @@
         city_id,
       </if>
       <if test="countyAreaId != null">
-        county_Area_id,
+        county_area_id,
       </if>
       <if test="address != null">
         address,
@@ -314,7 +314,7 @@
         city_id = #{cityId,jdbcType=INTEGER},
       </if>
       <if test="countyAreaId != null">
-        county_Area_id = #{countyAreaId,jdbcType=INTEGER},
+        county_area_id = #{countyAreaId,jdbcType=INTEGER},
       </if>
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
@@ -382,7 +382,7 @@
       mobile = #{mobile,jdbcType=VARCHAR},
       province_id = #{provinceId,jdbcType=INTEGER},
       city_id = #{cityId,jdbcType=INTEGER},
-      county_Area_id = #{countyAreaId,jdbcType=INTEGER},
+      county_area_id = #{countyAreaId,jdbcType=INTEGER},
       address = #{address,jdbcType=VARCHAR},
       id_card_x = #{idCardX,jdbcType=VARCHAR},
       id_card_y = #{idCardY,jdbcType=VARCHAR},
