@@ -19,6 +19,12 @@ public interface ElasticSearchService {
     Result createIndex();
 
     /**
+     * 保存或更新兼职项目
+     * @return
+     */
+    Result saveOrUpdateProjectByES();
+
+    /**
      * 通过es 自动生成的Id查询projectInfoES索引库
      * @param id
      * @return

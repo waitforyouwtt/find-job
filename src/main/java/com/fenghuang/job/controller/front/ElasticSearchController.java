@@ -29,6 +29,12 @@ public class ElasticSearchController {
       return searchService.createIndex();
     }
 
+    @ApiOperation(value = "保存或更新兼职项目")
+    @PostMapping("/saveOrUpdateProjectByES")
+    public Result saveOrUpdateProjectByES(){
+        return searchService.saveOrUpdateProjectByES();
+    }
+
     //ॣ ॣ ॣ
     @ApiOperation(value = "通过es 自动生成的Id查询projectInfoES索引库")
     @PostMapping("/queryProjectESByAutoId")
@@ -45,7 +51,7 @@ public class ElasticSearchController {
 
     @ApiOperation(value = "通过条件查询projectInfoES索引库")
     @PostMapping("/queryProjectESByParams")
-    public Result queryProjectESByParams(@RequestBody ProjectESByParamsView view){
+    public Result queryProjectESByParams(@RequestBody(required = false) ProjectESByParamsView view){
         return searchService.queryProjectESByParams(view);
     }
 

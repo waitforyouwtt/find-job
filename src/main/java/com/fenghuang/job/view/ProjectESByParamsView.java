@@ -12,6 +12,9 @@ import java.io.Serializable;
 @Data
 public class ProjectESByParamsView implements Serializable {
 
+    @ApiModelProperty("商家id")
+    private Integer userId;
+
     @ApiModelProperty("项目类型id")
     private Integer projectTypeId;
 
