@@ -34,7 +34,7 @@ public interface ElasticSearchService {
 
     /**
      * 通过条件查询projectInfoES索引库
-     * @param id
+     * @param view
      * @return
      */
     Result queryProjectESByParams(ProjectESByParamsView view);

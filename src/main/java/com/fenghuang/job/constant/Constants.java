@@ -19,7 +19,6 @@ public class Constants {
     //魔蛙默认用户
     public static final String MOWA = "mowa_";
 
-
     //七牛云地址
     public static final String QINIUURL = "http://rs.qiniu.com/mkbucketv2/";
     //秘钥
@@ -65,4 +64,10 @@ public class Constants {
         sortList.add(  710000); //台湾
         return sortList;
     }
+
+
+    //ES配置相关
+    public static final String ES_PROJECT_INFO_INDEX = "project_info_index";
+    public static final String ES_DOC_TYPE = "doc";
+
 }
