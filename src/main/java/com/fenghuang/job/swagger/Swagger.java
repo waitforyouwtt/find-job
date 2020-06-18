@@ -23,8 +23,8 @@ public class Swagger {
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-               // .host("wx.libire.com/")
-               // .pathMapping("/zhaohao/")
+                .host("wx.libire.com/")
+                .pathMapping("/zhaohao/")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.fenghuang.job.controller"))
                 .paths(PathSelectors.any())
