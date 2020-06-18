@@ -110,7 +110,8 @@ public class UserInfoController {
 
     @ApiOperation(value = "用户修改手机号-发送验证码")
     @PostMapping("/modifyMobileMessage")
-    public Result  modifyMobileMessage(@RequestBody HttpServletRequest request,@RequestParam("mobile")String mobile){
+    public Result  modifyMobileMessage(HttpServletRequest request,@RequestBody ReqRegisterCode registerCode){
+        String mobile = registerCode.getMobile();
         return userInfoService.modifyMobileMessage(messageId,signId,mobile,BusinessUtils.getIp(request));
     }
 

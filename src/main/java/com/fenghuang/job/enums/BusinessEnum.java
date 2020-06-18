@@ -30,6 +30,7 @@ public enum BusinessEnum {
     USERINFO_STATUS_FROZENT(1021,"当前申请的账号已存在但处于冻结状态，请联系客服人员进行解冻操作"),
     VALIDATE_OLD_PASSWORD_ERROR(1022,"对不起，您输入的旧密码错误，请重新输入"),
     VALIDATE_ID_CARD_ERROR(1023,"对不起，该身份证号已被占用，请重新输入"),
+    VALIDATE_BIND_MOBILE_ERROR(1024,"对不起，该手机号已注册，请重新输入"),
 
 
 

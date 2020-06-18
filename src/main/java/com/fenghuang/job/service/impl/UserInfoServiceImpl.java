@@ -812,7 +812,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         //判断账号是否存在:不等于空的时候，说明有绑定别的账号：不允许同一个手机号绑定多个账号
         UserInfo queryUserInfo = userInfoMapper.loginQueryUserInfo(reqLoginUserInfo.getMobile());
         if (queryUserInfo != null){
-            return Result.error(BusinessEnum.USERINFO_NOT_EXIST.getCode(),BusinessEnum.USERINFO_NOT_EXIST.getMsg(),null);
+            return Result.error(BusinessEnum.VALIDATE_BIND_MOBILE_ERROR.getCode(),BusinessEnum.VALIDATE_BIND_MOBILE_ERROR.getMsg(),null);
         }else{
 
             RequestAttributes ra = RequestContextHolder.getRequestAttributes();
