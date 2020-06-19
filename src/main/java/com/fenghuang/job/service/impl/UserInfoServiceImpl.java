@@ -18,6 +18,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -38,6 +39,9 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Slf4j
 public class UserInfoServiceImpl implements UserInfoService {
+
+    @Value( "${app.version}" )
+    private String version;
 
     @Resource
     UserInfoMapper userInfoMapper;
@@ -740,7 +744,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userName = user.get("userName").toString();
         log.info("解析token获取的结果{},{}",userId,userName);
 
-        Map<String,Date> map = new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
         //用户信息
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         UserSettingInfo userSettingInfo = userSettingInfoService.findUserSettingByUserId(userId);
@@ -753,6 +757,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }else{
             map.put("settingLastUpdateTime",userSettingInfo.getUpdateDate());
         }
+        map.put("version",version);
         return Result.success(map);
     }
 
