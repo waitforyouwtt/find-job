@@ -8,6 +8,8 @@ import com.fenghuang.job.entity.ProjectInfo;
 import com.fenghuang.job.entity.Result;
 import com.fenghuang.job.enums.BusinessEnum;
 import com.fenghuang.job.enums.DeleteEnum;
+import com.fenghuang.job.enums.ProjectLabelEnum;
+import com.fenghuang.job.enums.SalaryUnitEnum;
 import com.fenghuang.job.request.ReqBrowseRecordInfoFrontQuery;
 import com.fenghuang.job.service.BrowseRecordInfoService;
 import com.fenghuang.job.view.BrowseRecordInfoView;
@@ -72,8 +74,11 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
         record.setSalaryUnit(projectInfoById.getSalaryUnit());
         record.setProjectLabel(projectInfoById.getProjectLabel());
         record.setProvinceId(projectInfoById.getProvinceId());
+        record.setProvinceTitle( projectInfoById.getProvinceTitle() );
         record.setCityId(projectInfoById.getCityId());
+        record.setCityTitle( projectInfoById.getCityTitle() );
         record.setAreaId(projectInfoById.getAreaId());
+        record.setAreaTitle( projectInfoById.getAreaTitle() );
         record.setWorkAddress(projectInfoById.getWorkAddress());
         record.setIsDelete(DeleteEnum.NO.getCode());
         record.setFounder(userName);
@@ -117,6 +122,33 @@ public class BrowseRecordInfoServiceImpl implements BrowseRecordInfoService {
                     BrowseRecordInfoView view = new BrowseRecordInfoView();
                     BeanCopier beanCopier = BeanCopier.create( BrowseRecordInfo.class,BrowseRecordInfoView.class,false );
                     beanCopier.copy( browseRecordInfo,view,null );
+                    view.setSalaryUnitDesc( SalaryUnitEnum.fromValue(browseRecordInfo.getSalaryUnit()  ).getMsg() );
+
+                    //标签转换：
+                    List<String> projectLabels = Splitter.on(",").trimResults().splitToList(browseRecordInfo.getProjectLabel());
+                    List<String> labels = new ArrayList<>();
+                    if (CollectionUtils.isEmpty(projectLabels)){
+                        view.setProjectLabelsDesc(labels);
+                    }else{
+                        projectLabels.stream().forEach(s -> {
+                            if (s.equals( ProjectLabelEnum.LONG_WORKER.getCode().toString())){
+                                labels.add(ProjectLabelEnum.LONG_WORKER.getMsg());
+                            }
+                            if (s.equals(ProjectLabelEnum.SHORT_WORKER.getCode().toString())){
+                                labels.add(ProjectLabelEnum.SHORT_WORKER.getMsg());
+                            }
+                            if (s.equals(ProjectLabelEnum.WINTER_WORKER.getCode().toString())){
+                                labels.add(ProjectLabelEnum.WINTER_WORKER.getMsg());
+                            }
+                            if (s.equals(ProjectLabelEnum.SUMMER_WORKER.getCode().toString())){
+                                labels.add(ProjectLabelEnum.SUMMER_WORKER.getMsg());
+                            }
+                            if (s.equals(ProjectLabelEnum.HOURLY_WORKER.getCode().toString())){
+                                labels.add(ProjectLabelEnum.HOURLY_WORKER.getMsg());
+                            }
+                        });
+                        view.setProjectLabelsDesc(labels);
+                    }
                     views.add( view );
                 } );
                 pageInfo = new PageInfo<>(views);

@@ -6,6 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: 凤凰[小哥哥]
@@ -39,9 +40,11 @@ public class BrowseRecordInfoView implements Serializable {
 
     @ApiModelProperty("薪水单位")
     private Integer salaryUnit;
+    private String  salaryUnitDesc;
 
     @ApiModelProperty("项目标签")
     private String projectLabel;
+    private List<String> projectLabelsDesc;
 
     @ApiModelProperty("省份id")
     private Integer provinceId;
