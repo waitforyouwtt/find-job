@@ -25,7 +25,7 @@ public class BrowseRecordInfoController {
     @PostMapping("/findBrowseRecordInfoPage")
     public Result findBrowseRecordInfoPage(@RequestBody ReqBrowseRecordInfoFrontQuery recordInfoQuery, @RequestHeader("token") String token){
         recordInfoQuery.setToken(token);
-        return Result.success(  browseRecordInfoService.findBrowseRecordInfoPage(recordInfoQuery));
+        return browseRecordInfoService.findBrowseRecordInfoPage(recordInfoQuery);
     }
 
     @ApiOperation( "用户删除浏览记录" )
