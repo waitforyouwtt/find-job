@@ -55,6 +55,9 @@ public class LogAndSendMessageAspect {
     //用户修改手机号-发送验证码
     private final static String MODIFY_MOBILE_MESSAGE_METHOD = "modifyMobileMessage";
 
+    //商家使用短信注册，发送验证码
+    private final static String REGISTER_MERCHANT_SENDMESSAGE_METHOD = "registerMerchantSendMessage";
+
     @Around(value = "@annotation(LogAndSendMessageAnnotation)")
     public Object interceptUpdatePrice(ProceedingJoinPoint pjp) {
         Object result = new Object();
@@ -74,33 +77,39 @@ public class LogAndSendMessageAspect {
 
     private void actionMthod(String methodName, Object[] args, Object ret) {
         switch(methodName){
-            case SAVE_ORDINARY_LOGIN_METHOD:
+            case SAVE_ORDINARY_LOGIN_METHOD :
                 ReqLoginUserInfo loginUserInfo = (ReqLoginUserInfo) args[0];
                 saveLoginLog(loginUserInfo);
                 break;
-            case SAVE_LOGIN_MESSAGE_METHOD:
+            case SAVE_LOGIN_MESSAGE_METHOD :
                 String mobile = args[2].toString();
                 String ip = args[3].toString();
                 Integer messageType = 3;
                 saveSendMessageRecord(ip,mobile,messageType);
                 break;
-            case MESSAGE_REGISTER_METHOD:
+            case MESSAGE_REGISTER_METHOD :
                 String registerPhone = args[2].toString();
                 String registerIp = args[3].toString();
                 Integer registerMessageType = 1;
                 saveSendMessageRecord(registerIp,registerPhone,registerMessageType);
                 break;
-            case MESSAGE_FIND_PWD_METHOD:
+            case MESSAGE_FIND_PWD_METHOD :
                 String  messageFindPwdPhone = args[2].toString();
                 String  messageFindPwdIp = args[3].toString();
                 Integer messageFindPwdType = 2;
                 saveSendMessageRecord(messageFindPwdIp,messageFindPwdPhone,messageFindPwdType);
                 break;
-            case MODIFY_MOBILE_MESSAGE_METHOD:
+            case MODIFY_MOBILE_MESSAGE_METHOD :
                 String  modifyPhone = args[2].toString();
                 String  modifyIp = args[3].toString();
                 Integer modifyType = 4;
                 saveSendMessageRecord(modifyIp,modifyPhone,modifyType);
+                break;
+            case REGISTER_MERCHANT_SENDMESSAGE_METHOD :
+                String  merchantResgisterPhone = args[2].toString();
+                String  merchantResgisterIp = args[3].toString();
+                Integer merchantResgisterType = 5;
+                saveSendMessageRecord(merchantResgisterIp,merchantResgisterPhone,merchantResgisterType);
                 break;
             default:
                 break;

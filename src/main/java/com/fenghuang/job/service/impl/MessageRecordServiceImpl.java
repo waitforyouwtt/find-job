@@ -67,6 +67,9 @@ public class MessageRecordServiceImpl implements MessageRecordService {
         } else if(messageType.equals(MessageTypeEnum.MODIFY_MOBILE.getCode())){
             messageRecord.setMessageType(MessageTypeEnum.MODIFY_MOBILE.getCode());
             messageRecord.setSendContent("您正在进行使用短信修改绑定手机号");
+        } else if(messageType.equals(MessageTypeEnum.MERCHANT_REGISTER.getCode())){
+            messageRecord.setMessageType(MessageTypeEnum.MERCHANT_REGISTER.getCode());
+            messageRecord.setSendContent("商家正在进行使用短信注册账号");
         }
         messageRecordMapper.insertSelective(messageRecord);
     }

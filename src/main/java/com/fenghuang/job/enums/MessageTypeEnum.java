@@ -20,6 +20,8 @@ public enum MessageTypeEnum {
     LOGIN(3,"登录"),
     MODIFY_MOBILE(4,"用户修改手机号"),
 
+    MERCHANT_REGISTER(5,"商家用户注册"),
+
     ;
 
     //根据code 找到desc 描述

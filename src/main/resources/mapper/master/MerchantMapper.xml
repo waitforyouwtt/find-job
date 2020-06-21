@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fenghuang.job.dao.master.MerchantMapper">
+  <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.Merchant">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="user_head" jdbcType="VARCHAR" property="userHead" />
+    <result column="industry_id" jdbcType="INTEGER" property="industryId" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="county_area_id" jdbcType="INTEGER" property="countyAreaId" />
+    <result column="merchant_address" jdbcType="VARCHAR" property="merchantAddress" />
+    <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="id_card_x" jdbcType="VARCHAR" property="idCardX" />
+    <result column="id_card_y" jdbcType="VARCHAR" property="idCardY" />
+    <result column="user_level" jdbcType="INTEGER" property="userLevel" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, account, merchant_name, password, user_head, industry_id, mobile, province_id, 
+    city_id, county_area_id, merchant_address, business_license, id_card, id_card_x, 
+    id_card_y, user_level, status, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from merchant
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from merchant
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fenghuang.job.entity.Merchant">
+    insert into merchant (id, account, merchant_name, 
+      password, user_head, industry_id, 
+      mobile, province_id, city_id, 
+      county_area_id, merchant_address, business_license, 
+      id_card, id_card_x, id_card_y, 
+      user_level, status, create_date, 
+      update_date)
+    values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{userHead,jdbcType=VARCHAR}, #{industryId,jdbcType=INTEGER}, 
+      #{mobile,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, 
+      #{countyAreaId,jdbcType=INTEGER}, #{merchantAddress,jdbcType=VARCHAR}, #{businessLicense,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{idCardX,jdbcType=VARCHAR}, #{idCardY,jdbcType=VARCHAR}, 
+      #{userLevel,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fenghuang.job.entity.Merchant">
+    insert into merchant
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="merchantName != null">
+        merchant_name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="userHead != null">
+        user_head,
+      </if>
+      <if test="industryId != null">
+        industry_id,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="provinceId != null">
+        province_id,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+      <if test="countyAreaId != null">
+        county_area_id,
+      </if>
+      <if test="merchantAddress != null">
+        merchant_address,
+      </if>
+      <if test="businessLicense != null">
+        business_license,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="idCardX != null">
+        id_card_x,
+      </if>
+      <if test="idCardY != null">
+        id_card_y,
+      </if>
+      <if test="userLevel != null">
+        user_level,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null">
+        #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null">
+        #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="industryId != null">
+        #{industryId,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null">
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="countyAreaId != null">
+        #{countyAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="merchantAddress != null">
+        #{merchantAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicense != null">
+        #{businessLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardX != null">
+        #{idCardX,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardY != null">
+        #{idCardY,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        #{userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.Merchant">
+    update merchant
+    <set>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null">
+        merchant_name = #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null">
+        user_head = #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="industryId != null">
+        industry_id = #{industryId,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null">
+        province_id = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="countyAreaId != null">
+        county_area_id = #{countyAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="merchantAddress != null">
+        merchant_address = #{merchantAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicense != null">
+        business_license = #{businessLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardX != null">
+        id_card_x = #{idCardX,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardY != null">
+        id_card_y = #{idCardY,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        user_level = #{userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.Merchant">
+    update merchant
+    set account = #{account,jdbcType=VARCHAR},
+      merchant_name = #{merchantName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      user_head = #{userHead,jdbcType=VARCHAR},
+      industry_id = #{industryId,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER},
+      county_area_id = #{countyAreaId,jdbcType=INTEGER},
+      merchant_address = #{merchantAddress,jdbcType=VARCHAR},
+      business_license = #{businessLicense,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      id_card_x = #{idCardX,jdbcType=VARCHAR},
+      id_card_y = #{idCardY,jdbcType=VARCHAR},
+      user_level = #{userLevel,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="queryMerchantByMobile" resultType="com.fenghuang.job.entity.Merchant">
+    select
+    <include refid="Base_Column_List" />
+    from merchant
+    where mobile = #{mobile}
+  </select>
+
+  <select id="findMerchantByLogin" resultType="com.fenghuang.job.entity.Merchant">
+    select
+    <include refid="Base_Column_List" />
+    from merchant
+    where 1=1
+    and concat(account,mobile) LIKE CONCAT ('%',#{loginUser},'%')
+  </select>
+
+</mapper>
