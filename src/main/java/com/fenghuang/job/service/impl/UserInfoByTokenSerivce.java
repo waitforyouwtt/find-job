@@ -80,4 +80,32 @@ public class UserInfoByTokenSerivce {
         }
         return 0;
     }
+
+    /**
+     * 通过token 获取用户信息
+     * @param token
+     * @return
+     */
+    public Result getMerchantByToken(String token){
+        String merchantId;
+        String  account;
+        String mobile;
+        String merchanName;
+        Map<String,String> map = new HashMap<>();
+        try{
+            Claims claims = JwtUtil.parseJWT(token);
+            merchantId = claims.get("merchantId").toString() ;
+            account = claims.get("account").toString();
+            mobile = claims.get("mobile").toString();
+            merchanName = claims.get("merchanName").toString();
+            map.put("merchantId",merchantId);
+            map.put("account",account);
+            map.put("mobile",mobile);
+            map.put("merchanName",merchanName);
+        }catch (Exception e){
+            return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
+        }
+        return Result.success(map);
+    }
+
 }

@@ -63,19 +63,18 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public Result insertProject(ReqProjectInfo reqProject) {
         log.info( "商家管理后台创建兼职项目请求参数：{}", JSON.toJSONString(reqProject) );
 
-        Integer userId;
-        String  userName ;
-        Result userInfoByToken = userInfoByTokenSerivce.getUserInfoByToken(reqProject.getToken());
+        Integer merchantId;
+        String  merchanName ;
+        Result userInfoByToken = userInfoByTokenSerivce.getMerchantByToken(reqProject.getToken());
         if (userInfoByToken.getCode() == 2001){
             return Result.error(BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getCode(),BusinessEnum.TOKEN_TIMEOUT_EXPRESS.getMsg(),null);
         }
         Map user = (Map) userInfoByToken.getData();
-        userId = Integer.valueOf(user.get("userId").toString());
-        userName = user.get("userName").toString();
-        log.info("解析token获取的结果{},{}",userId,userName);
+        merchantId = Integer.valueOf(user.get("merchantId").toString());
+        merchanName = user.get("merchanName").toString();
 
         ReqProjectInfoQuery query = new ReqProjectInfoQuery();
-        query.setUserId(userId);
+        query.setUserId(merchantId);
         query.setProjectTypeId(reqProject.getProjectTypeId());
         query.setProjectTitle(reqProject.getProjectTitle());
         query.setIsDelete(DeleteEnum.NO.getCode());
@@ -86,7 +85,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         }
         ProjectInfo project = new ProjectInfo();
 
-        project.setUserId(userId);
+        project.setUserId(merchantId);
         project.setProjectTypeId(reqProject.getProjectTypeId());
         project.setProjectTypeName(reqProject.getProjectTypeName());
         project.setProjectTitle(reqProject.getProjectTitle());
@@ -125,8 +124,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         project.setIsDelete(DeleteEnum.NO.getCode());
         project.setCreateDate(new Date());
         project.setUpdateDate(new Date());
-        project.setFounder(reqProject.getUserId().toString());
-        project.setModifier(reqProject.getUserId().toString());
+        project.setFounder(merchanName);
+        project.setModifier(merchanName);
         int projectResult = projectMapper.insertSelective(project);
         Integer projectId = project.getId();
         log.info( "生成订单返回的订单号为：{}",projectId );
@@ -136,8 +135,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         projectWorkDateInfo.setWorkDateBegin(reqProject.getWorkDateBegin());
         projectWorkDateInfo.setWorkDateEnd(reqProject.getWorkDateEnd());
         projectWorkDateInfo.setIsDelete(DeleteEnum.NO.getCode());
-        projectWorkDateInfo.setFounder(reqProject.getUserId().toString());
-        projectWorkDateInfo.setModifier(reqProject.getUserId().toString());
+        projectWorkDateInfo.setFounder(merchanName);
+        projectWorkDateInfo.setModifier(merchanName);
         projectWorkDateInfo.setCreateDate(new Date());
         projectWorkDateInfo.setUpdateDate(new Date());
         projectWorkDateInfoMapper.insertSelective(projectWorkDateInfo);
@@ -147,8 +146,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         projectWorkTimeInfo.setWorkTimeBegin(reqProject.getWorkTimeBegin());
         projectWorkTimeInfo.setWorkTimeEnd(reqProject.getWorkTimeEnd());
         projectWorkTimeInfo.setIsDelete(DeleteEnum.NO.getCode());
-        projectWorkTimeInfo.setFounder(userName);
-        projectWorkTimeInfo.setModifier(userName);
+        projectWorkTimeInfo.setFounder(merchanName);
+        projectWorkTimeInfo.setModifier(merchanName);
         projectWorkTimeInfo.setCreateDate(new Date());
         projectWorkTimeInfo.setUpdateDate(new Date());
         projectWorkTimeInfoMapper.insertSelective(projectWorkTimeInfo);
