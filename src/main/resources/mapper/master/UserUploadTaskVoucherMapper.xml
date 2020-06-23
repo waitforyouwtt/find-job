@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fenghuang.job.dao.master.UserUploadTaskVoucherMapper">
+  <resultMap id="BaseResultMap" type="com.fenghuang.job.entity.UserUploadTaskVoucher">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="merchant_id" jdbcType="INTEGER" property="merchantId" />
+    <result column="voucher_images" jdbcType="VARCHAR" property="voucherImages" />
+    <result column="explain" jdbcType="VARCHAR" property="explain" />
+    <result column="voucher_status" jdbcType="INTEGER" property="voucherStatus" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="founder" jdbcType="VARCHAR" property="founder" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, merchant_id, voucher_images, explain, voucher_status, is_delete, founder, 
+    modifier, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_upload_taskvoucher
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_upload_taskvoucher
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fenghuang.job.entity.UserUploadTaskVoucher">
+    insert into user_upload_taskvoucher (id, user_id, merchant_id, 
+      voucher_images, explain, voucher_status, 
+      is_delete, founder, modifier, 
+      create_date, update_date)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{merchantId,jdbcType=INTEGER}, 
+      #{voucherImages,jdbcType=VARCHAR}, #{explain,jdbcType=VARCHAR}, #{voucherStatus,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fenghuang.job.entity.UserUploadTaskVoucher">
+    insert into user_upload_taskvoucher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="merchantId != null">
+        merchant_id,
+      </if>
+      <if test="voucherImages != null">
+        voucher_images,
+      </if>
+      <if test="explain != null">
+        explain,
+      </if>
+      <if test="voucherStatus != null">
+        voucher_status,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="founder != null">
+        founder,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="merchantId != null">
+        #{merchantId,jdbcType=INTEGER},
+      </if>
+      <if test="voucherImages != null">
+        #{voucherImages,jdbcType=VARCHAR},
+      </if>
+      <if test="explain != null">
+        #{explain,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherStatus != null">
+        #{voucherStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="founder != null">
+        #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fenghuang.job.entity.UserUploadTaskVoucher">
+    update user_upload_taskvoucher
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="merchantId != null">
+        merchant_id = #{merchantId,jdbcType=INTEGER},
+      </if>
+      <if test="voucherImages != null">
+        voucher_images = #{voucherImages,jdbcType=VARCHAR},
+      </if>
+      <if test="explain != null">
+        explain = #{explain,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherStatus != null">
+        voucher_status = #{voucherStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="founder != null">
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fenghuang.job.entity.UserUploadTaskVoucher">
+    update user_upload_taskvoucher
+    set user_id = #{userId,jdbcType=INTEGER},
+      merchant_id = #{merchantId,jdbcType=INTEGER},
+      voucher_images = #{voucherImages,jdbcType=VARCHAR},
+      explain = #{explain,jdbcType=VARCHAR},
+      voucher_status = #{voucherStatus,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      founder = #{founder,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
