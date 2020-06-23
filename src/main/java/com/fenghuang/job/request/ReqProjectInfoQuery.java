@@ -138,5 +138,7 @@ public class ReqProjectInfoQuery implements Serializable {
     @ApiModelProperty("是否删除：1 删除 2 未删除")
     private Integer isDelete;
 
+    @ApiModelProperty("是否线上：1 是 2 否")
+    private Integer isOnline;
 
 }

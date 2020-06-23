@@ -44,6 +44,7 @@
     <result column="project_state" jdbcType="INTEGER" property="projectState" />
     <result column="examine_status" jdbcType="INTEGER" property="examineStatus" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="is_online" jdbcType="INTEGER" property="isOnline" />
     <result column="founder" jdbcType="VARCHAR" property="founder" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
@@ -57,7 +58,7 @@
     project_contacts_email, project_skill, work_time_num, work_time_unit, work_time_interval_min, 
     work_time_interval_max, work_time_requirement, project_begin_time, project_end_time, 
     project_remark, order_id, totalPay_amount, service_charge, service_charge_rate, order_state, 
-    project_state, examine_status, is_delete, founder, modifier, create_date, update_date
+    project_state, examine_status, is_delete,is_online, founder, modifier, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -91,7 +92,7 @@
       project_begin_time, project_end_time, project_remark, 
       order_id, totalPay_amount, service_charge, 
       service_charge_rate, order_state, project_state, 
-      examine_status, is_delete, founder, 
+      examine_status,is_online,is_delete, founder,
       modifier, create_date, update_date
       )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
@@ -108,7 +109,7 @@
       #{projectBeginTime,jdbcType=TIMESTAMP}, #{projectEndTime,jdbcType=TIMESTAMP}, #{projectRemark,jdbcType=VARCHAR}, 
       #{orderId,jdbcType=VARCHAR}, #{totalpayAmount,jdbcType=DECIMAL}, #{serviceCharge,jdbcType=DECIMAL}, 
       #{serviceChargeRate,jdbcType=DECIMAL}, #{orderState,jdbcType=INTEGER}, #{projectState,jdbcType=INTEGER}, 
-      #{examineStatus,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR}, 
+      #{examineStatus,jdbcType=INTEGER}, #{isOnline,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{founder,jdbcType=VARCHAR},
       #{modifier,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -237,6 +238,9 @@
       </if>
       <if test="examineStatus != null">
         examine_status,
+      </if>
+      <if test="isOnline != null">
+        is_online,
       </if>
       <if test="isDelete != null">
         is_delete,
@@ -378,6 +382,9 @@
       <if test="examineStatus != null">
         #{examineStatus,jdbcType=INTEGER},
       </if>
+      <if test="isOnline != null">
+        #{isOnline,jdbcType=INTEGER},
+      </if>
       <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
       </if>
@@ -518,6 +525,9 @@
       <if test="examineStatus != null">
         examine_status = #{examineStatus,jdbcType=INTEGER},
       </if>
+      <if test="isOnline != null">
+        is_online = #{isOnline,jdbcType=INTEGER},
+      </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
@@ -578,6 +588,7 @@
       order_state = #{orderState,jdbcType=INTEGER},
       project_state = #{projectState,jdbcType=INTEGER},
       examine_status = #{examineStatus,jdbcType=INTEGER},
+      is_online = #{isOnline,jdbcType=INTEGER},
       is_delete = #{isDelete,jdbcType=INTEGER},
       founder = #{founder,jdbcType=VARCHAR},
       modifier = #{modifier,jdbcType=VARCHAR},
@@ -662,6 +673,7 @@
     a.modifier,
     a.create_date createDate,
     a.update_date updateDate,
+    a.is_online isOnline,
     b.work_date_begin workDateBegin,
     b.work_date_end workDateEnd,
     c.work_time_begin workTimeBegin,
@@ -712,6 +724,9 @@
       </if>
       <if test="projectContactsName != null">
         and a.project_contacts_name = #{projectContactsName}
+      </if>
+      <if test="isOnline != null">
+        and a.is_online = #{isOnline}
       </if>
       <if test="isDelete != null">
         and a.is_delete = #{isDelete}
@@ -833,6 +848,7 @@
     a.order_state orderState,
     a.project_state projectState,
     a.examine_status examineStatus,
+    a.is_online isOnline,
     a.is_delete isDelete,
     a.founder,
     a.modifier,
@@ -895,6 +911,9 @@
       </if>
       <if test="projectContactsName != null">
         and a.project_contacts_name = #{projectContactsName}
+      </if>
+      <if test="isOnline != null">
+        and a.is_online = #{isOnline}
       </if>
       <if test="isDelete != null">
         and a.is_delete = #{isDelete}

@@ -137,6 +137,9 @@ public class ReqProjectInfoQuery2 extends PageHelps implements Serializable {
     @ApiModelProperty("修改时间")
     private Date updateDate;
 
+    @ApiModelProperty("是否线上：1 是 2 否")
+    private Integer isOnline;
+
     @ApiModelProperty("是否删除：1 删除 2 未删除")
     private Integer isDelete;
 

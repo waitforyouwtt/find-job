@@ -36,9 +36,6 @@ public class ReqProjectInfo implements Serializable {
     @ApiModelProperty("项目兼职内容描述")
     private String projectContent;
 
-    @ApiModelProperty("项目所属公司")
-    private String projectAscriptionCompany;
-
     @ApiModelProperty("省份id")
     private Integer provinceId;
 
@@ -123,17 +120,6 @@ public class ReqProjectInfo implements Serializable {
     @ApiModelProperty("结束上班时间")
     private String workTimeEnd;
 
-    @ApiModelProperty("创建人")
-    private String founder;
-
-    @ApiModelProperty("修改人")
-    private String modifier;
-
-    @ApiModelProperty("创建时间")
-    private Date createDate;
-
-    @ApiModelProperty("结束时间")
-    private Date updateDate;
-
-
+    @ApiModelProperty("是否线上：1是 2 否")
+    private Integer isOnline;
 }

@@ -92,6 +92,8 @@ public class ProjectInfo implements Serializable {
 
     private Integer examineStatus;
 
+    private Integer isOnline;
+
     private Integer isDelete;
 
     private String founder;

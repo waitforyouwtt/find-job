@@ -80,9 +80,10 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         query.setIsDelete(DeleteEnum.NO.getCode());
         //同一用户 & 同一类型 & 相同标题 状态为未删除的项目不允许重复
         ProjectInfo projects = projectMapper.findProjectParams(query);
-        if (projects != null){
+        if (projects != null || !projects.getProjectState().equals(ProjectStateEnum.FINISHED)){
             return Result.error(BusinessEnum.RECORD_ALREADY_EXISTS.getCode(),BusinessEnum.RECORD_ALREADY_EXISTS.getMsg(),null);
         }
+
         ProjectInfo project = new ProjectInfo();
 
         project.setUserId(merchantId);
@@ -90,10 +91,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         project.setProjectTypeName(reqProject.getProjectTypeName());
         project.setProjectTitle(reqProject.getProjectTitle());
         project.setProjectContent(reqProject.getProjectContent());
-        project.setProjectAscriptionCompany(reqProject.getProjectAscriptionCompany());
+        project.setProjectAscriptionCompany(merchanName);
         project.setProvinceId(reqProject.getProvinceId());
+        project.setProvinceTitle(reqProject.getProvinceTitle());
         project.setCityId(reqProject.getCityId());
+        project.setCityTitle(reqProject.getCityTitle());
         project.setAreaId(reqProject.getAreaId());
+        project.setAreaTitle(reqProject.getAreaTitle());
         project.setWorkAddress(reqProject.getWorkAddress());
         project.setGenderRequirement(reqProject.getGenderRequirement());
         //当标签不为空时处理成int 存到数据库
@@ -102,12 +106,19 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
           //Integer.parseInt(StringUtils.strip(labels,""))
             project.setProjectLabel(labels);
         }
+        project.setSalary(reqProject.getSalary());
         project.setSalaryUnit(reqProject.getSalaryUnit());
         project.setSettlementCycle(reqProject.getSettlementCycle());
         //工作福利
         if (!CollectionUtils.isEmpty(reqProject.getWorkWelfaresId())){
             String workWelfaresId = StringUtils.strip(Joiner.on(",").join(reqProject.getProjectLabels()),"[]");
             project.setWorkWelfaresId(StringUtils.strip(workWelfaresId,""));
+        }
+        //线上线下
+        if (StringUtils.isBlank(reqProject.getIsOnline().toString())){
+            project.setIsOnline(2);
+        }else{
+            project.setIsOnline(1);
         }
         project.setProjectNeedNum(reqProject.getProjectNeedNum());
         project.setProjectContactsName(reqProject.getProjectContactsName());
